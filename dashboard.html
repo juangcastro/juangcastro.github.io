@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v3 — Juan Castro</title>
+<title>Odyssey Dashboard v4 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,56 +14,69 @@
   }
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 24px; }
   .container { max-width: 1400px; margin: 0 auto; }
-  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-  .header h1 { font-size: 24px; font-weight: 700; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .header h1 { font-size: 22px; font-weight: 700; }
   .header h1 span { color: var(--accent); }
-  .header .date { color: var(--muted); font-size: 14px; }
-  .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
-  .status-dot.green { background: var(--green); }
+  .header .date { color: var(--muted); font-size: 13px; }
   .grid { display: grid; gap: 16px; }
-  .kpi-row { grid-template-columns: repeat(6, 1fr); }
-  @media (max-width: 900px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } }
+
+  .kpi-row { grid-template-columns: repeat(7, 1fr); }
+  @media (max-width: 1000px) { .kpi-row { grid-template-columns: repeat(4, 1fr); } }
   @media (max-width: 600px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
-  .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; transition: 0.2s; }
+
+  .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; transition: 0.2s; }
   .kpi-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .kpi-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; }
-  .kpi-card .value { font-size: 26px; font-weight: 700; }
-  .kpi-card .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .kpi-card .target { font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .kpi-card .diff { font-size: 12px; font-weight: 600; margin-top: 2px; }
+  .kpi-card .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 3px; }
+  .kpi-card .value { font-size: 24px; font-weight: 700; }
+  .kpi-card .sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .kpi-card .target { font-size: 10px; color: var(--muted); margin-top: 3px; }
+  .kpi-card .diff { font-size: 11px; font-weight: 600; margin-top: 2px; }
   .diff.positive { color: var(--green); }
   .diff.negative { color: var(--red); }
   .diff.neutral { color: var(--accent); }
-  .sparkline { margin-top: 10px; opacity: 0.6; }
-  .sparkline-label { font-size: 9px; color: var(--muted); text-transform: uppercase; margin-top: 4px; opacity: 0.5; text-align: center; }
-  .two-col { grid-template-columns: 1fr 1fr; }
-  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
-  .section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-  .section h2 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-  .section h2 .badge { font-size: 10px; background: var(--surface); padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-weight: 400; color: var(--muted); }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; color: var(--muted); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 4px; border-bottom: 1px solid var(--border); }
-  td { padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .value-good { color: var(--green); font-weight: 600; }
-  .value-warn { color: var(--accent); font-weight: 600; }
-  .value-bad { color: var(--red); font-weight: 600; }
   .progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 4px; overflow: hidden; }
   .progress-bar .fill { height: 100%; border-radius: 2px; }
   .fill-green { background: var(--green); }
   .fill-yellow { background: var(--accent); }
+  .fill-red { background: var(--red); }
   .fill-blue { background: var(--blue); }
-  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 8px; }
-  .cal-header { font-size: 10px; text-transform: uppercase; color: var(--muted); text-align: center; padding: 4px; font-weight: 500; letter-spacing: 0.5px; }
-  .cal-day { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px; min-height: 72px; text-align: center; font-size: 12px; }
-  .cal-day .day-num { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
-  .cal-day .workout-label { font-size: 9px; color: var(--muted); line-height: 1.3; }
-  .cal-day .act-done { font-size: 18px; margin-top: 2px; }
+
+  .two-col { grid-template-columns: 1fr 1fr; }
+  .three-col { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 900px) { .two-col, .three-col { grid-template-columns: 1fr; } }
+
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .section h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .section h2 .badge { font-size: 9px; background: var(--surface); padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-weight: 400; color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; color: var(--muted); font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 4px; border-bottom: 1px solid var(--border); }
+  td { padding: 6px 4px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .value-good { color: var(--green); font-weight: 600; }
+  .value-warn { color: var(--accent); font-weight: 600; }
+  .value-bad { color: var(--red); font-weight: 600; }
+
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 6px; }
+  .cal-header { font-size: 9px; text-transform: uppercase; color: var(--muted); text-align: center; padding: 3px; font-weight: 500; letter-spacing: 0.5px; }
+  .cal-day { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px; min-height: 65px; text-align: center; font-size: 11px; }
+  .cal-day .day-num { font-weight: 600; font-size: 12px; margin-bottom: 3px; }
+  .cal-day .workout-label { font-size: 8px; color: var(--muted); line-height: 1.2; }
+  .cal-day .act-done { font-size: 16px; margin-top: 1px; }
   .cal-day.today { border-color: var(--accent); }
   .cal-day.completed { border-color: var(--green); background: rgba(64,208,128,0.06); }
   .cal-day.missed { border-color: var(--red); background: rgba(224,80,80,0.06); }
   .cal-day.future { border-color: rgba(255,255,255,0.06); opacity: 0.5; }
-  .week-summary { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
-  .week-summary span { font-size: 11px; color: var(--muted); background: var(--surface); padding: 4px 10px; border-radius: 4px; }
+
+  .rec-card { padding: 12px; background: var(--surface); border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 10px; }
+  .rec-card .title { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .rec-card .body { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .rec-card.critical { border-left-color: var(--red); }
+  .rec-card.good { border-left-color: var(--green); }
+  .rec-card.info { border-left-color: var(--blue); }
+
+  .sparkline { opacity: 0.5; }
+  .week-summary { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .week-summary span { font-size: 10px; color: var(--muted); background: var(--surface); padding: 3px 8px; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -72,102 +85,104 @@
 <div class="header">
   <div>
     <h1>⚔️ <span>ODYSSEY</span> DASHBOARD</h1>
-    <div class="date"><span class="status-dot green"></span>Actualizado: 28 Jul 2026 · Garmin + LePulse</div>
+    <div class="date">Actualizado: 28 Jul 2026 · Garmin + LePulse + Sleep</div>
   </div>
-  <div style="text-align:right;font-size:12px;color:var(--muted);">
-    Juan Castro · V3 Elite · Semana del 27 Jul → 2 Ago
+  <div style="text-align:right;font-size:11px;color:var(--muted);">
+    Juan Castro · V3 Elite · Semana 27 Jul → 2 Ago
   </div>
 </div>
 
-<div class="grid kpi-row" style="margin-bottom:20px;">
+<div class="grid kpi-row" style="margin-bottom:16px;">
   <div class="kpi-card">
     <div class="label">Peso</div>
     <div class="value" style="color:var(--green);">82.6</div>
-    <div class="sub">kg <span style="font-size:11px;color:var(--green);">▼ -0.3 kg</span></div>
+    <div class="sub">kg <span style="color:var(--green);">▼ -0.3</span></div>
     <div class="target">Meta: 76.7</div>
     <div class="diff negative">-5.9 kg</div>
-    <div class="sparkline-label" style="margin-top:8px;">vs ayer: 82.9 → 82.6 🔽</div>
   </div>
   <div class="kpi-card">
-    <div class="label">Grasa Corporal</div>
-    <div class="value">20.1<span style="font-size:16px;">%</span></div>
+    <div class="label">Grasa</div>
+    <div class="value">20.1<span style="font-size:14px;">%</span></div>
     <div class="sub">16.6 kg</div>
     <div class="target">Meta: ~14%</div>
-    <div class="diff negative" style="color:var(--muted);">vs ayer: 19.6% ▲</div>
   </div>
   <div class="kpi-card">
-    <div class="label">Músculo Total</div>
+    <div class="label">Músculo Tot</div>
     <div class="value">61.6</div>
     <div class="sub">kg</div>
-    <div class="target">vs ayer: 62.1</div>
-    <div class="diff neutral" style="color:var(--muted);">-0.5 kg (fluctuación)</div>
+    <div class="target">Mantener</div>
   </div>
   <div class="kpi-card">
-    <div class="label">Pasos Hoy</div>
+    <div class="label">Sueño (prom 7d)</div>
+    <div class="value" style="color:var(--accent);">6.0</div>
+    <div class="sub">horas</div>
+    <div class="target">Meta: 7-8h</div>
+    <div class="diff negative" style="color:var(--red);">▼ -1.0h</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">HRV (prom 7d)</div>
+    <div class="value" style="color:var(--green);">47</div>
+    <div class="sub">ms <span style="color:var(--green);">▲ +4</span></div>
+    <div class="target">Rango: 45-59</div>
+    <div class="progress-bar"><div class="fill fill-green" style="width:35%"></div></div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">Pasos hoy</div>
     <div class="value">1,564</div>
     <div class="sub">· meta 8,000</div>
-    <div class="progress-bar" style="margin-top:6px;"><div class="fill fill-yellow" style="width:20%"></div></div>
-    <div class="sub" style="margin-top:4px;">🚶 32 min walking ✅</div>
+    <div class="progress-bar"><div class="fill fill-yellow" style="width:20%"></div></div>
   </div>
   <div class="kpi-card">
-    <div class="label">Body Battery</div>
+    <div class="label">Body Batt. hoy</div>
     <div class="value"><span style="color:var(--green);">+49</span>/<span style="color:var(--red);">-40</span></div>
-    <div class="sub">hoy</div>
+    <div class="sub">cargado/drenado</div>
     <div class="progress-bar"><div class="fill fill-blue" style="width:55%"></div></div>
   </div>
-  <div class="kpi-card">
-    <div class="label">Hoy: Heavy Legs</div>
-    <div class="value" style="font-size:16px;color:var(--green);">✅ COMPLETADO</div>
-    <div class="sub">💪 Strength 65 min · 297 cal</div>
-    <div class="target">🚶 Walking 32 min</div>
-  </div>
 </div>
 
 <div class="grid two-col" style="margin-bottom:16px;">
   <div class="section">
-    <h2><span class="emoji">🧬</span>Composición Corporal <span class="badge">28 Jul</span></h2>
+    <h2><span class="emoji">🧬</span>Composición y Sueño <span class="badge">vs ayer</span></h2>
     <table>
-      <tr><th>Métrica</th><th>Ayer 27 Jul</th><th>Hoy 28 Jul</th><th>Δ</th></tr>
-      <tr><td>Peso</td><td>82.9</td><td><strong>82.6</strong></td><td class="value-good">-0.3 kg</td></tr>
-      <tr><td>Grasa</td><td>19.6% (16.2 kg)</td><td>20.1% (16.6 kg)</td><td style="color:var(--muted);">+0.5% (fluct)</td></tr>
-      <tr><td>Músculo total</td><td>62.1 kg</td><td>61.6 kg</td><td style="color:var(--muted);">-0.5 kg</td></tr>
-      <tr><td>Músculo esq.</td><td>38.1 kg</td><td>37.7 kg</td><td style="color:var(--muted);">-0.4 kg</td></tr>
-      <tr><td>IMC</td><td>25.6</td><td>25.5</td><td class="value-good">-0.1</td></tr>
-      <tr><td>Grasa visceral</td><td>Grado 5</td><td>Grado 5</td><td class="value-neutral">=</td></tr>
-      <tr><td>Agua corporal</td><td>48.8 kg</td><td>48.4 kg</td><td style="color:var(--muted);">-0.4 kg</td></tr>
-      <tr><td>TMB</td><td>1,808 kcal</td><td>1,795 kcal</td><td style="color:var(--muted);">-13</td></tr>
-      <tr><td>Puntuación</td><td>80/100</td><td>79/100</td><td style="color:var(--muted);">-1</td></tr>
+      <tr><th>Métrica</th><th>Lun 27</th><th>Mar 28</th><th>Δ</th></tr>
+      <tr><td>Peso (kg)</td><td>82.9</td><td><strong>82.6</strong></td><td class="value-good">-0.3</td></tr>
+      <tr><td>Grasa %</td><td>19.6</td><td>20.1</td><td style="color:var(--muted);">+0.5 (hidrat.)</td></tr>
+      <tr><td>Músculo tot</td><td>62.1</td><td>61.6</td><td style="color:var(--muted);">-0.5</td></tr>
+      <tr><td>Grasa visceral</td><td>5</td><td>5</td><td class="value-neutral">=</td></tr>
+      <tr><td>Puntuación</td><td>80</td><td>79</td><td style="color:var(--muted);">-1</td></tr>
+      <tr><td>Sueño (h)</td><td>6.2</td><td><strong>4.2</strong></td><td class="value-bad">🔴 -2h</td></tr>
+      <tr><td>HRV últ. noche</td><td>53</td><td>55</td><td class="value-good">+2 ▲</td></tr>
+      <tr><td>Entreno</td><td>🚣 Remo 30m</td><td>💪 Legs 65m</td><td class="value-good">✅</td></tr>
     </table>
   </div>
   <div class="section">
-    <h2><span class="emoji">🥗</span>Nutrición <span class="badge">Odyssey Protocol</span></h2>
+    <h2><span class="emoji">📊</span>Histórico de Sueño (7 días)</h2>
     <table>
-      <tr><th>Macro</th><th>Objetivo</th><th>Status</th></tr>
-      <tr><td>Calorías</td><td>1,950–2,050 kcal</td><td style="color:var(--muted);">— pendiente log</td></tr>
-      <tr><td>Proteína</td><td>165–180g</td><td style="color:var(--muted);">—</td></tr>
-      <tr><td>Carbohidratos</td><td>150–180g</td><td style="color:var(--muted);">—</td></tr>
-      <tr><td>Grasas</td><td>55–65g</td><td style="color:var(--muted);">—</td></tr>
-      <tr><td>Agua</td><td>3.5–4.0 L</td><td style="color:var(--muted);">—</td></tr>
-      <tr><td>Sueño</td><td>7–8 h</td><td style="color:var(--muted);">—</td></tr>
+      <tr><th>Día</th><th>Total</th><th>Profundo</th><th>REM</th><th>Score</th><th>HRV</th><th>Status</th></tr>
+      <tr><td>Mié 22</td><td>5.8h</td><td>1.7h</td><td>1.6h</td><td>78</td><td>49</td><td class="value-warn">● FAIR</td></tr>
+      <tr><td>Jue 23</td><td>7.5h</td><td>1.3h</td><td>1.9h</td><td>91</td><td>42</td><td class="value-good">🏆 EXCELLENT</td></tr>
+      <tr><td>Vie 24</td><td>5.8h</td><td>1.0h</td><td>0.6h</td><td>68</td><td>35</td><td class="value-warn">● FAIR</td></tr>
+      <tr><td>Sáb 25</td><td>3.6h</td><td>1.5h</td><td>0.4h</td><td>52</td><td>50</td><td class="value-bad">🔴 POOR</td></tr>
+      <tr><td>Dom 26</td><td>8.8h</td><td>0.9h</td><td>1.8h</td><td>78</td><td>52</td><td class="value-warn">● FAIR</td></tr>
+      <tr><td>Lun 27</td><td>6.2h</td><td>1.7h</td><td>0.9h</td><td>82</td><td>53</td><td class="value-good">✅ GOOD</td></tr>
+      <tr><td><strong>Mar 28</strong></td><td><strong>4.2h</strong></td><td><strong>1.3h</strong></td><td><strong>1.2h</strong></td><td><strong>61</strong></td><td><strong>55</strong></td><td><strong class="value-warn">● FAIR</strong></td></tr>
     </table>
-    <div style="margin-top:12px;padding:10px;background:var(--surface);border-radius:8px;border-left:3px solid var(--accent);font-size:11px;color:var(--muted);">
-      <strong style="color:var(--accent);">⚡ The Damon Rule:</strong> Zero gluten · Zero alcohol · Zero sugar · Zero dairy
-    </div>
-    <div style="margin-top:8px;display:flex;gap:8px;font-size:11px;flex-wrap:wrap;">
-      <span style="background:var(--surface);padding:4px 10px;border-radius:4px;">🔥 ~1,396 kcal (Garmin)</span>
-      <span style="background:var(--surface);padding:4px 10px;border-radius:4px;">💪 65 min strength</span>
-      <span style="background:var(--surface);padding:4px 10px;border-radius:4px;">🚶 32 min walk</span>
+    <div style="margin-top:8px;display:flex;gap:8px;font-size:10px;color:var(--muted);flex-wrap:wrap;">
+      <span>📊 Promedio: 6.0h/noche</span>
+      <span>🧠 Profundo: 1.3h (22%)</span>
+      <span>💭 REM: 1.2h (20%)</span>
+      <span>📈 HRV prom: 47ms (▲ tendencia positiva)</span>
     </div>
   </div>
 </div>
 
-<div class="grid two-col" style="margin-bottom:16px;">
+<div class="grid three-col" style="margin-bottom:16px;">
   <div class="section">
-    <h2><span class="emoji">📅</span>Semana Anterior <span class="badge">21–27 Jul</span></h2>
+    <h2><span class="emoji">💪</span>Semana Anterior <span class="badge">21-27 Jul</span></h2>
     <div class="cal-grid">
-      <div class="cal-header">Lun 21</div><div class="cal-header">Mar 22</div><div class="cal-header">Mié 23</div>
-      <div class="cal-header">Jue 24</div><div class="cal-header">Vie 25</div><div class="cal-header">Sáb 26</div>
-      <div class="cal-header">Dom 27</div>
+      <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
+      <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
+      <div class="cal-header">Dom</div>
       <div class="cal-day missed"><div class="day-num">21</div><div class="workout-label">Upper</div><div class="act-done" style="color:var(--red);">✗</div></div>
       <div class="cal-day"><div class="day-num">22</div><div class="workout-label">Legs</div><div class="act-icon">🧘</div></div>
       <div class="cal-day completed"><div class="day-num">23</div><div class="workout-label">Metabolic</div><div class="act-done">🏊</div></div>
@@ -176,17 +191,14 @@
       <div class="cal-day completed"><div class="day-num">26</div><div class="workout-label">Sprint</div><div class="act-done">💪</div></div>
       <div class="cal-day completed"><div class="day-num">27</div><div class="workout-label">Recovery</div><div class="act-done">🚣</div></div>
     </div>
-    <div class="week-summary">
-      <span>✅ 4/7 · ✗ 2 · 🧘 1 med</span>
-      <span>🏊 47m · 💪 52m · 🚣 30m</span>
-    </div>
+    <div class="week-summary"><span>✅ 4/7 · ✗ 2 · 🧘 1</span></div>
   </div>
   <div class="section">
     <h2><span class="emoji">📅</span>Semana Actual <span class="badge">27 Jul → 2 Ago</span></h2>
     <div class="cal-grid">
-      <div class="cal-header">Lun 27</div><div class="cal-header">Mar 28</div><div class="cal-header">Mié 29</div>
-      <div class="cal-header">Jue 30</div><div class="cal-header">Vie 31</div><div class="cal-header">Sáb 1</div>
-      <div class="cal-header">Dom 2</div>
+      <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
+      <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
+      <div class="cal-header">Dom</div>
       <div class="cal-day completed"><div class="day-num">27</div><div class="workout-label">Upper</div><div class="act-done">🚣</div></div>
       <div class="cal-day completed today"><div class="day-num">28</div><div class="workout-label">Legs ✅</div><div class="act-done">💪</div></div>
       <div class="cal-day future"><div class="day-num">29</div><div class="workout-label">Metabolic</div><div class="act-icon">⏳</div></div>
@@ -195,46 +207,78 @@
       <div class="cal-day future"><div class="day-num">1</div><div class="workout-label">Sprint</div><div class="act-icon">⏳</div></div>
       <div class="cal-day future"><div class="day-num">2</div><div class="workout-label">Recovery</div><div class="act-icon">⏳</div></div>
     </div>
-    <div class="week-summary">
-      <span>🟢 2/7 completados</span>
-      <span>⏳ 5/7 pendientes</span>
-      <span style="color:var(--green);">💪 65 min hoy</span>
+    <div class="week-summary"><span>🟢 2/7 · ⏳ 5 pendientes</span></div>
+  </div>
+  <div class="section">
+    <h2><span class="emoji">🔄</span>Tracker Diario</h2>
+    <table>
+      <tr><th>Día</th><th>Entreno</th><th>Peso</th><th>Sueño</th><th>HRV</th></tr>
+      <tr><td>Lun 27</td><td>🚣 30m</td><td>82.9</td><td>6.2h</td><td>53</td></tr>
+      <tr style="font-weight:600;"><td>Mar 28</td><td>💪 65m</td><td>82.6</td><td>4.2h</td><td>55</td></tr>
+      <tr><td style="color:var(--muted);">Mié 29</td><td style="color:var(--muted);">⏳</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="section" style="margin-bottom:16px;">
+  <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 28 Jul</h2>
+
+  <div class="rec-card critical">
+    <div class="title">🔴 Sueño insuficiente — prioridad #1</div>
+    <div class="body">
+      Promedio de <strong>6.0h</strong> vs objetivo de 7-8h. Anoche solo <strong>4.2h</strong> después del entrenamiento de piernas.
+      El sueño profundo (1.3h) y REM (1.2h) son aceptables pero la duración total es baja.
+      <br><br>
+      <strong>⚠️ Correlación:</strong> después del entrenamiento intenso de piernas (65 min), dormiste solo 4.2h — el sistema nervioso quedó activado.
+      <strong>Recomendación:</strong> intenta una rutina de relajación post-entreno (respiración, meditación, evitar pantallas 30 min antes de dormir).
+    </div>
+  </div>
+
+  <div class="rec-card good">
+    <div class="title">🟢 HRV en mejora constante</div>
+    <div class="body">
+      El HRV semanal subió de 43 → 47 ms en 7 días. Estás en rango "BALANCED" (45-59).
+      Buena señal de recuperación del sistema nervioso autónomo.
+      <strong>Sigue así:</strong> la tendencia es positiva, señal de que el entrenamiento está generando adaptación positiva.
+    </div>
+  </div>
+
+  <div class="rec-card info">
+    <div class="title">📊 Progreso de peso</div>
+    <div class="body">
+      Bajaste de 82.9 → 82.6 kg en 24h (-0.3 kg). Si mantienes este ritmo, llegarás a los 77 kg objetivo en ~19 semanas.
+      <strong>Pero:</strong> la grasa subió de 19.6% → 20.1% — probablemente fluctuación por hidratación
+      (la báscula de bioimpedancia es muy sensible al agua corporal).
+      <strong>Medición más confiable:</strong> pesarse siempre en las mismas condiciones (mañana, en ayunas, después de ir al baño).
+    </div>
+  </div>
+
+  <div class="rec-card" style="border-left-color:var(--purple);">
+    <div class="title">📈 Correlaciones detectadas</div>
+    <div class="body">
+      <strong>🔹 Sueño pobre → HRV bajo:</strong> El día con peor sueño (3.6h) tuvo HRV matutino de 50. El día con mejor sueño (7.5h) tuvo HRV de 42.
+      La relación no es lineal — otros factores como la intensidad del entrenamiento del día anterior pesan más.<br>
+      <strong>🔹 Entreno intenso → menos sueño:</strong> los días con entrenamiento de piernas/fuerza intensa se correlacionan con menor duración de sueño.
+      Solución: sesión de relajación post-entreno.<br>
+      <strong>🔹 Pasos y calorías semanales:</strong> día con más pasos (5,690) = más calorías quemadas (2,184).
+      Aumentar pasos diarios a 8,000+ podría acelerar la pérdida de grasa sin afectar recuperación.
+    </div>
+  </div>
+
+  <div class="rec-card info" style="border-left-color:var(--accent);">
+    <div class="title">🎯 Plan de acción próximo 7 días</div>
+    <div class="body">
+      1. <strong>Sueño:</strong> apuntar a 7h mínimo. Apagar pantallas 30 min antes de dormir<br>
+      2. <strong>Pasos:</strong> aumentar a 6,000/día como primer objetivo (hoy 1,564)<br>
+      3. <strong>Hidratación:</strong> 3.5L agua/día para mediciones de peso más estables<br>
+      4. <strong>Post-entreno:</strong> 10 min de respiración/estiramientos para mejorar sueño<br>
+      5. <strong>Próximo peso:</strong> miércoles 29 (mañana) — esperar 82.3-82.5 kg
     </div>
   </div>
 </div>
 
-<div class="grid two-col" style="margin-bottom:16px;">
-  <div class="section">
-    <h2><span class="emoji">📊</span>Comparativa Semanal</h2>
-    <table>
-      <tr><th>Métrica</th><th>Sem. Ant.</th><th>Sem. Act.</th><th>vs Prev</th></tr>
-      <tr><td>Pasos (media/día)</td><td>4,389</td><td>2,368*</td><td class="value-bad">▼ -46%</td></tr>
-      <tr><td>Calorías (media/día)</td><td>2,235</td><td>1,612*</td><td class="value-bad">▼ -28%</td></tr>
-      <tr><td>BB Recarga (media)</td><td>54</td><td>52*</td><td class="value-neutral">=</td></tr>
-      <tr><td>BB Desgaste (media)</td><td>50</td><td>46*</td><td class="value-good">▼ -8%</td></tr>
-      <tr><td>Entrenos completados</td><td>4/7 (57%)</td><td>2/7 (29%)*</td><td style="color:var(--muted);">*día 1-2</td></tr>
-    </table>
-    <div style="margin-top:12px;font-size:11px;color:var(--muted);">* Datos parciales — semana en curso (días 1-2)</div>
-  </div>
-  <div class="section">
-    <h2><span class="emoji">🔄</span>Log de esta semana</h2>
-    <table>
-      <tr><th>Día</th><th>Entreno</th><th>Peso</th><th>Pasos</th><th>Cal</th><th>BB</th></tr>
-      <tr><td>Lun 27</td><td>🚣 30m row</td><td>82.9</td><td>3,172</td><td>1,828</td><td>+54/−52</td></tr>
-      <tr><td><strong>Mar 28</strong></td><td><strong>💪 65m strength</strong></td><td><strong>82.6</strong></td><td><strong>1,564*</strong></td><td><strong>1,396*</strong></td><td><strong>+49/−40</strong></td></tr>
-      <tr><td>Mié 29</td><td style="color:var(--muted);">⏳</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>
-      <tr><td>Jue 30</td><td style="color:var(--muted);">⏳</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>
-      <tr><td>Vie 31</td><td style="color:var(--muted);">⏳</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>
-      <tr><td>Sáb 1</td><td style="color:var(--muted);">⏳</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>
-      <tr><td>Dom 2</td><td style="color:var(--muted);">⏳</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>
-    </table>
-    <div style="margin-top:8px;font-size:10px;color:var(--muted);">* Pasos/calorías parciales — día en curso</div>
-  </div>
-</div>
-
-<div style="text-align:center;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.6;">
-  Odyssey Dashboard · Juan Castro · Garmin + LePulse · <a href="https://theredqueen.co/dashboard.html" style="color:var(--accent);">theredqueen.co</a><br>
-  ⚔️ <em>"The body achieves what the mind believes"</em> ⚔️
+<div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
+  Odyssey Dashboard v4 · Juan Castro · Garmin (sleep, HRV, steps) + LePulse · 28 Jul 2026
 </div>
 
 </div>
