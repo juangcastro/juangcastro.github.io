@@ -25,7 +25,6 @@
   .status-dot.yellow { background: var(--accent); }
 
   .grid { display: grid; gap: 16px; }
-
   .kpi-row { grid-template-columns: repeat(6, 1fr); }
   .kpi-card {
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
@@ -73,11 +72,10 @@
 
   .workout-day { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); align-items: flex-start; }
   .workout-day:last-child { border: none; }
-  .workout-day .day { font-weight: 600; min-width: 50px; font-size: 12px; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+  .workout-day .day { font-weight: 600; min-width: 60px; font-size: 12px; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
   .workout-day .detail { font-size: 12px; color: var(--muted); line-height: 1.5; flex: 1; }
   .workout-day .check { font-size: 16px; min-width: 24px; text-align: center; }
 
-  /* Calendar grid */
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 8px; }
   .cal-header { font-size: 10px; text-transform: uppercase; color: var(--muted); text-align: center; padding: 4px; font-weight: 500; letter-spacing: 0.5px; }
   .cal-day {
@@ -91,7 +89,7 @@
   .cal-day.today { border-color: var(--accent); }
   .cal-day.completed { border-color: var(--green); background: rgba(64,208,128,0.06); }
   .cal-day.missed { border-color: var(--red); background: rgba(224,80,80,0.06); }
-  .cal-day.rest-day { border-color: rgba(255,255,255,0.06); }
+  .cal-day.future { border-color: rgba(255,255,255,0.06); opacity: 0.5; }
 
   @media (max-width: 900px) {
     .kpi-row { grid-template-columns: repeat(3, 1fr); }
@@ -101,7 +99,6 @@
   @media (max-width: 600px) {
     .kpi-row { grid-template-columns: repeat(2, 1fr); }
     body { padding: 12px; }
-    .cal-grid { grid-template-columns: repeat(1, 1fr); }
   }
 </style>
 </head>
@@ -123,13 +120,9 @@ function sparklinePoints(values, w=80, h=24) {
   const range = max - min || 1;
   return values.map((v,i) => `${i*(w/(values.length-1))},${h-((v-min)/range)*(h-2)-1}`).join(" ");
 }
-
 function sparkline(values, color="#5090f0") {
   const pts = sparklinePoints(values);
-  return `<svg width="80" height="24" viewBox="0 0 80 24" class="sparkline">
-    <polyline fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/>
-    <circle cx="${80}" cy="${pts.split(" ").pop().split(",")[1]}" r="2" fill="${color}"/>
-  </svg>`;
+  return `<svg width="80" height="24" viewBox="0 0 80 24" class="sparkline"><polyline fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/><circle cx="${80}" cy="${pts.split(" ").pop().split(",")[1]}" r="2" fill="${color}"/></svg>`;
 }
 </script>
 
@@ -140,7 +133,7 @@ function sparkline(values, color="#5090f0") {
   </div>
   <div style="text-align:right; font-size:12px; color:var(--muted);">
     Juan Castro · V3 Elite Protocol<br>
-    Semana 1 · Día 7
+    Semana del 27 Jul → 2 Ago
   </div>
 </div>
 
@@ -151,7 +144,7 @@ function sparkline(values, color="#5090f0") {
     <div class="sub">kg</div>
     <div class="target">Meta: 77.4</div>
     <div class="diff negative">-5.5 kg</div>
-    <div style="margin-top:8px;"><script>document.write(sparkline(WEEK.calories, "#f0c040").replace('80','72').replace('80','72').replace('viewBox="80 24"','viewBox="0 0 72 20"'));</script></div>
+    <div style="margin-top:8px;"><script>document.write(sparkline(WEEK.calories, "#f0c040").replace('viewBox="80 24"','viewBox="0 0 72 20"'));</script></div>
     <div class="sparkline-label">calorías diarias (7d)</div>
   </div>
   <div class="kpi-card">
@@ -219,7 +212,7 @@ function sparkline(values, color="#5090f0") {
     <h2><span class="emoji">🥗</span>Nutrición — Odyssey Protocol</h2>
     <table>
       <tr><th>Macro</th><th>Objetivo</th><th>Status</th></tr>
-      <tr><td class="metric-name">Calorías</td><td>1,950–2,050 kcal</td><td><span style="color:var(--muted);">—</span></td></tr>
+      <tr><td class="metric-name">Calorías</td><td>1,950–2,050 kcal</td><td><span style="color:var(--muted);">— pendiente log</span></td></tr>
       <tr><td class="metric-name">Proteína</td><td>165–180g</td><td><span style="color:var(--muted);">—</span></td></tr>
       <tr><td class="metric-name">Carbohidratos</td><td>150–180g</td><td><span style="color:var(--muted);">—</span></td></tr>
       <tr><td class="metric-name">Grasas</td><td>55–65g</td><td><span style="color:var(--muted);">—</span></td></tr>
@@ -230,127 +223,96 @@ function sparkline(values, color="#5090f0") {
       <strong style="color:var(--accent);">⚡ The Damon Rule:</strong><br>
       Zero gluten · Zero alcohol · Zero refined sugar · Zero processed dairy · 3.5L+ water
     </div>
-    <div style="margin-top:8px; display:flex; gap:8px; font-size:11px;">
-      <span style="background:var(--surface); padding:4px 10px; border-radius:4px; color:var(--green);">🔥 1,828 kcal hoy (Garmin)</span>
+    <div style="margin-top:8px; display:flex; gap:8px; font-size:11px; flex-wrap:wrap;">
+      <span style="background:var(--surface); padding:4px 10px; border-radius:4px; color:var(--green);">🔥 ~1,828 kcal hoy (Garmin)</span>
       <span style="background:var(--surface); padding:4px 10px; border-radius:4px; color:var(--muted);">🚶 3,172 pasos</span>
+      <span style="background:var(--surface); padding:4px 10px; border-radius:4px; color:var(--blue);">🚣 30 min rowing</span>
     </div>
   </div>
 </div>
 
 <div class="grid two-col" style="margin-bottom:16px;">
   <div class="section">
-    <h2><span class="emoji">💪</span>Plan Semanal — V3 Elite</h2>
+    <h2><span class="emoji">💪</span>Plan Semanal — 27 Jul → 2 Ago</h2>
     <div class="workout-day">
-      <div class="day">Lun 21</div>
-      <div class="check"><span style="color:var(--red);">✗</span></div>
-      <div class="detail"><strong style="color:var(--text);">Upper Hypertrophy</strong> — Ring Pull-ups · X3 Chest Press · Ring Dips · Ring Rows · DB Laterals</div>
+      <div class="day">Lun 27</div>
+      <div class="check"><span style="color:var(--blue);">🚣</span></div>
+      <div class="detail"><strong style="color:var(--text);">Upper Hypertrophy</strong> — Ring Pull-ups · X3 Chest Press · Ring Dips · Ring Rows · DB Laterals <span style="color:var(--muted);font-size:10px;">(hoy: 🚣 remo 30 min)</span></div>
     </div>
     <div class="workout-day">
-      <div class="day">Mar 22</div>
-      <div class="check"><span style="color:var(--muted);">—</span></div>
-      <div class="detail"><strong style="color:var(--text);">Heavy Legs + Core</strong> — X3 Deadlift · X3 Squats · Bulgarian Split · KB Swings · Ring Ab Rollouts <span style="color:var(--muted);font-size:10px;">(🧘 meditación)</span></div>
+      <div class="day">Mar 28</div>
+      <div class="check"><span style="color:var(--muted);">⏳</span></div>
+      <div class="detail"><strong style="color:var(--text);">Heavy Legs + Core</strong> — X3 Deadlift · X3 Squats · Bulgarian Split · KB Swings · Ring Ab Rollouts</div>
     </div>
     <div class="workout-day">
-      <div class="day">Mié 23</div>
-      <div class="check"><span style="color:var(--green);">✓</span></div>
-      <div class="detail"><strong style="color:var(--text);">Metabolic</strong> — 🏊 10×25m/50m Freestyle Sprints (47 min) · Plank 3×60s</div>
+      <div class="day">Mié 29</div>
+      <div class="check"><span style="color:var(--muted);">⏳</span></div>
+      <div class="detail"><strong style="color:var(--text);">Metabolic</strong> — 🏊 10×25m/50m Freestyle Sprints (45s rest) · Plank 3×60s</div>
     </div>
     <div class="workout-day">
-      <div class="day">Jue 24</div>
-      <div class="check"><span style="color:var(--red);">✗</span></div>
+      <div class="day">Jue 30</div>
+      <div class="check"><span style="color:var(--muted);">⏳</span></div>
       <div class="detail"><strong style="color:var(--text);">Shoulders + Arms</strong> — X3 OHP · Ring Push-ups · X3 Curls · Tricep · Ring L-Sits</div>
     </div>
     <div class="workout-day">
-      <div class="day">Vie 25</div>
-      <div class="check"><span style="color:var(--green);">✓</span></div>
-      <div class="detail"><strong style="color:var(--text);">Posterior Chain</strong> — X3 Squats · Single-Leg KB RDL · DB Rows · KB Snatch <span style="color:var(--muted);font-size:10px;">(32 min)</span></div>
+      <div class="day">Vie 31</div>
+      <div class="check"><span style="color:var(--muted);">⏳</span></div>
+      <div class="detail"><strong style="color:var(--text);">Posterior Chain</strong> — X3 Squats · Single-Leg KB RDL · DB Rows · KB Snatch</div>
     </div>
     <div class="workout-day">
-      <div class="day">Sáb 26</div>
-      <div class="check"><span style="color:var(--green);">✓</span></div>
-      <div class="detail"><strong style="color:var(--text);">Sprint Circuit</strong> — 🏊 Rower Pyramid o Strength (20 min)</div>
+      <div class="day">Sáb 1</div>
+      <div class="check"><span style="color:var(--muted);">⏳</span></div>
+      <div class="detail"><strong style="color:var(--text);">Sprint Circuit</strong> — 🏊 8×50m Max Effort (60s rest) o Rower Pyramid</div>
     </div>
     <div class="workout-day">
-      <div class="day">Dom 27</div>
-      <div class="check"><span style="color:var(--green);">✓</span></div>
-      <div class="detail"><strong style="color:var(--text);">Recovery</strong> — 🏊 Natación suave o 🚣 Indoor Rowing 30 min · 8,000-10,000 pasos <span style="color:var(--muted);font-size:10px;">(🚣 30 min · 3,172 pasos)</span></div>
+      <div class="day">Dom 2</div>
+      <div class="check"><span style="color:var(--muted);">⏳</span></div>
+      <div class="detail"><strong style="color:var(--text);">Recovery</strong> — 🏊 Natación suave 15-20 min · 8,000-10,000 pasos</div>
     </div>
   </div>
 
   <div class="section">
-    <h2><span class="emoji">📅</span>Calendario de Entrenamiento</h2>
-    <p style="font-size:11px; color:var(--muted); margin-bottom:12px;">Auto-detected from Garmin activities · ✓ completado · ✗ pendiente · — recuperación/meditación</p>
+    <h2><span class="emoji">📅</span>Calendario — Esta Semana</h2>
+    <p style="font-size:11px; color:var(--muted); margin-bottom:12px;">Auto-detected from Garmin · ⏳ futuro · 🟢 completado</p>
     <div class="cal-grid">
-      <div class="cal-header">Lun 21</div>
-      <div class="cal-header">Mar 22</div>
-      <div class="cal-header">Mié 23</div>
-      <div class="cal-header">Jue 24</div>
-      <div class="cal-header">Vie 25</div>
-      <div class="cal-header">Sáb 26</div>
-      <div class="cal-header">Dom 27</div>
+      <div class="cal-header">Lun 27</div><div class="cal-header">Mar 28</div><div class="cal-header">Mié 29</div>
+      <div class="cal-header">Jue 30</div><div class="cal-header">Vie 31</div><div class="cal-header">Sáb 1</div>
+      <div class="cal-header">Dom 2</div>
 
-      <div class="cal-day missed">
-        <div class="day-num">21</div>
-        <div class="workout-label">Upper Body</div>
-        <div class="act-done" style="color:var(--red);">✗</div>
-      </div>
-      <div class="cal-day rest-day">
-        <div class="day-num">22</div>
-        <div class="workout-label">Heavy Legs</div>
-        <div class="act-icon">🧘</div>
-      </div>
-      <div class="cal-day completed">
-        <div class="day-num">23</div>
-        <div class="workout-label">Metabolic</div>
-        <div class="act-done">🏊</div>
-      </div>
-      <div class="cal-day missed">
-        <div class="day-num">24</div>
-        <div class="workout-label">Shoulders</div>
-        <div class="act-done" style="color:var(--red);">✗</div>
-      </div>
-      <div class="cal-day completed">
-        <div class="day-num">25</div>
-        <div class="workout-label">Posterior</div>
-        <div class="act-done">💪</div>
-      </div>
-      <div class="cal-day completed">
-        <div class="day-num">26</div>
-        <div class="workout-label">Sprint</div>
-        <div class="act-done">💪</div>
-      </div>
       <div class="cal-day completed today">
         <div class="day-num">27</div>
-        <div class="workout-label">Recovery</div>
+        <div class="workout-label">Upper Body</div>
         <div class="act-done">🚣</div>
       </div>
+      <div class="cal-day future"><div class="day-num">28</div><div class="workout-label">Heavy Legs</div><div class="act-icon">⏳</div></div>
+      <div class="cal-day future"><div class="day-num">29</div><div class="workout-label">Metabolic</div><div class="act-icon">⏳</div></div>
+      <div class="cal-day future"><div class="day-num">30</div><div class="workout-label">Shoulders</div><div class="act-icon">⏳</div></div>
+      <div class="cal-day future"><div class="day-num">31</div><div class="workout-label">Posterior</div><div class="act-icon">⏳</div></div>
+      <div class="cal-day future"><div class="day-num">1</div><div class="workout-label">Sprint</div><div class="act-icon">⏳</div></div>
+      <div class="cal-day future"><div class="day-num">2</div><div class="workout-label">Recovery</div><div class="act-icon">⏳</div></div>
     </div>
     <div style="margin-top:12px; display:flex; gap:12px; font-size:11px; color:var(--muted); flex-wrap:wrap;">
-      <span>✅ 4/7 completados</span>
-      <span>✗ 2/7 pendientes</span>
-      <span>🧘 1 meditación</span>
-      <span>🏊 1 natación</span>
-      <span>💪 2 fuerza</span>
-      <span>🚣 1 remo</span>
+      <span>🟢 1/7 completado (hoy)</span>
+      <span>⏳ 6/7 pendientes</span>
     </div>
   </div>
 </div>
 
 <div class="grid two-col" style="margin-bottom:16px;">
   <div class="section">
-    <h2><span class="emoji">📊</span>Garmin Connect — Esta Semana</h2>
+    <h2><span class="emoji">📊</span>Últimos 7 Días (Garmin)</h2>
     <table>
       <tr><th>Día</th><th>Pasos</th><th>Cal</th><th>BB +/−</th><th>Actividad</th></tr>
-      <tr><td>Lun 21</td><td>5,690</td><td>2,184</td><td>+53/−64</td><td style="color:var(--red);">✗</td></tr>
-      <tr><td>Mar 22</td><td>3,038</td><td>2,130</td><td>+60/−47</td><td>🧘</td></tr>
-      <tr><td>Mié 23</td><td>4,812</td><td>2,627</td><td>+43/−35</td><td>🏊 47 min</td></tr>
-      <tr><td>Jue 24</td><td>4,934</td><td>2,159</td><td>+48/−30</td><td style="color:var(--red);">✗</td></tr>
-      <tr><td>Vie 25</td><td>5,350</td><td>2,430</td><td>+69/−66</td><td>💪 32 min</td></tr>
-      <tr><td>Sáb 26</td><td>3,724</td><td>2,287</td><td>+55/−54</td><td>💪 20 min</td></tr>
-      <tr><td>Dom 27</td><td><strong>3,172</strong></td><td><strong>1,828</strong></td><td><strong>+54/−52</strong></td><td><strong>🚣 30 min</strong></td></tr>
+      <tr><td>Mar 21</td><td>5,690</td><td>2,184</td><td>+53/−64</td><td style="color:var(--red);">✗</td></tr>
+      <tr><td>Mié 22</td><td>3,038</td><td>2,130</td><td>+60/−47</td><td>🧘</td></tr>
+      <tr><td>Jue 23</td><td>4,812</td><td>2,627</td><td>+43/−35</td><td>🏊 47 min</td></tr>
+      <tr><td>Vie 24</td><td>4,934</td><td>2,159</td><td>+48/−30</td><td style="color:var(--red);">✗</td></tr>
+      <tr><td>Sáb 25</td><td>5,350</td><td>2,430</td><td>+69/−66</td><td>💪 32 min</td></tr>
+      <tr><td>Dom 26</td><td>3,724</td><td>2,287</td><td>+55/−54</td><td>💪 20 min</td></tr>
+      <tr><td><strong>Lun 27</strong></td><td><strong>3,172</strong></td><td><strong>1,828</strong></td><td><strong>+54/−52</strong></td><td><strong>🚣 30 min</strong></td></tr>
     </table>
     <div style="margin-top:12px; padding:10px; background:var(--surface); border-radius:8px; border-left:3px solid var(--blue); font-size:11px; color:var(--muted); line-height:1.5;">
-      📊 <strong style="color:var(--text);">Media semanal:</strong> 4,389 pasos/día · 2,235 kcal/día · BB +54/−50
+      📊 <strong style="color:var(--text);">Media 7d:</strong> 4,389 pasos/día · 2,235 kcal/día · BB +54/−50
     </div>
   </div>
   <div class="section">
@@ -361,23 +323,19 @@ function sparkline(values, color="#5090f0") {
         <div style="font-size:11px; color:var(--muted);">Enviar por correo cada lunes para tracking semanal</div>
       </div>
       <div style="padding:10px; background:var(--surface); border-radius:8px; border-left:3px solid var(--accent);">
-        <div style="font-size:12px; font-weight:600; margin-bottom:4px;">📸 Foto de referencia semanal</div>
-        <div style="font-size:11px; color:var(--muted);">Misma hora, misma luz, misma pose — cada lunes</div>
+        <div style="font-size:12px; font-weight:600; margin-bottom:4px;">💪 Workout de hoy</div>
+        <div style="font-size:11px; color:var(--muted);">Upper Hypertrophy (anillas + X3) · Hoy hiciste remo — buena base aeróbica</div>
       </div>
       <div style="padding:10px; background:var(--surface); border-radius:8px; border-left:3px solid var(--blue);">
-        <div style="font-size:12px; font-weight:600; margin-bottom:4px;">📊 Revisión miércoles</div>
-        <div style="font-size:11px; color:var(--muted);">Ajustar calorías según progreso de peso semanal</div>
-      </div>
-      <div style="padding:10px; background:var(--surface); border-radius:8px; border-left:3px solid var(--purple);">
-        <div style="font-size:12px; font-weight:600; margin-bottom:4px;">🧘 Meditación diaria</div>
-        <div style="font-size:11px; color:var(--muted);">Ya registraste 4 meditaciones este mes — mantener racha</div>
+        <div style="font-size:12px; font-weight:600; margin-bottom:4px;">🏊 Natación miércoles</div>
+        <div style="font-size:11px; color:var(--muted);">Próximo workout programado: Mié 29 — 10×25m/50m sprints</div>
       </div>
     </div>
   </div>
 </div>
 
 <div style="text-align:center; margin-top:32px; padding-top:20px; border-top:1px solid var(--border); font-size:11px; color:var(--muted); line-height:1.6;">
-  Odyssey Dashboard v2 · Juan Castro · Datos: Garmin Connect + LePulse<br>
+  Odyssey Dashboard · Juan Castro · Datos: Garmin Connect + LePulse · <a href="https://theredqueen.co/dashboard.html" style="color:var(--accent);">theredqueen.co</a><br>
   <span style="color:var(--accent);">⚔️</span> <em>"The body achieves what the mind believes"</em> <span style="color:var(--accent);">⚔️</span>
 </div>
 
