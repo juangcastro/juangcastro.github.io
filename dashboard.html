@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v5 — Juan Castro</title>
+<title>Odyssey Dashboard v6 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -51,6 +51,7 @@
   .value-good { color: var(--green); font-weight: 600; }
   .value-warn { color: var(--accent); font-weight: 600; }
   .value-bad { color: var(--red); font-weight: 600; }
+  .value-neutral { color: var(--muted); }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 6px; }
   .cal-header { font-size: 9px; text-transform: uppercase; color: var(--muted); text-align: center; padding: 3px; font-weight: 500; letter-spacing: 0.5px; }
   .cal-day { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px; min-height: 65px; text-align: center; font-size: 11px; transition: border-color 0.2s ease-out; }
@@ -59,8 +60,10 @@
   .cal-day .act-done { font-size: 16px; margin-top: 1px; }
   .cal-day.today { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
   .cal-day.completed { border-color: var(--green); background: rgba(64,208,128,0.06); }
+  .cal-day.today.completed { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
   .cal-day.missed { border-color: var(--red); background: rgba(224,80,80,0.06); }
   .cal-day.future { border-color: rgba(255,255,255,0.06); opacity: 0.5; }
+  .cal-day.prev { opacity: 0.7; }
   .rec-card { padding: 12px; background: var(--surface); border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 10px; transition: transform 0.2s ease-out; }
   .rec-card:hover { transform: translateX(2px); }
   .rec-card .title { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
@@ -88,60 +91,60 @@
 <div class="header">
   <div>
     <h1>⚔️ <span>ODYSSEY</span> DASHBOARD</h1>
-    <div class="date">Actualizado: 29 Jul 2026 · Garmin + LePulse</div>
+    <div class="date">Actualizado: 31 Jul 2026 · Garmin + Fitdays (LePulse)</div>
   </div>
   <div style="text-align:right;font-size:11px;color:var(--muted);">
-    Juan Castro · V3 Elite · Semana 28 Jul → 3 Ago
+    Juan Castro · V3 Elite · Semana 27 Jul → 2 Ago
   </div>
 </div>
 
 <div class="grid kpi-row" style="margin-bottom:16px;">
   <div class="kpi-card">
     <div class="label">Peso</div>
-    <div class="value" style="color:var(--green);">82.6</div>
-    <div class="sub">kg <span style="color:var(--green);">▼ -0.3</span></div>
-    <div class="target">Meta: 76.7</div>
-    <div class="diff negative" style="color:var(--accent);">-5.9 kg</div>
+    <div class="value" style="color:var(--green);">82.5</div>
+    <div class="sub">kg <span style="color:var(--green);">▼ -0.1</span></div>
+    <div class="target">Meta: 77.0</div>
+    <div class="diff negative" style="color:var(--accent);">-5.5 kg</div>
   </div>
   <div class="kpi-card">
     <div class="label">Grasa</div>
-    <div class="value">20.1<span style="font-size:14px;">%</span></div>
-    <div class="sub">16.6 kg</div>
-    <div class="target">Meta: ~14%</div>
+    <div class="value" style="color:var(--green);">19.4<span style="font-size:14px;">%</span></div>
+    <div class="sub">16.0 kg <span style="color:var(--accent);">▲ +0.3 vs ayer</span></div>
+    <div class="target">Meta: ~14-15%</div>
   </div>
   <div class="kpi-card">
     <div class="label">Músculo Tot</div>
-    <div class="value">61.6</div>
-    <div class="sub">kg</div>
-    <div class="target">Mantener</div>
+    <div class="value">62.1</div>
+    <div class="sub">kg <span style="color:var(--accent);">▼ -0.2 vs ayer</span></div>
+    <div class="target">Esquelético: 38.1 (mantener)</div>
   </div>
   <div class="kpi-card">
     <div class="label">Sueño (prom 7d)</div>
-    <div class="value" style="color:var(--accent);">6.0</div>
-    <div class="sub">horas <span style="color:var(--accent);">▲ +0.7</span></div>
+    <div class="value" style="color:var(--accent);">5.9</div>
+    <div class="sub">horas <span style="color:var(--red);">▼ -0.1</span></div>
     <div class="target">Meta: 7-8h</div>
-    <div class="progress-bar"><div class="fill fill-yellow" style="width:43%"></div></div>
+    <div class="progress-bar"><div class="fill fill-yellow" style="width:42%"></div></div>
   </div>
   <div class="kpi-card">
     <div class="label">HRV (prom 7d)</div>
-    <div class="value" style="color:var(--green);">48</div>
-    <div class="sub">ms <span style="color:var(--green);">▲ +1</span></div>
+    <div class="value" style="color:var(--green);">53</div>
+    <div class="sub">ms <span style="color:var(--green);">▲ +5</span></div>
     <div class="target">Rango: 44-59</div>
-    <div class="progress-bar"><div class="fill fill-green" style="width:36%"></div></div>
+    <div class="progress-bar"><div class="fill fill-green" style="width:53%"></div></div>
   </div>
   <div class="kpi-card">
     <div class="label">Sueño anoche</div>
-    <div class="value" style="color:var(--accent);">6.7</div>
-    <div class="sub">h · Score 83</div>
-    <div class="target">▲ 2.5h vs ayer</div>
+    <div class="value" style="color:var(--accent);">6.2</div>
+    <div class="sub">h · Score 79</div>
+    <div class="target">▲ +0.8h vs ayer</div>
     <div class="diff positive" style="color:var(--green);">Recuperación +</div>
   </div>
   <div class="kpi-card">
     <div class="label">HRV anoche</div>
-    <div class="value" style="color:var(--green);">52</div>
-    <div class="sub">ms · 5m peak 85</div>
+    <div class="value" style="color:var(--green);">57</div>
+    <div class="sub">ms · 5m peak 104</div>
     <div class="target" style="color:var(--green);">Status: BALANCED</div>
-    <div class="progress-bar"><div class="fill fill-green" style="width:60%"></div></div>
+    <div class="progress-bar"><div class="fill fill-green" style="width:64%"></div></div>
   </div>
 </div>
 
@@ -149,146 +152,157 @@
   <div class="section">
     <h2><span class="emoji">🧬</span>Composición y Sueño <span class="badge">vs ayer</span></h2>
     <table>
-      <tr><th>Métrica</th><th>Mar 28</th><th>Mié 29</th><th>Δ</th></tr>
-      <tr><td>Peso (kg)</td><td>82.6</td><td><strong>82.6</strong></td><td class="value-neutral">=</td></tr>
-      <tr><td>Grasa %</td><td>20.1</td><td>—</td><td style="color:var(--muted);">(sin dato)</td></tr>
-      <tr><td>Músculo tot</td><td>61.6</td><td>—</td><td style="color:var(--muted);">(sin dato)</td></tr>
-      <tr><td>Sueño (h)</td><td><strong>4.2</strong></td><td><strong>6.7</strong></td><td class="value-good">+2.5h 🔺</td></tr>
-      <tr><td>Profundo</td><td>1.3h</td><td>1.2h</td><td class="value-neutral">-0.1h</td></tr>
-      <tr><td>REM</td><td>1.2h</td><td>1.5h</td><td class="value-good">+0.3h</td></tr>
-      <tr><td>Sleep Score</td><td>61</td><td><strong>83</strong></td><td class="value-good">+22 🏆</td></tr>
-      <tr><td>HRV últ. noche</td><td>55</td><td>52</td><td class="value-neutral">-3</td></tr>
-      <tr><td>Entreno</td><td>💪 Legs 65m</td><td>⏳ Metabolic</td><td class="value-neutral">(pendiente)</td></tr>
+      <tr><th>Métrica</th><th>Jue 30</th><th>Vie 31</th><th>Δ</th></tr>
+      <tr><td>Peso (kg)</td><td>82.5</td><td><strong>82.5</strong></td><td class="value-neutral">=</td></tr>
+      <tr><td>Grasa %</td><td>19.1</td><td><strong>19.4</strong></td><td class="value-warn">+0.3</td></tr>
+      <tr><td>Músculo tot (kg)</td><td>62.3</td><td><strong>62.1</strong></td><td class="value-neutral">-0.2</td></tr>
+      <tr><td>Score corporal</td><td>81</td><td><strong>80</strong></td><td class="value-neutral">-1</td></tr>
+      <tr><td>Sueño (h)</td><td><strong>5.4</strong></td><td><strong>6.2</strong></td><td class="value-good">+0.8h 🔺</td></tr>
+      <tr><td>Profundo</td><td>1.0h</td><td>1.5h</td><td class="value-good">+0.5h</td></tr>
+      <tr><td>REM</td><td>0.9h</td><td>1.0h</td><td class="value-good">+0.1h</td></tr>
+      <tr><td>Sleep Score</td><td>75</td><td><strong>79</strong></td><td class="value-good">+4</td></tr>
+      <tr><td>HRV últ. noche</td><td>50</td><td>57</td><td class="value-good">+7 🔺</td></tr>
+      <tr><td>Entreno</td><td>🚶 Walk 53m</td><td>💪 Posterior 31m</td><td class="value-good">✅ hecho</td></tr>
     </table>
   </div>
   <div class="section">
     <h2><span class="emoji">📊</span>Histórico de Sueño (7 días)</h2>
     <table>
       <tr><th>Día</th><th>Total</th><th>Profundo</th><th>REM</th><th>Score</th><th>HRV</th><th>Status</th></tr>
-      <tr><td>Mié 22</td><td>5.8h</td><td>1.7h</td><td>1.6h</td><td>78</td><td>49</td><td class="value-warn">● FAIR</td></tr>
-      <tr><td>Jue 23</td><td>7.5h</td><td>1.3h</td><td>1.9h</td><td>91</td><td>42</td><td class="value-good">🏆 EXCELLENT</td></tr>
       <tr><td>Vie 24</td><td>5.8h</td><td>1.0h</td><td>0.6h</td><td>68</td><td>35</td><td class="value-warn">● FAIR</td></tr>
       <tr><td>Sáb 25</td><td>3.6h</td><td>1.5h</td><td>0.4h</td><td>52</td><td>50</td><td class="value-bad">🔴 POOR</td></tr>
       <tr><td>Dom 26</td><td>8.8h</td><td>0.9h</td><td>1.8h</td><td>78</td><td>52</td><td class="value-warn">● FAIR</td></tr>
       <tr><td>Lun 27</td><td>6.2h</td><td>1.7h</td><td>0.9h</td><td>82</td><td>53</td><td class="value-good">✅ GOOD</td></tr>
       <tr><td>Mar 28</td><td>4.2h</td><td>1.3h</td><td>1.2h</td><td>61</td><td>55</td><td class="value-warn">● FAIR</td></tr>
-      <tr><td><strong>Mié 29</strong></td><td><strong>6.7h</strong></td><td><strong>1.2h</strong></td><td><strong>1.5h</strong></td><td><strong>83</strong></td><td><strong>52</strong></td><td><strong class="value-good">✅ GOOD</strong></td></tr>
+      <tr><td>Mié 29</td><td>6.7h</td><td>1.2h</td><td>1.5h</td><td>83</td><td>52</td><td class="value-good">✅ GOOD</td></tr>
+      <tr><td>Jue 30</td><td>5.4h</td><td>1.0h</td><td>0.9h</td><td>75</td><td>50</td><td class="value-warn">● FAIR</td></tr>
+      <tr><td><strong>Vie 31</strong></td><td><strong>6.2h</strong></td><td><strong>1.5h</strong></td><td><strong>1.0h</strong></td><td><strong>79</strong></td><td><strong>57</strong></td><td><strong class="value-warn">● FAIR</strong></td></tr>
     </table>
     <div style="margin-top:8px;display:flex;gap:8px;font-size:10px;color:var(--muted);flex-wrap:wrap;">
-      <span>📊 Promedio: 6.0h/noche</span>
+      <span>📊 Promedio: 5.9h/noche</span>
       <span>🧠 Profundo: 1.3h (22%)</span>
-      <span>💭 REM: 1.2h (20%)</span>
-      <span>📈 HRV prom: 48ms (BALANCED)</span>
+      <span>💭 REM: 1.1h (19%)</span>
+      <span>📈 HRV prom: 53ms (BALANCED)</span>
     </div>
   </div>
 </div>
 
 <div class="grid three-col" style="margin-bottom:16px;">
   <div class="section">
-    <h2><span class="emoji">💪</span>Semana Anterior <span class="badge">21-27 Jul</span></h2>
+    <h2><span class="emoji">💪</span>Semana Anterior <span class="badge">20-26 Jul</span></h2>
     <div class="cal-grid">
       <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
       <div class="cal-header">Dom</div>
-      <div class="cal-day missed"><div class="day-num">21</div><div class="workout-label">Upper</div><div class="act-done" style="color:var(--red);">✗</div></div>
-      <div class="cal-day"><div class="day-num">22</div><div class="workout-label">Legs</div><div class="act-icon">🧘</div></div>
-      <div class="cal-day completed"><div class="day-num">23</div><div class="workout-label">Metabolic</div><div class="act-done">🏊</div></div>
-      <div class="cal-day missed"><div class="day-num">24</div><div class="workout-label">Shoulder</div><div class="act-done" style="color:var(--red);">✗</div></div>
-      <div class="cal-day completed"><div class="day-num">25</div><div class="workout-label">Posterior</div><div class="act-done">💪</div></div>
-      <div class="cal-day completed"><div class="day-num">26</div><div class="workout-label">Sprint</div><div class="act-done">💪</div></div>
-      <div class="cal-day completed"><div class="day-num">27</div><div class="workout-label">Recovery</div><div class="act-done">🚣</div></div>
+      <div class="cal-day prev missed"><div class="day-num">20</div><div class="workout-label">Upper</div><div class="act-done">🧘</div></div>
+      <div class="cal-day prev missed"><div class="day-num">21</div><div class="workout-label">Legs</div><div class="act-done" style="color:var(--red);">✗</div></div>
+      <div class="cal-day prev"><div class="day-num">22</div><div class="workout-label">Metabolic</div><div class="act-done">🧘</div></div>
+      <div class="cal-day prev completed"><div class="day-num">23</div><div class="workout-label">Shoulder</div><div class="act-done">🏊</div></div>
+      <div class="cal-day prev missed"><div class="day-num">24</div><div class="workout-label">Posterior</div><div class="act-done" style="color:var(--red);">✗</div></div>
+      <div class="cal-day prev completed"><div class="day-num">25</div><div class="workout-label">Sprint</div><div class="act-done">💪</div></div>
+      <div class="cal-day prev completed"><div class="day-num">26</div><div class="workout-label">Recovery</div><div class="act-done">💪</div></div>
     </div>
-    <div class="week-summary"><span>✅ 4/7 · ✗ 2 · 🧘 1</span><span>🎯 57% cumplimiento</span></div>
+    <div class="week-summary"><span>✅ 3/7 · ✗ 2 · 🧘 2</span><span>🎯 43% cumplimiento</span></div>
   </div>
   <div class="section">
-    <h2><span class="emoji">📅</span>Semana Actual <span class="badge">28 Jul → 3 Ago</span></h2>
+    <h2><span class="emoji">📅</span>Semana Actual <span class="badge">27 Jul → 2 Ago</span></h2>
     <div class="cal-grid">
       <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
       <div class="cal-header">Dom</div>
+      <div class="cal-day completed"><div class="day-num">27</div><div class="workout-label">Upper</div><div class="act-done">🚣</div></div>
       <div class="cal-day completed"><div class="day-num">28</div><div class="workout-label">Legs ✅</div><div class="act-done">💪</div></div>
-      <div class="cal-day today"><div class="day-num">29</div><div class="workout-label">Metabolic</div><div class="act-icon">⏳</div></div>
-      <div class="cal-day future"><div class="day-num">30</div><div class="workout-label">Shoulder</div><div class="act-icon">⏳</div></div>
-      <div class="cal-day future"><div class="day-num">31</div><div class="workout-label">Posterior</div><div class="act-icon">⏳</div></div>
+      <div class="cal-day completed"><div class="day-num">29</div><div class="workout-label">Metabolic</div><div class="act-done">💪</div></div>
+      <div class="cal-day missed"><div class="day-num">30</div><div class="workout-label">Shoulder ✗</div><div class="act-done" style="color:var(--red);">✗</div></div>
+      <div class="cal-day today completed"><div class="day-num">31</div><div class="workout-label">Posterior ✅</div><div class="act-done">💪</div></div>
       <div class="cal-day future"><div class="day-num">1</div><div class="workout-label">Sprint</div><div class="act-icon">⏳</div></div>
       <div class="cal-day future"><div class="day-num">2</div><div class="workout-label">Recovery</div><div class="act-icon">⏳</div></div>
-      <div class="cal-day future"><div class="day-num">3</div><div class="workout-label">Upper</div><div class="act-icon">⏳</div></div>
     </div>
-    <div class="week-summary"><span>🟢 1/7 · ⏳ 6 pendientes</span></div>
+    <div class="week-summary"><span>🟢 4/7 · ✗ 1 · ⏳ 2</span><span>🚶 Jue: solo caminata</span></div>
   </div>
   <div class="section">
     <h2><span class="emoji">🔄</span>Tracker Diario</h2>
     <table>
-      <tr><th>Día</th><th>Entreno</th><th>Peso</th><th>Sueño</th><th>HRV</th></tr>
-      <tr><td>Mar 28</td><td>💪 65m</td><td>82.6</td><td>4.2h</td><td>55</td></tr>
-      <tr style="font-weight:600;"><td>Mié 29</td><td>⏳ Metabolic</td><td>82.6</td><td>6.7h</td><td>52</td></tr>
-      <tr><td style="color:var(--muted);">Jue 30</td><td style="color:var(--muted);">⏳</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>
+      <tr><th>Día</th><th>Entreno</th><th>Peso</th><th>Grasa</th><th>Sueño</th><th>HRV</th><th>Pasos</th></tr>
+      <tr><td>Mar 28</td><td>💪 65m</td><td>82.6</td><td>—</td><td>4.2h</td><td>55</td><td>6,622</td></tr>
+      <tr><td>Mié 29</td><td>💪 21m</td><td>82.6</td><td>—</td><td>6.7h</td><td>52</td><td>7,502</td></tr>
+      <tr><td>Jue 30</td><td>🚶 53m</td><td>82.5</td><td>19.1%</td><td>5.4h</td><td>50</td><td class="value-good">9,164</td></tr>
+      <tr style="font-weight:600;"><td>Vie 31</td><td>💪 31m</td><td>82.5</td><td>19.4%</td><td>6.2h</td><td>57</td><td class="value-good">8,180</td></tr>
     </table>
   </div>
 </div>
 
 <div class="section" style="margin-bottom:16px;">
-  <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 29 Jul</h2>
+  <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 31 Jul</h2>
 
   <div class="rec-card good">
-    <div class="title">🟢 Recuperación notable — mejor sueño en 5 días</div>
+    <div class="title">🟢 HRV en tendencia alcista — mejor valor del mes</div>
     <div class="body">
-      Anoche dormiste <strong>6.7h</strong> (score 83) comparado con 4.2h la noche anterior — una mejora de <strong>+2.5h</strong>.
-      El REM subió a 1.5h (+0.3h) y el sueño profundo se mantuvo en 1.2h.
+      HRV semanal: <strong>53ms</strong> (▲ +5 vs 48 del 29 Jul; ▲ +11 vs 42 del 19 Jul). Anoche: <strong>57ms</strong> con pico de 104ms — el mejor registro del mes.
+      El sistema nervioso autónomo sigue adaptándose al V3 Elite: 12 días de subida sostenida sin caídas.
       <br><br>
-      <strong>⚠️ Correlación clave:</strong> El día sin entrenamiento intenso (mar 28 fue solo recuperación) permitió que el sistema nervioso se calmara. Esto confirma que el entrenamiento de piernas del lunes activó el SNS y redujo el sueño.
-      <strong>Sugerencia:</strong> protocolo post-entreno pesado: 10 min de respiración diafragmática + sin pantallas 45 min antes de dormir.
+      <strong>Lectura:</strong> estás en zona BALANCED (44-59ms) con margen superior. Señal de alarma solo si baja de <strong>44ms</strong>.
+    </div>
+  </div>
+
+  <div class="rec-card good">
+    <div class="title">🟢 Pasos reactivados — 2 días seguidos sobre meta</div>
+    <div class="body">
+      Jue 30: <strong>9,164</strong> pasos (mejor día del mes) · Vie 31: <strong>8,180</strong>. Ambos sobre la meta de 8,000.
+      Las caminatas de Cajicá quedaron registradas (53m el jueves, 78m en 2 sesiones el viernes).
+      <br><br>
+      <strong>Nota:</strong> la semana pasada el tracker de pasos estaba sin datos; ya quedó reactivado.
+    </div>
+  </div>
+
+  <div class="rec-card critical">
+    <div class="title">🔴 Sueño sigue bajo meta — 5.9h promedio vs 7-8h</div>
+    <div class="body">
+      Promedio 7 días: <strong>5.9h</strong> (▼ -0.1 vs semana pasada). Solo 2 noches GOOD en la semana (Lun 27: 6.2h/82 · Mié 29: 6.7h/83).
+      <br><br>
+      <strong>⚠️ Dato nuevo:</strong> el jueves 30 <em>no</em> hubo entreno de fuerza (solo caminata) y aun así dormiste 5.4h — el patrón "entreno intenso → mal sueño" no explica esta noche.
+      <strong>Hipótesis:</strong> el déficit calórico sostenido + ventana de sueño tardía pesan más que el entreno en días así.
+      <strong>Contramedida:</strong> anoche mejoraste a 6.2h (▲ +0.8h). Objetivo: 3 noches seguidas ≥ 6.5h esta semana.
     </div>
   </div>
 
   <div class="rec-card info">
-    <div class="title">📊 HRV estable en rango BALANCED (44-59ms)</div>
+    <div class="title">📊 Composición corporal — fuente Fitdays (LePulse)</div>
     <div class="body">
-      HRV semanal: <strong>48ms</strong> (▲ +1 vs semana pasada). HRV anoche: <strong>52ms</strong> con pico de 85ms.
-      Estás sólidamente en zona de recuperación positiva. El sistema nervioso autónomo muestra adaptación al entrenamiento V3 Elite.
+      Peso estable en <strong>82.5kg</strong> (2 días). Grasa: <strong>19.1% → 19.4%</strong> · Músculo total: <strong>62.3 → 62.1kg</strong> · Score 81 → 80.
       <br><br>
-      <strong>Anomalía:</strong> El día con mejor sueño (dom 26, 8.8h) tuvo HRV de 52, mientras que el día con peor sueño (sáb 25, 3.6h) también tuvo 50. La relación sueño-HRV no es directa — el HRV depende más de la variabilidad acumulada que de una sola noche.
-    </div>
-  </div>
-
-  <div class="rec-card info">
-    <div class="title">📈 Progreso de peso y composición</div>
-    <div class="body">
-      <strong>Peso estable en 82.6kg</strong> por segundo día consecutivo. Sin dato nuevo de composición (Garmin rate-limited).
-      Si mantienes el déficit, llegarás a 77kg en ~19 semanas.
+      <strong>Contexto:</strong> estos valores son consistentes con el baseline Fitdays del 21 Jul (82.7kg / 19.4% / esquelético 38.1kg). El 20.1% previo venía de la báscula Garmin — método distinto, no es una pérdida real de grasa.
       <br><br>
-      <strong>Meta semanal:</strong> pesarse mañana jueves en ayunas. Esperar 82.3-82.5kg si el déficit se mantiene.
+      <strong>Objetivo Odyssey:</strong> 77-78kg con 14-15% de grasa. Diferencia: <strong>-5.5kg</strong>. Al ritmo actual (~0.5kg/semana): ~11 semanas.
     </div>
   </div>
 
   <div class="rec-card" style="border-left-color:var(--purple);">
-    <div class="title">📈 Patrón detectado: Sueño post-entreno</div>
+    <div class="title">📈 Patrón detectado: el entreno del día NO predice el sueño de la noche</div>
     <div class="body">
-      <strong>Patrón:</strong> entrenamientos de piernas/fuerza intensa → sueño reducido la noche siguiente (4.2h).
-      Días de recuperación/cardio → sueño normal o mejorado (6.7h).
+      <strong>Lo que se confirmó:</strong> Mar 28 (Legs 65m intenso) → 4.2h de sueño. Pero Jue 30 (sin fuerza, solo caminata) → 5.4h. Y Vie 31 (Posterior 31m) → 6.2h con HRV de 57.
       <br><br>
-      <strong>Hipótesis:</strong> el entrenamiento de alta intensidad eleva el tono simpático que tarda horas en disiparse.
-      <strong>Contramedida:</strong> sesión de enfriamiento post-entreno de 10-15 min (respiración, estiramientos, meditación).
+      <strong>Hipótesis revisada:</strong> la intensidad del día pesa menos que la <em>consistencia de la ventana de sueño</em>. El HRV alto del viernes sugiere que el entreno de fuerza corto (31m) fue un estímulo manejable.
       <br><br>
-      <strong>Validado:</strong> el miércoles 29 (sin entreno intenso previo) mostró recuperación completa.
+      <strong>A validar:</strong> si duermes ≥6.5h el sábado tras el Sprint, se refuerza que la prioridad #1 es fijar horario de sueño, no reducir entreno.
     </div>
   </div>
 
   <div class="rec-card info" style="border-left-color:var(--accent);">
     <div class="title">🎯 Plan de acción próximo 7 días</div>
     <div class="body">
-      1. <strong>Protocolo post-entreno:</strong> 10 min respiración/estiramientos después de piernas/fuerza<br>
-      2. <strong>Sueño:</strong> mantener racha de +6h. Objetivo: 7h mínimo<br>
-      3. <strong>Pasos:</strong> (sin dato — reactivar Garmin)<br>
-      4. <strong>Próximo peso:</strong> jueves 30 (mañana) — meta 82.3-82.5 kg<br>
-      5. <strong>Entreno hoy:</strong> Metabolic (día de recuperación activa)<br>
-      6. <strong>HRV:</strong> mantener BALANCED. Señal de alarma si baja de 40ms
+      1. <strong>Sueño:</strong> fijar ventana 22:30-06:30. Meta: 3 noches seguidas ≥ 6.5h. Sin pantallas 45 min antes<br>
+      2. <strong>Sáb 1:</strong> Swim Sprint Circuit (piscina) — día programado de sprint<br>
+      3. <strong>Dom 2:</strong> Active Recovery + descompresión espinal en piscina<br>
+      4. <strong>Pasos:</strong> mantener racha &gt;8k (2 días conseguidos)<br>
+      5. <strong>Peso:</strong> pesarse sáb 1 en ayunas con Fitdays — meta 82.3-82.5 kg<br>
+      6. <strong>HRV:</strong> vigilar umbral inferior de 44ms. Mientras siga BALANCED, el plan sigue igual
     </div>
   </div>
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v5 · Juan Castro · Garmin (sleep, HRV) + LePulse · 29 Jul 2026
+  Odyssey Dashboard v6 · Juan Castro · Garmin (sleep, HRV, pasos) + Fitdays/LePulse · 31 Jul 2026
 </div>
 
 </div>
