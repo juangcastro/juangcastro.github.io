@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v10 — Juan Castro</title>
+<title>Odyssey Dashboard v11 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -91,7 +91,7 @@
 <div class="header">
   <div>
     <h1>⚔️ <span>ODYSSEY</span> DASHBOARD</h1>
-    <div class="date">Actualizado: 4 Ago 2026 · Garmin + Fitdays (LePulse)</div>
+    <div class="date">Actualizado: 4 Ago 2026 (2ª act.) · Garmin + Fitdays (LePulse)</div>
   </div>
   <div style="text-align:right;font-size:11px;color:var(--muted);">
     Juan Castro · V3 Elite · Semana 3 Ago → 9 Ago
@@ -159,7 +159,7 @@
       <tr><td>REM</td><td>1.8h</td><td>1.1h</td><td class="value-bad">-0.7h</td></tr>
       <tr><td>Sleep Score</td><td>93</td><td><strong>81</strong></td><td class="value-bad">-12</td></tr>
       <tr><td>HRV últ. noche</td><td>64</td><td>46</td><td class="value-bad">-18 🔻</td></tr>
-      <tr><td>Entreno</td><td>💪 Upper 22m</td><td>⏳ Legs (hoy)</td><td class="value-neutral">(pendiente)</td></tr>
+      <tr><td>Entreno</td><td>💪 Upper 22m</td><td>💪 Legs 20m</td><td class="value-good">✅ hecho</td></tr>
     </table>
     <div style="margin-top:8px;font-size:10px;color:var(--muted);">⚠️ Peso/composición sin dato nuevo: el token de Gmail (báscula Fitdays) expiró. Último registro: 2 Ago.</div>
   </div>
@@ -208,14 +208,14 @@
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
       <div class="cal-header">Dom</div>
       <div class="cal-day completed"><div class="day-num">3</div><div class="workout-label">Upper ✅</div><div class="act-done">💪</div></div>
-      <div class="cal-day today"><div class="day-num">4</div><div class="workout-label">Legs</div><div class="act-icon">⏳</div></div>
+      <div class="cal-day today completed"><div class="day-num">4</div><div class="workout-label">Legs ✅</div><div class="act-done">💪</div></div>
       <div class="cal-day future"><div class="day-num">5</div><div class="workout-label">Metabolic</div><div class="act-icon">⏳</div></div>
       <div class="cal-day future"><div class="day-num">6</div><div class="workout-label">Shoulder</div><div class="act-icon">⏳</div></div>
       <div class="cal-day future"><div class="day-num">7</div><div class="workout-label">Posterior</div><div class="act-icon">⏳</div></div>
       <div class="cal-day future"><div class="day-num">8</div><div class="workout-label">Sprint</div><div class="act-icon">⏳</div></div>
       <div class="cal-day future"><div class="day-num">9</div><div class="workout-label">Recovery</div><div class="act-icon">⏳</div></div>
     </div>
-    <div class="week-summary"><span>🟢 1/7 · ⏳ 6 pendientes</span><span>💪 Upper 22m (19:41)</span></div>
+    <div class="week-summary"><span>🟢 2/7 · ⏳ 5 pendientes</span><span>💪 Upper 22m (19:41) · 💪 Legs 20m (18:07)</span></div>
   </div>
   <div class="section">
     <h2><span class="emoji">🔄</span>Tracker Diario</h2>
@@ -224,7 +224,7 @@
       <tr><td>Sáb 1</td><td>🚣 24m</td><td>82.9</td><td>19.4%</td><td>8.3h</td><td>60</td><td>4,802</td></tr>
       <tr><td>Dom 2</td><td>—</td><td>83.0</td><td>19.4%</td><td>6.0h</td><td>64</td><td>5,605</td></tr>
       <tr><td>Lun 3</td><td>💪 22m</td><td>—</td><td>—</td><td>8.1h</td><td>64</td><td>3,357</td></tr>
-      <tr style="font-weight:600;"><td>Mar 4</td><td>⏳ Legs</td><td>—</td><td>—</td><td>6.4h</td><td>46</td><td>155*</td></tr>
+      <tr style="font-weight:600;"><td>Mar 4</td><td>💪 20m</td><td>—</td><td>—</td><td>6.4h</td><td>46</td><td class="value-good">8,018</td></tr>
     </table>
     <div style="margin-top:6px;font-size:9px;color:var(--muted);">*pasos parciales (día en curso)</div>
   </div>
@@ -232,6 +232,15 @@
 
 <div class="section" style="margin-bottom:16px;">
   <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 4 Ago</h2>
+
+  <div class="rec-card good">
+    <div class="title">🟢 Legs de hoy completado — semana 2/7 · pasos sobre meta</div>
+    <div class="body">
+      Heavy Legs & Gymnastic Core hecho: <strong>💪 Strength 20m (18:07)</strong> + caminata 41m. <strong>Pasos: 8,018</strong> — sobre la meta de 8k (primer día en 3).
+      <br><br>
+      <strong>⚠️ Nota de horario:</strong> el entreno fue a las <strong>18:07</strong> — de nuevo después de las 17:00. El HRV de mañana dirá si la sesión nocturna del lunes (19:41 → 46ms) se repite con esta. Si mañana el HRV vuelve a bajar de 50, mover los entrenos a media tarde es prioritario.
+    </div>
+  </div>
 
   <div class="rec-card good">
     <div class="title">🟢 Noche EXCELLENT del lunes — mejor score del mes (93)</div>
@@ -265,11 +274,11 @@
   </div>
 
   <div class="rec-card">
-    <div class="title">📅 Semana 3-9 Ago arrancó: 1/7</div>
+    <div class="title">📅 Semana 3-9 Ago en marcha: 2/7</div>
     <div class="body">
-      <strong>Lun 3:</strong> Upper Body Hypertrophy ✅ (Strength 22m, 19:41) — primer entreno de la semana 2 del bloque.
+      <strong>Lun 3:</strong> Upper Body Hypertrophy ✅ (Strength 22m, 19:41) — semana 2 del bloque.
       <br><br>
-      <strong>Hoy (Mar 4):</strong> Heavy Legs & Gymnastic Core (X3). Si puedes, antes de las 17:00 para proteger el sueño/HRV de esta noche.
+      <strong>Hoy (Mar 4):</strong> Heavy Legs & Gymnastic Core ✅ (Strength 20m, 18:07) + caminata 41m + 8,018 pasos.
       <br><br>
       <strong>Objetivo de la semana:</strong> repetir o superar el 71% de cumplimiento (5/7) con entrenos antes de las 17:00.
     </div>
@@ -300,7 +309,7 @@
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v10 · Juan Castro · Garmin (sleep, HRV, pasos) + Fitdays/LePulse · 4 Ago 2026
+  Odyssey Dashboard v11 · Juan Castro · Garmin (sleep, HRV, pasos) + Fitdays/LePulse · 4 Ago 2026
 </div>
 
 </div>
