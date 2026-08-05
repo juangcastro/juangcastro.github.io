@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Red Queen — Intraday Trading Program · 1:1 Mentorship</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --accent: #ff3b5c;          /* rojo TRQ — único color de acento */
+    --accent-2: #ff7a92;        /* rojo claro derivado (hover, suave) */
+    --accent-soft: rgba(255, 59, 92, .30);
+    --glow-accent: rgba(255, 59, 92, .45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  /* fondo cyberpunk: rejilla + resplandor rojo sutil */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -2;
+    background:
+      radial-gradient(900px 480px at 85% -10%, rgba(255, 59, 92, .12), transparent 60%),
+      radial-gradient(800px 420px at -10% 20%, rgba(255, 59, 92, .07), transparent 60%),
+      radial-gradient(700px 500px at 50% 115%, rgba(139, 92, 246, .08), transparent 60%),
+      var(--bg);
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(255, 59, 92, .04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 59, 92, .04) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 64px; }
+
+  /* ── top bar ─────────────────────────── */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    padding: 18px 0; border-bottom: 1px solid var(--border);
+    animation: fadeIn .5s ease-out both;
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 20px; letter-spacing: .35em;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+    text-transform: uppercase;
+  }
+  .brand em { font-style: normal; color: var(--accent); text-shadow: 0 0 18px var(--glow-accent); }
+  .brand small {
+    display: block; font-size: 10px; font-weight: 500;
+    letter-spacing: .3em; color: var(--muted); text-shadow: none;
+  }
+  .meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .meta b { color: var(--text); font-weight: 500; }
+
+  /* ── hero ────────────────────────────── */
+  .hero {
+    margin: 36px 0 28px; padding: 34px 34px 30px;
+    background: linear-gradient(135deg, var(--card), var(--card-2));
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .8), 0 0 42px -18px var(--glow-accent);
+    animation: fadeIn .6s ease-out .08s both;
+    display: flex; gap: 34px; align-items: center; flex-wrap: wrap;
+  }
+  .hero .logo-box { flex: 0 0 auto; }
+  .hero .logo-box img {
+    width: 180px; height: 180px;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+  .hero .content { flex: 1 1 320px; min-width: 260px; }
+  .hero .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero .kicker::before { content: ""; width: 26px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
+  .hero h1 {
+    margin: 14px 0 6px; font-size: clamp(26px, 4vw, 38px); font-weight: 800;
+    letter-spacing: -.02em; text-wrap: balance;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text);
+  }
+  .hero .subj {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .hero .rationale { margin-top: 16px; color: #c6cbe8; font-size: 15px; text-wrap: pretty; }
+  .hero .rationale b { color: var(--accent); }
+
+  /* ── stats / info strip ──────────────── */
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px; margin: 0 0 30px;
+  }
+  .stat {
+    background: linear-gradient(160deg, var(--card), var(--surface));
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 16px 18px;
+  }
+  .stat .num {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 22px;
+    color: var(--accent); font-variant-numeric: tabular-nums;
+  }
+  .stat .lbl { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+  /* ── secciones ───────────────────────── */
+  section { margin-top: 42px; }
+  .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .sec-head .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .18em; padding: 6px 14px; border-radius: 10px;
+    border: 1px solid currentColor; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .sec-head h2 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -.01em; text-wrap: balance; }
+
+  /* días — un solo acento, sin arcoíris */
+  .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+  .day {
+    background: linear-gradient(160deg, var(--card), var(--surface));
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 22px 22px 18px;
+    transition: transform .18s ease-out, box-shadow .18s ease-out, border-color .18s ease-out;
+  }
+  .day:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -18px rgba(0,0,0,.7); border-color: var(--accent-soft); }
+  .day .dhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .day .dnum {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px;
+    letter-spacing: .22em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 8px; border: 1px solid var(--accent-soft);
+    color: var(--accent);
+  }
+  .day .dtitle { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15.5px; line-height: 1.35; }
+  .day ul { list-style: none; margin-top: 8px; }
+  .day li {
+    position: relative; padding-left: 18px; margin-top: 5px;
+    font-size: 13.5px; color: #c6cbe8;
+  }
+  .day li::before {
+    content: ""; position: absolute; left: 0; top: 8px;
+    width: 6px; height: 6px; border-radius: 2px; background: var(--accent-soft);
+  }
+  .day .sub { color: var(--muted); font-size: 12.5px; }
+  .day .sub::before { content: "└ "; color: var(--muted); opacity: .6; }
+
+  /* descripción 1:1 */
+  .coach {
+    background: linear-gradient(135deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 26px 28px; margin-top: 30px;
+    box-shadow: 0 0 34px -16px var(--glow-accent);
+  }
+  .coach h3 { font-family: 'Space Grotesk', sans-serif; font-size: 18px; margin-bottom: 10px; color: var(--accent); }
+  .coach p { color: #c6cbe8; font-size: 14.5px; margin-top: 8px; text-wrap: pretty; }
+
+  /* precio */
+  .price-wrap { margin-top: 42px; text-align: center; }
+  .price-card {
+    display: inline-block; min-width: 340px; max-width: 100%;
+    background: linear-gradient(160deg, var(--card), var(--surface));
+    border: 1px solid var(--border); border-radius: 22px;
+    padding: 28px 40px;
+    box-shadow: 0 0 46px -14px var(--glow-accent);
+  }
+  .price-card .plbl {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .3em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .price-card .pval {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 46px;
+    margin: 8px 0 2px; font-variant-numeric: tabular-nums;
+    color: var(--accent);
+  }
+  .price-card .pnote { font-size: 13.5px; color: var(--muted); }
+  .cta-btn {
+    display: inline-block; margin-top: 22px;
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: #fff; background: var(--accent);
+    padding: 14px 34px; border-radius: 12px; text-decoration: none;
+    transition: transform .15s ease-out, box-shadow .15s ease-out;
+    box-shadow: 0 0 24px -8px var(--glow-accent);
+  }
+  .cta-btn:hover { transform: translateY(-2px) scale(1.02); background: var(--accent-2); box-shadow: 0 0 34px -6px var(--glow-accent); }
+
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
+  footer p { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 560px) {
+    .hero { padding: 24px 20px; }
+    .hero .logo-box img { width: 130px; height: 130px; }
+    .price-card { min-width: 0; padding: 22px 24px; }
+  }
+
+  /* ── print / PDF ─────────────────────── */
+  @media print {
+    body { background: #06070f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body::before, body::after { display: none; }
+    header, .hero, .stats, section, .coach, .price-wrap, footer { animation: none !important; }
+    .hero { break-inside: avoid; }
+    .day { break-inside: avoid; page-break-inside: avoid; }
+    .stat { break-inside: avoid; }
+    .coach { break-inside: avoid; }
+    .price-wrap { break-inside: avoid; }
+    .cta-btn { display: none; }
+    .hero .logo-box img { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .wrap { padding: 0 12px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">THE RED<em> QUEEN</em><small>TRADING CON MÉTODO</small></div>
+    <div class="meta">MENTORÍA 1:1 · INTRADAY<br><b>SMART MONEY CONCEPTS</b></div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="logo-box"><img src="trq-logo.png" alt="The Red Queen logo"></div>
+    <div class="content">
+      <div class="kicker">Intraday Trading Program</div>
+      <h1>Domina el mercado con el método que usan los creadores de mercado</h1>
+      <div class="subj">6 sesiones 1:1 · 60 minutos · Lunes · Miércoles · Viernes</div>
+      <p class="rationale">Mentoría privada que une el marco <b>Smart Money Concepts</b> con el <b>psicotrading real</b>: no solo aprenderás a leer el mercado — también a gestionar tu proceso, tu riesgo y tu mente.</p>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="num">6</div><div class="lbl">Sesiones 1:1</div></div>
+    <div class="stat"><div class="num">60 min</div><div class="lbl">Por sesión</div></div>
+    <div class="stat"><div class="num">3/wk</div><div class="lbl">Lun · Mié · Vie</div></div>
+    <div class="stat"><div class="num">USD $700</div><div class="lbl">Inversión total</div></div>
+  </div>
+
+  <!-- PROGRAMA -->
+  <section>
+    <div class="sec-head"><span class="tag">Programa</span><h2>6 días para dominar el intraday</h2></div>
+    <div class="days">
+
+      <div class="day">
+        <div class="dhead"><span class="dnum">Día 1</span></div>
+        <div class="dtitle">Fundamentos y marco SMC</div>
+        <ul>
+          <li>Revisión del modelo actual</li>
+          <li>TradingView · Timeframes · Buys/Sells · Velas japonesas</li>
+          <li>Puntos de retorno · Liquidaciones · Imbalances</li>
+          <li>Cambio de estado (CISD) · Cambio de estructura (MSS)</li>
+          <li>Noticias e impacto</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <div class="dhead"><span class="dnum">Día 2</span></div>
+        <div class="dtitle">Modelos Market Maker y fractales</div>
+        <ul>
+          <li>PO3 y AMD (Acumulación · Manipulación · Distribución)</li>
+          <li>ERL-IRL · Pares de tiempo</li>
+          <li>Impulsos, zonas de premio y descuento</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <div class="dhead"><span class="dnum">Día 3</span></div>
+        <div class="dtitle">Estrategias según horario</div>
+        <ul>
+          <li>Contexto y bias diario · Targets (DOL) · Áreas de interés</li>
+          <li>Teoría de rangos</li>
+          <li>Perfil por sesión</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <div class="dhead"><span class="dnum">Día 4</span></div>
+        <div class="dtitle">Manejo de riesgo</div>
+        <ul>
+          <li>Matemática y probabilidades</li>
+          <li>Administración de stop loss (Breakeven · Trailing)</li>
+          <li>Consistencia y pérdida máxima</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <div class="dhead"><span class="dnum">Día 5</span></div>
+        <div class="dtitle">Psicotrading</div>
+        <ul>
+          <li>Cibernética · Proceso vs resultados (P&amp;L)</li>
+          <li>Journaling &amp; review · Overtrading · Undertrading</li>
+          <li>Ejercicios mentales · Cognitive load · Backtesting</li>
+        </ul>
+      </div>
+
+      <div class="day">
+        <div class="dhead"><span class="dnum">Día 6</span></div>
+        <div class="dtitle">Q&amp;A y extensión de conocimiento</div>
+        <ul>
+          <li>Preguntas y asesoría personalizada</li>
+          <li>Vela mensual / semanal · Mercados (Forex · Futures · Metales)</li>
+          <li>Futuros vs CFDs · Propfirm landscape</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="coach">
+      <h3>▸ ¿Cómo son las sesiones 1:1?</h3>
+      <p>Calls privadas de coaching, diseñadas para darte guía directa y personalizada sobre tu trading. Cada sesión se enfoca en identificar tus debilidades, refinar tu ejecución y construir un enfoque estructurado a tu medida.</p>
+      <p><b>Prepárate:</b> llega con tus trades recientes, preguntas específicas y las áreas donde estés batallando. Cada sesión incluye revisión de trades, análisis de tu toma de decisiones, gestión de riesgo y guía para mejorar tu disciplina.</p>
+    </div>
+  </section>
+
+  <!-- PRECIO -->
+  <div class="price-wrap">
+    <div class="price-card">
+      <div class="plbl">Inversión total</div>
+      <div class="pval">USD $700</div>
+      <div class="pnote">Programa completo · Cupos limitados</div>
+    </div>
+    <br>
+    <a class="cta-btn" href="mailto:info@theredqueen.co?subject=Inscripci%C3%B3n%20a%20mentor%C3%ADa&amp;body=Nombre%20completo%3A%20%0D%0A%0D%0AExperiencia%20previa%20en%20trading%3A%20%0D%0A%0D%0ATipo%20de%20mercado%20(Futuros%2C%20forex%2C%20metales%2C%20etc)%3A%20%0D%0A%0D%0ADisponibilidad%20para%20comenzar%3A">Reserva tu cupo →</a>
+  </div>
+
+  <footer>
+    <p>The Red Queen · Trading con método</p>
+  </footer>
+
+</div>
+</body>
+</html>
