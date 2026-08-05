@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v11 — Juan Castro</title>
+<title>Odyssey Dashboard v12 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -91,7 +91,7 @@
 <div class="header">
   <div>
     <h1>⚔️ <span>ODYSSEY</span> DASHBOARD</h1>
-    <div class="date">Actualizado: 4 Ago 2026 (2ª act.) · Garmin + Fitdays (LePulse)</div>
+    <div class="date">Actualizado: 4 Ago 2026 · Garmin + Fitdays (LePulse)</div>
   </div>
   <div style="text-align:right;font-size:11px;color:var(--muted);">
     Juan Castro · V3 Elite · Semana 3 Ago → 9 Ago
@@ -101,21 +101,21 @@
 <div class="grid kpi-row" style="margin-bottom:16px;">
   <div class="kpi-card">
     <div class="label">Peso</div>
-    <div class="value" style="color:var(--accent);">83.0</div>
-    <div class="sub">kg · último 2 Ago</div>
+    <div class="value" style="color:var(--green);">82.5</div>
+    <div class="sub">kg <span style="color:var(--green);">▼ -0.7</span></div>
     <div class="target">Meta: 77.0</div>
-    <div class="diff negative" style="color:var(--accent);">-6.0 kg</div>
+    <div class="diff negative" style="color:var(--accent);">-5.5 kg</div>
   </div>
   <div class="kpi-card">
     <div class="label">Grasa</div>
-    <div class="value" style="color:var(--green);">19.4<span style="font-size:14px;">%</span></div>
-    <div class="sub">16.1 kg · último 2 Ago</div>
+    <div class="value" style="color:var(--green);">19.5<span style="font-size:14px;">%</span></div>
+    <div class="sub">16.1 kg <span style="color:var(--accent);">▲ +0.3</span></div>
     <div class="target">Meta: ~14-15%</div>
   </div>
   <div class="kpi-card">
     <div class="label">Músculo Tot</div>
-    <div class="value" style="color:var(--green);">62.5</div>
-    <div class="sub">kg · último 2 Ago</div>
+    <div class="value" style="color:var(--accent);">62.0</div>
+    <div class="sub">kg <span style="color:var(--red);">▼ -0.8</span></div>
     <div class="target">Esquelético: 38.1 (mantener)</div>
   </div>
   <div class="kpi-card">
@@ -153,7 +153,10 @@
     <h2><span class="emoji">🧬</span>Composición y Sueño <span class="badge">vs ayer</span></h2>
     <table>
       <tr><th>Métrica</th><th>Lun 3</th><th>Mar 4</th><th>Δ</th></tr>
-      <tr><td>Peso (kg)</td><td>—</td><td>—</td><td style="color:var(--muted);">(sin dato)</td></tr>
+      <tr><td>Peso (kg)</td><td>83.2</td><td><strong>82.5</strong></td><td class="value-good">-0.7</td></tr>
+      <tr><td>Grasa %</td><td>19.2</td><td><strong>19.5</strong></td><td class="value-warn">+0.3</td></tr>
+      <tr><td>Músculo tot (kg)</td><td>62.8</td><td><strong>62.0</strong></td><td class="value-bad">-0.8</td></tr>
+      <tr><td>Score corporal</td><td>81</td><td><strong>80</strong></td><td class="value-neutral">-1</td></tr>
       <tr><td>Sueño (h)</td><td><strong>8.1</strong></td><td><strong>6.4</strong></td><td class="value-bad">-1.7h 🔻</td></tr>
       <tr><td>Profundo</td><td>1.8h</td><td>1.1h</td><td class="value-bad">-0.7h</td></tr>
       <tr><td>REM</td><td>1.8h</td><td>1.1h</td><td class="value-bad">-0.7h</td></tr>
@@ -161,7 +164,7 @@
       <tr><td>HRV últ. noche</td><td>64</td><td>46</td><td class="value-bad">-18 🔻</td></tr>
       <tr><td>Entreno</td><td>💪 Upper 22m</td><td>💪 Legs 20m</td><td class="value-good">✅ hecho</td></tr>
     </table>
-    <div style="margin-top:8px;font-size:10px;color:var(--muted);">⚠️ Peso/composición sin dato nuevo: el token de Gmail (báscula Fitdays) expiró. Último registro: 2 Ago.</div>
+    <div style="margin-top:8px;font-size:10px;color:var(--muted);">✅ Token de Gmail renovado — reportes de báscula leídos (3-4 Ago) y emails borrados automáticamente.</div>
   </div>
   <div class="section">
     <h2><span class="emoji">📊</span>Histórico de Sueño (7 días)</h2>
@@ -223,8 +226,8 @@
       <tr><th>Día</th><th>Entreno</th><th>Peso</th><th>Grasa</th><th>Sueño</th><th>HRV</th><th>Pasos</th></tr>
       <tr><td>Sáb 1</td><td>🚣 24m</td><td>82.9</td><td>19.4%</td><td>8.3h</td><td>60</td><td>4,802</td></tr>
       <tr><td>Dom 2</td><td>—</td><td>83.0</td><td>19.4%</td><td>6.0h</td><td>64</td><td>5,605</td></tr>
-      <tr><td>Lun 3</td><td>💪 22m</td><td>—</td><td>—</td><td>8.1h</td><td>64</td><td>3,357</td></tr>
-      <tr style="font-weight:600;"><td>Mar 4</td><td>💪 20m</td><td>—</td><td>—</td><td>6.4h</td><td>46</td><td class="value-good">8,018</td></tr>
+      <tr><td>Lun 3</td><td>💪 22m</td><td>83.2</td><td>19.2%</td><td>8.1h</td><td>64</td><td>3,357</td></tr>
+      <tr style="font-weight:600;"><td>Mar 4</td><td>💪 20m</td><td>82.5</td><td>19.5%</td><td>6.4h</td><td>46</td><td class="value-good">8,018</td></tr>
     </table>
     <div style="margin-top:6px;font-size:9px;color:var(--muted);">*pasos parciales (día en curso)</div>
   </div>
@@ -232,6 +235,26 @@
 
 <div class="section" style="margin-bottom:16px;">
   <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 4 Ago</h2>
+
+  <div class="rec-card info">
+    <div class="title">📊 Peso 82.5 hoy — el pico del lunes se revirtió</div>
+    <div class="body">
+      Serie completa: 1 Ago 82.9 → 2 Ago 83.0 → <strong>3 Ago 83.2 (pico)</strong> → <strong>4 Ago 82.5 (▼ -0.7)</strong>.
+      La caída de hoy confirma que la subida de 3 días fue <strong>retención de agua/glicógeno</strong>, no ganancia de grasa.
+      <br><br>
+      <strong>Composición de hoy:</strong> grasa 19.5% (▲ +0.3 vs ayer) · músculo total 62.0 (▼ -0.8 — fluctúa con hidratación; el esquelético se mantiene ~38 kg) · score 80.
+      Promedio móvil 5 días: <strong>82.8</strong> — tendencia estable, sin señal de alarma.
+    </div>
+  </div>
+
+  <div class="rec-card good">
+    <div class="title">✅ Acceso a Gmail restaurado — borrado automático activo</div>
+    <div class="body">
+      Token de Google renovado el 4 Ago. Los <strong>7 reportes de báscula acumulados (29 Jul – 4 Ago)</strong> fueron leídos (incluidos los pendientes del 3 y 4 Ago) y <strong>borrados automáticamente</strong> tras extraer los datos, según tu regla de proceso.
+      <br><br>
+      <strong>De ahora en adelante:</strong> cada reporte se borra en el mismo ciclo de actualización, sin acumularse en el inbox.
+    </div>
+  </div>
 
   <div class="rec-card good">
     <div class="title">🟢 Legs de hoy completado — semana 2/7 · pasos sobre meta</div>
@@ -265,11 +288,7 @@
   <div class="rec-card info">
     <div class="title">📊 Peso/composición sin dato nuevo — token de Gmail expirado</div>
     <div class="body">
-      El token de Google (para leer el email de la báscula Fitdays) expiró (<code>invalid_grant</code>). Últimos datos: <strong>83.0 kg / 19.4% grasa / 62.5 kg músculo</strong> (2 Ago).
-      <br><br>
-      <strong>Proceso nuevo:</strong> a partir de ahora, cada email de reporte de peso se <strong>borra automáticamente</strong> tras extraer los datos (para que no se acumulen). Se aplicará en cuanto re-autentique el acceso.
-      <br><br>
-      <strong>Acción:</strong> re-autenticar Google (te paso el enlace) o pesarte y reportarme el valor — el tracker se actualiza igual.
+      <em>Resuelto — ver tarjeta "✅ Acceso a Gmail restaurado" arriba.</em> Token renovado, reportes del 3-4 Ago leídos (83.2 → 82.5 kg) y 7 emails de báscula eliminados.
     </div>
   </div>
 
@@ -301,7 +320,7 @@
       1. <strong>Horario:</strong> entrenar antes de las 17:00 (el de anoche a las 19:41 bajó el HRV a 46)<br>
       2. <strong>Hoy (Mar 4):</strong> Heavy Legs & Gymnastic Core (X3) — post-entreno: 10 min respiración<br>
       3. <strong>Sueño:</strong> promedio subió a 6.7h (▲ +0.6). Meta: 3 noches ≥7h esta semana<br>
-      4. <strong>Peso:</strong> re-autenticar Google (email báscula) o reportar peso manual — pendiente desde el 2 Ago<br>
+      4. <strong>Peso:</strong> ✅ token renovado — reportes 3-4 Ago leídos (82.5 hoy) y 7 emails borrados automáticamente<br>
       5. <strong>HRV:</strong> 46 anoche — alarma si el semanal baja de 50. Mantener BALANCED<br>
       6. <strong>Pasos:</strong> lunes solo 3,357 (bajo). Meta 8k — priorizar caminatas en días de entreno corto
     </div>
@@ -309,7 +328,7 @@
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v11 · Juan Castro · Garmin (sleep, HRV, pasos) + Fitdays/LePulse · 4 Ago 2026
+  Odyssey Dashboard v12 · Juan Castro · Garmin (sleep, HRV, pasos) + Fitdays/LePulse · 4 Ago 2026
 </div>
 
 </div>
