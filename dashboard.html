@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v12 — Juan Castro</title>
+<title>Odyssey Dashboard v13 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -73,6 +73,8 @@
   .rec-card.info { border-left-color: var(--blue); }
   .week-summary { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
   .week-summary span { font-size: 10px; color: var(--muted); background: var(--surface); padding: 3px 8px; border-radius: 4px; }
+  .swim-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
+  @media (max-width: 700px) { .swim-kpis { grid-template-columns: repeat(2, 1fr); } }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .kpi-card { animation: fadeIn 0.4s ease-out both; }
   .kpi-card:nth-child(1) { animation-delay: 0.05s; }
@@ -91,7 +93,7 @@
 <div class="header">
   <div>
     <h1>⚔️ <span>ODYSSEY</span> DASHBOARD</h1>
-    <div class="date">Actualizado: 4 Ago 2026 · Garmin + Fitdays (LePulse)</div>
+    <div class="date">Actualizado: 5 Ago 2026 · Garmin + Fitdays (LePulse)</div>
   </div>
   <div style="text-align:right;font-size:11px;color:var(--muted);">
     Juan Castro · V3 Elite · Semana 3 Ago → 9 Ago
@@ -102,47 +104,47 @@
   <div class="kpi-card">
     <div class="label">Peso</div>
     <div class="value" style="color:var(--green);">82.5</div>
-    <div class="sub">kg <span style="color:var(--green);">▼ -0.7</span></div>
+    <div class="sub">kg <span style="color:var(--muted);">= 2 días</span></div>
     <div class="target">Meta: 77.0</div>
     <div class="diff negative" style="color:var(--accent);">-5.5 kg</div>
   </div>
   <div class="kpi-card">
     <div class="label">Grasa</div>
     <div class="value" style="color:var(--green);">19.5<span style="font-size:14px;">%</span></div>
-    <div class="sub">16.1 kg <span style="color:var(--accent);">▲ +0.3</span></div>
+    <div class="sub">16.1 kg <span style="color:var(--muted);">=</span></div>
     <div class="target">Meta: ~14-15%</div>
   </div>
   <div class="kpi-card">
     <div class="label">Músculo Tot</div>
     <div class="value" style="color:var(--accent);">62.0</div>
-    <div class="sub">kg <span style="color:var(--red);">▼ -0.8</span></div>
+    <div class="sub">kg <span style="color:var(--muted);">=</span></div>
     <div class="target">Esquelético: 38.1 (mantener)</div>
   </div>
   <div class="kpi-card">
     <div class="label">Sueño (prom 7d)</div>
     <div class="value" style="color:var(--green);">6.7</div>
-    <div class="sub">horas <span style="color:var(--green);">▲ +0.6</span></div>
+    <div class="sub">horas <span style="color:var(--muted);">=</span></div>
     <div class="target">Meta: 7-8h</div>
     <div class="progress-bar"><div class="fill fill-green" style="width:48%"></div></div>
   </div>
   <div class="kpi-card">
     <div class="label">HRV (prom 7d)</div>
-    <div class="value" style="color:var(--green);">56</div>
-    <div class="sub">ms <span style="color:var(--muted);">= (máx 57)</span></div>
+    <div class="value" style="color:var(--green);">55</div>
+    <div class="sub">ms <span style="color:var(--muted);">▼ -1</span></div>
     <div class="target">Rango: 44-59</div>
-    <div class="progress-bar"><div class="fill fill-green" style="width:56%"></div></div>
+    <div class="progress-bar"><div class="fill fill-green" style="width:55%"></div></div>
   </div>
   <div class="kpi-card">
     <div class="label">Sueño anoche</div>
-    <div class="value" style="color:var(--accent);">6.4</div>
-    <div class="sub">h · Score 81</div>
-    <div class="target">▼ -1.7h vs ayer</div>
-    <div class="diff neutral" style="color:var(--accent);">GOOD</div>
+    <div class="value" style="color:var(--accent);">6.3</div>
+    <div class="sub">h · Score 79</div>
+    <div class="target">▼ -0.1h vs ayer</div>
+    <div class="diff neutral" style="color:var(--accent);">FAIR</div>
   </div>
   <div class="kpi-card">
     <div class="label">HRV anoche</div>
     <div class="value" style="color:var(--accent);">46</div>
-    <div class="sub">ms <span style="color:var(--red);">▼ -18</span></div>
+    <div class="sub">ms <span style="color:var(--muted);">=</span></div>
     <div class="target" style="color:var(--accent);">Status: BALANCED</div>
     <div class="progress-bar"><div class="fill fill-yellow" style="width:51%"></div></div>
   </div>
@@ -152,37 +154,110 @@
   <div class="section">
     <h2><span class="emoji">🧬</span>Composición y Sueño <span class="badge">vs ayer</span></h2>
     <table>
-      <tr><th>Métrica</th><th>Lun 3</th><th>Mar 4</th><th>Δ</th></tr>
-      <tr><td>Peso (kg)</td><td>83.2</td><td><strong>82.5</strong></td><td class="value-good">-0.7</td></tr>
-      <tr><td>Grasa %</td><td>19.2</td><td><strong>19.5</strong></td><td class="value-warn">+0.3</td></tr>
-      <tr><td>Músculo tot (kg)</td><td>62.8</td><td><strong>62.0</strong></td><td class="value-bad">-0.8</td></tr>
-      <tr><td>Score corporal</td><td>81</td><td><strong>80</strong></td><td class="value-neutral">-1</td></tr>
-      <tr><td>Sueño (h)</td><td><strong>8.1</strong></td><td><strong>6.4</strong></td><td class="value-bad">-1.7h 🔻</td></tr>
-      <tr><td>Profundo</td><td>1.8h</td><td>1.1h</td><td class="value-bad">-0.7h</td></tr>
-      <tr><td>REM</td><td>1.8h</td><td>1.1h</td><td class="value-bad">-0.7h</td></tr>
-      <tr><td>Sleep Score</td><td>93</td><td><strong>81</strong></td><td class="value-bad">-12</td></tr>
-      <tr><td>HRV últ. noche</td><td>64</td><td>46</td><td class="value-bad">-18 🔻</td></tr>
-      <tr><td>Entreno</td><td>💪 Upper 22m</td><td>💪 Legs 20m</td><td class="value-good">✅ hecho</td></tr>
+      <tr><th>Métrica</th><th>Mar 4</th><th>Mié 5</th><th>Δ</th></tr>
+      <tr><td>Peso (kg)</td><td>82.5</td><td><strong>82.5</strong></td><td class="value-neutral">=</td></tr>
+      <tr><td>Grasa %</td><td>19.5</td><td><strong>19.5</strong></td><td class="value-neutral">=</td></tr>
+      <tr><td>Músculo tot (kg)</td><td>62.0</td><td><strong>62.0</strong></td><td class="value-neutral">=</td></tr>
+      <tr><td>Score corporal</td><td>80</td><td><strong>80</strong></td><td class="value-neutral">=</td></tr>
+      <tr><td>Sueño (h)</td><td><strong>6.4</strong></td><td><strong>6.3</strong></td><td class="value-neutral">-0.1h</td></tr>
+      <tr><td>Profundo</td><td>1.1h</td><td>1.8h</td><td class="value-good">+0.7h 🔺</td></tr>
+      <tr><td>REM</td><td>1.1h</td><td>1.8h</td><td class="value-good">+0.7h 🔺</td></tr>
+      <tr><td>Sleep Score</td><td>81</td><td><strong>79</strong></td><td class="value-neutral">-2</td></tr>
+      <tr><td>HRV últ. noche</td><td>46</td><td>46</td><td class="value-neutral">=</td></tr>
+      <tr><td>Entreno</td><td>💪 Legs 20m</td><td>🏊 Pool 31m</td><td class="value-good">✅ hecho</td></tr>
     </table>
-    <div style="margin-top:8px;font-size:10px;color:var(--muted);">✅ Token de Gmail renovado — reportes de báscula leídos (3-4 Ago) y emails borrados automáticamente.</div>
+    <div style="margin-top:8px;font-size:10px;color:var(--muted);">✅ Token Gmail activo — reportes leídos y trashed automáticamente (regla de proceso).</div>
   </div>
   <div class="section">
     <h2><span class="emoji">📊</span>Histórico de Sueño (7 días)</h2>
     <table>
       <tr><th>Día</th><th>Total</th><th>Profundo</th><th>REM</th><th>Score</th><th>HRV</th><th>Status</th></tr>
-      <tr><td>Mié 29</td><td>6.7h</td><td>1.2h</td><td>1.5h</td><td>83</td><td>52</td><td class="value-good">✅ GOOD</td></tr>
       <tr><td>Jue 30</td><td>5.4h</td><td>1.0h</td><td>0.9h</td><td>75</td><td>50</td><td class="value-warn">● FAIR</td></tr>
       <tr><td>Vie 31</td><td>6.2h</td><td>1.5h</td><td>1.0h</td><td>79</td><td>57</td><td class="value-warn">● FAIR</td></tr>
       <tr><td>Sáb 1</td><td>8.3h</td><td>1.9h</td><td>1.7h</td><td>91</td><td>60</td><td class="value-good">🏆 EXCELLENT</td></tr>
       <tr><td>Dom 2</td><td>6.0h</td><td>0.9h</td><td>1.1h</td><td>78</td><td>64</td><td class="value-warn">● FAIR</td></tr>
       <tr><td>Lun 3</td><td>8.1h</td><td>1.8h</td><td>1.8h</td><td>93</td><td>64</td><td class="value-good">🏆 EXCELLENT</td></tr>
-      <tr><td><strong>Mar 4</strong></td><td><strong>6.4h</strong></td><td><strong>1.1h</strong></td><td><strong>1.1h</strong></td><td><strong>81</strong></td><td><strong>46</strong></td><td><strong class="value-good">✅ GOOD</strong></td></tr>
+      <tr><td>Mar 4</td><td>6.4h</td><td>1.1h</td><td>1.1h</td><td>81</td><td>46</td><td class="value-good">✅ GOOD</td></tr>
+      <tr><td><strong>Mié 5</strong></td><td><strong>6.3h</strong></td><td><strong>1.8h</strong></td><td><strong>1.8h</strong></td><td><strong>79</strong></td><td><strong>46</strong></td><td><strong class="value-warn">● FAIR</strong></td></tr>
     </table>
     <div style="margin-top:8px;display:flex;gap:8px;font-size:10px;color:var(--muted);flex-wrap:wrap;">
       <span>📊 Promedio: 6.7h/noche</span>
-      <span>🧠 Profundo: 1.3h (20%)</span>
-      <span>💭 REM: 1.3h (19%)</span>
-      <span>📈 HRV prom: 56ms (BALANCED)</span>
+      <span>🧠 Profundo: 1.4h (21%)</span>
+      <span>💭 REM: 1.3h (20%)</span>
+      <span>📈 HRV prom: 55ms (BALANCED)</span>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-bottom:16px;">
+  <h2><span class="emoji">🏊</span>Rendimiento en Natación <span class="badge">2 sesiones · 13 días</span></h2>
+
+  <div class="swim-kpis">
+    <div class="kpi-card">
+      <div class="label">Sesiones (30d)</div>
+      <div class="value">2</div>
+      <div class="sub">≈1 por semana</div>
+      <div class="target">Meta sugerida: 2/semana</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Distancia total</div>
+      <div class="value">2,400<span style="font-size:14px;">m</span></div>
+      <div class="sub">1,365 + 1,035 m</div>
+      <div class="target">Meta: 4,000m/semana</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Mejor ritmo</div>
+      <div class="value" style="color:var(--green);">3:02<span style="font-size:14px;">/100m</span></div>
+      <div class="sub">5 Ago · 1,035m</div>
+      <div class="target">Meta: &lt;2:45</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Mejora de ritmo</div>
+      <div class="value" style="color:var(--green);">-13.5<span style="font-size:14px;">%</span></div>
+      <div class="sub">3:30 → 3:02 (-28s/100m)</div>
+      <div class="diff positive" style="color:var(--green);">📈 en 13 días</div>
+    </div>
+  </div>
+
+  <table style="margin-bottom:14px;">
+    <tr><th>Fecha</th><th>Distancia</th><th>Duración</th><th>Ritmo /100m</th><th>Calorías</th><th>Nota</th></tr>
+    <tr><td>Jue 23 Jul</td><td>1,365m</td><td>47.7 min</td><td>3:30</td><td>446</td><td class="value-neutral">Sesión base</td></tr>
+    <tr><td><strong>Mié 5 Ago</strong></td><td><strong>1,035m</strong></td><td><strong>31.3 min</strong></td><td><strong class="value-good">3:02</strong></td><td>264</td><td class="value-good">Ritmo récord 🏆</td></tr>
+  </table>
+
+  <div class="rec-card good">
+    <div class="title">🟢 Progreso real: -28 segundos por 100m en 13 días</div>
+    <div class="body">
+      Tu ritmo mejoró de <strong>3:30 → 3:02 por 100m</strong> (-13.5%) entre el 23 Jul y hoy, nadando solo 2 sesiones.
+      Es una mejora típica de <strong>re-aprendizaje técnico</strong>: al retomar la natación, el cuerpo recupera la coordinación de crol rápido. El margen más grande ahora está en técnica, no en condición física.
+    </div>
+  </div>
+
+  <div class="rec-card info">
+    <div class="title">📊 Consistencia &gt; distancia: lo que muestran tus 2 sesiones</div>
+    <div class="body">
+      La sesión de hoy fue <strong>más corta (-330m) pero 13% más rápida</strong>. Ese es el patrón correcto: con 2,400m en 13 días, el progreso no vendrá de sesiones largas sino de <strong>frecuencia</strong> (2×/semana de 20-35 min) e <strong>intensidad por intervalos</strong>.
+      <br><br>
+      <strong>Meta progresiva:</strong> 2 sesiones/semana → 4,000m/semana → ritmo &lt;2:45/100m en 8 semanas. A tu ritmo actual de mejora, es alcanzable.
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="title">🎯 Coaching — plan de 4 puntos para avanzar</div>
+    <div class="body">
+      1. <strong>Estructura de sesión (31 min):</strong> 5 min calentamiento suave · 20 min técnica/intervalos · 6 min enfriamiento<br>
+      2. <strong>Drills 2×/semana (elige 2 por sesión):</strong> 🏊 Pull buoy (cuerpo alto, 4×50m) · tabla con patada (4×25m) · respiración bilateral (cada 3 brazadas) · crol con puño cerrado (sensación de antebrazo)<br>
+      3. <strong>Intervalos:</strong> 6×100m con 20s descanso, ritmo cómodo — el descanso controlado entrena el ritmo mejor que nadar sin pausas<br>
+      4. <strong>SWOLF (eficiencia):</strong> métrica = segundos + brazadas por 25m. Bajar el SWOLF = nadar más lejos con menos esfuerzo. <em>Actívalo en tu reloj Garmin</em> — la API no lo expone en las sesiones pasadas, pero con el reloj configurado lo capturamos desde la próxima sesión
+    </div>
+  </div>
+
+  <div class="rec-card info" style="border-left-color:var(--purple);">
+    <div class="title">📈 Correlación: nadar hoy (Metabolic) — buen estímulo sin comprometer recuperación</div>
+    <div class="body">
+      El Pool Swim de hoy (31 min, 264 cal) cumple el rol Metabolic del plan V3. A diferencia del entreno nocturno del martes (💪 18:07 → HRV 46), la natación es de bajo impacto articular y alta activación aeróbica — ideal para los días de "condicionamiento".
+      <br><br>
+      <strong>Validación pendiente:</strong> si mañana el HRV sube de 46, queda confirmado que alternar fuerza y natación protege la recuperación mejor que fuerza dos días seguidos.
     </div>
   </div>
 </div>
@@ -211,124 +286,86 @@
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
       <div class="cal-header">Dom</div>
       <div class="cal-day completed"><div class="day-num">3</div><div class="workout-label">Upper ✅</div><div class="act-done">💪</div></div>
-      <div class="cal-day today completed"><div class="day-num">4</div><div class="workout-label">Legs ✅</div><div class="act-done">💪</div></div>
-      <div class="cal-day future"><div class="day-num">5</div><div class="workout-label">Metabolic</div><div class="act-icon">⏳</div></div>
+      <div class="cal-day completed"><div class="day-num">4</div><div class="workout-label">Legs ✅</div><div class="act-done">💪</div></div>
+      <div class="cal-day today completed"><div class="day-num">5</div><div class="workout-label">Metabolic ✅</div><div class="act-done">🏊</div></div>
       <div class="cal-day future"><div class="day-num">6</div><div class="workout-label">Shoulder</div><div class="act-icon">⏳</div></div>
       <div class="cal-day future"><div class="day-num">7</div><div class="workout-label">Posterior</div><div class="act-icon">⏳</div></div>
       <div class="cal-day future"><div class="day-num">8</div><div class="workout-label">Sprint</div><div class="act-icon">⏳</div></div>
       <div class="cal-day future"><div class="day-num">9</div><div class="workout-label">Recovery</div><div class="act-icon">⏳</div></div>
     </div>
-    <div class="week-summary"><span>🟢 2/7 · ⏳ 5 pendientes</span><span>💪 Upper 22m (19:41) · 💪 Legs 20m (18:07)</span></div>
+    <div class="week-summary"><span>🟢 3/7 · ⏳ 4 pendientes</span><span>🏊 1,035m · ritmo 3:02</span></div>
   </div>
   <div class="section">
     <h2><span class="emoji">🔄</span>Tracker Diario</h2>
     <table>
       <tr><th>Día</th><th>Entreno</th><th>Peso</th><th>Grasa</th><th>Sueño</th><th>HRV</th><th>Pasos</th></tr>
-      <tr><td>Sáb 1</td><td>🚣 24m</td><td>82.9</td><td>19.4%</td><td>8.3h</td><td>60</td><td>4,802</td></tr>
       <tr><td>Dom 2</td><td>—</td><td>83.0</td><td>19.4%</td><td>6.0h</td><td>64</td><td>5,605</td></tr>
       <tr><td>Lun 3</td><td>💪 22m</td><td>83.2</td><td>19.2%</td><td>8.1h</td><td>64</td><td>3,357</td></tr>
-      <tr style="font-weight:600;"><td>Mar 4</td><td>💪 20m</td><td>82.5</td><td>19.5%</td><td>6.4h</td><td>46</td><td class="value-good">8,018</td></tr>
+      <tr><td>Mar 4</td><td>💪 20m</td><td>82.5</td><td>19.5%</td><td>6.4h</td><td>46</td><td class="value-good">8,222</td></tr>
+      <tr style="font-weight:600;"><td>Mié 5</td><td>🏊 31m</td><td>82.5</td><td>19.5%</td><td>6.3h</td><td>46</td><td>7,067*</td></tr>
     </table>
     <div style="margin-top:6px;font-size:9px;color:var(--muted);">*pasos parciales (día en curso)</div>
   </div>
 </div>
 
 <div class="section" style="margin-bottom:16px;">
-  <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 4 Ago</h2>
-
-  <div class="rec-card info">
-    <div class="title">📊 Peso 82.5 hoy — el pico del lunes se revirtió</div>
-    <div class="body">
-      Serie completa: 1 Ago 82.9 → 2 Ago 83.0 → <strong>3 Ago 83.2 (pico)</strong> → <strong>4 Ago 82.5 (▼ -0.7)</strong>.
-      La caída de hoy confirma que la subida de 3 días fue <strong>retención de agua/glicógeno</strong>, no ganancia de grasa.
-      <br><br>
-      <strong>Composición de hoy:</strong> grasa 19.5% (▲ +0.3 vs ayer) · músculo total 62.0 (▼ -0.8 — fluctúa con hidratación; el esquelético se mantiene ~38 kg) · score 80.
-      Promedio móvil 5 días: <strong>82.8</strong> — tendencia estable, sin señal de alarma.
-    </div>
-  </div>
+  <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 5 Ago</h2>
 
   <div class="rec-card good">
-    <div class="title">✅ Acceso a Gmail restaurado — borrado automático activo</div>
+    <div class="title">🟢 Metabolic cumplido con natación — semana 3/7</div>
     <div class="body">
-      Token de Google renovado el 4 Ago. Los <strong>7 reportes de báscula acumulados (29 Jul – 4 Ago)</strong> fueron leídos (incluidos los pendientes del 3 y 4 Ago) y <strong>borrados automáticamente</strong> tras extraer los datos, según tu regla de proceso.
+      <strong>🏊 Pool Swim: 1,035m en 31.3 min</strong> (ritmo 3:02/100m — récord personal). Semana 3-9 Ago: 3/7 completados (Upper ✅, Legs ✅, Metabolic ✅).
       <br><br>
-      <strong>De ahora en adelante:</strong> cada reporte se borra en el mismo ciclo de actualización, sin acumularse en el inbox.
-    </div>
-  </div>
-
-  <div class="rec-card good">
-    <div class="title">🟢 Legs de hoy completado — semana 2/7 · pasos sobre meta</div>
-    <div class="body">
-      Heavy Legs & Gymnastic Core hecho: <strong>💪 Strength 20m (18:07)</strong> + caminata 41m. <strong>Pasos: 8,018</strong> — sobre la meta de 8k (primer día en 3).
-      <br><br>
-      <strong>⚠️ Nota de horario:</strong> el entreno fue a las <strong>18:07</strong> — de nuevo después de las 17:00. El HRV de mañana dirá si la sesión nocturna del lunes (19:41 → 46ms) se repite con esta. Si mañana el HRV vuelve a bajar de 50, mover los entrenos a media tarde es prioritario.
-    </div>
-  </div>
-
-  <div class="rec-card good">
-    <div class="title">🟢 Noche EXCELLENT del lunes — mejor score del mes (93)</div>
-    <div class="body">
-      Dormiste <strong>8.1h</strong> (score <strong>93</strong>, deep 1.8h + REM 1.8h) tras el Upper de 22m. El mejor registro de sueño del mes, con HRV de <strong>64ms</strong>.
-      <br><br>
-      <strong>Lectura:</strong> confirma el patrón — los entrenos cortos (20-25m) no comprometen la recuperación; al contrario, la favorecen.
+      <strong>Doble valor:</strong> cumpliste el plan Y mejoraste tu ritmo de natación un 13.5% — ver sección de natación arriba.
     </div>
   </div>
 
   <div class="rec-card critical">
-    <div class="title">🔴 HRV anoche 46ms (▼ -18) — primera caída marcada</div>
+    <div class="title">🔴 HRV anoche 46 (2º día) — el patrón de entreno nocturno persiste</div>
     <div class="body">
-      El HRV de anoche cayó a <strong>46ms</strong> (vs 64 la noche anterior) y el sueño se acortó a <strong>6.4h</strong> (score 81).
+      El HRV sigue en <strong>46ms</strong> (2ª noche consecutiva), tras el Legs del martes a las 18:07. La hipótesis del horario se sostiene: el lunes (Upper 19:41) también dio 46 al día siguiente.
       <br><br>
-      <strong>⚠️ Correlación clave:</strong> el entreno de Upper fue a las <strong>19:41</strong> — entrenar de noche eleva el tono simpático y retrasa la recuperación nocturna. Es la primera vez en el ciclo que el HRV baja de 50.
+      <strong>Contraste positivo:</strong> el sueño de anoche mejoró en calidad estructural (profundo 1.8h ▲ +0.7, REM 1.8h ▲ +0.7) pese a la duración similar (6.3h) — el cuerpo está compensando.
       <br><br>
-      <strong>Acción:</strong> mover los entrenos a <strong>antes de las 17:00</strong> cuando sea posible. Si hoy (Legs) no puedes temprano, añadir 10 min de respiración diafragmática post-entreno. Vigilar: si el HRV semanal baja de 50, recortar intensidad.
+      <strong>Acción:</strong> el entreno de hoy fue a las 17:32 (natación, bajo estrés). Si mañana el HRV sube a 50+, queda confirmado: <strong>entrenar antes de las 17:00 o con actividades de bajo estrés (natación/remo) por la tarde</strong>.
     </div>
   </div>
 
   <div class="rec-card info">
-    <div class="title">📊 Peso/composición sin dato nuevo — token de Gmail expirado</div>
+    <div class="title">📊 Composición estable: 82.5 kg / 19.5% grasa — 2º día</div>
     <div class="body">
-      <em>Resuelto — ver tarjeta "✅ Acceso a Gmail restaurado" arriba.</em> Token renovado, reportes del 3-4 Ago leídos (83.2 → 82.5 kg) y 7 emails de báscula eliminados.
-    </div>
-  </div>
-
-  <div class="rec-card">
-    <div class="title">📅 Semana 3-9 Ago en marcha: 2/7</div>
-    <div class="body">
-      <strong>Lun 3:</strong> Upper Body Hypertrophy ✅ (Strength 22m, 19:41) — semana 2 del bloque.
+      Peso, grasa y músculo sin cambio vs ayer (82.5 / 19.5% / 62.0). La caída del martes (83.2 → 82.5) se estabilizó. Promedio móvil 5 días: <strong>82.7</strong>.
       <br><br>
-      <strong>Hoy (Mar 4):</strong> Heavy Legs & Gymnastic Core ✅ (Strength 20m, 18:07) + caminata 41m + 8,018 pasos.
-      <br><br>
-      <strong>Objetivo de la semana:</strong> repetir o superar el 71% de cumplimiento (5/7) con entrenos antes de las 17:00.
+      <strong>Lectura:</strong> la tendencia de composición sigue correcta (masa grasa 16.1 kg vs 16.0 baseline). El déficit trabaja; la paciencia es la variable.
     </div>
   </div>
 
   <div class="rec-card" style="border-left-color:var(--purple);">
-    <div class="title">📈 Patrón detectado: el HORARIO del entreno importa más que el tipo</div>
+    <div class="title">📈 Patrón acumulado: qué funciona y qué no esta semana</div>
     <div class="body">
-      <strong>Datos:</strong> Lun 27 (🚣 18:23) → sueño 6.2h · Mar 28 (💪 11:33) → 4.2h · Vie 31 (💪 16:45) → 6.2h · Sáb 1 (🚣 14:56) → 8.3h · Lun 3 (💪 19:41) → 6.4h + HRV 46.
+      <strong>Lo que funciona:</strong> entrenos de 20-35 min (HRV semanal 55-57, sueño promedio 6.7h) · natación como Metabolic (bajo impacto, alto valor) · pasos &gt;8k los días de sesión corta (mar: 8,222).
       <br><br>
-      <strong>Hipótesis revisada:</strong> los entrenos después de las 18:00 (Lun 27, Lun 3) correlacionan con sueño más corto; los de media tarde (14:00-17:00) con mejor recuperación. La sesión nocturna del lunes 3 explica el HRV bajo de anoche.
+      <strong>Lo que no:</strong> entrenos de fuerza después de las 18:00 (2 noches de HRV 46) · pasos bajos en días de fuerza (lun: 3,357).
       <br><br>
-      <strong>Validación pendiente:</strong> si hoy entrenas Legs antes de las 17:00 y mañana el HRV vuelve a 55+, el patrón queda confirmado.
+      <strong>Regla simple para la semana 2:</strong> fuerza antes de las 17:00; si toca tarde, natación/remo/caminata en su lugar.
     </div>
   </div>
 
   <div class="rec-card info" style="border-left-color:var(--accent);">
     <div class="title">🎯 Plan de acción próximo 7 días</div>
     <div class="body">
-      1. <strong>Horario:</strong> entrenar antes de las 17:00 (el de anoche a las 19:41 bajó el HRV a 46)<br>
-      2. <strong>Hoy (Mar 4):</strong> Heavy Legs & Gymnastic Core (X3) — post-entreno: 10 min respiración<br>
-      3. <strong>Sueño:</strong> promedio subió a 6.7h (▲ +0.6). Meta: 3 noches ≥7h esta semana<br>
-      4. <strong>Peso:</strong> ✅ token renovado — reportes 3-4 Ago leídos (82.5 hoy) y 7 emails borrados automáticamente<br>
-      5. <strong>HRV:</strong> 46 anoche — alarma si el semanal baja de 50. Mantener BALANCED<br>
-      6. <strong>Pasos:</strong> lunes solo 3,357 (bajo). Meta 8k — priorizar caminatas en días de entreno corto
+      1. <strong>Jue 6:</strong> Shoulders, Arms & Gymnastic — antes de las 17:00<br>
+      2. <strong>Vie 7:</strong> Posterior Chain & Unilateral — antes de las 17:00<br>
+      3. <strong>Sáb 8:</strong> Swim Sprint Circuit (piscina) — segunda sesión de natación de la semana<br>
+      4. <strong>Natación:</strong> activar SWOLF en el reloj Garmin; meta 2 sesiones/semana<br>
+      5. <strong>Peso:</strong> próxima medición jueves 6 en ayunas — rango esperado 82.3-82.7<br>
+      6. <strong>HRV:</strong> si mañana sube de 50, el patrón de horario queda confirmado; alarma solo si &lt;44
     </div>
   </div>
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v12 · Juan Castro · Garmin (sleep, HRV, pasos) + Fitdays/LePulse · 4 Ago 2026
+  Odyssey Dashboard v13 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 5 Ago 2026
 </div>
 
 </div>
