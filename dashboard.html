@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v14 — Juan Castro</title>
+<title>Odyssey Dashboard v15 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -366,8 +366,139 @@
   </div>
 </div>
 
+<div class="section" style="margin-bottom:16px;">
+  <h2><span class="emoji">🩸</span>Salud — Biomarcadores <span class="badge">4 exámenes · Feb 2025 → Jun 2026</span></h2>
+
+  <div class="swim-kpis">
+    <div class="kpi-card">
+      <div class="label">Último examen</div>
+      <div class="value" style="font-size:18px;">16 Jun 26</div>
+      <div class="sub">SynLab · Colmédica</div>
+      <div class="target">4 servicios analizados</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Fuera de rango</div>
+      <div class="value" style="color:var(--accent);">6</div>
+      <div class="sub">de ~45 marcadores</div>
+      <div class="target">3 ⬆ · 2 ⬇ · 1 límite</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">TSH (Feb 25)</div>
+      <div class="value" style="color:var(--red);">5.19</div>
+      <div class="sub">ref 0.35-4.94 ⬆</div>
+      <div class="target" style="color:var(--red);">Hipotiroidismo subclínico</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Hemoglobina</div>
+      <div class="value" style="color:var(--accent);">13.5</div>
+      <div class="sub">ref 13.5-18.0 · límite</div>
+      <div class="target">Microcitosis persistente</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin:12px 0 6px;">📈 Tendencias Feb 2025 → Jun 2026 (marcadores con 2+ mediciones)</div>
+  <table>
+    <tr><th>Marcador</th><th>Feb 2025</th><th>May 2026</th><th>Jun 2026</th><th>Tendencia</th></tr>
+    <tr><td>Ácido úrico</td><td>4.6</td><td>5.9</td><td>—</td><td class="value-warn">▲ +28%</td></tr>
+    <tr><td>ALT</td><td>28</td><td>16</td><td>—</td><td class="value-good">▼ -43% ✅</td></tr>
+    <tr><td>AST</td><td class="value-bad">37 ⬆</td><td>20</td><td>—</td><td class="value-good">▼ a normal ✅</td></tr>
+    <tr><td>PSA</td><td>0.36</td><td>0.46</td><td>—</td><td class="value-neutral">▲ (normal)</td></tr>
+    <tr><td>Creatinina</td><td>1.09</td><td>1.0</td><td>—</td><td class="value-good">▼ ✅</td></tr>
+    <tr><td>BUN</td><td class="value-warn">23.9 ⬆</td><td class="value-warn">21.2 ⬆</td><td>—</td><td class="value-neutral">▼ leve</td></tr>
+    <tr><td>Hemoglobina</td><td class="value-bad">13.3 ⬇</td><td>13.5</td><td>—</td><td class="value-neutral">▲ límite</td></tr>
+    <tr><td>PVC (VCM)</td><td class="value-bad">66.6 ⬇</td><td class="value-bad">67.2 ⬇</td><td>—</td><td class="value-neutral">= microcitosis</td></tr>
+    <tr><td>PHC (HCM)</td><td class="value-bad">21.6 ⬇</td><td class="value-bad">22.4 ⬇</td><td>—</td><td class="value-neutral">= hipocromía</td></tr>
+    <tr><td>Glucosa (ayunas)</td><td>83</td><td>86</td><td>—</td><td class="value-good">= normal</td></tr>
+    <tr><td>T4 libre</td><td>1.06</td><td>—</td><td>1.04</td><td class="value-good">= normal</td></tr>
+    <tr><td>G6PD</td><td>—</td><td>—</td><td class="value-warn">18.4 ⬆</td><td class="value-neutral">nuevo</td></tr>
+    <tr><td>Bilirrubina total</td><td>—</td><td class="value-warn">1.43 ⬆</td><td>—</td><td class="value-neutral">nuevo</td></tr>
+  </table>
+
+  <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin:12px 0 6px;">🗂 Solo en un examen</div>
+  <table>
+    <tr><th>Feb-Mar 2025</th><th>Valor</th><th>Ref</th><th>May-Jun 2026</th><th>Valor</th><th>Ref</th></tr>
+    <tr><td>TSH</td><td class="value-bad">5.19</td><td>0.35-4.94</td><td>Bilirrubina total</td><td class="value-warn">1.43</td><td>0.3-1.2</td></tr>
+    <tr><td>Hierro sérico</td><td>175</td><td>65-175</td><td>Bilirrubina directa</td><td>0.43</td><td>0-0.5</td></tr>
+    <tr><td>Ferritina</td><td>211</td><td>21.8-274.7</td><td>G6PD</td><td class="value-warn">18.4</td><td>7.9-16.3</td></tr>
+    <tr><td>RDW</td><td class="value-bad">17.0</td><td>12.3-14.3</td><td>Proteínas totales</td><td class="value-warn">6.83</td><td>3.6-6.0</td></tr>
+    <tr><td>Eosinófilos</td><td class="value-warn">4.9%</td><td>0-4.4</td><td>Coombs directo</td><td>Negativo</td><td>—</td></tr>
+    <tr><td>Vitamina B12</td><td>812</td><td>187-883</td><td>Ácido fólico</td><td>12.6</td><td>≥3.5</td></tr>
+    <tr><td>Insulina basal</td><td>4.3</td><td>2.2-49.6</td><td>Electrolitos</td><td>Normal</td><td>—</td></tr>
+    <tr><td>Glucosa pre/post</td><td>83/75</td><td>70-100/140</td><td>Eritrocitos</td><td>—</td><td>—</td></tr>
+  </table>
+
+  <div class="rec-card critical">
+    <div class="title">🔬 Hallazgo principal — microcitosis + hipocromía con hierro NORMAL (rasgo talasémico probable)</div>
+    <div class="body">
+      PVC 66.6→67.2 (ref 86-96) y PHC 21.6→22.4 (ref 25-31) bajos <strong>durante 15 meses</strong>, hemoglobina 13.3→13.5 (límite) y RDW 17.0 ⬆.
+      <strong>Clave:</strong> el hierro sérico (175) y la ferritina (211) son <strong>normales-altos</strong> — la causa más común de microcitosis (ferropenia) queda <strong>descartada</strong>.
+      <br><br>
+      <strong>Compatibilidad:</strong> microcitosis + hipocromía + Hb límite + eritrocitos altos (6.16) + G6PD alta = patrón consistente con <strong>rasgo talasémico (talasemia menor)</strong>.
+      <strong>Acción:</strong> solicitar <strong>electroforesis de hemoglobina</strong> para confirmar. No requiere tratamiento, pero explica la Hb crónicamente en el límite — relevante para tu rendimiento (VO₂max).
+    </div>
+  </div>
+
+  <div class="rec-card critical">
+    <div class="title">🦋 TSH 5.19 (Feb 2025) — hipotiroidismo subclínico sin re-evaluar</div>
+    <div class="body">
+      TSH <strong>5.19</strong> (ref 0.35-4.94) con T4 libre normal (1.06) = <strong>hipotiroidismo subclínico</strong> detectado hace 15 meses. En los exámenes de 2026 <strong>no se repitió la TSH</strong>.
+      <br><br>
+      <strong>Por qué importa ahora:</strong> estás en déficit calórico (1,950-2,050 kcal) con el protocolo Odyssey — un tiroides lento puede hacer la pérdida de grasa más lenta y aumentar la fatiga. El HRV en subida sugiere que el cuerpo responde, pero conviene saber el estado actual.
+      <strong>Acción:</strong> repetir <strong>TSH + T4 libre + anticuerpos tiroideos</strong> (anti-TPO) en el próximo chequeo.
+    </div>
+  </div>
+
+  <div class="rec-card good">
+    <div class="title">🟢 Hígado y riñón mejoraron — correlación con la dieta Odyssey</div>
+    <div class="body">
+      <strong>AST 37 → 20</strong> (de ⬆ a normal) · <strong>ALT 28 → 16</strong> · <strong>BUN 23.9 → 21.2</strong> (aún sobre rango, leve) · <strong>Creatinina 1.09 → 1.0</strong>.
+      <br><br>
+      <strong>Interpretación:</strong> la dieta gluten-free + sin alcohol + hidratación 3.5-4L del protocolo Odyssey correlaciona directamente con la mejora hepática. El BUN alto es <strong>esperable</strong> con tu ingesta de 165-180g de proteína — no es daño renal (creatinina y TFG 81 normales).
+    </div>
+  </div>
+
+  <div class="rec-card info">
+    <div class="title">🩺 Bilirrubina 1.43 + G6PD 18.4 — recambio eritrocitario a vigilar</div>
+    <div class="body">
+      Bilirrubina total <strong>1.43 ⬆</strong> (directa normal 0.43) con G6PD <strong>18.4 ⬆</strong> (ref 7.9-16.3). Ambos juntos —y con el patrón microcítico— pueden indicar <strong>hemólisis leve crónica</strong> o síndrome de Gilbert (benigno, común).
+      <br><br>
+      <strong>Acción:</strong> comentarlo con tu médico junto con la electroforesis de hemoglobina. Mientras tanto, mantener hidratación alta (ya lo haces) y evitar fármacos oxidantes si se confirma déficit funcional de G6PD (no es tu caso: está <em>elevada</em>).
+    </div>
+  </div>
+
+  <div class="rec-card" style="border-left-color:var(--purple);">
+    <div class="title">📊 Correlaciones con tu estado actual (Odyssey + Garmin)</div>
+    <div class="body">
+      <strong>1. Hemoglobina límite + entrenamiento:</strong> con Hb 13.3-13.5 y déficit calórico, tu VO₂max tiene margen de mejora — si sube la Hb con hierro adecuado, el ritmo de natación (3:02/100m) debería mejorar. El hierro sérico alto sugiere que no es falta de aporte sino <em>utilización</em> — la electroforesis lo aclarará.
+      <br><br>
+      <strong>2. Ácido úrico 4.6 → 5.9 (+28%):</strong> sube con la dieta hiperproteica (carne, pescado) del protocolo. Aún normal (ref &lt;7.7), pero a este ritmo llegará a 7 en ~18 meses — vigilar y priorizar pescado blanco sobre carnes rojas si sigue subiendo.
+      <br><br>
+      <strong>3. Insulina basal 4.3 + glucosa pre/post 83/75:</strong> sensibilidad insulínica excelente — el mejor predictor metabólico de tus informes. El déficit Odyssey no la está dañando.
+      <br><br>
+      <strong>4. Sin perfil lipídico en ningún informe:</strong> no hay colesterol/LDL/HDL/triglicéridos en los 4 exámenes — solicitarlo en el próximo chequeo (relevante a los 48 con dieta alta en grasas saludables).
+    </div>
+  </div>
+
+  <div class="rec-card info" style="border-left-color:var(--accent);">
+    <div class="title">🎯 Plan de acción salud (próximo chequeo)</div>
+    <div class="body">
+      1. <strong>Electroforesis de hemoglobina</strong> — confirmar/descartar rasgo talasémico (explica Hb límite + microcitosis)<br>
+      2. <strong>TSH + T4 libre + anti-TPO</strong> — re-evaluar hipotiroidismo subclínico detectado en Feb 2025<br>
+      3. <strong>Perfil lipídico completo</strong> (colesterol, LDL, HDL, triglicéridos) — ausente en los 4 informes<br>
+      4. <strong>Repetir hierro + ferritina</strong> — vigilar que la ferritina 211 no siga subiendo (inflamación/almacenamiento)<br>
+      5. <strong>Bilirrubina + G6PD</strong> — comentar con el médico; descartar hemólisis leve<br>
+      6. <strong>Ácido úrico</strong> — si en el próximo examen supera 6.5, ajustar fuente proteica (pescado sobre carne roja)
+    </div>
+  </div>
+
+  <div style="margin-top:10px;font-size:9px;color:var(--muted);line-height:1.5;">
+    ⚠️ Análisis de datos con fines informativos, no diagnóstico médico. Los valores fuera de rango deben evaluarse con tu médico tratante (Colmédica Chía Belenus). Fuente: 4 informes SynLab (24/02/2025, 19/03/2025, 29/05/2026, 16/06/2026).
+  </div>
+</div>
+
+
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v14 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 5 Ago 2026
+  Odyssey Dashboard v15 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 5 Ago 2026
 </div>
 
 </div>
