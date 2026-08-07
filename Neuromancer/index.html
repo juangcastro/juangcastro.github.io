@@ -230,7 +230,16 @@
   footer a { color: var(--cyan); text-decoration: none; transition-property: color, text-shadow; transition-duration: .15s; transition-timing-function: ease-out; }
   footer a:hover { color: var(--magenta); text-shadow: 0 0 12px var(--glow-magenta); }
 
-    .hero-logo { height: 56px; width: auto; margin: 10px 0 24px; display: block; filter: drop-shadow(0 0 30px rgba(255, 46, 151, .4)); }
+    .hero-inner { display: flex; align-items: center; justify-content: space-between; gap: 48px; }
+  .hero-left { flex: 1; min-width: 0; }
+  .hero-right { flex-shrink: 0; }
+  .hero-emblem { height: 240px; width: auto; display: block; filter: drop-shadow(0 0 36px rgba(255, 46, 151, .45)); }
+  @media (max-width: 820px) {
+    .hero-inner { flex-direction: column; gap: 20px; }
+    .hero-right { order: -1; }
+    .hero-emblem { height: 130px; }
+  }
+  .hero-logo { height: 56px; width: auto; margin: 10px 0 24px; display: block; filter: drop-shadow(0 0 30px rgba(255, 46, 151, .4)); }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -250,10 +259,17 @@
   </header>
 
   <div class="hero">
-    <div class="term"><b>&gt;</b> neuromancer.council --archive --live<span class="cursor"></span></div>
-    <img class="hero-logo" src="assets/neuromancer-textlogo.png" alt="Neuromancer">
-    <h1>REPORT_ARCHIVE</h1>
-    <p class="sub">El archivo del <b>Consejo Neuromancer</b>: análisis de inversión puro desde las premisas de sus cinco miembros — Buffett, Dalio, Lynch, Ackman y Cathie Wood. Cada reporte, un veredicto con su fricción.</p>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="term"><b>&gt;</b> neuromancer.council --archive --live<span class="cursor"></span></div>
+        <h1>REPORT_ARCHIVE</h1>
+        <p class="sub">El archivo del <b>Consejo Neuromancer</b>: análisis de inversión puro desde las premisas de sus cinco miembros — Buffett, Dalio, Lynch, Ackman y Cathie Wood. Cada reporte, un veredicto con su fricción.</p>
+        <img class="hero-logo" src="assets/neuromancer-textlogo.png" alt="Neuromancer">
+      </div>
+      <div class="hero-right">
+        <img class="hero-emblem" src="assets/neuromancer-logo-2.png" alt="Neuromancer N">
+      </div>
+    </div>
   </div>
 
   <div class="stats">
