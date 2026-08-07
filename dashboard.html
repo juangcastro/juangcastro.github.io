@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v17 — Juan Castro</title>
+<title>Odyssey Dashboard v18 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -75,6 +75,26 @@
   .week-summary span { font-size: 10px; color: var(--muted); background: var(--surface); padding: 3px 8px; border-radius: 4px; }
   .swim-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
   @media (max-width: 700px) { .swim-kpis { grid-template-columns: repeat(2, 1fr); } }
+  .athlete-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 800px) { .athlete-row { grid-template-columns: 1fr; } }
+  .athlete-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; animation: fadeIn 0.5s ease-out 0.1s both; }
+  .athlete-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+  .athlete-main { font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .athlete-main span { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .athlete-sub { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  .athlete-delta { font-size: 11px; font-weight: 600; margin-top: 4px; }
+  .vo2-bar { position: relative; height: 10px; border-radius: 5px; background: linear-gradient(90deg, var(--red) 0%, var(--accent) 45%, var(--green) 70%, var(--green) 100%); margin-top: 10px; }
+  .vo2-marker { position: absolute; top: -3px; width: 4px; height: 16px; border-radius: 2px; background: var(--text); box-shadow: 0 0 6px rgba(232,232,240,0.6); }
+  .vo2-scale { display: flex; justify-content: space-between; font-size: 8px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .age-flex { display: flex; align-items: center; gap: 14px; }
+  .age-big { font-size: 40px; font-weight: 800; color: var(--green); font-variant-numeric: tabular-nums; line-height: 1; }
+  .age-vs { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .age-delta { font-size: 12px; font-weight: 700; color: var(--green); }
+  .age-components { display: grid; gap: 6px; margin-top: 12px; }
+  .comp { display: grid; grid-template-columns: 1fr 90px 26px; align-items: center; gap: 8px; font-size: 10px; color: var(--muted); }
+  .comp .mini-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .comp .mini-fill { height: 100%; border-radius: 3px; }
+  .comp .prio { font-size: 8px; text-align: right; color: var(--muted); }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .kpi-card { animation: fadeIn 0.4s ease-out both; }
   .kpi-card:nth-child(1) { animation-delay: 0.05s; }
@@ -97,6 +117,34 @@
   </div>
   <div style="text-align:right;font-size:11px;color:var(--muted);">
     Juan Castro · V3 Elite · Semana 3 Ago → 9 Ago
+  </div>
+</div>
+
+<div class="athlete-row">
+  <div class="athlete-card">
+    <div class="athlete-label">💨 VO₂max · carrera</div>
+    <div class="athlete-main">45.0 <span>ml/kg/min</span></div>
+    <div class="vo2-bar"><div class="vo2-marker" style="left:63%;"></div></div>
+    <div class="vo2-scale"><span>Pobre</span><span>Regular</span><span>Bueno</span><span>Excelente</span></div>
+    <div class="athlete-sub">Clasificación: <strong style="color:var(--green);">Excelente</strong> · hombres 40-49 (bandas ACSM)</div>
+    <div class="athlete-delta" style="color:var(--green);">🏆 Límite superior del rango — margen en técnica &gt; en capacidad</div>
+  </div>
+  <div class="athlete-card">
+    <div class="athlete-label">🎽 Edad deportiva · Garmin Fitness Age</div>
+    <div class="age-flex">
+      <div class="age-big">44</div>
+      <div class="age-vs">
+        <div class="age-delta">▼ 4 años vs 48 cronológicos</div>
+        <div>Potencial alcanzable: <strong style="color:var(--green);">41.6</strong></div>
+        <div>RHR: 49 bpm · BMI: 25.7</div>
+      </div>
+    </div>
+    <div class="age-components">
+      <div class="comp"><span>BMI 25.7 → meta 21.6</span><div class="mini-bar"><div class="mini-fill fill-green" style="width:84%"></div></div><span class="prio">P1 🎯</span></div>
+      <div class="comp"><span>Min. vigorosos 36 / 75 sem</span><div class="mini-bar"><div class="mini-fill fill-yellow" style="width:47%"></div></div><span class="prio">P2</span></div>
+      <div class="comp"><span>Días vigorosos 1.3 / 3 sem</span><div class="mini-bar"><div class="mini-fill fill-yellow" style="width:43%"></div></div><span class="prio">P3</span></div>
+    </div>
+    <div class="athlete-sub">Actualizado 6 Ago · tu palanca #1 es el BMI (−4.1 → 41.6 años)</div>
   </div>
 </div>
 
@@ -511,7 +559,7 @@
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v17 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 7 Ago 2026
+  Odyssey Dashboard v18 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 7 Ago 2026
 </div>
 
 </div>
