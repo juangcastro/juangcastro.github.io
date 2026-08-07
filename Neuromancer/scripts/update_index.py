@@ -34,8 +34,11 @@ def fecha(ts):
     return f"{t.tm_mday:02d} {MESES[t.tm_mon-1]} {t.tm_year}"
 
 def scan_reports():
-    """-> (fresh: ticker->info, stale: [ticker]) con filtro de 60 días"""
+    """-> (fresh: ticker->info, stale: [ticker]) con filtro de 60 días.
+    La fecha del análisis se parsea de 'Sesión: DD mmm AAAA' en la página;
+    si no está, se usa el mtime del archivo."""
     ALIASES = {"palantir": "PLTR", "enha": "ENHA"}
+    MES = {m: i + 1 for i, m in enumerate(MESES)}
     all_r = {}
     now = time.time()
     for f in glob.glob(os.path.join(BASE, "neuromancer-council-*.html")):
@@ -44,10 +47,15 @@ def scan_reports():
         html = open(f, encoding="utf-8").read()
         vm = re.search(r'class="verdict-badge (buy|hold|avoid)">(\w+)<', html)
         cm = re.search(r'Convicción del Consejo: <b>(\d+)/10</b>', html)
+        dm = re.search(r"Sesi[oó]n:\s*(?:<[^>]+>)?\s*(\d{2})\s+(\w{3})\s+(\d{4})", html)
+        if dm and dm.group(2).lower() in MES:
+            ts = time.mktime((int(dm.group(3)), MES[dm.group(2).lower()], int(dm.group(1)), 0, 0, 0, 0, 0, -1))
+        else:
+            ts = os.path.getmtime(f)
         all_r[t] = {"url": os.path.basename(f),
                     "verdict": vm.group(1) if vm else "hold",
                     "conv": int(cm.group(1)) if cm else 0,
-                    "mtime": os.path.getmtime(f)}
+                    "mtime": ts}
     fresh = {t: r for t, r in all_r.items() if now - r["mtime"] <= FRESH_DAYS * 86400}
     stale = sorted(t for t, r in all_r.items() if now - r["mtime"] > FRESH_DAYS * 86400)
     return fresh, stale
