@@ -88,9 +88,9 @@ def main():
         (str(sum(1 for r in fresh.values() if r["verdict"] == "hold")), "Hold", "hold"),
         (str(sum(1 for r in fresh.values() if r["verdict"] == "avoid")), "Avoid", "avoid"),
     ]
-    stats_html = "\n".join(
+    stats_html = '  <div class="stats">\n' + "\n".join(
         f'    <div class="stat{(" " + cls) if cls else ""}"><div class="v">{v}</div><div class="k">{k}</div></div>'
-        for v, k, cls in stats)
+        for v, k, cls in stats) + '\n  </div>'
 
     # ── dashboard: panel grande ──
     cards = []
