@@ -4,37 +4,53 @@ update_index.py — Regenera las secciones dinámicas del index de Neuromancer.
 
 Lee Neuromancer/portfolios.json (generado por sync_portfolios.py desde Obsidian)
 y escanea los reportes existentes (neuromancer-council-*.html) para extraer
-veredicto + convicción por ticker. Regenera en index.html:
+veredicto + convicción + fecha por ticker. Regenera en index.html:
   - stats (<!-- STATS:START --> ... <!-- STATS:END -->)
   - dashboard de portafolios (<!-- DASHBOARD:START --> ... <!-- DASHBOARD:END -->)
-  - sección "fuera de portafolio" (<!-- MISC:START --> ... <!-- MISC:END -->)
+  - sección "Individual Equities" (<!-- MISC:START --> ... <!-- MISC:END -->)
 
-Este es el paso final del pipeline batch: sync_portfolios.py -> [análisis batch]
--> update_index.py -> deploy.
+Reglas:
+  - Reportes con más de FRESH_DAYS (60) días se consideran caducos: no generan
+    chip de análisis (el ticker vuelve a "pendiente") y se listan como STALE
+    para `git rm` (el usuario pidió eliminar de GitHub los análisis > 60 días).
+  - "Individual Equities" solo muestra analizados de los últimos 60 días que NO
+    estén en ningún portafolio.
+
+Pipeline batch: sync_portfolios.py -> [análisis batch] -> update_index.py -> deploy.
 """
-import json, os, re, glob
+import json, os, re, glob, time
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MANIFEST = os.path.join(BASE, "portfolios.json")
 INDEX = os.path.join(BASE, "index.html")
+FRESH_DAYS = 60
+MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 
 ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "1 Million stack": "var(--magenta)",
-          "Emerging": "var(--amber)", "Quantum": "var(--violet)"}
+          "Emerging players": "var(--amber)", "Quantum": "var(--violet)"}
+
+def fecha(ts):
+    t = time.localtime(ts)
+    return f"{t.tm_mday:02d} {MESES[t.tm_mon-1]} {t.tm_year}"
 
 def scan_reports():
-    """ticker -> {url, verdict, conv} — con alias para nombres de archivo no-ticker"""
+    """-> (fresh: ticker->info, stale: [ticker]) con filtro de 60 días"""
     ALIASES = {"palantir": "PLTR", "enha": "ENHA"}
-    out = {}
+    all_r = {}
+    now = time.time()
     for f in glob.glob(os.path.join(BASE, "neuromancer-council-*.html")):
         stem = os.path.basename(f).replace("neuromancer-council-", "").replace(".html", "")
         t = ALIASES.get(stem, stem.upper())
         html = open(f, encoding="utf-8").read()
         vm = re.search(r'class="verdict-badge (buy|hold|avoid)">(\w+)<', html)
         cm = re.search(r'Convicción del Consejo: <b>(\d+)/10</b>', html)
-        out[t] = {"url": os.path.basename(f),
-                  "verdict": vm.group(1) if vm else "hold",
-                  "conv": int(cm.group(1)) if cm else 0}
-    return out
+        all_r[t] = {"url": os.path.basename(f),
+                    "verdict": vm.group(1) if vm else "hold",
+                    "conv": int(cm.group(1)) if cm else 0,
+                    "mtime": os.path.getmtime(f)}
+    fresh = {t: r for t, r in all_r.items() if now - r["mtime"] <= FRESH_DAYS * 86400}
+    stale = sorted(t for t, r in all_r.items() if now - r["mtime"] > FRESH_DAYS * 86400)
+    return fresh, stale
 
 def chips_for(tickers, reports):
     chips = []
@@ -50,48 +66,52 @@ def chips_for(tickers, reports):
 def main():
     manifest = json.load(open(MANIFEST, encoding="utf-8"))
     portfolios = manifest["portfolios"]
-    reports = scan_reports()
+    fresh, stale = scan_reports()
 
     all_listed = sorted({t for p in portfolios for t in p["tickers"]})
-    analyzed_all = set(reports)
-    analyzed_in_pf = {t for t in all_listed if t in reports}
-    pending = [t for t in all_listed if t not in reports]
-    outside = sorted(analyzed_all - set(all_listed))   # analizados fuera de listas
+    pending = [t for t in all_listed if t not in fresh]
+    outside = sorted(set(fresh) - set(all_listed))
 
-    # ── stats ──
+    # ── stats (una palabra, cuadros) ──
     stats = [
-        ("4", "Portafolios", ""), (str(len(all_listed)), "Tickers en listas", ""),
-        (str(len(analyzed_all)), "Analizados", ""), (str(len(pending)), "Pendientes", ""),
-        (str(sum(1 for r in reports.values() if r["verdict"] == "buy")), "Buy", "buy"),
-        (str(sum(1 for r in reports.values() if r["verdict"] == "hold")), "Hold", "hold"),
-        (str(sum(1 for r in reports.values() if r["verdict"] == "avoid")), "Avoid", "avoid"),
+        (str(len(portfolios)), "Stack", ""), (str(len(all_listed)), "Tickers", ""),
+        (str(len(fresh)), "Análisis", ""), (str(len(pending)), "Pendientes", ""),
+        (str(sum(1 for r in fresh.values() if r["verdict"] == "buy")), "Buy", "buy"),
+        (str(sum(1 for r in fresh.values() if r["verdict"] == "hold")), "Hold", "hold"),
+        (str(sum(1 for r in fresh.values() if r["verdict"] == "avoid")), "Avoid", "avoid"),
     ]
     stats_html = "\n".join(
         f'    <div class="stat{(" " + cls) if cls else ""}"><div class="v">{v}</div><div class="k">{k}</div></div>'
         for v, k, cls in stats)
 
-    # ── dashboard ──
+    # ── dashboard: panel grande ──
     cards = []
     for p in portfolios:
         acc = ACCENT.get(p["name"], "var(--cyan)")
-        n = len(p["tickers"]); done = sum(1 for t in p["tickers"] if t in reports)
+        n = len(p["tickers"]); done = sum(1 for t in p["tickers"] if t in fresh)
         pct = round(100 * done / n) if n else 0
         desc = re.sub(r"\*\*", "", p["description"])
+        mtimes = [fresh[t]["mtime"] for t in p["tickers"] if t in fresh]
+        upd = fecha(max(mtimes)) if mtimes else "—"
         cards.append(f"""    <div class="pf-card" style="--accent:{acc};">
       <div class="pf-name">{p["name"]}</div>
       <div class="pf-desc">{desc}</div>
       <div class="pf-progress"><span>{done}/{n} analizados</span><div class="track"><i style="width:{pct}%"></i></div></div>
-      <div class="pf-chips">{chips_for(p["tickers"], reports)}</div>
+      <div class="pf-chips">{chips_for(p["tickers"], fresh)}</div>
+      <div class="pf-date">actualizado {upd}</div>
     </div>""")
     dash_html = ('  <section class="dash">\n'
-                 '    <div class="sec-title"><span class="n">STACK</span> Portafolios en vigilancia</div>\n'
-                 '    <div class="dash-grid">\n' + "\n".join(cards) + "\n    </div>\n  </section>")
+                 '    <div class="sec-title"><span class="n">PF</span> Portfolio architecture</div>\n'
+                 '    <div class="dash-panel">\n'
+                 '      <div class="dash-bar"><i></i><i></i><i></i><em>portfolio_architecture</em></div>\n'
+                 '      <div class="dash-grid">\n' + "\n".join(cards) + "\n      </div>\n"
+                 '    </div>\n  </section>')
 
-    # ── fuera de portafolio ──
+    # ── Individual Equities (solo frescos fuera de portafolio) ──
     if outside:
         misc_html = ('  <section class="misc">\n'
-                     '    <div class="sec-title"><span class="n">EXT</span> Fuera de portafolio (analizados individualmente)</div>\n'
-                     '    <div class="pf-chips">' + chips_for(outside, reports) + '</div>\n  </section>')
+                     '    <div class="sec-title"><span class="n">EQ</span> Individual Equities</div>\n'
+                     '    <div class="pf-chips">' + chips_for(outside, fresh) + '</div>\n  </section>')
     else:
         misc_html = ""
 
@@ -107,9 +127,15 @@ def main():
     open(INDEX, "w", encoding="utf-8").write(html)
 
     print(f"✔ index regenerado: {len(portfolios)} portafolios, {len(all_listed)} tickers listados")
-    print(f"  analizados: {len(analyzed_all)} (en portafolios: {len(analyzed_in_pf)}, fuera: {len(outside)})")
-    print(f"  pendientes: {len(pending)} -> {', '.join(pending)}")
-    print(f"  fuera de portafolio: {', '.join(outside) if outside else '(ninguno)'}")
+    print(f"  analizados frescos (≤{FRESH_DAYS}d): {len(fresh)} | en portafolios: {len(set(fresh) & set(all_listed))} | fuera: {len(outside)}")
+    print(f"  pendientes: {len(pending)}")
+    print(f"  individual equities: {', '.join(outside) if outside else '(ninguno)'}")
+    if stale:
+        print(f"  ⚠ STALE ({len(stale)} análisis > {FRESH_DAYS} días, eliminar de GitHub):")
+        for t in stale:
+            print(f"     git rm 'Neuromancer/{fresh.get(t, {}).get('url', f'neuromancer-council-{t.lower()}.html')}'")
+    else:
+        print("  (sin análisis stale — nada que purgar)")
 
 if __name__ == "__main__":
     main()

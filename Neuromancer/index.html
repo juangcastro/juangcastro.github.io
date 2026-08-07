@@ -101,21 +101,56 @@
 
   /* ── strip de stats ───────────────────── */
   .stats {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin: 30px 0 8px;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 30px 0 8px;
     animation: fadeIn .6s ease-out .12s both;
   }
-  @media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } }
   .stat {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-    padding: 14px 16px; text-align: center;
+    width: 92px; height: 92px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+    text-align: center;
     transition-property: border-color, transform, box-shadow; transition-duration: .18s; transition-timing-function: ease-out;
   }
   .stat:hover { border-color: var(--cyan); transform: translateY(-2px); box-shadow: 0 0 18px -6px var(--glow-cyan); }
-  .stat .v { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 24px; font-variant-numeric: tabular-nums; color: var(--text); }
-  .stat .k { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
-  .stat.buy .v { color: var(--green); text-shadow: 0 0 14px var(--glow-green); }
-  .stat.hold .v { color: var(--amber); text-shadow: 0 0 14px rgba(255, 176, 32, .35); }
-  .stat.avoid .v { color: var(--magenta); text-shadow: 0 0 14px var(--glow-magenta); }
+  .stat .v { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; color: var(--text); }
+  .stat .k { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .stat.buy .v { color: var(--green); text-shadow: 0 0 16px var(--glow-green); }
+  .stat.hold .v { color: var(--amber); text-shadow: 0 0 16px rgba(255, 176, 32, .35); }
+  .stat.avoid .v { color: var(--magenta); text-shadow: 0 0 16px var(--glow-magenta); }
+
+  /* ── títulos de sección (igual que reportes) ── */
+  .sec-title {
+    display: flex; align-items: center; gap: 12px; margin: 40px 0 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .16em;
+    color: var(--cyan); text-shadow: 0 0 14px var(--glow-cyan);
+  }
+  .sec-title .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 26px; height: 26px; padding: 0 7px; border-radius: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    font-size: 10px; letter-spacing: .1em; color: var(--muted); text-shadow: none;
+  }
+
+  /* ── panel grande de portafolios ───────── */
+  .dash-panel {
+    border: 1px solid var(--border); border-radius: 24px;
+    padding: 0 22px 24px;
+    background: linear-gradient(180deg, rgba(0, 229, 255, .04), transparent 26%), var(--card);
+    box-shadow: 0 0 44px -20px var(--glow-cyan), inset 0 1px 0 rgba(255,255,255,.03);
+  }
+  .dash-bar {
+    display: flex; align-items: center; gap: 7px;
+    padding: 12px 0 14px; margin-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .dash-bar i { width: 9px; height: 9px; border-radius: 50%; }
+  .dash-bar i:nth-child(1) { background: var(--magenta); box-shadow: 0 0 8px var(--glow-magenta); }
+  .dash-bar i:nth-child(2) { background: var(--amber); box-shadow: 0 0 8px rgba(255,176,32,.5); }
+  .dash-bar i:nth-child(3) { background: var(--green); box-shadow: 0 0 8px var(--glow-green); }
+  .dash-bar em { margin-left: auto; font-style: normal; }
 
   /* ── timeline ─────────────────────────── */
   .timeline { position: relative; margin-top: 44px; }
@@ -259,6 +294,7 @@
   .pf-card .pf-progress .track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
   .pf-card .pf-progress .track i { display: block; height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent, var(--cyan)), var(--violet)); }
   .pf-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .pf-card .pf-date { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
   .pf-chip {
     display: inline-flex; align-items: center; gap: 7px;
     padding: 5px 11px; border-radius: 9px;
@@ -315,9 +351,9 @@
   </div>
 
   <!-- STATS:START -->
-    <div class="stat"><div class="v">4</div><div class="k">Portafolios</div></div>
-    <div class="stat"><div class="v">37</div><div class="k">Tickers en listas</div></div>
-    <div class="stat"><div class="v">12</div><div class="k">Analizados</div></div>
+    <div class="stat"><div class="v">4</div><div class="k">Stack</div></div>
+    <div class="stat"><div class="v">37</div><div class="k">Tickers</div></div>
+    <div class="stat"><div class="v">12</div><div class="k">Análisis</div></div>
     <div class="stat"><div class="v">26</div><div class="k">Pendientes</div></div>
     <div class="stat buy"><div class="v">3</div><div class="k">Buy</div></div>
     <div class="stat hold"><div class="v">7</div><div class="k">Hold</div></div>
@@ -326,32 +362,39 @@
 
   <!-- DASHBOARD:START -->
   <section class="dash">
-    <div class="sec-title"><span class="n">STACK</span> Portafolios en vigilancia</div>
-    <div class="dash-grid">
+    <div class="sec-title"><span class="n">PF</span> Portfolio architecture</div>
+    <div class="dash-panel">
+      <div class="dash-bar"><i></i><i></i><i></i><em>portfolio_architecture</em></div>
+      <div class="dash-grid">
     <div class="pf-card" style="--accent:var(--cyan);">
       <div class="pf-name">Manhattan Project 2.0</div>
       <div class="pf-desc">Impulso de la Casa Blanca por su "misión Genesis". Tesis basada en la "AI Dislocation": desviar el capital de las acciones de software IA sobrevaloradas y de  semiconductores, y reorientarlo hacia red eléctrica, materiales críticos y middleware con respaldo del gobierno.</div>
       <div class="pf-progress"><span>10/10 analizados</span><div class="track"><i style="width:100%"></i></div></div>
       <div class="pf-chips"><a class="pf-chip buy" href="neuromancer-council-nvt.html"><span class="dot"></span>NVT<span class="pct">7/10</span></a> <a class="pf-chip hold" href="neuromancer-council-fix.html"><span class="dot"></span>FIX<span class="pct">6/10</span></a> <a class="pf-chip buy" href="neuromancer-council-mtz.html"><span class="dot"></span>MTZ<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-strl.html"><span class="dot"></span>STRL<span class="pct">6/10</span></a> <a class="pf-chip buy" href="neuromancer-council-aa.html"><span class="dot"></span>AA<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-lac.html"><span class="dot"></span>LAC<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-pwr.html"><span class="dot"></span>PWR<span class="pct">7/10</span></a> <a class="pf-chip hold" href="neuromancer-council-mp.html"><span class="dot"></span>MP<span class="pct">5/10</span></a> <a class="pf-chip hold" href="neuromancer-council-gev.html"><span class="dot"></span>GEV<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-tmq.html"><span class="dot"></span>TMQ<span class="pct">4/10</span></a></div>
+      <div class="pf-date">actualizado 07 ago 2026</div>
     </div>
     <div class="pf-card" style="--accent:var(--magenta);">
       <div class="pf-name">1 Million stack</div>
       <div class="pf-desc">Influyentes en la narrativa de cambio de estructura productiva mundial, hacia la robótica, artificial intelligence, compute, energy.</div>
       <div class="pf-progress"><span>2/19 analizados</span><div class="track"><i style="width:11%"></i></div></div>
       <div class="pf-chips"><span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>TSLA</span> <a class="pf-chip avoid" href="neuromancer-council-palantir.html"><span class="dot"></span>PLTR<span class="pct">7/10</span></a> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>CCJ</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>TSM</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>AVGO</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>NVDA</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>NNE</span> <a class="pf-chip hold" href="neuromancer-council-gev.html"><span class="dot"></span>GEV<span class="pct">6/10</span></a> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>LEU</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>HOOD</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>ARKK</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>NU</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>GOOGL</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>SPCX</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>CEG</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>CRSP</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>GE</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>META</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>MSFT</span></div>
+      <div class="pf-date">actualizado 07 ago 2026</div>
     </div>
-    <div class="pf-card" style="--accent:var(--cyan);">
+    <div class="pf-card" style="--accent:var(--amber);">
       <div class="pf-name">Emerging players</div>
       <div class="pf-desc">Stocks que surgen en el radar para considerar a corto/mediano plazo.</div>
       <div class="pf-progress"><span>0/6 analizados</span><div class="track"><i style="width:0%"></i></div></div>
       <div class="pf-chips"><span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>MRVL</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>BE</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>VRT</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>ARM</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>OKLO</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>POET</span></div>
+      <div class="pf-date">actualizado —</div>
     </div>
     <div class="pf-card" style="--accent:var(--violet);">
       <div class="pf-name">Quantum</div>
       <div class="pf-desc">Key players en la escena de Quantum Computing: próxima frontera en la tecnología de datos. Largo plazo.</div>
       <div class="pf-progress"><span>0/3 analizados</span><div class="track"><i style="width:0%"></i></div></div>
       <div class="pf-chips"><span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>IONQ</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>RGTI</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>QBTS</span></div>
+      <div class="pf-date">actualizado —</div>
     </div>
+      </div>
     </div>
   </section>
 <!-- DASHBOARD:END -->
@@ -434,7 +477,7 @@
 
   <!-- MISC:START -->
   <section class="misc">
-    <div class="sec-title"><span class="n">EXT</span> Fuera de portafolio (analizados individualmente)</div>
+    <div class="sec-title"><span class="n">EQ</span> Individual Equities</div>
     <div class="pf-chips"><a class="pf-chip avoid" href="neuromancer-council-enha.html"><span class="dot"></span>ENHA<span class="pct">8/10</span></a></div>
   </section>
 <!-- MISC:END -->
