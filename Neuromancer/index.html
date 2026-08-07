@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neuromancer — Report Archive</title>
+<link rel="icon" type="image/jpeg" href="assets/neuromancer-logo-favicon.jpg">
+<link rel="apple-touch-icon" href="assets/neuromancer-logo-single.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -65,6 +67,7 @@
   .brand { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 19px; letter-spacing: .32em; color: var(--cyan); text-transform: uppercase; text-shadow: 0 0 18px var(--glow-cyan); }
   .brand em { font-style: normal; color: var(--magenta); text-shadow: 0 0 18px var(--glow-magenta); }
   .brand small { display: block; font-size: 10px; font-weight: 500; letter-spacing: .3em; color: var(--muted); text-shadow: none; }
+  .brand img { height: 40px; width: auto; display: block; filter: drop-shadow(0 0 14px rgba(255, 46, 151, .45)); }
   .status { display: flex; align-items: center; gap: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--muted); letter-spacing: .08em; }
   .status .live { display: flex; align-items: center; gap: 6px; color: var(--green); }
   .status .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--glow-green); animation: pulse 2s infinite; }
@@ -227,6 +230,7 @@
   footer a { color: var(--cyan); text-decoration: none; transition-property: color, text-shadow; transition-duration: .15s; transition-timing-function: ease-out; }
   footer a:hover { color: var(--magenta); text-shadow: 0 0 12px var(--glow-magenta); }
 
+    .hero-logo { height: 128px; width: auto; margin: 8px 0 20px; display: block; filter: drop-shadow(0 0 30px rgba(255, 46, 151, .4)); }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -237,7 +241,7 @@
 <div class="wrap">
 
   <header>
-    <div class="brand">Neuromancer<em>_</em><small>Investment Council · Archive</small></div>
+    <div class="brand"><img src="assets/neuromancer-logo-complete.jpg" alt="Neuromancer"></div>
     <div class="status">
       <span class="live">SYSTEM LIVE</span>
       <span>5/5 MEMBERS</span>
@@ -247,6 +251,7 @@
 
   <div class="hero">
     <div class="term"><b>&gt;</b> neuromancer.council --archive --live<span class="cursor"></span></div>
+    <img class="hero-logo" src="assets/neuromancer-logo-complete.jpg" alt="Neuromancer">
     <h1>REPORT_ARCHIVE</h1>
     <p class="sub">El archivo del <b>Consejo Neuromancer</b>: análisis de inversión puro desde las premisas de sus cinco miembros — Buffett, Dalio, Lynch, Ackman y Cathie Wood. Cada reporte, un veredicto con su fricción.</p>
   </div>
@@ -337,7 +342,7 @@
 
   <footer>
     <div class="disc">Información educativa y de análisis, no constituye asesoría financiera. Reportes generados por el Consejo Neuromancer (análisis de inversión puro).</div>
-    <div>Actualizado: 07 ago 2026 · <a href="https://theredqueen.co">theredqueen.co ↗</a></div>
+    <div style="display:flex; align-items:center; gap:10px;"><img src="assets/neuromancer-logo-single.jpg" alt="N" style="height:20px; opacity:.85;">Actualizado: 07 ago 2026 · <a href="https://theredqueen.co">theredqueen.co ↗</a></div>
   </footer>
 
 </div>
