@@ -110,18 +110,11 @@ def main():
     </div>""")
     dash_html = ('  <section class="dash">\n'
                  '    <div class="sec-title"><span class="n">PF</span> Portfolio architecture</div>\n'
-                 '    <div class="dash-panel">\n'
-                 '      <div class="dash-bar"><i></i><i></i><i></i><em>portfolio_architecture</em></div>\n'
-                 '      <div class="dash-grid">\n' + "\n".join(cards) + "\n      </div>\n"
-                 '    </div>\n  </section>')
+                 '    <div class="dash-grid">\n' + "\n".join(cards) + "\n    </div>\n  </section>")
 
-    # ── Individual Equities (solo frescos fuera de portafolio) ──
-    if outside:
-        misc_html = ('  <section class="misc">\n'
-                     '    <div class="sec-title"><span class="n">EQ</span> Individual Equities</div>\n'
-                     '    <div class="pf-chips">' + chips_for(outside, fresh) + '</div>\n  </section>')
-    else:
-        misc_html = ""
+    # ── MISC: vacío — la cronología "Individual Equities" es manual (solo
+    # análisis ≤60d fuera de portafolio; los de portafolio viven en el dashboard).
+    misc_html = ""
 
     # ── reemplazar entre markers ──
     html = open(INDEX, encoding="utf-8").read()
