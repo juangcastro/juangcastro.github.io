@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odyssey Metrics — Garmin · Observable Plot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f; --card: #12142a; --border: #252b52;
+    --text: #e8ecff; --muted: #8b92b8;
+    --red: #ff3b5c; --cyan: #00e5ff; --violet: #8b5cf6; --green: #00ff9d; --amber: #ffb020;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased;
+    line-height: 1.6; padding: 32px 20px;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -2;
+    background:
+      radial-gradient(900px 480px at 85% -10%, rgba(139, 92, 246, .18), transparent 60%),
+      radial-gradient(800px 420px at -10% 20%, rgba(0, 229, 255, .10), transparent 60%),
+      var(--bg);
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; letter-spacing: .3em; color: var(--cyan); text-transform: uppercase; }
+  .brand em { font-style: normal; color: var(--red); }
+  .sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+  h1 { font-size: 24px; font-weight: 700; margin: 6px 0 2px; color: var(--text); }
+  .desc { color: var(--muted); font-size: 13.5px; max-width: 720px; margin-bottom: 24px; }
+  .card {
+    background: linear-gradient(160deg, var(--card), rgba(13,15,30,.6));
+    border: 1px solid var(--border); border-radius: 18px;
+    padding: 20px 22px; margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 14px; font-weight: 600; color: var(--muted);
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .12em;
+    text-transform: uppercase; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card h2::before { content: ""; width: 18px; height: 2px; background: var(--red); box-shadow: 0 0 8px rgba(255,59,92,.6); }
+  .plot { width: 100%; overflow-x: auto; }
+  .plot svg { display: block; margin: 0 auto; }
+  .note { font-size: 11.5px; color: var(--muted); margin-top: 18px; text-align: center; font-family: 'JetBrains Mono', monospace; }
+  .legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">ODYSSEY<em> METRICS</em></div>
+    <div class="sub">GARMIN CONNECT · ÚLTIMOS 14 DÍAS · 2026-07-25 → 08-07</div>
+  </header>
+  <h1>Tu señal fisiológica, en datos</h1>
+  <p class="desc">Ejemplo de Observable Plot con datos reales de Garmin: HRV nocturno, sueño (horas + score), pasos y Body Battery. Cada chart es ~3-5 líneas de Plot.</p>
+
+  <div class="card">
+    <h2>HRV nocturno — línea + área</h2>
+    <div class="plot" id="hrv"></div>
+  </div>
+
+  <div class="card">
+    <h2>Sueño — horas (barras) + score (línea)</h2>
+    <div class="plot" id="sleep"></div>
+  </div>
+
+  <div class="card">
+    <h2>Pasos diarios — barras con objetivo</h2>
+    <div class="plot" id="steps"></div>
+  </div>
+
+  <div class="card">
+    <h2>Body Battery — cargada vs drenada</h2>
+    <div class="plot" id="bb"></div>
+  </div>
+
+  <p class="note">THE RED QUEEN · GARMIN API · <span style="color:var(--red)">OBSERVABLE PLOT</span> v0.6</p>
+</div>
+
+<script type="module">
+import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const data = [{"date": "2026-07-25", "hrv": 50, "sleep_hours": 3.6, "sleep_score": 52, "steps": 5350, "bb_charged": 69, "bb_drained": 66}, {"date": "2026-07-26", "hrv": 52, "sleep_hours": 8.8, "sleep_score": 78, "steps": 3724, "bb_charged": 55, "bb_drained": 54}, {"date": "2026-07-27", "hrv": 53, "sleep_hours": 6.2, "sleep_score": 82, "steps": 4253, "bb_charged": 58, "bb_drained": 59}, {"date": "2026-07-28", "hrv": 55, "sleep_hours": 4.2, "sleep_score": 61, "steps": 6622, "bb_charged": 60, "bb_drained": 64}, {"date": "2026-07-29", "hrv": 52, "sleep_hours": 6.7, "sleep_score": 83, "steps": 7502, "bb_charged": 66, "bb_drained": 52}, {"date": "2026-07-30", "hrv": 50, "sleep_hours": 5.4, "sleep_score": 75, "steps": 9164, "bb_charged": 47, "bb_drained": 64}, {"date": "2026-07-31", "hrv": 57, "sleep_hours": 6.2, "sleep_score": 79, "steps": 8435, "bb_charged": 73, "bb_drained": 52}, {"date": "2026-08-01", "hrv": 60, "sleep_hours": 8.3, "sleep_score": 91, "steps": 4802, "bb_charged": 57, "bb_drained": 39}, {"date": "2026-08-02", "hrv": 64, "sleep_hours": 6.0, "sleep_score": 78, "steps": 5605, "bb_charged": 72, "bb_drained": 57}, {"date": "2026-08-03", "hrv": 64, "sleep_hours": 8.1, "sleep_score": 93, "steps": 3357, "bb_charged": 52, "bb_drained": 57}, {"date": "2026-08-04", "hrv": 46, "sleep_hours": 6.4, "sleep_score": 81, "steps": 8222, "bb_charged": 48, "bb_drained": 56}, {"date": "2026-08-05", "hrv": 46, "sleep_hours": 6.3, "sleep_score": 79, "steps": 8757, "bb_charged": 58, "bb_drained": 65}, {"date": "2026-08-06", "hrv": 45, "sleep_hours": 4.7, "sleep_score": 69, "steps": 5756, "bb_charged": 50, "bb_drained": 57}, {"date": "2026-08-07", "hrv": 40, "sleep_hours": 6.8, "sleep_score": 87, "steps": 995, "bb_charged": 55, "bb_drained": 17}].map(d => ({...d, date: new Date(d.date + "T00:00:00")}));
+
+// ── HRV ─────────────────────────────────────────────
+const hrv = data.filter(d => d.hrv != null);
+const hrvPlot = Plot.plot({
+  style: { background: "transparent", color: "#e8ecff", fontFamily: "'Inter', sans-serif", fontSize: 12 },
+  width: 980, height: 260,
+  marginLeft: 45, marginBottom: 32,
+  x: { label: null, type: "time", tickFormat: d3.timeFormat("%d %b") },
+  y: { label: "HRV (ms)", grid: true, domain: [30, 75] },
+  color: { range: ["#00e5ff"] },
+  marks: [
+    Plot.areaY(hrv, { x: "date", y: "hrv", fill: "rgba(0,229,255,.15)", curve: "monotone-x" }),
+    Plot.lineY(hrv, { x: "date", y: "hrv", stroke: "#00e5ff", strokeWidth: 2, curve: "monotone-x", tip: true }),
+    Plot.dot(hrv, { x: "date", y: "hrv", fill: "#00e5ff", r: 3, tip: true }),
+    Plot.ruleY([52], { stroke: "#ffb020", strokeDasharray: "4,4", strokeOpacity: .6 })
+  ]
+});
+document.querySelector("#hrv").append(hrvPlot);
+
+// ── Sueño ───────────────────────────────────────────
+const sleep = data.filter(d => d.sleep_hours != null);
+const sleepPlot = Plot.plot({
+  style: { background: "transparent", color: "#e8ecff", fontFamily: "'Inter', sans-serif", fontSize: 12 },
+  width: 980, height: 260,
+  marginLeft: 45, marginBottom: 32,
+  x: { label: null, tickFormat: d3.timeFormat("%d %b") },
+  y: { label: "Horas", grid: true },
+  color: { range: ["#8b5cf6", "#00ff9d"] },
+  marks: [
+    Plot.barY(sleep, { x: "date", y: "sleep_hours", interval: "day", fill: "#8b5cf6", fillOpacity: .75, tip: true }),
+    Plot.lineY(sleep, { x: "date", y: "sleep_score", stroke: "#00ff9d", strokeWidth: 2, curve: "monotone-x", tip: true })
+  ]
+});
+sleepPlot.insertAdjacentHTML("beforeend", '<text x="930" y="40" fill="#00ff9d" font-size="11" font-family="JetBrains Mono, monospace">score ▬</text>');
+document.querySelector("#sleep").append(sleepPlot);
+
+// ── Pasos ───────────────────────────────────────────
+const steps = data.filter(d => d.steps != null);
+const stepsPlot = Plot.plot({
+  style: { background: "transparent", color: "#e8ecff", fontFamily: "'Inter', sans-serif", fontSize: 12 },
+  width: 980, height: 240,
+  marginLeft: 45, marginBottom: 32,
+  x: { label: null, tickFormat: d3.timeFormat("%d %b") },
+  y: { label: "Pasos", grid: true },
+  marks: [
+    Plot.barY(steps, { x: "date", y: "steps", interval: "day", fill: "rgba(255,59,92,.55)", tip: true }),
+    Plot.ruleY([8000], { stroke: "#ffb020", strokeDasharray: "4,4", strokeOpacity: .5 })
+  ]
+});
+document.querySelector("#steps").append(stepsPlot);
+
+// ── Body Battery ────────────────────────────────────
+const bb = data.filter(d => d.bb_charged != null);
+const bbPlot = Plot.plot({
+  style: { background: "transparent", color: "#e8ecff", fontFamily: "'Inter', sans-serif", fontSize: 12 },
+  width: 980, height: 260,
+  marginLeft: 45, marginBottom: 32,
+  x: { label: null, type: "time", tickFormat: d3.timeFormat("%d %b") },
+  y: { label: "Body Battery", grid: true, domain: [0, 100] },
+  color: { range: ["#ff3b5c", "#00e5ff"] },
+  marks: [
+    Plot.areaY(bb, { x: "date", y: "bb_charged", fill: "rgba(255,59,92,.18)", curve: "monotone-x" }),
+    Plot.lineY(bb, { x: "date", y: "bb_charged", stroke: "#ff3b5c", strokeWidth: 2, curve: "monotone-x", tip: true }),
+    Plot.areaY(bb, { x: "date", y: "bb_drained", fill: "rgba(0,229,255,.12)", curve: "monotone-x" }),
+    Plot.lineY(bb, { x: "date", y: "bb_drained", stroke: "#00e5ff", strokeWidth: 1.5, strokeDasharray: "3,3", curve: "monotone-x", tip: true })
+  ]
+});
+document.querySelector("#bb").append(bbPlot);
+</script>
+</body>
+</html>
