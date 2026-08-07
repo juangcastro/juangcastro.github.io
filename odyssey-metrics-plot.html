@@ -108,32 +108,38 @@ const hrvPlot = Plot.plot({
 document.querySelector("#hrv").append(hrvPlot);
 
 // ── Sueño ───────────────────────────────────────────
-const sleep = data.filter(d => d.sleep_hours != null);
+// x nominal con etiquetas cortas (evita la escala temporal que rompe barY)
+const sleep = data
+  .filter(d => d.sleep_hours != null)
+  .map(d => ({...d, day: d.date.toLocaleDateString("es-CO", {day: "2-digit", month: "short"})}));
 const sleepPlot = Plot.plot({
   style: { background: "transparent", color: "#e8ecff", fontFamily: "'Inter', sans-serif", fontSize: 12 },
   width: 980, height: 260,
-  marginLeft: 45, marginBottom: 32,
-  x: { label: null, tickFormat: d3.timeFormat("%d %b") },
+  marginLeft: 45, marginBottom: 36,
+  x: { label: null, tickRotate: -30 },
   y: { label: "Horas", grid: true },
+  y2: { label: "Score", domain: [0, 100] },
   color: { range: ["#8b5cf6", "#00ff9d"] },
   marks: [
-    Plot.barY(sleep, { x: "date", y: "sleep_hours", interval: "day", fill: "#8b5cf6", fillOpacity: .75, tip: true }),
-    Plot.lineY(sleep, { x: "date", y: "sleep_score", stroke: "#00ff9d", strokeWidth: 2, curve: "monotone-x", tip: true })
+    Plot.barY(sleep, { x: "day", y: "sleep_hours", fill: "#8b5cf6", fillOpacity: .75, tip: true }),
+    Plot.lineY(sleep, { x: "day", y2: "sleep_score", stroke: "#00ff9d", strokeWidth: 2, curve: "monotone-x", tip: true })
   ]
 });
 sleepPlot.insertAdjacentHTML("beforeend", '<text x="930" y="40" fill="#00ff9d" font-size="11" font-family="JetBrains Mono, monospace">score ▬</text>');
 document.querySelector("#sleep").append(sleepPlot);
 
 // ── Pasos ───────────────────────────────────────────
-const steps = data.filter(d => d.steps != null);
+const steps = data
+  .filter(d => d.steps != null)
+  .map(d => ({...d, day: d.date.toLocaleDateString("es-CO", {day: "2-digit", month: "short"})}));
 const stepsPlot = Plot.plot({
   style: { background: "transparent", color: "#e8ecff", fontFamily: "'Inter', sans-serif", fontSize: 12 },
   width: 980, height: 240,
-  marginLeft: 45, marginBottom: 32,
-  x: { label: null, tickFormat: d3.timeFormat("%d %b") },
+  marginLeft: 45, marginBottom: 36,
+  x: { label: null, tickRotate: -30 },
   y: { label: "Pasos", grid: true },
   marks: [
-    Plot.barY(steps, { x: "date", y: "steps", interval: "day", fill: "rgba(255,59,92,.55)", tip: true }),
+    Plot.barY(steps, { x: "day", y: "steps", fill: "rgba(255,59,92,.55)", tip: true }),
     Plot.ruleY([8000], { stroke: "#ffb020", strokeDasharray: "4,4", strokeOpacity: .5 })
   ]
 });
