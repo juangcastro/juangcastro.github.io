@@ -1,0 +1,97 @@
+{
+  "generated_at": "2026-08-07T18:05:46",
+  "portfolios": [
+    {
+      "name": "Manhattan Project 2.0",
+      "description": "Impulso de la Casa Blanca por su \"misión Genesis\". Tesis basada en la **\"AI Dislocation\"**: desviar el capital de las acciones de software IA sobrevaloradas y de  semiconductores, y reorientarlo hacia red eléctrica, materiales críticos y middleware con respaldo del gobierno.",
+      "tickers": [
+        "NVT",
+        "FIX",
+        "MTZ",
+        "STRL",
+        "AA",
+        "LAC",
+        "PWR",
+        "MP",
+        "GEV",
+        "TMQ"
+      ],
+      "sets": {}
+    },
+    {
+      "name": "1 Million stack",
+      "description": "Influyentes en la narrativa de cambio de estructura productiva mundial, hacia la robótica, artificial intelligence, compute, energy.",
+      "tickers": [
+        "TSLA",
+        "PLTR",
+        "CCJ",
+        "TSM",
+        "AVGO",
+        "NVDA",
+        "NNE",
+        "GEV",
+        "LEU",
+        "HOOD",
+        "ARKK",
+        "NU",
+        "GOOGL",
+        "SPCX",
+        "CEG",
+        "CRSP",
+        "GE",
+        "META",
+        "MSFT"
+      ],
+      "sets": {
+        "Set 1": [
+          "TSLA",
+          "PLTR",
+          "CCJ",
+          "TSM",
+          "AVGO",
+          "NVDA"
+        ],
+        "Set 2": [
+          "NNE",
+          "GEV",
+          "LEU",
+          "HOOD",
+          "ARKK",
+          "NU",
+          "GOOGL",
+          "SPCX"
+        ],
+        "Set 3": [
+          "CEG",
+          "CRSP",
+          "GE",
+          "META",
+          "MSFT"
+        ]
+      }
+    },
+    {
+      "name": "Emerging players",
+      "description": "Stocks que surgen en el radar para considerar a corto/mediano plazo.",
+      "tickers": [
+        "MRVL",
+        "BE",
+        "VRT",
+        "ARM",
+        "OKLO",
+        "POET"
+      ],
+      "sets": {}
+    },
+    {
+      "name": "Quantum",
+      "description": "Key players en la escena de Quantum Computing: próxima frontera en la tecnología de datos. Largo plazo.",
+      "tickers": [
+        "IONQ",
+        "RGTI",
+        "QBTS"
+      ],
+      "sets": {}
+    }
+  ]
+}
