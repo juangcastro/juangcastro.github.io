@@ -29,6 +29,14 @@ MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "
 ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "1 Million stack": "var(--magenta)",
           "Emerging players": "var(--amber)", "Quantum": "var(--violet)"}
 
+# ── Lo notable de cada portafolio (resumen del Consejo, mostrado en su card) ──
+NOTABLES = {
+    "Manhattan Project 2.0": "El basket más dividido: minerales con fricción máxima (Buffett AVOID 9 vs Cathie BUY 7 en LAC); los 3 BUY tienen margen (fwd ≤27x) — en los 7 HOLD la tesis ganó, el precio llegó primero.",
+    "1 Million stack": "El corazón de la IA: 8 BUY (semis, plataformas, nuclear) incluyendo el primer voto unánime 5-0 del Consejo (CEG); PLTR y NNE, los únicos AVOID.",
+    "Emerging players": "El portafolio más cauto: 0 BUY — tesis reales con PEG >2 y precios adelantados; Cathie compró sola en 4 de 6 (BE, VRT, ARM, OKLO).",
+    "Quantum": "El rechazo más duro del Consejo: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
+}
+
 def fecha(ts):
     t = time.localtime(ts)
     return f"{t.tm_mday:02d} {MESES[t.tm_mon-1]} {t.tm_year}"
@@ -106,6 +114,7 @@ def main():
       <div class="pf-desc">{desc}</div>
       <div class="pf-progress"><span>{done}/{n} analizados</span><div class="track"><i style="width:{pct}%"></i></div></div>
       <div class="pf-chips">{chips_for(p["tickers"], fresh)}</div>
+      <div class="pf-note">◈ {NOTABLES.get(p["name"], "")}</div>
       <div class="pf-date">actualizado {upd}</div>
     </div>""")
     dash_html = ('  <section class="dash">\n'
