@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neuromancer — Investment Council · Vertiv (VRT)</title>
+<link rel="icon" type="image/png" href="assets/neuromancer-logo-favicon.png">
+<link rel="apple-touch-icon" href="assets/neuromancer-logo-single.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --cyan: #00e5ff;
+    --magenta: #ff2e97;
+    --violet: #8b5cf6;
+    --green: #00ff9d;
+    --amber: #ffb020;
+    --red: #ff4d6d;
+    --glow-cyan: rgba(0, 229, 255, .45);
+    --glow-magenta: rgba(255, 46, 151, .45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  /* fondo cyberpunk: rejilla + resplandores */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -2;
+    background:
+      radial-gradient(900px 480px at 85% -10%, rgba(139, 92, 246, .22), transparent 60%),
+      radial-gradient(800px 420px at -10% 20%, rgba(0, 229, 255, .14), transparent 60%),
+      radial-gradient(700px 500px at 50% 115%, rgba(255, 46, 151, .12), transparent 60%),
+      var(--bg);
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(0, 229, 255, .05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 229, 255, .05) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 64px; }
+
+  /* ── top bar ─────────────────────────── */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    padding: 18px 0; border-bottom: 1px solid var(--border);
+    animation: fadeIn .5s ease-out both;
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 20px; letter-spacing: .35em;
+    color: var(--cyan); text-shadow: 0 0 18px var(--glow-cyan);
+    text-transform: uppercase;
+  }
+  .brand em { font-style: normal; color: var(--magenta); text-shadow: 0 0 18px var(--glow-magenta); }
+  .brand small {
+    display: block; font-size: 10px; font-weight: 500;
+    letter-spacing: .3em; color: var(--muted); text-shadow: none;
+  }
+  .brand img { height: 26px; width: auto; display: block; filter: drop-shadow(0 0 14px rgba(255, 46, 151, .45)); }
+  .meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .meta b { color: var(--text); font-weight: 500; }
+
+  /* ── hero / veredicto ────────────────── */
+  .hero {
+    margin: 36px 0 28px; padding: 34px 34px 30px;
+    background: linear-gradient(135deg, var(--card), var(--card-2));
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 0 0 1px transparent, 0 24px 60px -24px rgba(0, 0, 0, .8), 0 0 42px -18px var(--glow-cyan);
+    animation: fadeIn .6s ease-out .08s both;
+  }
+  .hero .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--cyan);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero .kicker::before { content: ""; width: 26px; height: 1px; background: var(--cyan); box-shadow: 0 0 8px var(--glow-cyan); }
+  .hero h1 {
+    margin: 14px 0 6px; font-size: clamp(26px, 4vw, 40px); font-weight: 800;
+    letter-spacing: -.02em; text-wrap: balance;
+    background: linear-gradient(90deg, var(--cyan), var(--violet), var(--magenta));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero .subj {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .verdict-row { display: flex; align-items: center; gap: 18px; margin-top: 22px; flex-wrap: wrap; }
+  .verdict-badge {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 22px;
+    letter-spacing: .12em; padding: 10px 22px; border-radius: 14px;
+    border: 1px solid currentColor; text-transform: uppercase;
+  }
+  .verdict-badge.buy    { color: var(--green);  box-shadow: 0 0 22px -6px var(--green);  }
+  .verdict-badge.hold   { color: var(--amber);  box-shadow: 0 0 22px -6px var(--amber);  }
+  .verdict-badge.sell   { color: var(--red);    box-shadow: 0 0 22px -6px var(--red);    }
+  .verdict-badge.avoid  { color: var(--magenta);box-shadow: 0 0 22px -6px var(--magenta);}
+  .conviction { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); }
+  .conviction b { color: var(--cyan); font-weight: 600; }
+  .hero .rationale { margin-top: 18px; color: #c6cbe8; font-size: 15px; text-wrap: pretty; }
+
+  /* ── secciones ───────────────────────── */
+  section { margin-top: 40px; animation: fadeIn .55s ease-out both; }
+  section:nth-of-type(2) { animation-delay: .12s; }
+  section:nth-of-type(3) { animation-delay: .18s; }
+  section:nth-of-type(4) { animation-delay: .24s; }
+  section:nth-of-type(5) { animation-delay: .3s; }
+  section:nth-of-type(6) { animation-delay: .36s; }
+  .sec-title {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--cyan);
+    margin-bottom: 18px;
+  }
+  .sec-title::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+  .sec-title .n {
+    width: 28px; height: 28px; display: grid; place-items: center;
+    border: 1px solid var(--border); border-radius: 9px; font-size: 12px; color: var(--muted);
+  }
+
+  /* ── tabla de posturas ───────────────── */
+  .table-wrap {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden; overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 720px; }
+  thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+    text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,.015); white-space: nowrap;
+  }
+  tbody td {
+    padding: 16px 18px; border-bottom: 1px solid rgba(37, 43, 82, .55);
+    font-size: 14px; vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { transition-property: background-color, box-shadow; transition-duration: .18s; transition-timing-function: ease-out; }
+  tbody tr:hover { background: rgba(0, 229, 255, .035); box-shadow: inset 3px 0 0 var(--cyan); }
+  .persona { display: flex; align-items: center; gap: 10px; font-weight: 600; white-space: nowrap; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 10px currentColor; }
+  .dot.buffett { background: var(--green);   color: var(--green); }
+  .dot.dalio   { background: var(--cyan);    color: var(--cyan); }
+  .dot.lynch   { background: var(--amber);   color: var(--amber); }
+  .dot.ackman  { background: var(--violet);  color: var(--violet); }
+  .dot.wood    { background: var(--magenta); color: var(--magenta); }
+  .stance {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+    padding: 4px 10px; border-radius: 8px; border: 1px solid currentColor; text-transform: uppercase;
+  }
+  .stance.buy   { color: var(--green);   background: rgba(0,255,157,.07); }
+  .stance.hold  { color: var(--amber);   background: rgba(255,176,32,.07); }
+  .stance.sell  { color: var(--red);     background: rgba(255,77,109,.07); }
+  .stance.avoid { color: var(--magenta); background: rgba(255,46,151,.07); }
+  .thesis { color: #c6cbe8; max-width: 340px; text-wrap: pretty; }
+  .metric { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--cyan); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .conv { min-width: 90px; }
+  .conv .bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 5px; }
+  .conv .bar i { display: block; height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--cyan), var(--violet)); }
+  .conv span { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  /* ── consenso / fricción ─────────────── */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 820px) { .cols { grid-template-columns: 1fr; } }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 22px 24px; }
+  .panel h3 { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 14px; }
+  .panel.agreement h3 { color: var(--green); }
+  .panel.friction h3 { color: var(--magenta); }
+  .f-item {
+    position: relative; padding: 12px 14px 12px 18px; margin-bottom: 10px;
+    background: var(--card); border-radius: 12px; border-left: 3px solid var(--border);
+    font-size: 14px; color: #c6cbe8; text-wrap: pretty;
+    transition-property: transform, border-color; transition-duration: .18s; transition-timing-function: ease-out;
+  }
+  .f-item:hover { transform: translateX(3px); }
+  .panel.agreement .f-item { border-left-color: var(--green); }
+  .panel.friction .f-item { border-left-color: var(--magenta); }
+  .f-item b { color: var(--text); font-weight: 600; }
+
+  /* ── cartera combinada ───────────────── */
+  .alloc { display: flex; flex-direction: column; gap: 14px; }
+  .alloc-row { display: grid; grid-template-columns: 190px 1fr 56px; align-items: center; gap: 16px; }
+  @media (max-width: 640px) { .alloc-row { grid-template-columns: 1fr 1fr; } }
+  .alloc-row .name { font-size: 14px; font-weight: 600; }
+  .alloc-row .name small { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 400; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+  .track { height: 12px; background: var(--border); border-radius: 6px; overflow: hidden; position: relative; }
+  .track i { display: block; height: 100%; border-radius: 6px; transition-property: width; transition-duration: .6s; transition-timing-function: ease-out; }
+  .alloc-row .pct { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+  .g-core { background: linear-gradient(90deg, #00ff9d, #00e5ff); box-shadow: 0 0 14px -3px var(--green); }
+  .g-weather { background: linear-gradient(90deg, #00e5ff, #8b5cf6); box-shadow: 0 0 14px -3px var(--cyan); }
+  .g-garp { background: linear-gradient(90deg, #ffb020, #ff2e97); box-shadow: 0 0 14px -3px var(--amber); }
+  .g-innovation { background: linear-gradient(90deg, #ff2e97, #8b5cf6); box-shadow: 0 0 14px -3px var(--magenta); }
+  .g-activist { background: linear-gradient(90deg, #8b5cf6, #00e5ff); box-shadow: 0 0 14px -3px var(--violet); }
+
+  /* ── riesgos ─────────────────────────── */
+  .risk-card {
+    position: relative; padding: 16px 18px 16px 22px; margin-bottom: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; border-left: 4px solid var(--border);
+    font-size: 14px; color: #c6cbe8; text-wrap: pretty;
+    transition-property: transform, border-color; transition-duration: .18s; transition-timing-function: ease-out;
+  }
+  .risk-card:hover { transform: translateX(3px); }
+  .risk-card .title { font-weight: 700; font-size: 13.5px; margin-bottom: 3px; letter-spacing: .02em; }
+  .risk-card.critical { border-left-color: var(--red); }
+  .risk-card.critical .title { color: var(--red); }
+  .risk-card.info { border-left-color: var(--cyan); }
+  .risk-card.info .title { color: var(--cyan); }
+  .risk-card.good { border-left-color: var(--green); }
+  .risk-card.good .title { color: var(--green); }
+
+  /* ── preguntas pendientes ────────────── */
+  .q-list { list-style: none; }
+  .q-list li {
+    padding: 12px 14px 12px 44px; margin-bottom: 10px; position: relative;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    font-size: 14px; color: #c6cbe8; text-wrap: pretty;
+  }
+  .q-list li::before {
+    content: "?"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    width: 20px; height: 20px; display: grid; place-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--magenta);
+    border: 1px solid var(--magenta); border-radius: 7px;
+  }
+
+  /* ── footer ──────────────────────────── */
+  footer {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  footer .disc { max-width: 460px; color: #5d638a; }
+  footer a { color: var(--cyan); text-decoration: none; transition-property: color, text-shadow; transition-duration: .15s; transition-timing-function: ease-out; }
+  footer a:hover { color: var(--magenta); text-shadow: 0 0 12px var(--glow-magenta); }
+
+  /* ── animación ───────────────────────── */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <a class="brand" href="index.html"><img src="assets/neuromancer-textlogo.png" alt="Neuromancer"></a>
+    <div class="meta">
+      Sesión: <b>07 ago 2026</b><br>
+      Objeto: <b>Vertiv (VRT)</b>
+    </div>
+  </header>
+
+  <!-- ══ VEREDICTO ══ -->
+  <div class="hero">
+    <div class="kicker">Veredicto del Consejo</div>
+    <h1>Negocio de primera (pick-and-shovel del capex de IA) — pero la valoración ya descuenta varios años de perfección: a P/E 61.65 el margen de seguridad brilla por su ausencia</h1>
+    <div class="subj">Vertiv (VRT) · Horizonte: Portafolio Neuromancer (1 Million stack / Emerging players / Quantum) · screening 07-ago-2026</div>
+    <div class="verdict-row">
+      <span class="verdict-badge hold">Hold</span>
+      <span class="conviction">Convicción del Consejo: <b>6/10</b> · dividido 3-2 (3 a favor / 2 en contra)</span>
+    </div>
+    <p class="rationale">HOLD 6: Buffett, Dalio y Lynch frenan por múltiplo y beta (PEG ~2.4, cíclico-capex); Ackman (AVOID 3) ni top-5; Cathie (BUY 8) ve la S-curve del cooling líquido y la densificación de racks. Condición: BUY con pullback a ~$190-200 (fwd ~25) o fwd <30; SELL con revenue <15%, guidance cut o recorte de capex de IA.</p>
+  </div>
+
+  <!-- ══ POSTURAS ══ -->
+  <section>
+    <div class="sec-title"><span class="n">01</span> Posturas del Consejo</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Inversor</th><th>Postura</th><th>Tesis (1 línea)</th><th>Métrica clave</th><th>Convicción</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="persona"><span class="dot buffett"></span>Buffett</span></td>
+            <td><span class="stance hold">Hold</span></td>
+            <td class="thesis">Moat real (escala global, costos de cambio en infraestructura crítica) pero P/E 61.65 sin margen y negocio cíclico-capex.</td>
+            <td class="metric">P/E 61.65 · P/S ~9.1</td>
+            <td class="conv"><span>4/10</span><div class="bar"><i style="width:4444444444%"></i></div></td>
+          </tr>
+          <tr>
+            <td><span class="persona"><span class="dot dalio"></span>Dalio</span></td>
+            <td><span class="stance hold">Hold</span></td>
+            <td class="thesis">Activo de régimen de crecimiento, no all-weather: brilla en expansión y sufre en estrés de crédito; sleeve agresivo.</td>
+            <td class="metric">Beta 2.08</td>
+            <td class="conv"><span>5/10</span><div class="bar"><i style="width:5555555555%"></i></div></td>
+          </tr>
+          <tr>
+            <td><span class="persona"><span class="dot lynch"></span>Lynch</span></td>
+            <td><span class="stance hold">Hold</span></td>
+            <td class="thesis">Fast grower entendible (+26.2% yoy) pero PEG ~2.4 supera su regla de <2: la historia ya la descubrió Wall Street.</td>
+            <td class="metric">PEG ~2.4</td>
+            <td class="conv"><span>6/10</span><div class="bar"><i style="width:6666666666%"></i></div></td>
+          </tr>
+          <tr>
+            <td><span class="persona"><span class="dot ackman"></span>Ackman</span></td>
+            <td><span class="stance avoid">Avoid</span></td>
+            <td class="thesis">Compounder de calidad al que el mercado ya le paga 61x: concentración + múltiplo alto + beta 2.08 = mala combinación.</td>
+            <td class="metric">Margen nulo a 61.65</td>
+            <td class="conv"><span>3/10</span><div class="bar"><i style="width:3333333333%"></i></div></td>
+          </tr>
+          <tr>
+            <td><span class="persona"><span class="dot wood"></span>Cathie Wood</span></td>
+            <td><span class="stance buy">Buy</span></td>
+            <td class="thesis">Exposición directa a la S-curve del cooling líquido y la densificación de racks: TAM de capex de IA a 5-10 años; el -28% es ruido.</td>
+            <td class="metric">+26.2% yoy</td>
+            <td class="conv"><span>8/10</span><div class="bar"><i style="width:8888888888%"></i></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ CONSENSO Y FRICCIÓN ══ -->
+  <section>
+    <div class="sec-title"><span class="n">02</span> Consenso y Fricción</div>
+    <div class="cols">
+      <div class="panel agreement">
+        <h3>▣ Puntos de acuerdo</h3>
+        <div class="f-item"><b>El pick-and-shovel del capex</b> — Cooling líquido, UPS y racks: si los data centers crecen, VRT vende palas — todos entienden el negocio.</div>
+        <div class="f-item"><b>El moat es real</b> — Escala global en térmica/potencia con costos de cambio en infraestructura crítica.</div>
+        <div class="f-item"><b>El precio ya la descubrió</b> — PEG ~2.4 y P/S ~9.1: Wall Street ya cuenta la historia; el consenso solo ofrece +24.1% por el riesgo.</div>
+      </div>
+      <div class="panel friction">
+        <h3>▣ Puntos de fricción</h3>
+        <div class="f-item"><b>Cathie</b> vs <b>Buffett / Ackman</b>: S-curve del cooling líquido con TAM a 5-10 años vs compounder al que el mercado ya le paga 61x.</div>
+        <div class="f-item"><b>Lynch</b> vs <b>sí mismo</b>: 'si los data centers crecen, VRT vende palas' vs PEG ~2.4 que rompe su regla de <2.</div>
+        <div class="f-item"><b>El Consejo</b> vs <b>el cooling líquido</b>: ¿la novedad atrae entrants que commoditizan el segmento de mayor crecimiento? Esa es la amenaza estructural.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CARTERA COMBINADA ══ -->
+  <section>
+    <div class="sec-title"><span class="n">03</span> Cartera combinada (cómo asignaría cada filosofía)</div>
+    <div class="alloc">
+      <div class="alloc-row"><div class="name">Core value <small>Buffett</small></div><div class="track"><i class="g-core" style="width:0%"></i></div><div class="pct">0%</div></div>
+      <div class="alloc-row"><div class="name">All-weather <small>Dalio</small></div><div class="track"><i class="g-weather" style="width:20%"></i></div><div class="pct">20%</div></div>
+      <div class="alloc-row"><div class="name">Crecimiento GARP <small>Lynch</small></div><div class="track"><i class="g-garp" style="width:40%"></i></div><div class="pct">40%</div></div>
+      <div class="alloc-row"><div class="name">Innovación <small>Cathie Wood</small></div><div class="track"><i class="g-innovation" style="width:40%"></i></div><div class="pct">40%</div></div>
+      <div class="alloc-row"><div class="name">Activismo <small>Ackman</small></div><div class="track"><i class="g-activist" style="width:0%"></i></div><div class="pct">0%</div></div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ══ RIESGOS ══ -->
+  <section>
+    <div class="sec-title"><span class="n">04</span> Riesgos y qué cambiaría cada postura</div>
+    <div class="risk-card critical">
+      <div class="title">🔴 Ciclo de capex de IA</div>
+      Si los hyperscalers digieren o recortan inversión, el crecimiento colapsa y la beta 2.08 amplifica la caída (ya -28% desde máximos).
+    </div>
+    <div class="risk-card critical">
+      <div class="title">🔴 Valoración sin red</div>
+      P/E 61.65 deja cero tolerancia a un miss; el consenso (+24.1%) paga poco por el riesgo asumido.
+    </div>
+    <div class="risk-card info">
+      <div class="title">🔵 Competencia en cooling líquido</div>
+      La novedad atrae entrants que pueden commoditizar el segmento de mayor crecimiento.
+    </div>
+    <div class="risk-card good">
+      <div class="title">🟢 Lo que revertiría</div>
+      BUY con pullback a ~$190-200 (fwd ~25) con crecimiento >25% intacto o fwd <30; SELL/AVOID con revenue <15% yoy, guidance cut, recorte de capex de IA o múltiplo >70x con desaceleración.
+    </div>
+  </section>
+
+  <!-- ══ PREGUNTAS ══ -->
+  <section>
+    <div class="sec-title"><span class="n">05</span> Preguntas pendientes para ti</div>
+    <ul class="q-list">
+      <li>¿La pala del capex térmico? El Consejo la respeta — pero espera fwd ~25.</li>
+      <li>¿Soportas beta 2.08 con drawdowns del 50%? Es el costo del sleeve agresivo.</li>
+      <li>¿VRT vs FIX/NVT? Los tres viven del mismo capex — VRT es el más caro de los tres.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div class="disc">Información educativa y de análisis, no constituye asesoría financiera. Fuentes y datos: stockanalysis.com (03-ago-2026) + contexto del Consejo.</div>
+    <div>Actualizado: 07 ago 2026 · <a href="https://theredqueen.co/Neuromancer/neuromancer-council-vrt.html">ver en vivo ↗</a></div>
+  </footer>
+
+</div>
+</body>
+</html>
