@@ -32,7 +32,7 @@ ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "1 Million stack": "var(--mage
 # ── Lo notable de cada portafolio (resumen del Consejo, mostrado en su card) ──
 NOTABLES = {
     "Manhattan Project 2.0": "El basket más dividido: minerales con fricción máxima (Buffett AVOID 9 vs Cathie BUY 7 en LAC); los 3 BUY tienen margen (fwd ≤27x) — en los 7 HOLD la tesis ganó, el precio llegó primero.",
-    "1 Million stack": "El corazón de la IA: 8 BUY (semis, plataformas, nuclear) incluyendo el primer voto unánime 5-0 del Consejo (CEG); PLTR y NNE, los únicos AVOID.",
+    "1 Million stack": "El corazón de la IA: 8 BUY (semis, plataformas, nuclear) incluyendo el primer voto unánime 5-0 del Consejo (CEG); PLTR (AVOID endurecido a 4-1 tras el +40% sin cambio fundamental) y NNE, los únicos AVOID.",
     "Emerging players": "El portafolio más cauto: 0 BUY — tesis reales con PEG >2 y precios adelantados; Cathie compró sola en 4 de 6 (BE, VRT, ARM, OKLO).",
     "Quantum": "El rechazo más duro del Consejo: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
 }
