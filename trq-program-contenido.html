@@ -16,7 +16,8 @@
     --accent-soft: rgba(255, 59, 92, .30);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
+  @page { margin: 0; size: Letter; }
+  html, body {
     background: var(--bg);
     color: var(--text);
     font-family: 'Inter', system-ui, sans-serif;
@@ -24,22 +25,47 @@
     line-height: 1.55;
   }
   .page {
-    max-width: 800px; margin: 0 auto; padding: 40px 44px;
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 44px 48px;
+    page-break-after: always;
+    display: flex; flex-direction: column;
   }
-  header {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border);
+  .page:last-child { page-break-after: auto; }
+
+  /* ── Portada ───────────────────────── */
+  .cover { justify-content: center; align-items: center; text-align: center; }
+  .cover .logo-big { width: 190px; height: 190px; margin-bottom: 26px; }
+  .cover .brand {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 18px; letter-spacing: .32em; color: var(--accent);
+    text-transform: uppercase;
   }
-  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; letter-spacing: .3em; color: var(--accent); text-transform: uppercase; }
-  .brand small { display: block; font-size: 9px; font-weight: 500; letter-spacing: .26em; color: var(--muted); }
-  .meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
-  .meta b { color: var(--text); }
-  h1 {
+  .cover .brand small {
+    display: block; font-size: 9.5px; font-weight: 500;
+    letter-spacing: .28em; color: var(--muted); margin-top: 6px;
+  }
+  .cover h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px; font-weight: 700; letter-spacing: -.01em;
+    margin: 30px 0 10px; text-wrap: balance;
+  }
+  .cover .sub {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--muted); letter-spacing: .06em;
+  }
+  .cover .rule {
+    width: 60px; height: 2px; background: var(--accent);
+    margin: 26px auto 0; box-shadow: 0 0 12px var(--accent-soft);
+  }
+
+  /* ── Contenido ─────────────────────── */
+  h1.sec-title {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 26px; font-weight: 700; letter-spacing: -.01em;
-    margin: 28px 0 6px; text-wrap: balance;
+    margin: 6px 0 4px; text-wrap: balance;
   }
-  .sub { color: var(--muted); font-size: 13px; margin-bottom: 26px; font-family: 'JetBrains Mono', monospace; }
+  .sec-sub { color: var(--muted); font-size: 12.5px; margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; letter-spacing: .04em; }
   .day {
     border: 1px solid var(--border); border-radius: 14px;
     background: linear-gradient(160deg, var(--card), var(--surface));
@@ -57,95 +83,168 @@
   ul { list-style: none; margin-top: 6px; }
   li { position: relative; padding-left: 16px; font-size: 12.5px; color: #c6cbe8; margin-top: 3px; }
   li::before { content: ""; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 2px; background: var(--accent-soft); }
+
   .note {
     margin-top: 22px; padding: 14px 18px; border-radius: 12px;
     border: 1px dashed var(--accent-soft); background: rgba(255,59,92,.05);
     font-size: 12px; color: #c6cbe8; break-inside: avoid;
   }
   .note b { color: var(--accent); }
-  footer {
-    margin-top: 26px; padding-top: 14px; border-top: 1px solid var(--border);
-    font-size: 9px; color: var(--muted); text-align: center; line-height: 1.6;
+
+  /* ── Lo que debes preparar ─────────── */
+  .prep { margin-top: 26px; }
+  .prep h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 700;
+    color: var(--text); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
   }
-  footer b { color: #a9aecf; }
+  .prep h2 .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 7px; border: 1px solid var(--accent-soft);
+    color: var(--accent);
+  }
+  .prep-item {
+    border: 1px solid var(--border); border-radius: 12px;
+    background: linear-gradient(160deg, var(--card), var(--surface));
+    padding: 14px 18px; margin-bottom: 10px; break-inside: avoid;
+  }
+  .prep-item .pname {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .prep-item p { font-size: 12.5px; color: #c6cbe8; }
+  .prep-item p b { color: var(--text); }
+
+  /* ── Cierre ────────────────────────── */
+  .closing { justify-content: center; align-items: center; text-align: center; }
+  .closing .logo-end { width: 140px; height: 140px; margin-bottom: 18px; }
+  .closing .end-brand {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 15px; letter-spacing: .32em; color: var(--accent);
+    text-transform: uppercase;
+  }
+  .closing .end-brand small {
+    display: block; font-size: 9px; font-weight: 500;
+    letter-spacing: .28em; color: var(--muted); margin-top: 6px;
+  }
+  .closing p { color: var(--muted); font-size: 12px; margin-top: 18px; max-width: 420px; text-wrap: balance; }
 </style>
 </head>
 <body>
-<div class="page">
 
-  <header>
-    <div class="brand">THE RED<em> QUEEN</em><small>TRADING CON MÉTODO</small></div>
-    <div class="meta">MENTORÍA 1:1 · INTRADAY<br><b>SMART MONEY CONCEPTS</b></div>
-  </header>
-
-  <h1>Intraday Trading Program — Contenido</h1>
-  <div class="sub">6 sesiones 1:1 · 60 minutos · Lunes · Miércoles · Viernes · USD $700</div>
-
-  <div class="day">
-    <div class="dhead"><span class="dnum">Día 1</span><span class="dtitle">Fundamentos y marco SMC</span></div>
-    <ul>
-      <li>Revisión del modelo actual</li>
-      <li>TradingView · Timeframes · Buys/Sells · Velas japonesas</li>
-      <li>Puntos de retorno · Liquidaciones · Imbalances</li>
-      <li>Cambio de estado (CISD) · Cambio de estructura (MSS)</li>
-      <li>Noticias e impacto</li>
-    </ul>
+  <!-- ═══ PORTADA ═══ -->
+  <div class="page cover">
+    <img class="logo-big" src="assets/trq-logo.png" alt="The Red Queen">
+    <div class="brand">THE RED<em style="font-style:normal"> QUEEN</em><small>TRADING CON MÉTODO</small></div>
+    <h1>Intraday Trading Program</h1>
+    <div class="sub">Contenido del programa · 6 sesiones 1:1 · 60 minutos · Lunes · Miércoles · Viernes</div>
+    <div class="rule"></div>
   </div>
 
-  <div class="day">
-    <div class="dhead"><span class="dnum">Día 2</span><span class="dtitle">Modelos Market Maker y fractales</span></div>
-    <ul>
-      <li>PO3 y AMD (Acumulación · Manipulación · Distribución)</li>
-      <li>ERL-IRL · Pares de tiempo</li>
-      <li>Impulsos, zonas de premio y descuento</li>
-    </ul>
+  <!-- ═══ TEMARIO ═══ -->
+  <div class="page">
+    <h1 class="sec-title">Contenido del programa</h1>
+    <div class="sec-sub">Smart Money Concepts · Gestión de riesgo · Psicotrading</div>
+
+    <div class="day">
+      <div class="dhead"><span class="dnum">Día 1</span><span class="dtitle">Fundamentos y marco SMC</span></div>
+      <ul>
+        <li>Revisión del modelo actual</li>
+        <li>TradingView · Timeframes · Buys/Sells · Velas japonesas</li>
+        <li>Puntos de retorno · Liquidaciones · Imbalances</li>
+        <li>Cambio de estado (CISD) · Cambio de estructura (MSS)</li>
+        <li>Noticias e impacto</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="dhead"><span class="dnum">Día 2</span><span class="dtitle">Modelos Market Maker y fractales</span></div>
+      <ul>
+        <li>PO3 y AMD (Acumulación · Manipulación · Distribución)</li>
+        <li>ERL-IRL · Pares de tiempo</li>
+        <li>Impulsos, zonas de premio y descuento</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="dhead"><span class="dnum">Día 3</span><span class="dtitle">Estrategias según horario</span></div>
+      <ul>
+        <li>Contexto y bias diario · Targets (DOL) · Áreas de interés</li>
+        <li>Teoría de rangos</li>
+        <li>Perfil por sesión</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="dhead"><span class="dnum">Día 4</span><span class="dtitle">Manejo de riesgo</span></div>
+      <ul>
+        <li>Matemática y probabilidades</li>
+        <li>Administración de stop loss (Breakeven · Trailing)</li>
+        <li>Consistencia y pérdida máxima</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="dhead"><span class="dnum">Día 5</span><span class="dtitle">Psicotrading</span></div>
+      <ul>
+        <li>Cibernética · Proceso vs resultados (P&amp;L)</li>
+        <li>Journaling &amp; review · Overtrading · Undertrading</li>
+        <li>Ejercicios mentales · Cognitive load · Backtesting</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <div class="dhead"><span class="dnum">Día 6</span><span class="dtitle">Q&amp;A y extensión de conocimiento</span></div>
+      <ul>
+        <li>Preguntas y asesoría personalizada</li>
+        <li>Vela mensual / semanal · Mercados (Forex · Futures · Metales)</li>
+        <li>Futuros vs CFDs · Propfirm landscape</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <b>¿Cómo son las sesiones 1:1?</b> Calls privadas de coaching con guía directa y personalizada. Llega con tus trades recientes, preguntas específicas y las áreas donde estés batallando. Cada sesión incluye revisión de trades, análisis de tu toma de decisiones, gestión de riesgo y guía para mejorar tu disciplina.
+    </div>
+
+    <!-- ═══ LO QUE DEBES PREPARAR ═══ -->
+    <div class="prep">
+      <h2><span class="tag">Checklist</span> Lo que debes preparar</h2>
+
+      <div class="prep-item">
+        <div class="pname">TradingView</div>
+        <p>Ten <b>TradingView instalado y con tu cuenta creada</b>, preferiblemente en un <b>computador</b> (escritorio o portátil). Aunque existen versiones para tabletas y teléfonos, <b>no son recomendadas para tomar el curso</b>: el análisis de estructura y los multi-timeframe se trabajan mucho mejor en pantalla grande.</p>
+      </div>
+
+      <div class="prep-item">
+        <div class="pname">Dónde tomar apuntes</div>
+        <p>Prepara un <b>sistema de apuntes</b> que funcione para ti: un cuaderno físico, notas en tu computador (Notion, Obsidian, OneNote) o un documento digital. Lo importante es que puedas <b>escribir rápido durante la sesión</b> y revisar después. Te recomendamos dedicar una sección por tema: marco SMC, modelos, estrategias, riesgo y psicología.</p>
+      </div>
+
+      <div class="prep-item">
+        <div class="pname">Trades recientes para revisar</div>
+        <p>Lleva <b>tus últimos trades</b> (capturas, historial o journal) para revisarlos juntos en sesión. La mentoría es mucho más útil cuando trabajamos sobre <b>tus operaciones reales</b> y no solo sobre teoría.</p>
+      </div>
+
+      <div class="prep-item">
+        <div class="pname">Preguntas específicas</div>
+        <p>Anota <b>antes de cada sesión</b> las dudas o áreas donde estés batallando. Llegar con preguntas concretas hace que cada minuto de la sesión rinda al máximo.</p>
+      </div>
+
+      <div class="prep-item">
+        <div class="pname">Conexión y entorno</div>
+        <p>Usa una <b>conexión a internet estable</b> y un lugar tranquilo con audífonos, para aprovechar al 100% la sesión 1:1 sin interrupciones.</p>
+      </div>
+    </div>
   </div>
 
-  <div class="day">
-    <div class="dhead"><span class="dnum">Día 3</span><span class="dtitle">Estrategias según horario</span></div>
-    <ul>
-      <li>Contexto y bias diario · Targets (DOL) · Áreas de interés</li>
-      <li>Teoría de rangos</li>
-      <li>Perfil por sesión</li>
-    </ul>
+  <!-- ═══ CIERRE ═══ -->
+  <div class="page closing">
+    <img class="logo-end" src="assets/trq-logo.png" alt="The Red Queen">
+    <div class="end-brand">THE RED<em style="font-style:normal"> QUEEN</em><small>TRADING CON MÉTODO</small></div>
+    <p>Nos vemos en la primera sesión. Prepara tu setup, trae tus preguntas y empecemos a leer el mercado como los creadores de mercado.</p>
   </div>
 
-  <div class="day">
-    <div class="dhead"><span class="dnum">Día 4</span><span class="dtitle">Manejo de riesgo</span></div>
-    <ul>
-      <li>Matemática y probabilidades</li>
-      <li>Administración de stop loss (Breakeven · Trailing)</li>
-      <li>Consistencia y pérdida máxima</li>
-    </ul>
-  </div>
-
-  <div class="day">
-    <div class="dhead"><span class="dnum">Día 5</span><span class="dtitle">Psicotrading</span></div>
-    <ul>
-      <li>Cibernética · Proceso vs resultados (P&amp;L)</li>
-      <li>Journaling &amp; review · Overtrading · Undertrading</li>
-      <li>Ejercicios mentales · Cognitive load · Backtesting</li>
-    </ul>
-  </div>
-
-  <div class="day">
-    <div class="dhead"><span class="dnum">Día 6</span><span class="dtitle">Q&amp;A y extensión de conocimiento</span></div>
-    <ul>
-      <li>Preguntas y asesoría personalizada</li>
-      <li>Vela mensual / semanal · Mercados (Forex · Futures · Metales)</li>
-      <li>Futuros vs CFDs · Propfirm landscape</li>
-    </ul>
-  </div>
-
-  <div class="note">
-    <b>¿Cómo son las sesiones 1:1?</b> Calls privadas de coaching con guía directa y personalizada. Llega con tus trades recientes, preguntas específicas y las áreas donde estés batallando. Cada sesión incluye revisión de trades, análisis de tu toma de decisiones, gestión de riesgo y guía para mejorar tu disciplina.
-  </div>
-
-  <footer>
-    <b>AVISO LEGAL —</b> Este programa tiene fines exclusivamente educativos y no constituye asesoría financiera, recomendación de inversión, ni oferta o invitación a comprar o vender ningún instrumento financiero. Operar en mercados financieros implica un alto nivel de riesgo y es posible perder parte o la totalidad del capital invertido. Los resultados pasados no garantizan resultados futuros. Cada persona es responsable de sus propias decisiones de inversión y debe consultar a un asesor financiero calificado antes de operar.<br><br>
-    The Red Queen · Trading con método · info@theredqueen.co
-  </footer>
-
-</div>
 </body>
 </html>
