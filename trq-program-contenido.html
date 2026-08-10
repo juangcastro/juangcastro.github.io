@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>The Red Queen — Intraday Trading Program · Contenido</title>
+<style>
+  :root {
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --accent: #ff3b5c;
+    --accent-soft: rgba(255, 59, 92, .30);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    line-height: 1.55;
+  }
+  .page {
+    max-width: 800px; margin: 0 auto; padding: 40px 44px;
+  }
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border);
+  }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; letter-spacing: .3em; color: var(--accent); text-transform: uppercase; }
+  .brand small { display: block; font-size: 9px; font-weight: 500; letter-spacing: .26em; color: var(--muted); }
+  .meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .meta b { color: var(--text); }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px; font-weight: 700; letter-spacing: -.01em;
+    margin: 28px 0 6px; text-wrap: balance;
+  }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 26px; font-family: 'JetBrains Mono', monospace; }
+  .day {
+    border: 1px solid var(--border); border-radius: 14px;
+    background: linear-gradient(160deg, var(--card), var(--surface));
+    padding: 16px 20px; margin-bottom: 12px;
+    break-inside: avoid; page-break-inside: avoid;
+  }
+  .dhead { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .dnum {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 10px;
+    letter-spacing: .2em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 7px; border: 1px solid var(--accent-soft);
+    color: var(--accent); white-space: nowrap;
+  }
+  .dtitle { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; }
+  ul { list-style: none; margin-top: 6px; }
+  li { position: relative; padding-left: 16px; font-size: 12.5px; color: #c6cbe8; margin-top: 3px; }
+  li::before { content: ""; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 2px; background: var(--accent-soft); }
+  .note {
+    margin-top: 22px; padding: 14px 18px; border-radius: 12px;
+    border: 1px dashed var(--accent-soft); background: rgba(255,59,92,.05);
+    font-size: 12px; color: #c6cbe8; break-inside: avoid;
+  }
+  .note b { color: var(--accent); }
+  footer {
+    margin-top: 26px; padding-top: 14px; border-top: 1px solid var(--border);
+    font-size: 9px; color: var(--muted); text-align: center; line-height: 1.6;
+  }
+  footer b { color: #a9aecf; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="brand">THE RED<em> QUEEN</em><small>TRADING CON MÉTODO</small></div>
+    <div class="meta">MENTORÍA 1:1 · INTRADAY<br><b>SMART MONEY CONCEPTS</b></div>
+  </header>
+
+  <h1>Intraday Trading Program — Contenido</h1>
+  <div class="sub">6 sesiones 1:1 · 60 minutos · Lunes · Miércoles · Viernes · USD $700</div>
+
+  <div class="day">
+    <div class="dhead"><span class="dnum">Día 1</span><span class="dtitle">Fundamentos y marco SMC</span></div>
+    <ul>
+      <li>Revisión del modelo actual</li>
+      <li>TradingView · Timeframes · Buys/Sells · Velas japonesas</li>
+      <li>Puntos de retorno · Liquidaciones · Imbalances</li>
+      <li>Cambio de estado (CISD) · Cambio de estructura (MSS)</li>
+      <li>Noticias e impacto</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="dhead"><span class="dnum">Día 2</span><span class="dtitle">Modelos Market Maker y fractales</span></div>
+    <ul>
+      <li>PO3 y AMD (Acumulación · Manipulación · Distribución)</li>
+      <li>ERL-IRL · Pares de tiempo</li>
+      <li>Impulsos, zonas de premio y descuento</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="dhead"><span class="dnum">Día 3</span><span class="dtitle">Estrategias según horario</span></div>
+    <ul>
+      <li>Contexto y bias diario · Targets (DOL) · Áreas de interés</li>
+      <li>Teoría de rangos</li>
+      <li>Perfil por sesión</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="dhead"><span class="dnum">Día 4</span><span class="dtitle">Manejo de riesgo</span></div>
+    <ul>
+      <li>Matemática y probabilidades</li>
+      <li>Administración de stop loss (Breakeven · Trailing)</li>
+      <li>Consistencia y pérdida máxima</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="dhead"><span class="dnum">Día 5</span><span class="dtitle">Psicotrading</span></div>
+    <ul>
+      <li>Cibernética · Proceso vs resultados (P&amp;L)</li>
+      <li>Journaling &amp; review · Overtrading · Undertrading</li>
+      <li>Ejercicios mentales · Cognitive load · Backtesting</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="dhead"><span class="dnum">Día 6</span><span class="dtitle">Q&amp;A y extensión de conocimiento</span></div>
+    <ul>
+      <li>Preguntas y asesoría personalizada</li>
+      <li>Vela mensual / semanal · Mercados (Forex · Futures · Metales)</li>
+      <li>Futuros vs CFDs · Propfirm landscape</li>
+    </ul>
+  </div>
+
+  <div class="note">
+    <b>¿Cómo son las sesiones 1:1?</b> Calls privadas de coaching con guía directa y personalizada. Llega con tus trades recientes, preguntas específicas y las áreas donde estés batallando. Cada sesión incluye revisión de trades, análisis de tu toma de decisiones, gestión de riesgo y guía para mejorar tu disciplina.
+  </div>
+
+  <footer>
+    <b>AVISO LEGAL —</b> Este programa tiene fines exclusivamente educativos y no constituye asesoría financiera, recomendación de inversión, ni oferta o invitación a comprar o vender ningún instrumento financiero. Operar en mercados financieros implica un alto nivel de riesgo y es posible perder parte o la totalidad del capital invertido. Los resultados pasados no garantizan resultados futuros. Cada persona es responsable de sus propias decisiones de inversión y debe consultar a un asesor financiero calificado antes de operar.<br><br>
+    The Red Queen · Trading con método · info@theredqueen.co
+  </footer>
+
+</div>
+</body>
+</html>

@@ -3,139 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>¡Gracias por tu compra! — The Red Queen</title>
-<link rel="icon" type="image/x-icon" href="favicon.ico">
+<title>The Red Queen — ¡Gracias por tu compra!</title>
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="apple-touch-icon" href="assets/trq-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0b10;
-    --bg-card: #14121a;
-    --border: #262233;
-    --fg: #f4eee0;
-    --fg-dim: #b6ad9c;
-    --accent: #f4eee0;
-    --accent-2: #e8dcc8;
-    --glow: rgba(244, 238, 224, 0.35);
-    --red: #e53e3e;
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --accent: #ff3b5c;
+    --accent-2: #ff7a92;
+    --accent-soft: rgba(255, 59, 92, .30);
+    --glow-accent: rgba(255, 59, 92, .45);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--bg);
-    color: var(--fg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 20px;
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 32px 20px;
+  }
+  /* fondo cyberpunk: rejilla + resplandor rojo sutil */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -2;
+    background:
+      radial-gradient(900px 480px at 85% -10%, rgba(255, 59, 92, .12), transparent 60%),
+      radial-gradient(800px 420px at -10% 20%, rgba(255, 59, 92, .07), transparent 60%),
+      radial-gradient(700px 500px at 50% 115%, rgba(139, 92, 246, .08), transparent 60%),
+      var(--bg);
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(255, 59, 92, .04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 59, 92, .04) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
   }
   .card {
-    background: var(--bg-card);
+    background: linear-gradient(160deg, var(--card), var(--surface));
     border: 1px solid var(--border);
-    border-radius: 16px;
-    max-width: 560px;
-    width: 100%;
-    padding: 48px 40px;
+    border-radius: 24px;
+    max-width: 620px; width: 100%;
+    padding: 44px 42px;
     text-align: center;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .8), 0 0 42px -18px var(--glow-accent);
+    animation: fadeIn .55s ease-out both;
   }
-  .logo {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    margin-bottom: 28px;
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 17px; letter-spacing: .35em;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+    text-transform: uppercase;
   }
-  .logo span { color: var(--red); }
+  .brand small { display: block; font-size: 9.5px; font-weight: 500; letter-spacing: .3em; color: var(--muted); text-shadow: none; }
+  .logo-box { margin: 26px auto 0; }
+  .logo-box img { width: 150px; height: 150px; border: none; background: transparent; }
   .check {
-    width: 72px;
-    height: 72px;
+    width: 64px; height: 64px;
     border-radius: 50%;
-    background: rgba(62, 200, 115, 0.12);
+    background: rgba(62, 200, 115, .10);
     border: 2px solid #3ec873;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 28px;
-    font-size: 34px;
-    color: #3ec873;
-    box-shadow: 0 0 30px rgba(62, 200, 115, 0.25);
+    display: flex; align-items: center; justify-content: center;
+    margin: 26px auto 0;
+    font-size: 30px; color: #3ec873;
+    box-shadow: 0 0 26px rgba(62, 200, 115, .2);
   }
   h1 {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    line-height: 1.25;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 4vw, 32px); font-weight: 800;
+    letter-spacing: -.02em; text-wrap: balance;
+    margin-top: 22px;
   }
-  p {
-    color: var(--fg-dim);
-    font-size: 15.5px;
-    line-height: 1.65;
-    margin-bottom: 14px;
-  }
+  p.lead { color: #c6cbe8; font-size: 15px; margin-top: 12px; text-wrap: pretty; }
+  p.lead b { color: var(--accent); }
   .steps {
     text-align: left;
-    background: rgba(244, 238, 224, 0.04);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px 22px;
-    margin: 24px 0 30px;
+    background: linear-gradient(160deg, var(--card), var(--surface));
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px 24px; margin: 26px 0 30px;
   }
-  .steps .step {
-    display: flex;
-    gap: 12px;
-    font-size: 14px;
-    color: var(--fg-dim);
-    line-height: 1.55;
-    padding: 6px 0;
-  }
-  .steps .step b { color: var(--fg); font-weight: 600; }
+  .steps .step { display: flex; gap: 14px; font-size: 14px; color: #c6cbe8; line-height: 1.55; padding: 7px 0; }
+  .steps .step b { color: var(--text); font-weight: 600; }
   .steps .num {
-    color: var(--accent);
-    font-weight: 700;
-    font-family: Georgia, serif;
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px;
+    letter-spacing: .14em; color: var(--accent);
+    padding: 2px 0 0;
   }
-  .email-note {
-    font-size: 13px;
-    color: #8a8272;
-    margin-top: 18px;
-    line-height: 1.6;
-  }
-  a.cta {
+  .cta-btn {
     display: inline-block;
-    background: var(--accent);
-    color: #14121a;
-    font-weight: 700;
-    font-size: 15px;
-    padding: 14px 32px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: #fff; background: var(--accent);
+    padding: 15px 36px; border-radius: 12px; text-decoration: none;
+    transition: transform .15s ease-out, box-shadow .15s ease-out;
+    box-shadow: 0 0 24px -8px var(--glow-accent);
   }
-  a.cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 34px -6px var(--glow);
-  }
+  .cta-btn:hover { transform: translateY(-2px) scale(1.02); background: var(--accent-2); box-shadow: 0 0 34px -6px var(--glow-accent); }
+  .email-note { font-size: 13px; color: var(--muted); margin-top: 22px; line-height: 1.6; }
+  .email-note b { color: #c6cbe8; font-weight: 600; }
   .disclaimer {
-    margin-top: 28px;
-    font-size: 10.5px;
-    color: #6b6456;
-    line-height: 1.6;
-    border-top: 1px solid var(--border);
-    padding-top: 20px;
+    margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border);
+    font-size: 10.5px; line-height: 1.65; color: var(--muted); text-align: center; text-wrap: pretty;
+  }
+  .disclaimer b { color: #a9aecf; font-weight: 600; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 560px) {
+    .card { padding: 30px 22px; }
+    .logo-box img { width: 120px; height: 120px; }
   }
 </style>
 </head>
 <body>
   <div class="card">
-    <div class="logo">THE <span>RED</span> QUEEN</div>
+    <div class="brand">THE RED<em> QUEEN</em><small>TRADING CON MÉTODO</small></div>
+
+    <div class="logo-box"><img src="assets/trq-logo.png" alt="The Red Queen"></div>
+
     <div class="check">✓</div>
+
     <h1>¡Gracias por tu compra!</h1>
-    <p>
+    <p class="lead">
       Tu pago fue procesado correctamente y tu cupo en el
-      <b style="color:var(--fg)">Intraday Trading Program</b> está reservado.
+      <b>Intraday Trading Program</b> está reservado.
     </p>
 
     <div class="steps">
@@ -144,15 +148,15 @@
       <div class="step"><span class="num">03</span><span><b>Prepara TradingView:</b> crea o ten lista tu cuenta para aprovechar al máximo la primera sesión.</span></div>
     </div>
 
-    <a class="cta" href="https://theredqueen.co/trq-program.html">Volver al programa →</a>
+    <a class="cta-btn" href="trq-program-contenido.pdf" download>Descarga el PDF ↓</a>
 
     <p class="email-note">
       ¿No recibiste el email de confirmación? Escríbenos a
-      <b style="color:var(--fg-dim)">info@theredqueen.co</b>
+      <b>info@theredqueen.co</b>
     </p>
 
     <div class="disclaimer">
-      <b>AVISO LEGAL —</b> Este programa tiene fines exclusivamente educativos y no constituye asesoría financiera ni recomendación de inversión. Operar en mercados financieros implica un alto nivel de riesgo y es posible perder parte o la totalidad del capital invertido.
+      <b>AVISO LEGAL —</b> Este programa tiene fines exclusivamente <b>educativos</b> y no constituye asesoría financiera, recomendación de inversión, ni oferta o invitación a comprar o vender ningún instrumento financiero. Operar en mercados financieros implica un <b>alto nivel de riesgo</b> y es posible perder parte o la totalidad del capital invertido. Los resultados pasados no garantizan resultados futuros. Cada persona es responsable de sus propias decisiones de inversión y debe consultar a un asesor financiero calificado antes de operar.
     </div>
   </div>
 </body>
