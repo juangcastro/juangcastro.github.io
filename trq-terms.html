@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Términos y Condiciones — The Red Queen</title>
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="apple-touch-icon" href="assets/trq-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --accent: #ff3b5c;
+    --accent-2: #ff7a92;
+    --accent-soft: rgba(255, 59, 92, .30);
+    --glow-accent: rgba(255, 59, 92, .45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -2;
+    background:
+      radial-gradient(900px 480px at 85% -10%, rgba(255, 59, 92, .12), transparent 60%),
+      radial-gradient(800px 420px at -10% 20%, rgba(255, 59, 92, .07), transparent 60%),
+      radial-gradient(700px 500px at 50% 115%, rgba(139, 92, 246, .08), transparent 60%),
+      var(--bg);
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(255, 59, 92, .04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 59, 92, .04) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 64px; }
+
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    padding: 18px 0; border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 20px; letter-spacing: .35em;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+    text-transform: uppercase;
+  }
+  .brand em { font-style: normal; color: var(--accent); text-shadow: 0 0 18px var(--glow-accent); }
+  .brand small { display: block; font-size: 10px; font-weight: 500; letter-spacing: .3em; color: var(--muted); text-shadow: none; }
+  .meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .meta b { color: var(--text); font-weight: 500; }
+
+  .doc-head { margin: 36px 0 28px; }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .kicker::before { content: ""; width: 26px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
+  .doc-head h1 {
+    margin: 14px 0 6px; font-size: clamp(26px, 4vw, 36px); font-weight: 800;
+    letter-spacing: -.02em; text-wrap: balance;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .doc-head .updated { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+
+  .card {
+    background: linear-gradient(160deg, var(--card), var(--surface));
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 30px 34px; margin-bottom: 18px;
+  }
+  .card h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 700;
+    margin-bottom: 12px; color: var(--text);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+    letter-spacing: .14em; color: var(--accent);
+    border: 1px solid var(--accent-soft); border-radius: 8px; padding: 3px 9px;
+  }
+  .card p { color: #c6cbe8; font-size: 14.5px; margin-bottom: 12px; text-wrap: pretty; }
+  .card p:last-child { margin-bottom: 0; }
+  .card ul { list-style: none; margin: 4px 0 12px; }
+  .card li { position: relative; padding-left: 20px; font-size: 14px; color: #c6cbe8; margin-top: 6px; }
+  .card li::before { content: ""; position: absolute; left: 2px; top: 9px; width: 6px; height: 6px; border-radius: 2px; background: var(--accent-soft); }
+  .card b { color: var(--text); font-weight: 600; }
+  .card .risk {
+    border: 1px solid var(--accent-soft); border-radius: 12px;
+    background: rgba(255, 59, 92, .06); padding: 16px 20px; margin-bottom: 0;
+  }
+  .card .risk p { margin-bottom: 8px; }
+  .card .risk p:last-child { margin-bottom: 0; }
+
+  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
+  footer p { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 560px) {
+    .card { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">THE RED<em> QUEEN</em><small>TRADING CON MÉTODO</small></div>
+    <div class="meta">MENTORÍA 1:1 · INTRADAY<br><b>SMART MONEY CONCEPTS</b></div>
+  </header>
+
+  <div class="doc-head">
+    <div class="kicker">Documento legal</div>
+    <h1>Términos y Condiciones</h1>
+    <div class="updated">Última actualización: 10 de agosto de 2026</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">01</span> Aceptación de los términos</h2>
+    <p>Al adquirir o participar en el <b>Intraday Trading Program</b> de The Red Queen ("el Programa"), aceptas los presentes Términos y Condiciones en su totalidad. Si no estás de acuerdo con alguna parte de ellos, no debes adquirir ni acceder al Programa.</p>
+    <p>El Programa es una iniciativa de formación educativa operada por The Red Queen ("nosotros", "nuestro"). El acceso al contenido y a las sesiones está sujeto al pago del valor publicado (USD $700) a través de la plataforma de pago habilitada (Whop).</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">02</span> Aviso importante — Riesgo y no-asesoría</h2>
+    <div class="risk">
+      <p><b>No es asesoría financiera:</b> Todo el contenido del Programa —incluyendo sesiones, materiales, ejemplos y análisis— tiene fines <b>exclusivamente educativos</b> y no constituye asesoría financiera, de inversión, legal, fiscal ni de ningún otro tipo. Nada de lo enseñado debe interpretarse como una recomendación de comprar, vender o mantener ningún instrumento financiero.</p>
+      <p><b>Riesgo de pérdida:</b> Operar en mercados financieros (futuros, forex, metales, criptoactivos, acciones y otros) implica un <b>alto nivel de riesgo</b>. Es posible perder parte o la <b>totalidad</b> del capital invertido, y en algunos productos apalancados las pérdidas pueden superar el depósito inicial. No operes con dinero que no puedas permitirte perder.</p>
+      <p><b>Resultados no garantizados:</b> Los resultados pasados —de nosotros o de cualquier alumno— no garantizan resultados futuros. El desempeño individual depende de múltiples factores: dedicación, disciplina, capital, condiciones de mercado y experiencia previa. No prometemos rentabilidades, ganancias ni resultados específicos.</p>
+      <p><b>Responsabilidad del operador:</b> Eres la única persona responsable de tus propias decisiones de inversión y de los resultados de tus operaciones. Antes de tomar cualquier decisión financiera, consulta a un asesor financiero calificado y autorizado en tu jurisdicción.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">03</span> Naturaleza educativa del programa</h2>
+    <p>El Programa entrega: (a) 6 sesiones 1:1 de 60 minutos (Lunes · Miércoles · Viernes), (b) materiales de estudio, y (c) acompañamiento pedagógico sobre <b>Smart Money Concepts</b>, gestión de riesgo y psicotrading.</p>
+    <p>El Programa <b>no</b> gestiona dinero, no ejecuta operaciones por ti, no administra cuentas y no ofrece señales con garantía de rentabilidad. La formación se limita a transmitir conocimiento y método; la ejecución, el riesgo y las decisiones son siempre tuyos.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">04</span> Pago, cupos y agenda</h2>
+    <ul>
+      <li>El valor del Programa es <b>USD $700</b>, pagadero por adelantado a través de Whop.</li>
+      <li>Los cupos son limitados y se asignan por orden de pago.</li>
+      <li>Las sesiones 1:1 se agendan de común acuerdo dentro de los días y horarios establecidos (Lunes · Miércoles · Viernes).</li>
+      <li>El incumplimiento reiterado o la inasistencia sin aviso previo pueden resultar en la reprogramación sujeta a disponibilidad.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">05</span> Política de reembolsos</h2>
+    <p>Por la naturaleza de las sesiones 1:1 (tiempo reservado exclusivamente para ti), <b>no se realizan reembolsos</b> una vez iniciado el Programa. Si aún no has tenido tu primera sesión y deseas cancelar, contáctanos en <b>info@theredqueen.co</b> dentro de los 7 días posteriores a la compra para evaluar tu caso.</p>
+    <p>Los reclamos y disputas de pago se gestionan a través de la plataforma Whop y su política de resolución.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">06</span> Propiedad intelectual</h2>
+    <p>Todo el contenido del Programa —materiales, presentaciones, grabaciones, guías y metodología— es propiedad de The Red Queen y está protegido por las leyes de propiedad intelectual. Está <b>prohibido</b> reproducir, distribuir, revender, grabar o compartir el contenido sin autorización escrita previa.</p>
+    <p>El acceso al Programa es personal e intransferible. No está permitido compartir tu acceso con terceros.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">07</span> Limitación de responsabilidad</h2>
+    <p>En la máxima medida permitida por la ley, The Red Queen no será responsable por pérdidas directas, indirectas, incidentales o consecuentes derivadas del uso del Programa, de la aplicación de los conceptos enseñados, o de operaciones realizadas por el alumno en cualquier mercado.</p>
+    <p>El alumno asume íntegramente el riesgo de sus operaciones y libera a The Red Queen de cualquier responsabilidad relacionada con decisiones de inversión tomadas con base en el contenido educativo del Programa.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">08</span> Privacidad y datos</h2>
+    <p>Tratamos tus datos personales de forma confidencial y únicamente para la prestación del servicio: coordinación de sesiones, envío de comunicaciones del Programa y gestión de pagos. No vendemos ni compartimos tus datos con terceros con fines comerciales.</p>
+    <p>Al adquirir el Programa aceptas recibir comunicaciones por email relacionadas con tu compra, tus sesiones y el funcionamiento del Programa.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">09</span> Modificaciones</h2>
+    <p>Podemos actualizar estos Términos y Condiciones en cualquier momento. La versión vigente será la publicada en esta página con su fecha de actualización. El uso continuado del Programa tras un cambio implica la aceptación de los nuevos términos.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="n">10</span> Contacto</h2>
+    <p>Para cualquier duda sobre estos Términos y Condiciones, escríbenos a <b>info@theredqueen.co</b>.</p>
+  </div>
+
+  <footer>
+    <p>The Red Queen · Trading con método · <a href="trq-program.html">Programa</a> · <a href="trq-thank-you.html">Gracias</a></p>
+  </footer>
+
+</div>
+</body>
+</html>
