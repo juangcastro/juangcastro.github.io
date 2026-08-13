@@ -28,7 +28,7 @@ MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "
 
 ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "1 Million stack": "var(--magenta)",
           "Emerging players": "var(--amber)", "Quantum": "var(--violet)",
-          "Rare Earth": "var(--green)", "The Bunker": "#8b9bb4", "Robotics Value Chain": "#ff7847"}
+          "Rare Earth": "var(--green)", "The Bunker": "#8b9bb4", "Robotics ExoStack": "#ff7847"}
 
 # ── Lo notable de cada portafolio (resumen del Consejo, mostrado en su card) ──
 NOTABLES = {
@@ -38,7 +38,7 @@ NOTABLES = {
     "Quantum": "El rechazo más duro del Consejo: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
     "Rare Earth": "El portafolio del reshoring: 2 BUY (NEO — el único con earnings reales, PEG ~0.7; UUUU — la doble opcionalidad uranio+NdPr) y 8 HOLD; la mayoría es opcionalidad pre-revenue sobre permiso y ejecución.",
     "The Bunker": "El refugio anti-superbubble (Grantham/GMO): 1 BUY (VXUS — el 60% no-US de Dalio) y 7 HOLD; vehículos impecables que cumplen su rol defensivo — diversificación barata, no alpha.",
-    "Robotics Value Chain": "La cadena del video de Elon: 0 BUY y 10 HOLD — el Consejo reconoce los moats (HD/NBT = cuello de botella de actuadores, TXN = fabs propias) pero el precio llegó primero a todos: HD a fwd 92x vs NBT a 23x, el mismo cuello de botella a múltiplos opuestos.",
+    "Robotics ExoStack": "La cadena del video de Elon: 0 BUY y 10 HOLD — el Consejo reconoce los moats (HD/NBT = cuello de botella de actuadores, TXN = fabs propias) pero el precio llegó primero a todos: HD a fwd 92x vs NBT a 23x, el mismo cuello de botella a múltiplos opuestos.",
 }
 
 def fecha(ts):
