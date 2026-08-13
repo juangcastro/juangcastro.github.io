@@ -28,7 +28,7 @@ MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "
 
 ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "1 Million stack": "var(--magenta)",
           "Emerging players": "var(--amber)", "Quantum": "var(--violet)",
-          "Rare Earth": "var(--green)", "The Bunker": "#8b9bb4"}
+          "Rare Earth": "var(--green)", "The Bunker": "#8b9bb4", "Robotics Value Chain": "#ff7847"}
 
 # ── Lo notable de cada portafolio (resumen del Consejo, mostrado en su card) ──
 NOTABLES = {
@@ -38,6 +38,7 @@ NOTABLES = {
     "Quantum": "El rechazo más duro del Consejo: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
     "Rare Earth": "El portafolio del reshoring: 2 BUY (NEO — el único con earnings reales, PEG ~0.7; UUUU — la doble opcionalidad uranio+NdPr) y 8 HOLD; la mayoría es opcionalidad pre-revenue sobre permiso y ejecución.",
     "The Bunker": "El refugio anti-superbubble (Grantham/GMO): 1 BUY (VXUS — el 60% no-US de Dalio) y 7 HOLD; vehículos impecables que cumplen su rol defensivo — diversificación barata, no alpha.",
+    "Robotics Value Chain": "El más nuevo (la sesión de consultas e insights): 6 tickers de robótica/automatización aún sin análisis del Consejo — β 1.67 ya calculada por regresión (RR 2.28 · RDW 2.23), α pendiente de screening.",
 }
 
 def fecha(ts):
@@ -79,7 +80,7 @@ def metrics_for(tickers, fresh):
     beta = sum(bs) / len(bs) if len(bs) >= 3 else None  # None = sin datos suficientes (ETFs)
     sign = {"buy": 1, "hold": 0, "avoid": -1}
     scores = [sign.get(fresh[t]["verdict"], 0) * fresh[t]["conv"] for t in tickers if t in fresh]
-    alpha = sum(scores) / len(scores) if scores else 0.0
+    alpha = sum(scores) / len(scores) if scores else None  # None = sin análisis aún
     return beta, alpha
 
 def chips_for(tickers, reports):
@@ -125,14 +126,15 @@ def main():
         upd = fecha(max(mtimes)) if mtimes else "—"
         beta, alpha = metrics_for(p["tickers"], fresh)
         beta_str = f"{beta:.2f}" if beta is not None else "—"
-        alpha_cls = "pos" if alpha > 0.3 else ("neg" if alpha < -0.3 else "zero")
+        alpha_str = f"{alpha:+.1f}" if alpha is not None else "—"
+        alpha_cls = "pos" if (alpha or 0) > 0.3 else ("neg" if (alpha or 0) < -0.3 else "zero")
         cards.append(f"""    <div class="pf-card" style="--accent:{acc};">
       <div class="pf-name">{p["name"]}</div>
       <div class="pf-desc">{desc}</div>
       <div class="pf-progress"><span>{done}/{n} analizados</span><div class="track"><i style="width:{pct}%"></i></div></div>
       <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
         <span class="m"><span class="k">β</span><b>{beta_str}</b></span>
-        <span class="m"><span class="k">α</span><b class="{alpha_cls}">{alpha:+.1f}</b></span>
+        <span class="m"><span class="k">α</span><b class="{alpha_cls}">{alpha_str}</b></span>
         <span class="hint">beta = riesgo · alpha = convicción neta</span>
       </div>
       <div class="pf-chips">{chips_for(p["tickers"], fresh)}</div>

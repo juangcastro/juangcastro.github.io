@@ -99,6 +99,15 @@
   }
   .hero .sub { margin-top: 14px; color: #c6cbe8; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
   .hero .sub b { color: var(--cyan); font-weight: 600; }
+  .guide-link {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: .08em;
+    color: var(--cyan); border: 1px solid rgba(0,229,255,.35); padding: 8px 16px;
+    border-radius: 999px; background: rgba(0,229,255,.05); text-decoration: none; text-transform: uppercase;
+    transition-property: box-shadow, background; transition-duration: .15s; transition-timing-function: ease-out;
+  }
+  .guide-link:hover { box-shadow: 0 0 20px -6px var(--glow-cyan); background: rgba(0,229,255,.1); }
+  .guide-link .arr { color: var(--magenta); }
 
   /* ── strip de stats ───────────────────── */
   .stats {
@@ -337,6 +346,7 @@
         <div class="term"><b>&gt;</b> neuromancer.council --archive --live<span class="cursor"></span></div>
         <h1>REPORT_ARCHIVE</h1>
         <p class="sub">El archivo del <b>Consejo Neuromancer</b>: análisis de inversión puro desde las premisas de sus cinco miembros — Buffett, Dalio, Lynch, Ackman y Cathie Wood. Cada reporte, un veredicto con su fricción.</p>
+        <a class="guide-link" href="alpha-beta.html">¿Cómo leer β y α? Guía metodológica <span class="arr">→</span></a>
         <img class="hero-logo" src="assets/neuromancer-textlogo.png" alt="Neuromancer">
       </div>
       <div class="hero-right">
@@ -347,10 +357,10 @@
 
   <!-- STATS:START -->
   <div class="stats">
-    <div class="stat"><div class="v">6</div><div class="k">Stack</div></div>
-    <div class="stat"><div class="v">55</div><div class="k">Tickers</div></div>
+    <div class="stat"><div class="v">7</div><div class="k">Stack</div></div>
+    <div class="stat"><div class="v">61</div><div class="k">Tickers</div></div>
     <div class="stat"><div class="v">57</div><div class="k">Análisis</div></div>
-    <div class="stat"><div class="v">0</div><div class="k">Pendientes</div></div>
+    <div class="stat"><div class="v">6</div><div class="k">Pendientes</div></div>
     <div class="stat buy"><div class="v">15</div><div class="k">Buy</div></div>
     <div class="stat hold"><div class="v">38</div><div class="k">Hold</div></div>
     <div class="stat avoid"><div class="v">4</div><div class="k">Avoid</div></div>
@@ -426,12 +436,25 @@
       <div class="pf-note">◈ El portafolio del reshoring: 2 BUY (NEO — el único con earnings reales, PEG ~0.7; UUUU — la doble opcionalidad uranio+NdPr) y 8 HOLD; la mayoría es opcionalidad pre-revenue sobre permiso y ejecución.</div>
       <div class="pf-date">actualizado 12 ago 2026</div>
     </div>
+    <div class="pf-card" style="--accent:#ff7847;">
+      <div class="pf-name">Robotics Value Chain</div>
+      <div class="pf-desc">Cadena de valor de la robótica humana y la revolución de Optimus (tesis del VSL de StocksToTrade/MML). Tickers identificados por descripción del reporte "Five Tiny Stocks Powering Elon's Robot Revolution" + la space stock del bonus "10x cuando SpaceX IPO". PENDIENTE: nombre final chévere + descripción definitiva + verificación de contratos con Tesla + rating del Council + beta — ver nota de briefing en .sessions.</div>
+      <div class="pf-progress"><span>0/6 analizados</span><div class="track"><i style="width:0%"></i></div></div>
+      <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
+        <span class="m"><span class="k">β</span><b>1.67</b></span>
+        <span class="m"><span class="k">α</span><b class="zero">—</b></span>
+        <span class="hint">beta = riesgo · alpha = convicción neta</span>
+      </div>
+      <div class="pf-chips"><span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>SYM</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>PATH</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>ARBE</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>AVAV</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>RR</span> <span class="pf-chip pending"><span class="dot" style="background:var(--border);"></span>RDW</span></div>
+      <div class="pf-note">◈ El más nuevo (la sesión de consultas e insights): 6 tickers de robótica/automatización aún sin análisis del Consejo — β 1.67 ya calculada por regresión (RR 2.28 · RDW 2.23), α pendiente de screening.</div>
+      <div class="pf-date">actualizado —</div>
+    </div>
     <div class="pf-card" style="--accent:#8b9bb4;">
       <div class="pf-name">The Bunker</div>
       <div class="pf-desc">Refugio ante la superbubble. Asignación defensiva inspirada en Jeremy Grantham (GMO): ~60% equities no-US, 5-10% metales preciosos, real estate opcional, resto bonos. Tesis: el S&P 500 proyecta -8.1% real anual a 7 años (GMO 7-Year Forecast, jun-2026); value internacional y small value son las clases ganadoras. Antídoto al sesgo doméstico.</div>
       <div class="pf-progress"><span>8/8 analizados</span><div class="track"><i style="width:100%"></i></div></div>
       <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
-        <span class="m"><span class="k">β</span><b>—</b></span>
+        <span class="m"><span class="k">β</span><b>0.44</b></span>
         <span class="m"><span class="k">α</span><b class="pos">+0.9</b></span>
         <span class="hint">beta = riesgo · alpha = convicción neta</span>
       </div>

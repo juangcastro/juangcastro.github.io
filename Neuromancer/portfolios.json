@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12T22:13:37",
+  "generated_at": "2026-08-12T23:36:53",
   "portfolios": [
     {
       "name": "Manhattan Project 2.0",
@@ -108,6 +108,19 @@
         "AREC",
         "NEO",
         "MTRN"
+      ],
+      "sets": {}
+    },
+    {
+      "name": "Robotics Value Chain",
+      "description": "Cadena de valor de la robótica humana y la revolución de Optimus (tesis del VSL de StocksToTrade/MML). Tickers identificados por descripción del reporte \"Five Tiny Stocks Powering Elon's Robot Revolution\" + la space stock del bonus \"10x cuando SpaceX IPO\". PENDIENTE: nombre final chévere + descripción definitiva + verificación de contratos con Tesla + rating del Council + beta — ver nota de briefing en .sessions.",
+      "tickers": [
+        "SYM",
+        "PATH",
+        "ARBE",
+        "AVAV",
+        "RR",
+        "RDW"
       ],
       "sets": {}
     },
