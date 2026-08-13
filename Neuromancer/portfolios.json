@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-07T18:05:46",
+  "generated_at": "2026-08-12T22:00:28",
   "portfolios": [
     {
       "name": "Manhattan Project 2.0",
@@ -78,6 +78,7 @@
         "BE",
         "VRT",
         "ARM",
+        "MU",
         "OKLO",
         "POET"
       ],
@@ -90,6 +91,38 @@
         "IONQ",
         "RGTI",
         "QBTS"
+      ],
+      "sets": {}
+    },
+    {
+      "name": "Rare Earth",
+      "description": "Tierras raras, el nuevo oro. Consumer tech y defensa.",
+      "tickers": [
+        "MP",
+        "LYC",
+        "UUUU",
+        "USAR",
+        "ILU",
+        "ARU",
+        "NB",
+        "AREC",
+        "NEO",
+        "MTRN"
+      ],
+      "sets": {}
+    },
+    {
+      "name": "The Bunker",
+      "description": "Refugio ante la superbubble. Asignación defensiva inspirada en Jeremy Grantham (GMO): ~60% equities no-US, 5-10% metales preciosos, real estate opcional, resto bonos. Tesis: el S&P 500 proyecta -8.1% real anual a 7 años (GMO 7-Year Forecast, jun-2026); value internacional y small value son las clases ganadoras. Antídoto al sesgo doméstico.",
+      "tickers": [
+        "VXUS",
+        "VWO",
+        "GLD",
+        "SLV",
+        "VNQ",
+        "BND",
+        "TIP",
+        "EMB"
       ],
       "sets": {}
     }
