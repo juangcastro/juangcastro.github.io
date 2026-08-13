@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrAIn — Breaking AI Non-sense · The Red Queen</title>
+<meta name="description" content="BrAIn — Breaking AI Non-sense: artículos sobre inteligencia artificial, mercados y tecnología, sin humo ni hype.">
+<meta property="og:title" content="BrAIn — Breaking AI Non-sense">
+<meta property="og:description" content="IA, mercados y tecnología sin humo ni hype. Entender lo que importa antes de que sea mainstream.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://theredqueen.co/brain.html">
+<meta property="og:image" content="https://theredqueen.co/assets/trq-logo-main.png">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --accent: #ff3b5c;
+    --accent-2: #ff7a92;
+    --glow-accent: rgba(255, 59, 92, .45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 59, 92, .045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 59, 92, .045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1160px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+  }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 560px) { .nav-links a { display: none; } }
+
+  .masthead {
+    position: relative; overflow: hidden;
+    text-align: center; padding: 96px 24px 64px;
+  }
+  .masthead::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(700px 320px at 50% -10%, rgba(255, 59, 92, .14), transparent 65%),
+      var(--bg);
+  }
+  .masthead .logo-word {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(48px, 9vw, 84px); font-weight: 800; letter-spacing: -.02em;
+    line-height: 1; text-transform: uppercase;
+  }
+  .masthead .logo-word .b { color: var(--text); }
+  .masthead .logo-word .r { color: var(--accent); text-shadow: 0 0 34px var(--glow-accent); }
+  .masthead .logo-word .a { color: var(--accent-2); }
+  .masthead .sub {
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .desc {
+    max-width: 600px; margin: 22px auto 0; color: #c6cbe8; font-size: 15px;
+  }
+  .masthead .desc b { color: var(--accent); }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; }
+
+  .soon {
+    text-align: center;
+    padding: 72px 28px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px dashed var(--border); border-radius: 22px;
+    margin-bottom: 48px;
+  }
+  .soon .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--accent);
+  }
+  .soon h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 3.6vw, 34px); font-weight: 700;
+    margin: 14px 0 10px;
+  }
+  .soon p { color: var(--muted); max-width: 460px; margin: 0 auto; font-size: 15px; }
+
+  .topics h3 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 18px; text-align: center;
+  }
+  .topics .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .topics .chip {
+    padding: 18px 20px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 16px;
+    font-size: 14px; color: #aab0d0; text-align: center;
+  }
+  .topics .chip b { color: var(--text); display: block; margin-bottom: 4px; font-size: 15px; }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-top: 48px; transition: color .16s ease;
+  }
+  .back:hover { color: var(--accent); }
+  .back::before { content: "←"; }
+
+  footer {
+    border-top: 1px solid var(--border); background: var(--surface);
+    padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img src="assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="logo-word"><span class="b">Br</span><span class="r">A</span><span class="a">In</span></div>
+  <div class="sub">Breaking AI Non-sense</div>
+  <p class="desc">
+    Inteligencia artificial, mercados y tecnología, contados <b>sin humo ni hype</b>.
+    Entender lo que importa antes de que sea mainstream.
+  </p>
+</header>
+
+<div class="wrap">
+
+  <div class="soon">
+    <div class="tag">// Newsletter · Próximamente</div>
+    <h2>Los primeros artículos están en camino</h2>
+    <p>Análisis sobre IA aplicada al trading, tecnología y cultura digital — en la voz de The Red Queen.</p>
+  </div>
+
+  <div class="topics">
+    <h3>Temas que vamos a romper</h3>
+    <div class="grid">
+      <div class="chip"><b>IA + Trading</b>Agentes, modelos y qué hay realmente detrás del hype.</div>
+      <div class="chip"><b>Sin humo</b>Lo que funciona, lo que es ruido y cómo distinguirlos.</div>
+      <div class="chip"><b>Tecnología</b>Tendencias de fondo, no titulares de moda.</div>
+      <div class="chip"><b>Cultura</b>El impacto de la máquina en tu forma de pensar y decidir.</div>
+    </div>
+  </div>
+
+  <a class="back" href="index.html">Volver al inicio</a>
+
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="trq-terms.html">Términos</a></span>
+</footer>
+
+</body>
+</html>

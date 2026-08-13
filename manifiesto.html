@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Manifiesto — The Red Queen</title>
+<meta name="description" content="El manifiesto de The Red Queen: por qué correr más rápido no te lleva a ninguna parte — y cómo el trading es la puerta trasera de salida de la Matrix.">
+<meta property="og:title" content="El Manifiesto — The Red Queen">
+<meta property="og:description" content="Checkmate the System: una forma de avanzar sin correr más veloz.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://theredqueen.co/manifiesto.html">
+<meta property="og:image" content="https://theredqueen.co/assets/trq-logo-main.png">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --accent: #ff3b5c;
+    --accent-2: #ff7a92;
+    --glow-accent: rgba(255, 59, 92, .45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 59, 92, .045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 59, 92, .045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px 80px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1160px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+  }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 560px) { .nav-links a { display: none; } }
+
+  .masthead { text-align: center; padding: 88px 24px 48px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .32em; text-transform: uppercase; color: var(--accent);
+  }
+  .masthead h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(34px, 6vw, 56px); font-weight: 800;
+    letter-spacing: -.02em; margin: 16px 0 12px; text-transform: uppercase;
+  }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 30px var(--glow-accent); }
+  .masthead p { color: var(--muted); font-size: 15px; max-width: 560px; margin: 0 auto; }
+
+  .prose { font-size: 16.5px; color: #c6cbe8; }
+  .prose h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px; font-weight: 700; letter-spacing: -.01em;
+    margin: 52px 0 14px; color: var(--text);
+  }
+  .prose h2 .red { color: var(--accent); }
+  .prose p { margin-bottom: 18px; text-wrap: pretty; }
+  .prose b { color: var(--accent); font-weight: 600; }
+  .prose .quote {
+    border-left: 3px solid var(--accent);
+    padding: 18px 22px; margin: 26px 0;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border-radius: 0 14px 14px 0;
+    font-size: 17px; color: var(--text);
+    box-shadow: 0 0 34px -18px var(--glow-accent);
+  }
+  .prose .quote small {
+    display: block; margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--muted);
+  }
+  .pillars { list-style: none; margin: 22px 0; display: grid; gap: 12px; }
+  .pillars li {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 18px 20px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 16px;
+    font-size: 15px;
+  }
+  .pillars li .n {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+    color: var(--accent); padding-top: 2px; flex: 0 0 auto;
+  }
+  .pillars li b { color: var(--text); }
+  .cta-box {
+    margin-top: 56px; padding: 40px 32px; text-align: center;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid rgba(255, 59, 92, .45); border-radius: 22px;
+    box-shadow: 0 0 50px -20px var(--glow-accent);
+  }
+  .cta-box h3 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .cta-box p { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 15px 28px; border-radius: 12px;
+    background: var(--accent); color: #fff;
+    box-shadow: 0 10px 34px -10px var(--glow-accent);
+    transition: transform .18s ease, background .18s ease;
+  }
+  .btn:hover { background: var(--accent-2); transform: translateY(-2px); }
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-top: 48px; transition: color .16s ease;
+  }
+  .back:hover { color: var(--accent); }
+  .back::before { content: "←"; }
+
+  footer {
+    border-top: 1px solid var(--border); background: var(--surface);
+    padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img src="assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="trq-program.html">Mentoría</a>
+      <a href="Neuromancer/">Engine</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="kicker">// El manifiesto</div>
+  <h1>Checkmate <span class="red">the System</span></h1>
+  <p>Un manifiesto de libertad. Una puerta trasera de salida de la Matrix.</p>
+</header>
+
+<div class="wrap">
+  <article class="prose">
+
+    <h2>I. La hipótesis de la Reina Roja</h2>
+    <p>
+      En <i>Alicia a través del espejo</i>, Lewis Carroll pinta una escena inolvidable: la Reina Roja
+      toma a Alicia de la mano y <b>corre cada vez más rápido</b> — hasta que Alicia comprende que,
+      por más que corran, el paisaje no cambia. No avanzan. La Reina lo explica con una frase
+      que define la condición humana moderna:
+    </p>
+    <div class="quote">
+      «Aquí, como ves, tienes que correr todo lo que puedas para mantenerte en el mismo lugar.
+      Si quieres llegar a otra parte, tendrás que correr al menos el doble de rápido.»
+      <small>— Lewis Carroll, <i>Through the Looking-Glass</i>, 1871</small>
+    </div>
+    <p>
+      Ese es el sistema. <b>Trabaja todo el día.</b> Sé esclavo de alguien más arriba. Trata por
+      todos los medios de ascender, de lograr un aumento de salario — para que al final
+      <b>ninguna de las dos suceda</b>. Corres más rápido cada año, y te quedas exactamente donde
+      empezaste. Estancado.
+    </p>
+
+    <h2>II. La salida no es correr más</h2>
+    <p>
+      Si el problema es la velocidad, la respuesta no es más velocidad. La respuesta es
+      <b>otro juego</b>.
+    </p>
+    <p>
+      El trading es una forma de avanzar sin necesidad de correr más veloz. No es magia ni
+      atajos: es una <b>habilidad</b> — la habilidad de leer hacia dónde se mueve el precio y
+      ejecutar con disciplina. Y una habilidad se entrena, se mide y se domina. Nadie puede
+      quitártela.
+    </p>
+    <p>
+      The Red Queen existe para eso: para que dejes de correr en la cinta del sistema y aprendas
+      a mover las piezas. <b>Checkmate the System.</b>
+    </p>
+
+    <h2>III. Los cuatro pilares</h2>
+    <ul class="pillars">
+      <li><span class="n">01</span><span><b>Recuperar el tiempo.</b> Ganar más dinero sin invertir más horas. El tiempo es el único recurso que no se recupera; el trading lo devuelve.</span></li>
+      <li><span class="n">02</span><span><b>Hacer tu hogar antifrágil.</b> Una fuente adicional de ingreso que no depende de un contrato ni de un jefe. Lo que no te destruye te fortalece — si tienes otra trinchera.</span></li>
+      <li><span class="n">03</span><span><b>Despreocuparte del despido.</b> Si eso pasara, no sería el fin: sería una transición. La seguridad no está en el puesto, está en la habilidad.</span></li>
+      <li><span class="n">04</span><span><b>Reemplazar el trabajo por el trading.</b> Y dedicarte a hacer lo que realmente te gusta. Esa es la jugada final.</span></li>
+    </ul>
+
+    <h2>IV. La apuesta</h2>
+    <p>
+      Esto no es un consejo financiero. Es una <b>filosofía</b>. Es un <i>fuck you</i> al
+      establecimiento. Es entender que la Matrix no se destruye — <b>se esquiva</b>.
+    </p>
+    <p>
+      Cada vela en el gráfico es una oportunidad de dejar de ser pieza del tablero y empezar a
+      mover las piezas. El sistema te quiere corriendo en la cinta. Nosotros te enseñamos a
+      <b>jugarlo</b>.
+    </p>
+
+    <div class="cta-box">
+      <h3>Deja de correr. Aprende a leer el precio.</h3>
+      <p>Mentoría 1:1 en Smart Money Concepts — 6 sesiones, en vivo.</p>
+      <a class="btn" href="trq-program.html">Explorar la mentoría</a>
+    </div>
+
+    <a class="back" href="index.html">Volver al inicio</a>
+
+  </article>
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="trq-terms.html">Términos</a></span>
+</footer>
+
+</body>
+</html>

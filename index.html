@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Red Queen — Checkmate the System</title>
+<meta name="description" content="The Red Queen: el manifiesto de una habilidad que te libera del salario. Mentoría 1:1 en Smart Money Concepts, Neuromancer Engine y productos de trading. Checkmate the System.">
+<meta property="og:title" content="The Red Queen — Checkmate the System">
+<meta property="og:description" content="Una puerta trasera de salida de la Matrix: aprende a leer el precio y deja de depender del salario.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://theredqueen.co/">
+<meta property="og:image" content="https://theredqueen.co/assets/trq-logo-main.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="apple-touch-icon" href="assets/trq-logo-main.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --accent: #ff3b5c;          /* rojo TRQ — único color de acento */
+    --accent-2: #ff7a92;
+    --accent-soft: rgba(255, 59, 92, .30);
+    --glow-accent: rgba(255, 59, 92, .45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 59, 92, .045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 59, 92, .045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ── nav ─────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1160px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 38px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 15px; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+  }
+  .nav-brand .word small {
+    display: block; font-size: 9px; font-weight: 500;
+    letter-spacing: .3em; color: var(--muted); text-shadow: none;
+  }
+  .nav-links { display: flex; align-items: center; gap: 26px; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links .cta {
+    background: var(--accent); color: #fff; font-weight: 600;
+    padding: 9px 16px; border-radius: 10px; letter-spacing: .08em;
+    box-shadow: 0 0 24px -6px var(--glow-accent);
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .nav-links .cta:hover { background: var(--accent-2); transform: translateY(-1px); box-shadow: 0 0 32px -4px var(--glow-accent); }
+
+  /* ── hero ────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 94vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 104px 24px 72px;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: -2;
+    background: url('assets/trq-hero-cockpit.webp') center / cover no-repeat;
+    transform: scale(1.02);
+    filter: saturate(1.05);
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      linear-gradient(180deg, rgba(6,7,15,.62) 0%, rgba(6,7,15,.82) 55%, var(--bg) 100%),
+      radial-gradient(1100px 520px at 50% 118%, rgba(255,59,92,.16), transparent 65%);
+  }
+  .hero-inner {
+    max-width: 880px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 22px;
+    animation: fadeUp .8s ease-out both;
+  }
+  .hero .logo {
+    width: min(440px, 82vw); height: auto;
+    filter: drop-shadow(0 0 34px rgba(255, 59, 92, .38));
+  }
+  .hero .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .32em; text-transform: uppercase; color: var(--accent-2);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero .kicker::before, .hero .kicker::after {
+    content: ""; width: 34px; height: 1px;
+    background: var(--accent); box-shadow: 0 0 8px var(--glow-accent);
+  }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(34px, 6.4vw, 62px); font-weight: 800;
+    letter-spacing: -.02em; line-height: 1.05; text-wrap: balance;
+    text-transform: uppercase;
+  }
+  .hero h1 .red { color: var(--accent); text-shadow: 0 0 30px var(--glow-accent); }
+  .hero .sub {
+    max-width: 660px; color: #c6cbe8; font-size: clamp(15px, 1.6vw, 17px);
+    text-wrap: pretty;
+  }
+  .hero .sub b { color: var(--accent); font-weight: 600; }
+  .hero .ctas { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 15px 28px; border-radius: 12px;
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 10px 34px -10px var(--glow-accent), 0 0 26px -8px var(--glow-accent);
+  }
+  .btn-primary:hover { background: var(--accent-2); transform: translateY(-2px); }
+  .btn-ghost {
+    border: 1px solid var(--border); color: var(--text);
+    background: rgba(13, 15, 30, .55);
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+  .hero .scroll-hint {
+    margin-top: 30px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  /* ── secciones ───────────────────────── */
+  section { max-width: 1160px; margin: 0 auto; padding: 88px 24px; }
+  .sec-head { text-align: center; margin-bottom: 48px; }
+  .sec-head .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--accent);
+  }
+  .sec-head h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(26px, 3.6vw, 38px); font-weight: 700;
+    letter-spacing: -.01em; margin: 12px 0 10px; text-wrap: balance;
+  }
+  .sec-head p { color: var(--muted); max-width: 600px; margin: 0 auto; font-size: 15px; }
+  .sec-head .engine-logo {
+    width: min(320px, 74vw);
+    height: auto;
+    aspect-ratio: 1000 / 143;
+    object-fit: contain;
+    margin: 18px auto 0;
+  }
+
+  /* ── grid de acceso ──────────────────── */
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    position: relative;
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 30px 26px 24px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 22px 50px -22px rgba(0,0,0,.85), 0 0 34px -14px var(--glow-accent); }
+  .card .num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .26em; color: var(--muted);
+  }
+  .card h3 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .card .mini-logo {
+    width: 180px; height: auto;
+    aspect-ratio: 1000 / 143;
+    object-fit: contain;
+    margin: 2px 0;
+  }
+  .card p { color: #aab0d0; font-size: 14px; flex: 1; }
+  .card .go {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .card:hover .go { text-shadow: 0 0 14px var(--glow-accent); }
+  .card .go::after { content: "→"; transition: transform .18s ease; }
+  .card:hover .go::after { transform: translateX(4px); }
+  .badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: #fff; background: var(--accent);
+    padding: 4px 9px; border-radius: 999px;
+    box-shadow: 0 0 16px -2px var(--glow-accent);
+  }
+  .badge-ghost { background: transparent; border: 1px solid var(--accent); color: var(--accent); box-shadow: none; }
+  .featured { border-color: rgba(255, 59, 92, .55); }
+  .featured::before {
+    content: "";
+    position: absolute; inset: 0 0 auto 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    box-shadow: 0 0 18px var(--glow-accent);
+  }
+
+  /* ── productos ───────────────────────── */
+  .price {
+    font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700;
+    color: var(--text); letter-spacing: -.01em;
+  }
+  .price small {
+    display: block; font-size: 10px; font-weight: 500;
+    color: var(--muted); letter-spacing: .18em; text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .buy {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    padding: 12px 18px; border-radius: 10px;
+    background: var(--accent); color: #fff;
+    box-shadow: 0 8px 26px -10px var(--glow-accent);
+    transition: transform .18s ease, background .18s ease;
+  }
+  .buy:hover { background: var(--accent-2); transform: translateY(-2px); }
+  .buy.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); box-shadow: none; }
+  .buy.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── banda cita ──────────────────────── */
+  .band {
+    position: relative; max-width: none;
+    padding: 0; margin: 0;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 340px; overflow: hidden;
+  }
+  .band .bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    filter: brightness(1.12) saturate(1.05);
+  }
+  .band::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(6,7,15,.82), rgba(6,7,15,.4) 50%, rgba(6,7,15,.82));
+  }
+  .band blockquote {
+    position: relative; z-index: 1;
+    max-width: 720px; padding: 72px 24px; text-align: center;
+  }
+  .band .line {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(22px, 3.4vw, 34px); font-weight: 700;
+    letter-spacing: -.01em; text-wrap: balance;
+  }
+  .band .line .red { color: var(--accent); text-shadow: 0 0 24px var(--glow-accent); }
+  .band .src {
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ── footer ──────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .foot-inner {
+    max-width: 1160px; margin: 0 auto; padding: 56px 24px 40px;
+    display: flex; gap: 48px; flex-wrap: wrap;
+    justify-content: space-between; align-items: flex-start;
+  }
+  .foot-brand { max-width: 300px; }
+  .foot-brand img { width: 150px; height: auto; margin-bottom: 14px; }
+  .foot-brand p { color: var(--muted); font-size: 13px; }
+  .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+  .foot-col h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .26em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .foot-col a {
+    display: block; color: var(--muted); font-size: 14px;
+    padding: 4px 0; transition: color .16s ease;
+  }
+  .foot-col a:hover { color: var(--text); }
+  .foot-bottom {
+    max-width: 1160px; margin: 0 auto; padding: 20px 24px 28px;
+    border-top: 1px solid rgba(37, 43, 82, .6);
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .08em; color: var(--muted);
+  }
+  .foot-bottom a { color: var(--muted); }
+  .foot-bottom a:hover { color: var(--accent); }
+
+  /* ── animaciones ─────────────────────── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* ── responsive ──────────────────────── */
+  @media (max-width: 720px) {
+    .nav-links a:not(.cta) { display: none; }
+    section { padding: 64px 20px; }
+    .foot-inner { flex-direction: column; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top" aria-label="The Red Queen — inicio">
+      <img src="assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen<small>CHECKMATE THE SYSTEM</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#arsenal">Arsenal</a>
+      <a href="#engine">Neuromancer</a>
+      <a href="#productos">Productos</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a class="cta" href="trq-program.html">Empezar</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg" role="img" aria-label="Cockpit de trading cyberpunk con datos de mercado"></div>
+  <div class="hero-inner">
+    <img class="logo" src="assets/trq-logo-main.png"
+         alt="The Red Queen — logo pixel art de una reina de ajedrez" width="440" height="256">
+    <div class="kicker">Manifiesto de libertad · Trading · Antifragilidad</div>
+    <h1>Checkmate <span class="red">the System</span></h1>
+    <p class="sub">
+      En <i>Alicia a través del espejo</i>, la Reina Roja corre cada vez más rápido y no avanza —
+      como el sistema te pide: trabajar todo el día, escalar, mendigar aumentos, y quedarte
+      exactamente donde empezaste. <b>The Red Queen es la puerta trasera.</b> Aprende a leer el
+      precio y recupera tu tiempo: una segunda fuente de ingreso que hace tu hogar antifrágil,
+      te despreocupa del despido y, con disciplina, reemplaza el salario por el trading.
+      Un hack al sistema. <b>Checkmate.</b>
+    </p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="manifiesto.html">Leer el manifiesto</a>
+      <a class="btn btn-ghost" href="#arsenal">Ver el arsenal</a>
+    </div>
+    <div class="scroll-hint">▼ Scroll</div>
+  </div>
+</header>
+
+<section id="arsenal">
+  <div class="sec-head">
+    <div class="tag">// El arsenal</div>
+    <h2>Un sistema, cuatro frentes</h2>
+    <p>Educación, análisis, conocimiento y la tesis que lo une todo.</p>
+  </div>
+  <div class="grid">
+
+    <a class="card featured" href="trq-program.html">
+      <span class="num">01 — EDUCACIÓN</span>
+      <h3>Mentoría SMC 1:1 <span class="badge">Flagship</span></h3>
+      <p>Programa intraday de Smart Money Concepts: 6 sesiones de 60 minutos, en vivo. Liquidez, CISD, FVG y la psicología del A/B/C-game.</p>
+      <span class="go">Ver programa</span>
+    </a>
+
+    <a class="card" href="Neuromancer/">
+      <span class="num">02 — MOTOR DE ANÁLISIS</span>
+      <h3>Neuromancer Engine</h3>
+      <img class="mini-logo" src="Neuromancer/assets/neuromancer-textlogo.png" alt="Logo Neuromancer Engine">
+      <p>El motor que procesa el mercado a través de cinco lentes — Buffett, Dalio, Lynch, Ackman y Wood — y publica cada deliberación completa.</p>
+      <span class="go">Ver el engine</span>
+    </a>
+
+    <a class="card" href="brain.html">
+      <span class="num">03 — CONOCIMIENTO</span>
+      <h3>BrAIn</h3>
+      <p>Breaking AI Non-sense: artículos sobre IA, mercados y tecnología, sin humo ni hype. Entender lo que importa antes de que sea mainstream.</p>
+      <span class="go">Leer BrAIn</span>
+    </a>
+
+    <a class="card" href="manifiesto.html">
+      <span class="num">04 — LA TESIS</span>
+      <h3>El Manifiesto</h3>
+      <p>Por qué correr más rápido no te lleva a ninguna parte — y cómo el trading es la puerta trasera de salida de la Matrix.</p>
+      <span class="go">Leer el manifiesto</span>
+    </a>
+
+  </div>
+</section>
+
+<div class="band">
+  <div class="bg" style="background-image:url('assets/trq-banner-explosion.webp')" role="img" aria-label="Reina de ajedrez roja desintegrándose en partículas digitales"></div>
+  <blockquote>
+    <p class="line">Los mercados no te avisan. <span class="red">Te ejecutan.</span><br>Tu trabajo es leer la reacción antes que el resto.</p>
+    <p class="src">— The Red Queen · Protocolo de entrada</p>
+  </blockquote>
+</div>
+
+<section id="engine">
+  <div class="sec-head">
+    <div class="tag">// Neuromancer Engine</div>
+    <img class="engine-logo" src="Neuromancer/assets/neuromancer-textlogo.png" alt="Neuromancer Engine">
+    <h2>Cinco lentes. Un motor. Cero consenso de rebaño.</h2>
+    <p>Procesa el mercado como una máquina: cada tesis pasa por cinco lentes en desacuerdo, y el debate completo se publica — tesis, riesgos y veredicto.</p>
+  </div>
+  <div class="grid">
+    <a class="card" href="Neuromancer/neuromancer-council-aa.html">
+      <span class="num">ENGINE · AA</span>
+      <h3>Alcoa — Tierras raras</h3>
+      <p>El aluminio como proxy de la cadena de tierras raras fuera de China. ¿Material de defensa o trampa cíclica?</p>
+      <span class="go">Leer análisis</span>
+    </a>
+    <a class="card" href="Neuromancer/neuromancer-council-ccj.html">
+      <span class="num">ENGINE · CCJ</span>
+      <h3>Cameco — Uranio</h3>
+      <p>El renacimiento nuclear como curva S de energía. Posición dominante, pero el precio ya lo descuenta todo.</p>
+      <span class="go">Leer análisis</span>
+    </a>
+    <a class="card" href="Neuromancer/neuromancer-council-meta.html">
+      <span class="num">ENGINE · META</span>
+      <h3>Meta — IA y capex</h3>
+      <p>¿La carrera del capex en IA es un foso o una apuesta al rojo? Los cinco lentes, en desacuerdo.</p>
+      <span class="go">Leer análisis</span>
+    </a>
+    <a class="card" href="Neuromancer/">
+      <span class="num">ARCHIVO</span>
+      <h3>Todo el engine</h3>
+      <p>El registro completo: 43 deliberaciones publicadas y contando.</p>
+      <span class="go">Ver archivo</span>
+    </a>
+  </div>
+</section>
+
+<div class="band">
+  <div class="bg" style="background-image:url('assets/trq-banner-matrix.webp')" role="img" aria-label="Callejón con lluvia de código y graffiti de The Red Queen"></div>
+  <blockquote>
+    <p class="line">En la calle no se discute la teoría.<br>Se <span class="red">ejecuta</span> — o te ejecutan.</p>
+    <p class="src">The Red Queen · Checkmate the System</p>
+  </blockquote>
+</div>
+
+<section id="productos">
+  <div class="sec-head">
+    <div class="tag">// Productos</div>
+    <h2>El arsenal en acción</h2>
+    <p>Herramientas y formación para leer el mercado con tus propios ojos. Compra directa, acceso inmediato.</p>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://whop.com/checkout/plan_gNFLXrOwEg95E" target="_blank" rel="noopener">
+      <span class="num">NIVEL 0</span>
+      <h3>e4 — Cómo comenzar <span class="badge badge-ghost">Gratis</span></h3>
+      <p>Si no sabes cómo entrar al mundo del trading, empieza acá. Tu primera cuenta, sin humo.</p>
+      <span class="price">$0<small>Acceso inmediato</small></span>
+      <span class="buy ghost">Comenzar</span>
+    </a>
+
+    <a class="card" href="https://whop.com/checkout/plan_FmS0L72LrzlJf" target="_blank" rel="noopener">
+      <span class="num">PROTOCOLO</span>
+      <h3>Gambit Trader</h3>
+      <p>Instructivo simple del protocolo 9:30am. Si no quieres aprender, este es un buen punto de partida.</p>
+      <span class="price">$17<small>Pago único</small></span>
+      <span class="buy">Comprar</span>
+    </a>
+
+    <a class="card" href="https://whop.com/checkout/plan_GlFNCRI6x5r7y" target="_blank" rel="noopener">
+      <span class="num">MANUAL</span>
+      <h3>Red Queen Protocol</h3>
+      <p>El manual de trading en PDF: lo que necesitas saber para ganar en el mercado, sin paja.</p>
+      <span class="price">$57<small>Pago único</small></span>
+      <span class="buy">Comprar</span>
+    </a>
+
+    <a class="card" href="https://whop.com/checkout/plan_DEHvr4kTWXNW6" target="_blank" rel="noopener">
+      <span class="num">HERRAMIENTA</span>
+      <h3>Trading Core <span class="badge badge-ghost">Suscripción</span></h3>
+      <p>El indicador de TradingView como ayuda en el setup: señales claras, sin ruido.</p>
+      <span class="price">$25<small>Por mes</small></span>
+      <span class="buy">Suscribirse</span>
+    </a>
+
+    <a class="card" href="https://whop.com/checkout/plan_XICHu11O2GH0W" target="_blank" rel="noopener">
+      <span class="num">CURSO</span>
+      <h3>Alpha Trading</h3>
+      <p>El curso completo pregrabado: todo lo que necesitas para ganar en el mercado, a tu ritmo.</p>
+      <span class="price">$197<small>Pago único</small></span>
+      <span class="buy">Comprar</span>
+    </a>
+
+    <a class="card featured" href="trq-program.html">
+      <span class="num">MENTORÍA</span>
+      <h3>Red Queen Mastery <span class="badge">Flagship</span></h3>
+      <p>Mentoría 1:1 en vivo: 6 sesiones de 60 minutos de Smart Money Concepts para dominar el intraday.</p>
+      <span class="price">$700<small>6 sesiones · USD fijo</small></span>
+      <span class="buy">Ver el programa</span>
+    </a>
+
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <img src="assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <p>La hipótesis de la Reina Roja aplicada a los mercados: deja de correr, aprende a leer el precio, ejecuta.</p>
+    </div>
+    <div class="foot-cols">
+      <div class="foot-col">
+        <h4>Explorar</h4>
+        <a href="manifiesto.html">El Manifiesto</a>
+        <a href="trq-program.html">Mentoría SMC</a>
+        <a href="Neuromancer/">Neuromancer Engine</a>
+        <a href="brain.html">BrAIn — Breaking AI Non-sense</a>
+        <a href="#productos">Productos</a>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <a href="trq-terms.html">Términos y condiciones</a>
+        <a href="trq-thank-you.html">Post-compra</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contacto</h4>
+        <a href="mailto:info@theredqueen.co">info@theredqueen.co</a>
+        <a href="https://whop.com/the-red-queen" target="_blank" rel="noopener">whop.com/the-red-queen</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 The Red Queen — Checkmate the System</span>
+    <span>Hecho con disciplina · <a href="mailto:info@theredqueen.co">info@theredqueen.co</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
