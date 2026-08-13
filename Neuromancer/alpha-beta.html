@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alpha y Beta — Cómo leer el riesgo y la convicción del Consejo Neuromancer</title>
-<meta name="description" content="Guía metodológica del Consejo Neuromancer: qué es la beta (riesgo de mercado), qué es el alpha del Consejo (convicción neta), cómo leerlos juntos y comparar portafolios.">
+<title>Alpha y Beta — Cómo leer el riesgo y la convicción del Neuromancer engine</title>
+<meta name="description" content="Guía metodológica del Neuromancer engine: qué es la beta (riesgo de mercado), qué es el alpha del engine (convicción neta), cómo leerlos juntos y comparar portafolios.">
 <link rel="icon" type="image/png" href="assets/neuromancer-single.png">
 <link rel="apple-touch-icon" href="assets/neuromancer-single.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -132,11 +132,11 @@ footer img{height:44px;margin-top:20px;opacity:.92}
 
   <div class="hero">
     <div class="kicker">Guía metodológica · v1.0</div>
-    <h1>Alpha y Beta: cómo leer <span class="accent">el riesgo</span> y <span class="accent2">la convicción</span> del Consejo</h1>
+    <h1>Alpha y Beta: cómo leer <span class="accent">el riesgo</span> y <span class="accent2">la convicción</span> del engine</h1>
     <p class="sub">Cada portafolio del archive muestra dos números: <b>β</b> y <b>α</b>. Esta guía explica qué miden, cómo se calculan en Neuromancer, y —lo más importante— <b>cómo leerlos juntos</b> para comparar portafolios entre sí y contra la referencia del mercado.</p>
     <div class="hero-tags">
       <span class="tag">β = <b>riesgo de mercado</b></span>
-      <span class="tag">α = <b>convicción neta del Consejo</b></span>
+      <span class="tag">α = <b>convicción neta del engine</b></span>
       <span class="tag">Referencia: <b>S&amp;P 500 (β 1.0)</b></span>
       <span class="tag">Escala α: <b>−10 a +10</b></span>
     </div>
@@ -160,7 +160,7 @@ footer img{height:44px;margin-top:20px;opacity:.92}
 
   <!-- ══ 02 ALPHA ══ -->
   <section id="alpha">
-    <div class="sec-title"><span class="n">02</span><h2>Qué es el Alpha (α)</h2><span class="en">Convicción del Consejo</span></div>
+    <div class="sec-title"><span class="n">02</span><h2>Qué es el Alpha (α)</h2><span class="en">Convicción del engine</span></div>
     <p>En finanzas clásicas, el alpha es el retorno <b>por encima (o por debajo) de lo que el riesgo asumido debería pagar</b>. El CAPM define el retorno "justo" como la tasa libre de riesgo más la compensación por beta:</p>
     <div class="formula"><span class="lbl">Retorno justo (CAPM)</span>
 <span class="m">E(R)</span> = <span class="v">R<sub>f</sub></span> + <span class="v">β</span> × (<span class="g">R<sub>m</sub></span> − <span class="v">R<sub>f</sub></span>)</div>
@@ -169,14 +169,14 @@ footer img{height:44px;margin-top:20px;opacity:.92}
     <p><b>α &gt; 0</b> → el activo o gestor rindió más de lo que su beta justificaba: hay "mano", selección que añade valor. <b>α &lt; 0</b> → la selección destruyó valor. El alpha no se puede copiar con un índice: es la parte del retorno que viene de decisiones.</p>
     <div class="callout">
       <h4>El α de Neuromancer es una proxy, no un alpha de retornos</h4>
-      <p>No tenemos histórico de retornos de los portafolios (son canastas de análisis, no carteras ejecutadas), así que el alpha del archive mide la <b>convicción neta del Consejo sobre la selección</b>: cuánto valor de selección ven los 5 lentes en cada canasta.</p>
+      <p>No tenemos histórico de retornos de los portafolios (son canastas de análisis, no carteras ejecutadas), así que el alpha del archive mide la <b>convicción neta del engine sobre la selección</b>: cuánto valor de selección ven los 5 lentes en cada canasta.</p>
       <p class="mono" style="margin-top:8px;color:var(--cyan)">α = promedio de (convicción × signo del veredicto) · BUY + · HOLD 0 · AVOID − · escala −10 a +10</p>
     </div>
     <table>
-      <tr><th>α del Consejo</th><th>Qué significa</th><th>Ejemplo real</th></tr>
+      <tr><th>α del engine</th><th>Qué significa</th><th>Ejemplo real</th></tr>
       <tr><td class="val pos">+2.2</td><td>Convicción compradora neta: los BUY de alta convicción pesan más que los rechazos.</td><td><span class="tick">Arc Reactor</span> <small>— 8 BUY suman +56, PLTR/NNE restan −14 → 42/19</small></td></tr>
       <tr><td class="val zero">+0.9</td><td>Convicción positiva leve: 1 BUY claro, el resto neutro.</td><td><span class="tick">Emerging</span> (MU), <span class="tick">The Bunker</span> (VXUS)</td></tr>
-      <tr><td class="val neg">−2.0</td><td>Convicción negativa: el Consejo ve riesgo sin retorno esperado en la canasta.</td><td><span class="tick">Quantum</span> <small>— RGTI AVOID 6 → −6 entre 3 tickers</small></td></tr>
+      <tr><td class="val neg">−2.0</td><td>Convicción negativa: el engine ve riesgo sin retorno esperado en la canasta.</td><td><span class="tick">Quantum</span> <small>— RGTI AVOID 6 → −6 entre 3 tickers</small></td></tr>
     </table>
   </section>
 
@@ -195,25 +195,25 @@ footer img{height:44px;margin-top:20px;opacity:.92}
       <tr><td><span class="tick">Arc Reactor</span></td><td class="val">1.68</td><td>Amplifica 68% más que el mercado.</td></tr>
       <tr><td><span class="tick">Quantum</span></td><td class="val">2.49</td><td>Amplifica ~2.5× — el de mayor riesgo del archive.</td></tr>
     </table>
-    <p><b>Regla de lectura:</b> β = 1.0 es el "riesgo neutro o base". Un portafolio con β 0.5 asume <b>la mitad</b> del riesgo de mercado; uno con β 2.0 asume el doble. Cuando compares portafolios, pregúntate siempre: <b>¿cuánto riesgo de mercado estoy comprando, y qué me da el Consejo a cambio?</b></p>
+    <p><b>Regla de lectura:</b> β = 1.0 es el "riesgo neutro o base". Un portafolio con β 0.5 asume <b>la mitad</b> del riesgo de mercado; uno con β 2.0 asume el doble. Cuando compares portafolios, pregúntate siempre: <b>¿cuánto riesgo de mercado estoy comprando, y qué me da el engine a cambio?</b></p>
   </section>
 
   <!-- ══ 04 CÁLCULO ══ -->
   <section id="calculo">
     <div class="sec-title"><span class="n">04</span><h2>Cómo se calcula en Neuromancer</h2><span class="en">Método</span></div>
     <h4 style="margin-bottom:6px">β del portafolio — promedio de betas reales</h4>
-    <p>Promedio aritmético de las betas individuales de cada ticker (las que publica stockanalysis, regresión de 5 años vs S&amp;P 500). Para los ETFs de The Bunker, que no las reportan, el Consejo las calcula por <b>regresión propia</b> con retornos semanales de 5 años vs SPY — misma fuente y ventana, así todo es comparable.</p>
+    <p>Promedio aritmético de las betas individuales de cada ticker (las que publica stockanalysis, regresión de 5 años vs S&amp;P 500). Para los ETFs de The Bunker, que no las reportan, el engine las calcula por <b>regresión propia</b> con retornos semanales de 5 años vs SPY — misma fuente y ventana, así todo es comparable.</p>
     <div class="formula"><span class="lbl">Beta del portafolio</span>
 <span class="v">β<sub>portafolio</sub></span> = ( <span class="v">β<sub>1</sub></span> + <span class="v">β<sub>2</sub></span> + … + <span class="v">β<sub>n</sub></span> ) / <span class="m">n</span> <span class="c">— peso igual, porque el vault no define pesos de capital</span></div>
     <p class="muted">Ejemplo — Rare Earth (10 tickers): (1.92 + 0.69 + 1.57 + 2.58 + 0.79 + 1.22 + 0.22 + 1.16 + 1.65 + 1.07) / 10 = <b>1.29</b>. El portafolio amplifica el mercado ~29% más que el índice.</p>
-    <h4 style="margin:18px 0 6px">α del Consejo — convicción neta</h4>
+    <h4 style="margin:18px 0 6px">α del engine — convicción neta</h4>
     <p>Por cada ticker: la convicción del veredicto (1-10) con signo según la postura (BUY +1, HOLD 0, AVOID −1). El alpha del portafolio es el promedio. La escala es −10 a +10.</p>
-    <div class="formula"><span class="lbl">Alpha del Consejo</span>
+    <div class="formula"><span class="lbl">Alpha del engine</span>
 <span class="m">α</span> = ( Σ <span class="v">convicción<sub>i</sub></span> × <span class="g">signo(veredicto<sub>i</sub>)</span> ) / <span class="m">n</span></div>
-    <p class="muted">Ejemplo — Quantum: IONQ (HOLD → 0) + RGTI (AVOID 6 → −6) + QBTS (HOLD → 0) = −6 / 3 = <b>−2.0</b>. El Consejo rechaza la canasta completa.</p>
+    <p class="muted">Ejemplo — Quantum: IONQ (HOLD → 0) + RGTI (AVOID 6 → −6) + QBTS (HOLD → 0) = −6 / 3 = <b>−2.0</b>. El engine rechaza la canasta completa.</p>
     <div class="fx" style="margin-top:10px">
       <span class="chip hi">β fuentes: stockanalysis + regresión propia (SPY, 5Y semanal)</span>
-      <span class="chip">α fuentes: veredictos del Consejo (5 lentes)</span>
+      <span class="chip">α fuentes: veredictos del engine (5 lentes)</span>
       <span class="chip lo">α = proxy de convicción, no retorno realizado</span>
     </div>
   </section>
@@ -221,25 +221,25 @@ footer img{height:44px;margin-top:20px;opacity:.92}
   <!-- ══ 05 LECTURA CONJUNTA ══ -->
   <section id="juntos">
     <div class="sec-title"><span class="n">05</span><h2>Cómo leerlos juntos (la matriz)</h2><span class="en">β × α</span></div>
-    <p>El poder está en combinarlos: <b>β dice cuánto riesgo de mercado compras; α dice cuánta convicción del Consejo recibes a cambio</b>. Los cuatro cuadrantes cuentan historias distintas:</p>
+    <p>El poder está en combinarlos: <b>β dice cuánto riesgo de mercado compras; α dice cuánta convicción del engine recibes a cambio</b>. Los cuatro cuadrantes cuentan historias distintas:</p>
     <div class="matrix">
       <div class="quad good">
         <div class="qtitle">α + · β bajo</div>
         <h4>Calidad que no amplifica</h4>
-        <p>Convicción positiva con poco riesgo de mercado: la canasta ideal del Consejo.</p>
+        <p>Convicción positiva con poco riesgo de mercado: la canasta ideal del engine.</p>
         <div class="ex"><b>Rare Earth</b> · β 1.29 · α +1.3 — mineras descorrelacionadas con 2 BUY con earnings reales</div>
       </div>
       <div class="quad risk">
         <div class="qtitle">α + · β alto</div>
         <h4>Convicción con riesgo</h4>
-        <p>El Consejo compra, pero pagas el precio en volatilidad: el riesgo es parte de la tesis.</p>
+        <p>El engine compra, pero pagas el precio en volatilidad: el riesgo es parte de la tesis.</p>
         <div class="ex"><b>Arc Reactor</b> · β 1.68 · α +2.2 · <b>Emerging</b> · β 2.33 · α +0.9 · <b>MP2.0</b> · β 1.77 · α +1.9</div>
       </div>
       <div class="quad bad">
         <div class="qtitle">α − · β alto</div>
         <h4>Riesgo sin retorno esperado</h4>
         <p>Lo peor de ambos mundos: máxima amplificación del mercado y convicción negativa.</p>
-        <div class="ex"><b>Quantum</b> · β 2.49 · α −2.0 — el único portafolio que el Consejo rechaza en neto</div>
+        <div class="ex"><b>Quantum</b> · β 2.49 · α −2.0 — el único portafolio que el engine rechaza en neto</div>
       </div>
       <div class="quad flat">
         <div class="qtitle">β ≈ bajo · α ≈ 0</div>
@@ -248,16 +248,16 @@ footer img{height:44px;margin-top:20px;opacity:.92}
         <div class="ex"><b>The Bunker</b> · β 0.44 · α +0.9 — el seguro anti-superbubble de Grantham/GMO</div>
       </div>
     </div>
-    <p><b>La pregunta correcta al comparar:</b> "¿este portafolio me da más convicción del Consejo por unidad de riesgo de mercado?" Eso es, en esencia, comparar el <b>ratio α/β</b>:</p>
+    <p><b>La pregunta correcta al comparar:</b> "¿este portafolio me da más convicción del engine por unidad de riesgo de mercado?" Eso es, en esencia, comparar el <b>ratio α/β</b>:</p>
     <table>
-      <tr><th>Portafolio</th><th>β</th><th>α</th><th>α por unidad de β</th><th>Lectura del Consejo</th></tr>
+      <tr><th>Portafolio</th><th>β</th><th>α</th><th>α por unidad de β</th><th>Lectura del engine</th></tr>
       <tr><td><span class="tick">Arc Reactor</span></td><td class="val">1.68</td><td class="val pos">+2.2</td><td class="val pos">1.31</td><td>La mejor relación convicción/riesgo del archive: 8 BUY de alta convicción</td></tr>
       <tr><td><span class="tick">Manhattan Project 2.0</span></td><td class="val">1.77</td><td class="val pos">+1.9</td><td class="val pos">1.07</td><td>Convicción positiva con riesgo alto: 3 BUY con margen</td></tr>
       <tr><td><span class="tick">Rare Earth</span></td><td class="val">1.29</td><td class="val pos">+1.3</td><td class="val pos">1.01</td><td>Calidad descorrelacionada: poco riesgo, 2 BUY con earnings reales</td></tr>
       <tr><td><span class="tick">The Bunker</span></td><td class="val">0.44</td><td class="val pos">+0.9</td><td class="val pos">2.05</td><td>El refugio: poca beta por diseño, convicción leve (VXUS)</td></tr>
-      <tr><td><span class="tick">Emerging players</span></td><td class="val">2.33</td><td class="val pos">+0.9</td><td class="val pos">0.39</td><td>Mucho riesgo, poca convicción: el Consejo es cauto aquí</td></tr>
+      <tr><td><span class="tick">Emerging players</span></td><td class="val">2.33</td><td class="val pos">+0.9</td><td class="val pos">0.39</td><td>Mucho riesgo, poca convicción: el engine es cauto aquí</td></tr>
       <tr><td><span class="tick">Quantum</span></td><td class="val">2.49</td><td class="val neg">−2.0</td><td class="val neg">−0.80</td><td>Riesgo máximo con convicción negativa: evitar en neto</td></tr>
-      <tr><td><span class="tick">Robotics ExoStack</span></td><td class="val">1.48</td><td class="val zero">+0.0</td><td class="val zero">0.00</td><td>0 BUY y 10 HOLD: el Consejo reconoce los moats (HD/NBT, TXN) pero el precio llegó primero a todos — HD a 92x vs NBT a 23x</td></tr>
+      <tr><td><span class="tick">Robotics ExoStack</span></td><td class="val">1.48</td><td class="val neg">−1.3</td><td class="val neg">−0.88</td><td>0 BUY, 8 HOLD y 2 AVOID (ARBE, RR — microcaps a P/S 50-75x): el engine reconoce los moats pero el precio llegó primero — HD a 92x vs NBT a 23x</td></tr>
     </table>
     <p class="muted">Dato: el ratio α/β de The Bunker (2.05) es el más alto del archive — pero es engañoso: su α viene de UNA sola convicción (VXUS) sobre un portafolio diseñado para no caer, no para ganar. La matriz importa más que el ratio solo.</p>
   </section>
@@ -266,7 +266,7 @@ footer img{height:44px;margin-top:20px;opacity:.92}
   <section>
     <div class="sec-title"><span class="n">06</span><h2>Nota de método</h2><span class="en">Honestidad</span></div>
     <ul style="padding-left:20px;color:var(--muted);font-size:14px">
-      <li style="margin-bottom:8px">El <b>β</b> es un dato real (regresión vs S&amp;P 500); el <b>α del Consejo</b> es una <b>proxy de convicción</b>, no un alpha de retornos: los portafolios son canastas de análisis, no carteras con histórico.</li>
+      <li style="margin-bottom:8px">El <b>β</b> es un dato real (regresión vs S&amp;P 500); el <b>α del engine</b> es una <b>proxy de convicción</b>, no un alpha de retornos: los portafolios son canastas de análisis, no carteras con histórico.</li>
       <li style="margin-bottom:8px">β del portafolio = promedio con <b>peso igual</b> (el vault no define pesos de capital). Si algún día defines pesos, el cálculo es el mismo pero ponderado.</li>
       <li>β ≈ 0 no significa "sin riesgo": significa <b>sin riesgo de mercado</b>. Un activo puede tener β 0.2 y ser altamente volátil por riesgo propio (ver NB: β 0.22, pero −58% desde el máximo).</li>
     </ul>
