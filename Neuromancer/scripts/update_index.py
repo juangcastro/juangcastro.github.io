@@ -26,14 +26,14 @@ INDEX = os.path.join(BASE, "index.html")
 FRESH_DAYS = 60
 MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 
-ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "The Million Stack": "var(--magenta)",
+ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "Arc Reactor": "var(--magenta)",
           "Emerging players": "var(--amber)", "Quantum Gate": "var(--violet)",
           "Rare Earth": "var(--green)", "The Bunker": "#8b9bb4", "Robotics ExoStack": "#ff7847"}
 
 # ── Lo notable de cada portafolio (resumen del engine, mostrado en su card) ──
 NOTABLES = {
     "Manhattan Project 2.0": "El basket más dividido: minerales con fricción máxima (Buffett AVOID 9 vs Cathie BUY 7 en LAC); los 3 BUY tienen margen (fwd ≤27x) — en los 7 HOLD la tesis ganó, el precio llegó primero.",
-    "The Million Stack": "El corazón de la IA: 8 BUY (semis, plataformas, nuclear) incluyendo el primer voto unánime 5-0 del engine (CEG); PLTR (AVOID endurecido a 4-1 tras el +40% sin cambio fundamental) y NNE, los únicos AVOID.",
+    "Arc Reactor": "El corazón de la IA: 8 BUY (semis, plataformas, nuclear) incluyendo el primer voto unánime 5-0 del engine (CEG); PLTR (AVOID endurecido a 4-1 tras el +40% sin cambio fundamental) y NNE, los únicos AVOID.",
     "Emerging players": "El portafolio más cauto: 0 BUY — tesis reales con PEG >2 y precios adelantados; Cathie compró sola en 4 de 6 (BE, VRT, ARM, OKLO).",
     "Quantum Gate": "El rechazo más duro del engine: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
     "Rare Earth": "El portafolio del reshoring: 2 BUY (NEO — el único con earnings reales, PEG ~0.7; UUUU — la doble opcionalidad uranio+NdPr) y 8 HOLD; la mayoría es opcionalidad pre-revenue sobre permiso y ejecución.",

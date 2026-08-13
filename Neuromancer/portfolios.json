@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13T17:36:39",
+  "generated_at": "2026-08-13T18:00:28",
   "portfolios": [
     {
       "name": "Manhattan Project 2.0",
@@ -17,6 +17,58 @@
         "TMQ"
       ],
       "sets": {}
+    },
+    {
+      "name": "Arc Reactor",
+      "description": "El corazón de la IA: 19 tickers del cambio estructural (robótica, compute, energía, nuclear) — como el Arc Reactor de Stark, la energía que alimenta la inteligencia. 8 BUY con PEG ≤1.6, el primer voto unánime 5-0 del engine (CEG) y la mejor relación α/β del archive (+2.2 a β 1.68).",
+      "tickers": [
+        "TSLA",
+        "PLTR",
+        "CCJ",
+        "TSM",
+        "AVGO",
+        "NVDA",
+        "NNE",
+        "GEV",
+        "LEU",
+        "HOOD",
+        "ARKK",
+        "NU",
+        "GOOGL",
+        "SPCX",
+        "CEG",
+        "CRSP",
+        "GE",
+        "META",
+        "MSFT"
+      ],
+      "sets": {
+        "Set 1": [
+          "TSLA",
+          "PLTR",
+          "CCJ",
+          "TSM",
+          "AVGO",
+          "NVDA"
+        ],
+        "Set 2": [
+          "NNE",
+          "GEV",
+          "LEU",
+          "HOOD",
+          "ARKK",
+          "NU",
+          "GOOGL",
+          "SPCX"
+        ],
+        "Set 3": [
+          "CEG",
+          "CRSP",
+          "GE",
+          "META",
+          "MSFT"
+        ]
+      }
     },
     {
       "name": "Emerging players",
@@ -90,58 +142,6 @@
         "EMB"
       ],
       "sets": {}
-    },
-    {
-      "name": "The Million Stack",
-      "description": "El corazón de la IA: 19 tickers del cambio estructural de la producción (robótica, compute, energía, nuclear). 8 BUY con PEG ≤1.6, el primer voto unánime 5-0 del engine (CEG) y la mejor relación α/β del archive (+2.2 a β 1.68).",
-      "tickers": [
-        "TSLA",
-        "PLTR",
-        "CCJ",
-        "TSM",
-        "AVGO",
-        "NVDA",
-        "NNE",
-        "GEV",
-        "LEU",
-        "HOOD",
-        "ARKK",
-        "NU",
-        "GOOGL",
-        "SPCX",
-        "CEG",
-        "CRSP",
-        "GE",
-        "META",
-        "MSFT"
-      ],
-      "sets": {
-        "Set 1": [
-          "TSLA",
-          "PLTR",
-          "CCJ",
-          "TSM",
-          "AVGO",
-          "NVDA"
-        ],
-        "Set 2": [
-          "NNE",
-          "GEV",
-          "LEU",
-          "HOOD",
-          "ARKK",
-          "NU",
-          "GOOGL",
-          "SPCX"
-        ],
-        "Set 3": [
-          "CEG",
-          "CRSP",
-          "GE",
-          "META",
-          "MSFT"
-        ]
-      }
     }
   ]
 }
