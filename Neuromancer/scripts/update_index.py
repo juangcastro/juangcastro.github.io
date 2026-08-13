@@ -26,19 +26,19 @@ INDEX = os.path.join(BASE, "index.html")
 FRESH_DAYS = 60
 MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 
-ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "1 Million stack": "var(--magenta)",
-          "Emerging players": "var(--amber)", "Quantum": "var(--violet)",
+ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "The Million Stack": "var(--magenta)",
+          "Emerging players": "var(--amber)", "Quantum Gate": "var(--violet)",
           "Rare Earth": "var(--green)", "The Bunker": "#8b9bb4", "Robotics ExoStack": "#ff7847"}
 
-# ── Lo notable de cada portafolio (resumen del Consejo, mostrado en su card) ──
+# ── Lo notable de cada portafolio (resumen del engine, mostrado en su card) ──
 NOTABLES = {
     "Manhattan Project 2.0": "El basket más dividido: minerales con fricción máxima (Buffett AVOID 9 vs Cathie BUY 7 en LAC); los 3 BUY tienen margen (fwd ≤27x) — en los 7 HOLD la tesis ganó, el precio llegó primero.",
-    "1 Million stack": "El corazón de la IA: 8 BUY (semis, plataformas, nuclear) incluyendo el primer voto unánime 5-0 del Consejo (CEG); PLTR (AVOID endurecido a 4-1 tras el +40% sin cambio fundamental) y NNE, los únicos AVOID.",
+    "The Million Stack": "El corazón de la IA: 8 BUY (semis, plataformas, nuclear) incluyendo el primer voto unánime 5-0 del engine (CEG); PLTR (AVOID endurecido a 4-1 tras el +40% sin cambio fundamental) y NNE, los únicos AVOID.",
     "Emerging players": "El portafolio más cauto: 0 BUY — tesis reales con PEG >2 y precios adelantados; Cathie compró sola en 4 de 6 (BE, VRT, ARM, OKLO).",
-    "Quantum": "El rechazo más duro del Consejo: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
+    "Quantum Gate": "El rechazo más duro del engine: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
     "Rare Earth": "El portafolio del reshoring: 2 BUY (NEO — el único con earnings reales, PEG ~0.7; UUUU — la doble opcionalidad uranio+NdPr) y 8 HOLD; la mayoría es opcionalidad pre-revenue sobre permiso y ejecución.",
     "The Bunker": "El refugio anti-superbubble (Grantham/GMO): 1 BUY (VXUS — el 60% no-US de Dalio) y 7 HOLD; vehículos impecables que cumplen su rol defensivo — diversificación barata, no alpha.",
-    "Robotics ExoStack": "La cadena del video de Elon: 0 BUY y 10 HOLD — el Consejo reconoce los moats (HD/NBT = cuello de botella de actuadores, TXN = fabs propias) pero el precio llegó primero a todos: HD a fwd 92x vs NBT a 23x, el mismo cuello de botella a múltiplos opuestos.",
+    "Robotics ExoStack": "La cadena del video de Elon: 0 BUY y 10 HOLD — el engine reconoce los moats (HD/NBT = cuello de botella de actuadores, TXN = fabs propias) pero el precio llegó primero a todos: HD a fwd 92x vs NBT a 23x, el mismo cuello de botella a múltiplos opuestos.",
 }
 
 def fecha(ts):
@@ -74,7 +74,7 @@ def scan_reports():
 
 def metrics_for(tickers, fresh):
     """β = beta promedio (riesgo de mercado, betas reales de stockanalysis).
-    α = convicción neta del Consejo: promedio de convicción × (+1 BUY, 0 HOLD, −1 AVOID), rango −10..+10."""
+    α = convicción neta del engine: promedio de convicción × (+1 BUY, 0 HOLD, −1 AVOID), rango −10..+10."""
     betas = json.load(open(os.path.join(BASE, "scripts", "betas.json"), encoding="utf-8"))
     bs = [betas[t] for t in tickers if betas.get(t) is not None]
     beta = sum(bs) / len(bs) if len(bs) >= 3 else None  # None = sin datos suficientes (ETFs)
@@ -132,7 +132,7 @@ def main():
       <div class="pf-name">{p["name"]}</div>
       <div class="pf-desc">{desc}</div>
       <div class="pf-progress"><span>{done}/{n} analizados</span><div class="track"><i style="width:{pct}%"></i></div></div>
-      <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
+      <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del engine (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
         <span class="m"><span class="k">β</span><b>{beta_str}</b></span>
         <span class="m"><span class="k">α</span><b class="{alpha_cls}">{alpha_str}</b></span>
         <span class="hint">beta = riesgo · alpha = convicción neta</span>
