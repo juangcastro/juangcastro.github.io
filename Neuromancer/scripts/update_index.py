@@ -38,7 +38,7 @@ NOTABLES = {
     "Quantum Gate": "El rechazo más duro del engine: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
     "Rare Earth": "El portafolio del reshoring: 2 BUY (NEO — el único con earnings reales, PEG ~0.7; UUUU — la doble opcionalidad uranio+NdPr) y 8 HOLD; la mayoría es opcionalidad pre-revenue sobre permiso y ejecución.",
     "The Bunker": "El refugio anti-superbubble (Grantham/GMO): 1 BUY (VXUS — el 60% no-US de Dalio) y 7 HOLD; vehículos impecables que cumplen su rol defensivo — diversificación barata, no alpha.",
-    "Robotics ExoStack": "La cadena del video de Elon: 0 BUY y 10 HOLD — el engine reconoce los moats (HD/NBT = cuello de botella de actuadores, TXN = fabs propias) pero el precio llegó primero a todos: HD a fwd 92x vs NBT a 23x, el mismo cuello de botella a múltiplos opuestos.",
+    "Robotics ExoStack": "La cadena del video de Elon: 0 BUY, 8 HOLD y 2 AVOID (ARBE y RR — microcaps pre-revenue a P/S 50-75x). El engine reconoce los moats (HD/NBT actuadores, TXN fabs propias, AVAV defensa) pero el precio llegó primero: HD a 92x vs NBT a 23x, el mismo cuello de botella a múltiplos opuestos.",
 }
 
 def fecha(ts):
