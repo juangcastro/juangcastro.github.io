@@ -27,7 +27,8 @@ FRESH_DAYS = 60
 MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 
 ACCENT = {"Manhattan Project 2.0": "var(--cyan)", "1 Million stack": "var(--magenta)",
-          "Emerging players": "var(--amber)", "Quantum": "var(--violet)"}
+          "Emerging players": "var(--amber)", "Quantum": "var(--violet)",
+          "Rare Earth": "var(--green)", "The Bunker": "#8b9bb4"}
 
 # ── Lo notable de cada portafolio (resumen del Consejo, mostrado en su card) ──
 NOTABLES = {
@@ -35,6 +36,8 @@ NOTABLES = {
     "1 Million stack": "El corazón de la IA: 8 BUY (semis, plataformas, nuclear) incluyendo el primer voto unánime 5-0 del Consejo (CEG); PLTR (AVOID endurecido a 4-1 tras el +40% sin cambio fundamental) y NNE, los únicos AVOID.",
     "Emerging players": "El portafolio más cauto: 0 BUY — tesis reales con PEG >2 y precios adelantados; Cathie compró sola en 4 de 6 (BE, VRT, ARM, OKLO).",
     "Quantum": "El rechazo más duro del Consejo: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
+    "Rare Earth": "El portafolio del reshoring: 2 BUY (NEO — el único con earnings reales, PEG ~0.7; UUUU — la doble opcionalidad uranio+NdPr) y 8 HOLD; la mayoría es opcionalidad pre-revenue sobre permiso y ejecución.",
+    "The Bunker": "El refugio anti-superbubble (Grantham/GMO): 1 BUY (VXUS — el 60% no-US de Dalio) y 7 HOLD; vehículos impecables que cumplen su rol defensivo — diversificación barata, no alpha.",
 }
 
 def fecha(ts):
@@ -73,7 +76,7 @@ def metrics_for(tickers, fresh):
     α = convicción neta del Consejo: promedio de convicción × (+1 BUY, 0 HOLD, −1 AVOID), rango −10..+10."""
     betas = json.load(open(os.path.join(BASE, "scripts", "betas.json"), encoding="utf-8"))
     bs = [betas[t] for t in tickers if betas.get(t) is not None]
-    beta = sum(bs) / len(bs) if bs else 0.0
+    beta = sum(bs) / len(bs) if len(bs) >= 3 else None  # None = sin datos suficientes (ETFs)
     sign = {"buy": 1, "hold": 0, "avoid": -1}
     scores = [sign.get(fresh[t]["verdict"], 0) * fresh[t]["conv"] for t in tickers if t in fresh]
     alpha = sum(scores) / len(scores) if scores else 0.0
@@ -121,13 +124,14 @@ def main():
         mtimes = [fresh[t]["mtime"] for t in p["tickers"] if t in fresh]
         upd = fecha(max(mtimes)) if mtimes else "—"
         beta, alpha = metrics_for(p["tickers"], fresh)
+        beta_str = f"{beta:.2f}" if beta is not None else "—"
         alpha_cls = "pos" if alpha > 0.3 else ("neg" if alpha < -0.3 else "zero")
         cards.append(f"""    <div class="pf-card" style="--accent:{acc};">
       <div class="pf-name">{p["name"]}</div>
       <div class="pf-desc">{desc}</div>
       <div class="pf-progress"><span>{done}/{n} analizados</span><div class="track"><i style="width:{pct}%"></i></div></div>
       <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
-        <span class="m"><span class="k">β</span><b>{beta:.2f}</b></span>
+        <span class="m"><span class="k">β</span><b>{beta_str}</b></span>
         <span class="m"><span class="k">α</span><b class="{alpha_cls}">{alpha:+.1f}</b></span>
         <span class="hint">beta = riesgo · alpha = convicción neta</span>
       </div>
