@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12T23:36:53",
+  "generated_at": "2026-08-13T17:25:00",
   "portfolios": [
     {
       "name": "Manhattan Project 2.0",
@@ -120,7 +120,11 @@
         "ARBE",
         "AVAV",
         "RR",
-        "RDW"
+        "RDW",
+        "HD",
+        "NBT",
+        "TXN",
+        "STM"
       ],
       "sets": {}
     },

@@ -38,7 +38,7 @@ NOTABLES = {
     "Quantum": "El rechazo más duro del Consejo: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.",
     "Rare Earth": "El portafolio del reshoring: 2 BUY (NEO — el único con earnings reales, PEG ~0.7; UUUU — la doble opcionalidad uranio+NdPr) y 8 HOLD; la mayoría es opcionalidad pre-revenue sobre permiso y ejecución.",
     "The Bunker": "El refugio anti-superbubble (Grantham/GMO): 1 BUY (VXUS — el 60% no-US de Dalio) y 7 HOLD; vehículos impecables que cumplen su rol defensivo — diversificación barata, no alpha.",
-    "Robotics Value Chain": "El más nuevo (la sesión de consultas e insights): 6 tickers de robótica/automatización aún sin análisis del Consejo — β 1.67 ya calculada por regresión (RR 2.28 · RDW 2.23), α pendiente de screening.",
+    "Robotics Value Chain": "La cadena del video de Elon: 0 BUY y 10 HOLD — el Consejo reconoce los moats (HD/NBT = cuello de botella de actuadores, TXN = fabs propias) pero el precio llegó primero a todos: HD a fwd 92x vs NBT a 23x, el mismo cuello de botella a múltiplos opuestos.",
 }
 
 def fecha(ts):
