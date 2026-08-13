@@ -13,7 +13,7 @@
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ── Arcade Ivory: blanco puro + pixel display + emerald solo para status ── */
   :root {
@@ -88,15 +88,13 @@
     width: 8px; height: 8px; border-radius: 50%;
     background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18);
   }
-  .masthead .logo-word {
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(44px, 11vw, 84px);
-    line-height: 1.15;
-    color: var(--ink);
-    display: inline-block;
-    position: relative;
+  .masthead .brain-logo {
+    width: min(340px, 80vw);
+    height: auto;
+    aspect-ratio: 409 / 406;
+    object-fit: contain;
+    margin: 0 auto 10px;
   }
-  .masthead .logo-word .a { color: var(--accent); }
   .masthead .sub {
     margin-top: 26px;
     font-family: 'JetBrains Mono', monospace; font-size: 12px;
@@ -202,7 +200,7 @@
 
 <header class="masthead">
   <div class="status"><span class="dot"></span>Newsletter · En construcción</div>
-  <h1 class="logo-word">Br<span class="a">A</span>In</h1>
+  <h1 class="brain-logo"><img src="assets/brain-logo.png" alt="BrAIn — Breaking AI Non-sense"></h1>
   <div class="sub">Breaking AI Non-sense</div>
   <p class="desc">
     Inteligencia artificial, mercados y tecnología, contados <b>sin humo ni hype</b>.
