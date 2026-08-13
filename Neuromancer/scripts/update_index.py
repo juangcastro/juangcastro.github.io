@@ -83,6 +83,68 @@ def metrics_for(tickers, fresh):
     alpha = sum(scores) / len(scores) if scores else None  # None = sin análisis aún
     return beta, alpha
 
+
+def scatter_svg(portfolios, fresh):
+    """Mapa β×α de los portafolios (SVG inline): riesgo de mercado vs convicción del engine.
+    Referencia: S&P 500 = β 1.0 · neutro = α 0. Cuadrantes = la matriz de la guía."""
+    accs = []
+    for p in portfolios:
+        beta, alpha = metrics_for(p["tickers"], fresh)
+        if beta is None or alpha is None:
+            continue
+        accs.append((p["name"], beta, alpha, ACCENT.get(p["name"], "#00e5ff")))
+    W, H = 900, 640
+    ML, MT, MR, MB = 80, 70, 50, 66
+    PW, PH = W - ML - MR, H - MT - MB
+    B0, B1, A0, A1 = 0.2, 2.6, -2.5, 2.5
+    def X(b): return ML + (b - B0) / (B1 - B0) * PW
+    def Y(a): return MT + (A1 - a) / (A1 - A0) * PH
+
+    out = []
+    out.append(f'<svg class="map-svg" viewBox="0 0 {W} {H}" role="img" aria-label="Mapa de riesgo y convicción de los portafolios">')
+
+    # cuadrantes (matriz de la guía)
+    q = [
+        (X(0.2), Y(2.5), X(1.0), Y(0),   "rgba(0,255,157,.045)", "CALIDAD / REFUGIO",  "#00ff9d"),
+        (X(1.0), Y(2.5), X(2.6), Y(0),   "rgba(0,229,255,.05)",  "CONVICCIÓN CON RIESGO", "#00e5ff"),
+        (X(1.0), Y(0),   X(2.6), Y(-2.5),"rgba(255,46,151,.06)", "RIESGO SIN RETORNO", "#ff2e97"),
+        (X(0.2), Y(0),   X(1.0), Y(-2.5),"rgba(139,147,184,.05)","SIN CONVICCIÓN",    "#8b93b8"),
+    ]
+    for x1, y1, x2, y2, fill, lbl, col in q:
+        out.append(f'<rect x="{x1:.1f}" y="{y1:.1f}" width="{x2-x1:.1f}" height="{y2-y1:.1f}" fill="{fill}"/>')
+        out.append(f'<text x="{x1+10:.1f}" y="{y2-12:.1f}" font-family="JetBrains Mono,monospace" font-size="9" letter-spacing=".14em" fill="{col}" opacity=".55">{lbl}</text>')
+
+    # grid + ejes
+    for b in (0.5, 1.0, 1.5, 2.0, 2.5):
+        out.append(f'<line x1="{X(b):.1f}" y1="{MT:.1f}" x2="{X(b):.1f}" y2="{MT+PH:.1f}" stroke="rgba(255,255,255,.06)" stroke-width="1"/>')
+        out.append(f'<text x="{X(b):.1f}" y="{MT+PH+18:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="middle">{b:.1f}</text>')
+    for a in (-2, -1, 1, 2):
+        out.append(f'<line x1="{ML:.1f}" y1="{Y(a):.1f}" x2="{ML+PW:.1f}" y2="{Y(a):.1f}" stroke="rgba(255,255,255,.06)" stroke-width="1"/>')
+        out.append(f'<text x="{ML-10:.1f}" y="{Y(a)+3:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="end">{a:+.0f}</text>')
+
+    # referencias: β=1.0 (el mercado) y α=0 (neutro)
+    out.append(f'<line x1="{X(1.0):.1f}" y1="{MT:.1f}" x2="{X(1.0):.1f}" y2="{MT+PH:.1f}" stroke="rgba(255,46,151,.5)" stroke-width="1.4" stroke-dasharray="6 5"/>')
+    out.append(f'<text x="{X(1.0)-6:.1f}" y="{MT+14:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#ff2e97" text-anchor="end" opacity=".9">S&amp;P 500 · β 1.0</text>')
+    out.append(f'<line x1="{ML:.1f}" y1="{Y(0):.1f}" x2="{ML+PW:.1f}" y2="{Y(0):.1f}" stroke="rgba(255,255,255,.28)" stroke-width="1.2"/>')
+    out.append(f'<text x="{ML+PW-8:.1f}" y="{Y(0)-8:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#c6cbe8" text-anchor="end">α 0 · neutro</text>')
+
+    # ejes con títulos
+    out.append(f'<text x="{ML+PW/2:.1f}" y="{H-20:.1f}" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing=".2em" fill="#8b93b8" text-anchor="middle">β · RIESGO DE MERCADO →</text>')
+    out.append(f'<text x="20" y="{MT+PH/2:.1f}" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing=".2em" fill="#8b93b8" text-anchor="middle" transform="rotate(-90 20 {MT+PH/2:.1f})">α · CONVICCIÓN NETA →</text>')
+
+    # puntos por portafolio
+    for name, beta, alpha, col in accs:
+        cx, cy = X(beta), Y(alpha)
+        tip = f"{name} · β {beta:.2f} · α {alpha:+.1f}"
+        out.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="15" fill="none" stroke="{col}" stroke-width="1" opacity=".22"/>')
+        out.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="6.5" fill="{col}" stroke="#06070f" stroke-width="1.6"><title>{tip}</title></circle>')
+        anchor = "start"; lx = cx + 14
+        if cx > ML + PW - 150:
+            anchor = "end"; lx = cx - 14
+        out.append(f'<text x="{lx:.1f}" y="{cy+3:.1f}" font-family="JetBrains Mono,monospace" font-size="10.5" font-weight="600" fill="{col}" text-anchor="{anchor}">{name}</text>')
+    out.append('</svg>')
+    return "\n".join(out)
+
 def chips_for(tickers, reports):
     chips = []
     for t in tickers:
@@ -157,6 +219,12 @@ def main():
         return html[:s] + "\n" + new + "\n" + html[e:]
     html = between(html, "<!-- STATS:START -->", "<!-- STATS:END -->", stats_html)
     html = between(html, "<!-- DASHBOARD:START -->", "<!-- DASHBOARD:END -->", dash_html)
+    map_html = scatter_svg(portfolios, fresh)
+    map_html = ('  <section class="map-section" id="mapa">\n'
+                '    <div class="sec-title"><span class="n">MAP</span> Portfolio map · β × α</div>\n'
+                '    <p class="map-sub">Cada punto es un portafolio: <b>β</b> (riesgo de mercado, eje X) contra <b>α</b> (convicción neta del engine, eje Y). Referencia: <b>S&amp;P 500 = β 1.0</b> · neutro = α 0 — los cuadrantes son la matriz de la <a href="alpha-beta.html">guía</a>. Pasa el cursor sobre cada punto.</p>\n'
+                + map_html + '\n  </section>')
+    html = between(html, "<!-- MAP:START -->", "<!-- MAP:END -->", map_html)
     html = between(html, "<!-- MISC:START -->", "<!-- MISC:END -->", misc_html)
     open(INDEX, "w", encoding="utf-8").write(html)
 
