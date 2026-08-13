@@ -45,7 +45,7 @@ def scan_reports():
     """-> (fresh: ticker->info, stale: [ticker]) con filtro de 60 días.
     La fecha del análisis se parsea de 'Sesión: DD mmm AAAA' en la página;
     si no está, se usa el mtime del archivo."""
-    ALIASES = {"palantir": "PLTR", "enha": "ENHA"}
+    ALIASES = {"palantir": "PLTR", "enha": "ENHA", "screening-rare-earths": "RARE-EARTHS"}
     MES = {m: i + 1 for i, m in enumerate(MESES)}
     all_r = {}
     now = time.time()
@@ -67,6 +67,17 @@ def scan_reports():
     fresh = {t: r for t, r in all_r.items() if now - r["mtime"] <= FRESH_DAYS * 86400}
     stale = sorted(t for t, r in all_r.items() if now - r["mtime"] > FRESH_DAYS * 86400)
     return fresh, stale
+
+def metrics_for(tickers, fresh):
+    """β = beta promedio (riesgo de mercado, betas reales de stockanalysis).
+    α = convicción neta del Consejo: promedio de convicción × (+1 BUY, 0 HOLD, −1 AVOID), rango −10..+10."""
+    betas = json.load(open(os.path.join(BASE, "scripts", "betas.json"), encoding="utf-8"))
+    bs = [betas[t] for t in tickers if betas.get(t) is not None]
+    beta = sum(bs) / len(bs) if bs else 0.0
+    sign = {"buy": 1, "hold": 0, "avoid": -1}
+    scores = [sign.get(fresh[t]["verdict"], 0) * fresh[t]["conv"] for t in tickers if t in fresh]
+    alpha = sum(scores) / len(scores) if scores else 0.0
+    return beta, alpha
 
 def chips_for(tickers, reports):
     chips = []
@@ -109,10 +120,17 @@ def main():
         desc = re.sub(r"\*\*", "", p["description"])
         mtimes = [fresh[t]["mtime"] for t in p["tickers"] if t in fresh]
         upd = fecha(max(mtimes)) if mtimes else "—"
+        beta, alpha = metrics_for(p["tickers"], fresh)
+        alpha_cls = "pos" if alpha > 0.3 else ("neg" if alpha < -0.3 else "zero")
         cards.append(f"""    <div class="pf-card" style="--accent:{acc};">
       <div class="pf-name">{p["name"]}</div>
       <div class="pf-desc">{desc}</div>
       <div class="pf-progress"><span>{done}/{n} analizados</span><div class="track"><i style="width:{pct}%"></i></div></div>
+      <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
+        <span class="m"><span class="k">β</span><b>{beta:.2f}</b></span>
+        <span class="m"><span class="k">α</span><b class="{alpha_cls}">{alpha:+.1f}</b></span>
+        <span class="hint">beta = riesgo · alpha = convicción neta</span>
+      </div>
       <div class="pf-chips">{chips_for(p["tickers"], fresh)}</div>
       <div class="pf-note">◈ {NOTABLES.get(p["name"], "")}</div>
       <div class="pf-date">actualizado {upd}</div>

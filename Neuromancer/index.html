@@ -162,6 +162,7 @@
   }
   .t-node.avoid { border-color: var(--magenta); box-shadow: 0 0 12px var(--glow-magenta); }
   .t-node.basket { border-color: var(--violet); box-shadow: 0 0 12px rgba(139, 92, 246, .6); }
+  .t-node.hold { border-color: var(--amber); box-shadow: 0 0 12px rgba(255, 176, 32, .55); }
   @media (max-width: 720px) { .t-node { left: 5px; } }
 
   /* ── cards de reporte ─────────────────── */
@@ -179,6 +180,7 @@
   }
   .rep.avoid::before { background: linear-gradient(180deg, var(--magenta), var(--violet)); }
   .rep.basket::before { background: linear-gradient(180deg, var(--violet), var(--cyan)); }
+  .rep.hold::before { background: linear-gradient(180deg, var(--amber), var(--magenta)); }
   .rep:hover { border-color: var(--cyan); transform: translateY(-3px); box-shadow: 0 18px 44px -18px rgba(0, 0, 0, .8), 0 0 30px -12px var(--glow-cyan); }
 
   .rep-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -219,6 +221,7 @@
   .btn .arrow { transition-property: transform; transition-duration: .18s; transition-timing-function: ease-out; }
   .btn:hover .arrow { transform: translateX(4px); }
   .btn.avoid-btn { background: linear-gradient(90deg, var(--magenta), var(--violet)); box-shadow: 0 0 20px -6px var(--glow-magenta); }
+  .btn.hold-btn { background: linear-gradient(90deg, var(--amber), var(--magenta)); box-shadow: 0 0 20px -6px rgba(255, 176, 32, .5); }
 
   /* ── basket card: chips por ticker ────── */
   .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; margin-top: 16px; }
@@ -278,6 +281,14 @@
   .pf-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   .pf-card .pf-date { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
   .pf-card .pf-note { margin-top: 12px; font-size: 11.5px; line-height: 1.55; color: var(--muted); border-left: 2px solid var(--accent, var(--cyan)); padding-left: 10px; text-wrap: pretty; opacity: .92; }
+  .pf-card .pf-metrics { display: flex; align-items: baseline; gap: 14px; margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .pf-card .pf-metrics .m { display: inline-flex; align-items: baseline; gap: 5px; color: var(--muted); }
+  .pf-card .pf-metrics .m .k { font-size: 10px; letter-spacing: .08em; color: var(--muted); opacity: .75; }
+  .pf-card .pf-metrics .m b { font-size: 14px; color: var(--text); font-variant-numeric: tabular-nums; }
+  .pf-card .pf-metrics .m b.pos { color: var(--green); text-shadow: 0 0 8px var(--glow-green); }
+  .pf-card .pf-metrics .m b.neg { color: var(--magenta); text-shadow: 0 0 8px var(--glow-magenta); }
+  .pf-card .pf-metrics .m b.zero { color: var(--muted); }
+  .pf-card .pf-metrics .hint { margin-left: auto; font-family: 'Inter', sans-serif; font-size: 9.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); opacity: .6; }
   .pf-chip {
     display: inline-flex; align-items: center; gap: 7px;
     padding: 5px 11px; border-radius: 9px;
@@ -338,10 +349,10 @@
   <div class="stats">
     <div class="stat"><div class="v">4</div><div class="k">Stack</div></div>
     <div class="stat"><div class="v">37</div><div class="k">Tickers</div></div>
-    <div class="stat"><div class="v">38</div><div class="k">Análisis</div></div>
+    <div class="stat"><div class="v">39</div><div class="k">Análisis</div></div>
     <div class="stat"><div class="v">0</div><div class="k">Pendientes</div></div>
     <div class="stat buy"><div class="v">11</div><div class="k">Buy</div></div>
-    <div class="stat hold"><div class="v">23</div><div class="k">Hold</div></div>
+    <div class="stat hold"><div class="v">24</div><div class="k">Hold</div></div>
     <div class="stat avoid"><div class="v">4</div><div class="k">Avoid</div></div>
   </div>
 <!-- STATS:END -->
@@ -354,6 +365,11 @@
       <div class="pf-name">Manhattan Project 2.0</div>
       <div class="pf-desc">Impulso de la Casa Blanca por su "misión Genesis". Tesis basada en la "AI Dislocation": desviar el capital de las acciones de software IA sobrevaloradas y de  semiconductores, y reorientarlo hacia red eléctrica, materiales críticos y middleware con respaldo del gobierno.</div>
       <div class="pf-progress"><span>10/10 analizados</span><div class="track"><i style="width:100%"></i></div></div>
+      <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
+        <span class="m"><span class="k">β</span><b>1.77</b></span>
+        <span class="m"><span class="k">α</span><b class="pos">+1.9</b></span>
+        <span class="hint">beta = riesgo · alpha = convicción neta</span>
+      </div>
       <div class="pf-chips"><a class="pf-chip buy" href="neuromancer-council-nvt.html"><span class="dot"></span>NVT<span class="pct">7/10</span></a> <a class="pf-chip hold" href="neuromancer-council-fix.html"><span class="dot"></span>FIX<span class="pct">6/10</span></a> <a class="pf-chip buy" href="neuromancer-council-mtz.html"><span class="dot"></span>MTZ<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-strl.html"><span class="dot"></span>STRL<span class="pct">6/10</span></a> <a class="pf-chip buy" href="neuromancer-council-aa.html"><span class="dot"></span>AA<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-lac.html"><span class="dot"></span>LAC<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-pwr.html"><span class="dot"></span>PWR<span class="pct">7/10</span></a> <a class="pf-chip hold" href="neuromancer-council-mp.html"><span class="dot"></span>MP<span class="pct">5/10</span></a> <a class="pf-chip hold" href="neuromancer-council-gev.html"><span class="dot"></span>GEV<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-tmq.html"><span class="dot"></span>TMQ<span class="pct">4/10</span></a></div>
       <div class="pf-note">◈ El basket más dividido: minerales con fricción máxima (Buffett AVOID 9 vs Cathie BUY 7 en LAC); los 3 BUY tienen margen (fwd ≤27x) — en los 7 HOLD la tesis ganó, el precio llegó primero.</div>
       <div class="pf-date">actualizado 03 ago 2026</div>
@@ -362,6 +378,11 @@
       <div class="pf-name">1 Million stack</div>
       <div class="pf-desc">Influyentes en la narrativa de cambio de estructura productiva mundial, hacia la robótica, artificial intelligence, compute, energy.</div>
       <div class="pf-progress"><span>19/19 analizados</span><div class="track"><i style="width:100%"></i></div></div>
+      <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
+        <span class="m"><span class="k">β</span><b>1.68</b></span>
+        <span class="m"><span class="k">α</span><b class="pos">+2.2</b></span>
+        <span class="hint">beta = riesgo · alpha = convicción neta</span>
+      </div>
       <div class="pf-chips"><a class="pf-chip hold" href="neuromancer-council-tsla.html"><span class="dot"></span>TSLA<span class="pct">5/10</span></a> <a class="pf-chip avoid" href="neuromancer-council-palantir.html"><span class="dot"></span>PLTR<span class="pct">8/10</span></a> <a class="pf-chip hold" href="neuromancer-council-ccj.html"><span class="dot"></span>CCJ<span class="pct">6/10</span></a> <a class="pf-chip buy" href="neuromancer-council-tsm.html"><span class="dot"></span>TSM<span class="pct">7/10</span></a> <a class="pf-chip buy" href="neuromancer-council-avgo.html"><span class="dot"></span>AVGO<span class="pct">7/10</span></a> <a class="pf-chip buy" href="neuromancer-council-nvda.html"><span class="dot"></span>NVDA<span class="pct">7/10</span></a> <a class="pf-chip avoid" href="neuromancer-council-nne.html"><span class="dot"></span>NNE<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-gev.html"><span class="dot"></span>GEV<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-leu.html"><span class="dot"></span>LEU<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-hood.html"><span class="dot"></span>HOOD<span class="pct">5/10</span></a> <a class="pf-chip hold" href="neuromancer-council-arkk.html"><span class="dot"></span>ARKK<span class="pct">6/10</span></a> <a class="pf-chip buy" href="neuromancer-council-nu.html"><span class="dot"></span>NU<span class="pct">7/10</span></a> <a class="pf-chip buy" href="neuromancer-council-googl.html"><span class="dot"></span>GOOGL<span class="pct">7/10</span></a> <a class="pf-chip hold" href="neuromancer-council-spcx.html"><span class="dot"></span>SPCX<span class="pct">6/10</span></a> <a class="pf-chip buy" href="neuromancer-council-ceg.html"><span class="dot"></span>CEG<span class="pct">7/10</span></a> <a class="pf-chip hold" href="neuromancer-council-crsp.html"><span class="dot"></span>CRSP<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-ge.html"><span class="dot"></span>GE<span class="pct">6/10</span></a> <a class="pf-chip buy" href="neuromancer-council-meta.html"><span class="dot"></span>META<span class="pct">7/10</span></a> <a class="pf-chip buy" href="neuromancer-council-msft.html"><span class="dot"></span>MSFT<span class="pct">7/10</span></a></div>
       <div class="pf-note">◈ El corazón de la IA: 8 BUY (semis, plataformas, nuclear) incluyendo el primer voto unánime 5-0 del Consejo (CEG); PLTR (AVOID endurecido a 4-1 tras el +40% sin cambio fundamental) y NNE, los únicos AVOID.</div>
       <div class="pf-date">actualizado 07 ago 2026</div>
@@ -370,6 +391,11 @@
       <div class="pf-name">Emerging players</div>
       <div class="pf-desc">Stocks que surgen en el radar para considerar a corto/mediano plazo.</div>
       <div class="pf-progress"><span>6/6 analizados</span><div class="track"><i style="width:100%"></i></div></div>
+      <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
+        <span class="m"><span class="k">β</span><b>2.35</b></span>
+        <span class="m"><span class="k">α</span><b class="zero">+0.0</b></span>
+        <span class="hint">beta = riesgo · alpha = convicción neta</span>
+      </div>
       <div class="pf-chips"><a class="pf-chip hold" href="neuromancer-council-mrvl.html"><span class="dot"></span>MRVL<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-be.html"><span class="dot"></span>BE<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-vrt.html"><span class="dot"></span>VRT<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-arm.html"><span class="dot"></span>ARM<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-oklo.html"><span class="dot"></span>OKLO<span class="pct">5/10</span></a> <a class="pf-chip hold" href="neuromancer-council-poet.html"><span class="dot"></span>POET<span class="pct">4/10</span></a></div>
       <div class="pf-note">◈ El portafolio más cauto: 0 BUY — tesis reales con PEG >2 y precios adelantados; Cathie compró sola en 4 de 6 (BE, VRT, ARM, OKLO).</div>
       <div class="pf-date">actualizado 07 ago 2026</div>
@@ -378,6 +404,11 @@
       <div class="pf-name">Quantum</div>
       <div class="pf-desc">Key players en la escena de Quantum Computing: próxima frontera en la tecnología de datos. Largo plazo.</div>
       <div class="pf-progress"><span>3/3 analizados</span><div class="track"><i style="width:100%"></i></div></div>
+      <div class="pf-metrics" title="β = beta promedio de los tickers (riesgo de mercado) · α = convicción neta del Consejo (BUY + / HOLD 0 / AVOID −), escala −10 a +10">
+        <span class="m"><span class="k">β</span><b>2.49</b></span>
+        <span class="m"><span class="k">α</span><b class="neg">-2.0</b></span>
+        <span class="hint">beta = riesgo · alpha = convicción neta</span>
+      </div>
       <div class="pf-chips"><a class="pf-chip hold" href="neuromancer-council-ionq.html"><span class="dot"></span>IONQ<span class="pct">5/10</span></a> <a class="pf-chip avoid" href="neuromancer-council-rgti.html"><span class="dot"></span>RGTI<span class="pct">6/10</span></a> <a class="pf-chip hold" href="neuromancer-council-qbts.html"><span class="dot"></span>QBTS<span class="pct">5/10</span></a></div>
       <div class="pf-note">◈ El rechazo más duro del Consejo: 3-4 AVOID por ticker a 67x-618x ventas sin earnings; solo Cathie compra las S-curves.</div>
       <div class="pf-date">actualizado 07 ago 2026</div>
@@ -410,6 +441,26 @@
       </div>
     </div>
 
+    <!-- ══ 08 AGO 2026 · RARE EARTHS ══ -->
+    <div class="t-entry">
+      <div class="t-date"><div class="d">08</div><div class="m">AGO · 2026</div></div>
+      <div class="t-node hold"></div>
+      <div class="rep hold">
+        <div class="rep-top">
+          <span class="ticker">RARE EARTHS <small>Screening temático · 10 nombres</small></span>
+          <span class="verdict-badge hold">Hold</span>
+          <span class="meta">MP · LYC · NEO · UUUU · NB<br>Screening sectorial 08-ago</span>
+        </div>
+        <div class="conv hold">
+          <span class="lbl">Convicción</span>
+          <div class="track"><i style="width:60%"></i></div>
+          <span class="num">6/10 · 3 BUY · 6 HOLD · 1 descartado</span>
+        </div>
+        <p class="sum"><b>La tesis con upside asimétrico en el bloque Dalio·Ackman·Cathie.</b> De los 10 candidatos solo NEO tiene earnings reales (fwd 17.3, cero dilución): el vehículo más limpio; UUUU y NB completan la compra. El resto es opcionalidad sobre permiso y ejecución.</p>
+        <a class="btn hold-btn" href="neuromancer-council-screening-rare-earths.html">Ver reporte <span class="arrow">→</span></a>
+      </div>
+    </div>
+
   </div>
 
   <!-- MISC:START -->
@@ -418,7 +469,7 @@
 
   <footer>
     <div class="disc">Información educativa y de análisis, no constituye asesoría financiera. Reportes generados por el Consejo Neuromancer (análisis de inversión puro).</div>
-    <div style="display:flex; align-items:center; gap:10px;"><img src="assets/neuromancer-logo-2.png" alt="Neuromancer" style="height:40px; opacity:.92;">Actualizado: 07 ago 2026 · <a href="https://theredqueen.co">theredqueen.co ↗</a></div>
+    <div style="display:flex; align-items:center; gap:10px;"><img src="assets/neuromancer-logo-2.png" alt="Neuromancer" style="height:40px; opacity:.92;">Actualizado: 08 ago 2026 · <a href="https://theredqueen.co">theredqueen.co ↗</a></div>
   </footer>
 
 </div>
