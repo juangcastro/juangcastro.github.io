@@ -341,6 +341,9 @@
   .map-section .map-sub b { color: var(--cyan); font-weight: 600; }
   .map-section .map-sub a { color: var(--cyan); text-decoration: none; border-bottom: 1px dashed rgba(0,229,255,.5); }
   .map-cta { display: flex; justify-content: center; margin-top: 24px; }
+  .map-legend { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+  .map-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+  .map-legend span { display: inline-flex; align-items: center; }
   .map-svg { width: 100%; height: auto; display: block; border: 1px solid var(--border); border-radius: 14px; background: rgba(6,7,15,.6); }
   .map-svg circle { transition: r .15s ease; }
   .map-svg circle:hover { r: 9; }
@@ -576,7 +579,113 @@
   </section>
 <!-- MAP:END -->
 
-  <div class="sec-title"><span class="n">EQ</span> Individual Equities</div>
+<!-- TICKERS:START -->
+  <section class="map-section" id="mapa-tickers">
+    <div class="sec-title"><span class="n">TK</span> Ticker map · β × α</div>
+    <p class="map-sub">El mismo mapa, a nivel de <b>ticker individual</b>: cada punto es un análisis del archive con beta disponible — <b>α individual = convicción × signo del veredicto</b> (BUY + / HOLD 0 / AVOID −, escala −10..+10). El <b>tamaño del punto = convicción</b> y el <b>color = portafolio</b>. Los HOLD viven sobre la línea α 0: el engine está neutro en la mayoría. Pasa el cursor sobre cada punto.</p>
+<svg class="map-svg" viewBox="0 0 900 720" role="img" aria-label="Mapa de riesgo y convicción por ticker">
+<rect x="80.0" y="70.0" width="256.7" height="292.0" fill="rgba(0,255,157,.045)"/>
+<text x="90.0" y="350.0" font-family="JetBrains Mono,monospace" font-size="9" letter-spacing=".14em" fill="#00ff9d" opacity=".55">CALIDAD / REFUGIO</text>
+<rect x="336.7" y="70.0" width="513.3" height="292.0" fill="rgba(0,229,255,.05)"/>
+<text x="346.7" y="350.0" font-family="JetBrains Mono,monospace" font-size="9" letter-spacing=".14em" fill="#00e5ff" opacity=".55">CONVICCIÓN CON RIESGO</text>
+<rect x="336.7" y="362.0" width="513.3" height="292.0" fill="rgba(255,46,151,.06)"/>
+<text x="346.7" y="642.0" font-family="JetBrains Mono,monospace" font-size="9" letter-spacing=".14em" fill="#ff2e97" opacity=".55">RIESGO SIN RETORNO</text>
+<rect x="80.0" y="362.0" width="256.7" height="292.0" fill="rgba(139,147,184,.05)"/>
+<text x="90.0" y="642.0" font-family="JetBrains Mono,monospace" font-size="9" letter-spacing=".14em" fill="#8b93b8" opacity=".55">SIN CONVICCIÓN</text>
+<line x1="176.2" y1="70.0" x2="176.2" y2="654.0" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="176.2" y="672.0" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="middle">0.5</text>
+<line x1="336.7" y1="70.0" x2="336.7" y2="654.0" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="336.7" y="672.0" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="middle">1.0</text>
+<line x1="497.1" y1="70.0" x2="497.1" y2="654.0" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="497.1" y="672.0" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="middle">1.5</text>
+<line x1="657.5" y1="70.0" x2="657.5" y2="654.0" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="657.5" y="672.0" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="middle">2.0</text>
+<line x1="817.9" y1="70.0" x2="817.9" y2="654.0" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="817.9" y="672.0" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="middle">2.5</text>
+<line x1="80.0" y1="595.6" x2="850.0" y2="595.6" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="70.0" y="598.6" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="end">-8</text>
+<line x1="80.0" y1="478.8" x2="850.0" y2="478.8" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="70.0" y="481.8" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="end">-4</text>
+<line x1="80.0" y1="245.2" x2="850.0" y2="245.2" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="70.0" y="248.2" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="end">+4</text>
+<line x1="80.0" y1="128.4" x2="850.0" y2="128.4" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="70.0" y="131.4" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="end">+8</text>
+<line x1="336.7" y1="70.0" x2="336.7" y2="654.0" stroke="rgba(255,46,151,.5)" stroke-width="1.4" stroke-dasharray="6 5"/>
+<text x="330.7" y="84.0" font-family="JetBrains Mono,monospace" font-size="10" fill="#ff2e97" text-anchor="end" opacity=".9">S&amp;P 500 · β 1.0</text>
+<line x1="80.0" y1="362.0" x2="850.0" y2="362.0" stroke="rgba(255,255,255,.28)" stroke-width="1.2"/>
+<text x="842.0" y="354.0" font-family="JetBrains Mono,monospace" font-size="10" fill="#c6cbe8" text-anchor="end">α 0 · neutro (HOLD)</text>
+<text x="465.0" y="700.0" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing=".2em" fill="#8b93b8" text-anchor="middle">β · RIESGO DE MERCADO →</text>
+<text x="20" y="362.0" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing=".2em" fill="#8b93b8" text-anchor="middle" transform="rotate(-90 20 362.0)">α · CONVICCIÓN (por ticker) →</text>
+<circle cx="535.6" cy="186.8" r="4.7" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>AA · β 1.62 · α +6 · BUY 6/10</title></circle>
+<circle cx="471.4" cy="566.4" r="5.0" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>ARBE · β 1.42 · α -7 · AVOID 7/10</title></circle>
+<circle cx="388.0" cy="362.0" r="3.8" fill="var(--green)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>AREC · β 1.16 · α +0 · HOLD 3/10</title></circle>
+<circle cx="651.1" cy="362.0" r="4.7" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>ARKK · β 1.98 · α +0 · HOLD 6/10</title></circle>
+<circle cx="1270.3" cy="362.0" r="4.7" fill="var(--amber)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>ARM · β 3.91 · α +0 · HOLD 6/10</title></circle>
+<circle cx="407.3" cy="362.0" r="4.4" fill="var(--green)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>ARU · β 1.22 · α +0 · HOLD 5/10</title></circle>
+<circle cx="500.3" cy="362.0" r="4.4" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>AVAV · β 1.51 · α +0 · HOLD 5/10</title></circle>
+<circle cx="487.5" cy="157.6" r="5.0" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>AVGO · β 1.47 · α +7 · BUY 7/10</title></circle>
+<circle cx="1244.6" cy="362.0" r="4.7" fill="var(--amber)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>BE · β 3.83 · α +0 · HOLD 6/10</title></circle>
+<circle cx="47.9" cy="362.0" r="5.0" fill="#8b9bb4" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>BND · β 0.10 · α +0 · HOLD 7/10</title></circle>
+<circle cx="333.5" cy="362.0" r="4.7" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>CCJ · β 0.99 · α +0 · HOLD 6/10</title></circle>
+<circle cx="375.2" cy="157.6" r="5.0" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>CEG · β 1.12 · α +7 · BUY 7/10</title></circle>
+<circle cx="574.1" cy="362.0" r="4.7" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>CRSP · β 1.74 · α +0 · HOLD 6/10</title></circle>
+<circle cx="118.5" cy="362.0" r="4.4" fill="#8b9bb4" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>EMB · β 0.32 · α +0 · HOLD 5/10</title></circle>
+<circle cx="561.2" cy="362.0" r="4.7" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>FIX · β 1.70 · α +0 · HOLD 6/10</title></circle>
+<circle cx="455.4" cy="362.0" r="4.7" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>GE · β 1.37 · α +0 · HOLD 6/10</title></circle>
+<circle cx="346.3" cy="362.0" r="4.7" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>GEV · β 1.03 · α +0 · HOLD 6/10</title></circle>
+<circle cx="73.6" cy="362.0" r="5.0" fill="#8b9bb4" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>GLD · β 0.18 · α +0 · HOLD 7/10</title></circle>
+<circle cx="413.7" cy="157.6" r="5.0" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>GOOGL · β 1.24 · α +7 · BUY 7/10</title></circle>
+<circle cx="349.5" cy="362.0" r="4.7" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>HD · β 1.04 · α +0 · HOLD 6/10</title></circle>
+<circle cx="760.2" cy="362.0" r="4.4" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>HOOD · β 2.32 · α +0 · HOLD 5/10</title></circle>
+<circle cx="269.3" cy="362.0" r="4.7" fill="var(--green)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>ILU · β 0.79 · α +0 · HOLD 6/10</title></circle>
+<circle cx="1074.6" cy="362.0" r="4.4" fill="var(--violet)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>IONQ · β 3.30 · α +0 · HOLD 5/10</title></circle>
+<circle cx="1122.7" cy="362.0" r="4.7" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>LAC · β 3.45 · α +0 · HOLD 6/10</title></circle>
+<circle cx="449.0" cy="362.0" r="4.7" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>LEU · β 1.35 · α +0 · HOLD 6/10</title></circle>
+<circle cx="237.2" cy="362.0" r="4.7" fill="var(--green)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>LYC · β 0.69 · α +0 · HOLD 6/10</title></circle>
+<circle cx="413.7" cy="157.6" r="5.0" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>META · β 1.24 · α +7 · BUY 7/10</title></circle>
+<circle cx="631.8" cy="362.0" r="4.4" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>MP · β 1.92 · α +0 · HOLD 5/10</title></circle>
+<circle cx="737.7" cy="362.0" r="4.7" fill="var(--amber)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>MRVL · β 2.25 · α +0 · HOLD 6/10</title></circle>
+<circle cx="368.8" cy="157.6" r="5.0" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>MSFT · β 1.10 · α +7 · BUY 7/10</title></circle>
+<circle cx="359.1" cy="362.0" r="4.4" fill="var(--green)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>MTRN · β 1.07 · α +0 · HOLD 5/10</title></circle>
+<circle cx="606.2" cy="186.8" r="4.7" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>MTZ · β 1.84 · α +6 · BUY 6/10</title></circle>
+<circle cx="724.9" cy="186.8" r="4.7" fill="var(--amber)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>MU · β 2.21 · α +6 · BUY 6/10</title></circle>
+<circle cx="86.4" cy="362.0" r="4.4" fill="var(--green)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>NB · β 0.22 · α +0 · HOLD 5/10</title></circle>
+<circle cx="323.8" cy="362.0" r="4.7" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>NBT · β 0.96 · α +0 · HOLD 6/10</title></circle>
+<circle cx="545.2" cy="157.6" r="5.0" fill="var(--green)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>NEO · β 1.65 · α +7 · BUY 7/10</title></circle>
+<circle cx="1751.5" cy="537.2" r="4.7" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>NNE · β 5.41 · α -6 · AVOID 6/10</title></circle>
+<circle cx="317.4" cy="157.6" r="5.0" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>NU · β 0.94 · α +7 · BUY 7/10</title></circle>
+<circle cx="724.9" cy="157.6" r="5.0" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>NVDA · β 2.21 · α +7 · BUY 7/10</title></circle>
+<circle cx="452.2" cy="157.6" r="5.0" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>NVT · β 1.36 · α +7 · BUY 7/10</title></circle>
+<circle cx="400.8" cy="362.0" r="4.4" fill="var(--amber)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>OKLO · β 1.20 · α +0 · HOLD 5/10</title></circle>
+<circle cx="526.0" cy="362.0" r="4.4" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>PATH · β 1.59 · α +0 · HOLD 5/10</title></circle>
+<circle cx="516.3" cy="595.6" r="5.2" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>PLTR · β 1.56 · α -8 · AVOID 8/10</title></circle>
+<circle cx="285.3" cy="362.0" r="4.1" fill="var(--amber)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>POET · β 0.84 · α +0 · HOLD 4/10</title></circle>
+<circle cx="407.3" cy="362.0" r="5.0" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>PWR · β 1.22 · α +0 · HOLD 7/10</title></circle>
+<circle cx="708.8" cy="362.0" r="4.4" fill="var(--violet)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>QBTS · β 2.16 · α +0 · HOLD 5/10</title></circle>
+<circle cx="731.3" cy="362.0" r="4.7" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>RDW · β 2.23 · α +0 · HOLD 6/10</title></circle>
+<circle cx="663.9" cy="537.2" r="4.7" fill="var(--violet)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>RGTI · β 2.02 · α -6 · AVOID 6/10</title></circle>
+<circle cx="747.3" cy="537.2" r="4.7" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>RR · β 2.28 · α -6 · AVOID 6/10</title></circle>
+<circle cx="205.1" cy="362.0" r="4.7" fill="#8b9bb4" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>SLV · β 0.59 · α +0 · HOLD 6/10</title></circle>
+<circle cx="503.5" cy="362.0" r="4.4" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>STM · β 1.52 · α +0 · HOLD 5/10</title></circle>
+<circle cx="622.2" cy="362.0" r="4.7" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>STRL · β 1.89 · α +0 · HOLD 6/10</title></circle>
+<circle cx="323.8" cy="362.0" r="4.4" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>SYM · β 0.96 · α +0 · HOLD 5/10</title></circle>
+<circle cx="51.1" cy="362.0" r="5.0" fill="#8b9bb4" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>TIP · β 0.11 · α +0 · HOLD 7/10</title></circle>
+<circle cx="545.2" cy="362.0" r="4.1" fill="var(--cyan)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>TMQ · β 1.65 · α +0 · HOLD 4/10</title></circle>
+<circle cx="603.0" cy="362.0" r="4.4" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>TSLA · β 1.83 · α +0 · HOLD 5/10</title></circle>
+<circle cx="420.1" cy="157.6" r="5.0" fill="var(--magenta)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>TSM · β 1.26 · α +7 · BUY 7/10</title></circle>
+<circle cx="442.5" cy="362.0" r="4.7" fill="#ff7847" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>TXN · β 1.33 · α +0 · HOLD 6/10</title></circle>
+<circle cx="843.6" cy="362.0" r="4.1" fill="var(--green)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>USAR · β 2.58 · α +0 · HOLD 4/10</title></circle>
+<circle cx="519.5" cy="186.8" r="4.7" fill="var(--green)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>UUUU · β 1.57 · α +6 · BUY 6/10</title></circle>
+<circle cx="266.1" cy="362.0" r="4.7" fill="#8b9bb4" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>VNQ · β 0.78 · α +0 · HOLD 6/10</title></circle>
+<circle cx="683.2" cy="362.0" r="4.7" fill="var(--amber)" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>VRT · β 2.08 · α +0 · HOLD 6/10</title></circle>
+<circle cx="224.4" cy="362.0" r="5.0" fill="#8b9bb4" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>VWO · β 0.65 · α +0 · HOLD 7/10</title></circle>
+<circle cx="259.7" cy="157.6" r="5.0" fill="#8b9bb4" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>VXUS · β 0.76 · α +7 · BUY 7/10</title></circle>
+</svg>
+    <div class="map-legend"><span><i style="background:#00e5ff"></i>Color = portafolio</span><span>● Tamaño = convicción 1–10</span><span>HOLD → α 0</span></div>
+  </section>
+<!-- TICKERS:END -->
+
+<div class="sec-title"><span class="n">EQ</span> Individual Equities</div>
 
   <div class="timeline">
 

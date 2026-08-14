@@ -145,6 +145,75 @@ def scatter_svg(portfolios, fresh):
     out.append('</svg>')
     return "\n".join(out)
 
+
+def scatter_tickers_svg(portfolios, fresh):
+    """Mapa β×α por TICKER: cada análisis del archive con beta disponible.
+    α individual = convicción × signo del veredicto (−10..+10); tamaño = convicción; color = portafolio."""
+    betas = json.load(open(os.path.join(BASE, "scripts", "betas.json"), encoding="utf-8"))
+    sign = {"buy": 1, "hold": 0, "avoid": -1}
+    pcolor = {}
+    for p in portfolios:
+        acc = ACCENT.get(p["name"], "#00e5ff")
+        for t in p["tickers"]:
+            pcolor.setdefault(t, acc)
+    pts = []
+    for t, r in sorted(fresh.items()):
+        b = betas.get(t)
+        if b is None:
+            continue
+        a = sign.get(r["verdict"], 0) * r["conv"]
+        pts.append((t, b, a, r["conv"], r["verdict"], pcolor.get(t, "#8b93b8")))
+    if not pts:
+        return ""
+    W, H = 900, 720
+    ML, MT, MR, MB = 80, 70, 50, 66
+    PW, PH = W - ML - MR, H - MT - MB
+    B0, B1, A0, A1 = 0.2, 2.6, -10, 10
+    def X(b): return ML + (b - B0) / (B1 - B0) * PW
+    def Y(a): return MT + (A1 - a) / (A1 - A0) * PH
+
+    out = []
+    out.append(f'<svg class="map-svg" viewBox="0 0 {W} {H}" role="img" aria-label="Mapa de riesgo y convicción por ticker">')
+
+    # cuadrantes
+    q = [
+        (X(0.2), Y(10), X(1.0), Y(0),    "rgba(0,255,157,.045)", "CALIDAD / REFUGIO",      "#00ff9d"),
+        (X(1.0), Y(10), X(2.6), Y(0),    "rgba(0,229,255,.05)",  "CONVICCIÓN CON RIESGO", "#00e5ff"),
+        (X(1.0), Y(0),   X(2.6), Y(-10), "rgba(255,46,151,.06)", "RIESGO SIN RETORNO",    "#ff2e97"),
+        (X(0.2), Y(0),   X(1.0), Y(-10), "rgba(139,147,184,.05)","SIN CONVICCIÓN",        "#8b93b8"),
+    ]
+    for x1, y1, x2, y2, fill, lbl, col in q:
+        out.append(f'<rect x="{x1:.1f}" y="{y1:.1f}" width="{x2-x1:.1f}" height="{y2-y1:.1f}" fill="{fill}"/>')
+        out.append(f'<text x="{x1+10:.1f}" y="{y2-12:.1f}" font-family="JetBrains Mono,monospace" font-size="9" letter-spacing=".14em" fill="{col}" opacity=".55">{lbl}</text>')
+
+    # grid + ticks
+    for b in (0.5, 1.0, 1.5, 2.0, 2.5):
+        out.append(f'<line x1="{X(b):.1f}" y1="{MT:.1f}" x2="{X(b):.1f}" y2="{MT+PH:.1f}" stroke="rgba(255,255,255,.06)" stroke-width="1"/>')
+        out.append(f'<text x="{X(b):.1f}" y="{MT+PH+18:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="middle">{b:.1f}</text>')
+    for a in (-8, -4, 4, 8):
+        out.append(f'<line x1="{ML:.1f}" y1="{Y(a):.1f}" x2="{ML+PW:.1f}" y2="{Y(a):.1f}" stroke="rgba(255,255,255,.06)" stroke-width="1"/>')
+        out.append(f'<text x="{ML-10:.1f}" y="{Y(a)+3:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#8b93b8" text-anchor="end">{a:+.0f}</text>')
+
+    # referencias
+    out.append(f'<line x1="{X(1.0):.1f}" y1="{MT:.1f}" x2="{X(1.0):.1f}" y2="{MT+PH:.1f}" stroke="rgba(255,46,151,.5)" stroke-width="1.4" stroke-dasharray="6 5"/>')
+    out.append(f'<text x="{X(1.0)-6:.1f}" y="{MT+14:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#ff2e97" text-anchor="end" opacity=".9">S&amp;P 500 · β 1.0</text>')
+    out.append(f'<line x1="{ML:.1f}" y1="{Y(0):.1f}" x2="{ML+PW:.1f}" y2="{Y(0):.1f}" stroke="rgba(255,255,255,.28)" stroke-width="1.2"/>')
+    out.append(f'<text x="{ML+PW-8:.1f}" y="{Y(0)-8:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#c6cbe8" text-anchor="end">α 0 · neutro (HOLD)</text>')
+
+    # ejes
+    out.append(f'<text x="{ML+PW/2:.1f}" y="{H-20:.1f}" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing=".2em" fill="#8b93b8" text-anchor="middle">β · RIESGO DE MERCADO →</text>')
+    out.append(f'<text x="20" y="{MT+PH/2:.1f}" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing=".2em" fill="#8b93b8" text-anchor="middle" transform="rotate(-90 20 {MT+PH/2:.1f})">α · CONVICCIÓN (por ticker) →</text>')
+
+    # puntos: tamaño = convicción, color = portafolio
+    for t, b, a, conv, verdict, col in pts:
+        cx, cy = X(b), Y(a)
+        r = 3.0 + conv * 0.28
+        v = {"buy": "BUY", "hold": "HOLD", "avoid": "AVOID"}.get(verdict, verdict.upper())
+        tip = f"{t} · β {b:.2f} · α {a:+.0f} · {v} {conv}/10"
+        out.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" fill="{col}" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>{tip}</title></circle>')
+    out.append('</svg>')
+    return "\n".join(out)
+
 def chips_for(tickers, reports):
     chips = []
     for t in tickers:
@@ -236,6 +305,15 @@ def main():
                 '    </div>\n'
                 '  </section>')
     html = between(html, "<!-- MAP:START -->", "<!-- MAP:END -->", map_html)
+
+    tk_html = scatter_tickers_svg(portfolios, fresh)
+    tk_html = ('  <section class="map-section" id="mapa-tickers">\n'
+               '    <div class="sec-title"><span class="n">TK</span> Ticker map · β × α</div>\n'
+               '    <p class="map-sub">El mismo mapa, a nivel de <b>ticker individual</b>: cada punto es un análisis del archive con beta disponible — <b>α individual = convicción × signo del veredicto</b> (BUY + / HOLD 0 / AVOID −, escala −10..+10). El <b>tamaño del punto = convicción</b> y el <b>color = portafolio</b>. Los HOLD viven sobre la línea α 0: el engine está neutro en la mayoría. Pasa el cursor sobre cada punto.</p>\n'
+               + tk_html + '\n'
+               '    <div class="map-legend"><span><i style="background:#00e5ff"></i>Color = portafolio</span><span>● Tamaño = convicción 1–10</span><span>HOLD → α 0</span></div>\n'
+               '  </section>')
+    html = between(html, "<!-- TICKERS:START -->", "<!-- TICKERS:END -->", tk_html)
     html = between(html, "<!-- MISC:START -->", "<!-- MISC:END -->", misc_html)
     open(INDEX, "w", encoding="utf-8").write(html)
 
