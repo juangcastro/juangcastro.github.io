@@ -223,7 +223,18 @@ def main():
     map_html = ('  <section class="map-section" id="mapa">\n'
                 '    <div class="sec-title"><span class="n">MAP</span> Portfolio map · β × α</div>\n'
                 '    <p class="map-sub">Cada punto es un portafolio: <b>β</b> (riesgo de mercado, eje X) contra <b>α</b> (convicción neta del engine, eje Y). Referencia: <b>S&amp;P 500 = β 1.0</b> · neutro = α 0 — los cuadrantes son la matriz de la <a href="alpha-beta.html">guía</a>. Pasa el cursor sobre cada punto.</p>\n'
-                + map_html + '\n  </section>')
+                + map_html + '\n'
+                '    <div class="map-cta">\n'
+                '      <a class="guide-btn" href="alpha-beta.html">\n'
+                '        <span class="gb-icon">αβ</span>\n'
+                '        <span class="gb-txt">\n'
+                '          <span class="gb-title">Guía: cómo leer β y α</span>\n'
+                '          <span class="gb-sub">riesgo y convicción del engine</span>\n'
+                '        </span>\n'
+                '        <span class="gb-arr">→</span>\n'
+                '      </a>\n'
+                '    </div>\n'
+                '  </section>')
     html = between(html, "<!-- MAP:START -->", "<!-- MAP:END -->", map_html)
     html = between(html, "<!-- MISC:START -->", "<!-- MISC:END -->", misc_html)
     open(INDEX, "w", encoding="utf-8").write(html)
