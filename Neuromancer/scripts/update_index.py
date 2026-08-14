@@ -60,6 +60,17 @@ def scan_reports():
         vm = re.search(r'class="verdict-badge (buy|hold|avoid)">(\w+)<', html)
         cm = re.search(r'Convicción del Consejo: <b>(\d+)/10</b>', html)
         dm = re.search(r"Sesi[oó]n:\s*(?:<[^>]+>)?\s*(\d{2})\s+(\w{3})\s+(\d{4})", html)
+        # 5 posturas por lente + alpha fino (promedio con signo: BUY + / HOLD 0 / AVOID −)
+        lenses = {}
+        for m in re.finditer(
+            r'<span class="persona"><span class="dot [a-z]+"></span>([^<]+)</span></td>\s*'
+            r'<td><span class="stance ([a-z]+)">[^<]*</span></td>.*?'
+            r'<td class="conv"><span>(\d+)/10</span>', html, re.S):
+            lenses[m.group(1).strip()] = (m.group(2), int(m.group(3)))
+        sgn = {"buy": 1, "hold": 0, "avoid": -1}
+        alpha_fine = None
+        if len(lenses) >= 3:
+            alpha_fine = sum(sgn.get(st, 0) * c for st, c in lenses.values()) / len(lenses)
         if dm and dm.group(2).lower() in MES:
             ts = time.mktime((int(dm.group(3)), MES[dm.group(2).lower()], int(dm.group(1)), 0, 0, 0, 0, 0, -1))
         else:
@@ -67,7 +78,8 @@ def scan_reports():
         all_r[t] = {"url": os.path.basename(f),
                     "verdict": vm.group(1) if vm else "hold",
                     "conv": int(cm.group(1)) if cm else 0,
-                    "mtime": ts}
+                    "mtime": ts,
+                    "alpha_fine": alpha_fine}
     fresh = {t: r for t, r in all_r.items() if now - r["mtime"] <= FRESH_DAYS * 86400}
     stale = sorted(t for t, r in all_r.items() if now - r["mtime"] > FRESH_DAYS * 86400)
     return fresh, stale
@@ -161,7 +173,10 @@ def scatter_tickers_svg(portfolios, fresh):
         b = betas.get(t)
         if b is None:
             continue
-        a = sign.get(r["verdict"], 0) * r["conv"]
+        if r.get("alpha_fine") is not None:
+            a = round(r["alpha_fine"], 1)
+        else:
+            a = float(sign.get(r["verdict"], 0) * r["conv"])
         pts.append((t, b, a, r["conv"], r["verdict"], pcolor.get(t, "#8b93b8")))
     if not pts:
         return ""
@@ -198,19 +213,25 @@ def scatter_tickers_svg(portfolios, fresh):
     out.append(f'<line x1="{X(1.0):.1f}" y1="{MT:.1f}" x2="{X(1.0):.1f}" y2="{MT+PH:.1f}" stroke="rgba(255,46,151,.5)" stroke-width="1.4" stroke-dasharray="6 5"/>')
     out.append(f'<text x="{X(1.0)-6:.1f}" y="{MT+14:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#ff2e97" text-anchor="end" opacity=".9">S&amp;P 500 · β 1.0</text>')
     out.append(f'<line x1="{ML:.1f}" y1="{Y(0):.1f}" x2="{ML+PW:.1f}" y2="{Y(0):.1f}" stroke="rgba(255,255,255,.28)" stroke-width="1.2"/>')
-    out.append(f'<text x="{ML+PW-8:.1f}" y="{Y(0)-8:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#c6cbe8" text-anchor="end">α 0 · neutro (HOLD)</text>')
+    out.append(f'<text x="{ML+PW-8:.1f}" y="{Y(0)-8:.1f}" font-family="JetBrains Mono,monospace" font-size="10" fill="#c6cbe8" text-anchor="end">α 0 · neutro</text>')
 
     # ejes
     out.append(f'<text x="{ML+PW/2:.1f}" y="{H-20:.1f}" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing=".2em" fill="#8b93b8" text-anchor="middle">β · RIESGO DE MERCADO →</text>')
     out.append(f'<text x="20" y="{MT+PH/2:.1f}" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing=".2em" fill="#8b93b8" text-anchor="middle" transform="rotate(-90 20 {MT+PH/2:.1f})">α · CONVICCIÓN (por ticker) →</text>')
 
-    # puntos: tamaño = convicción, color = portafolio
+    # puntos: tamaño = convicción, color = portafolio; label del ticker al hover
     for t, b, a, conv, verdict, col in pts:
         cx, cy = X(b), Y(a)
         r = 3.0 + conv * 0.28
         v = {"buy": "BUY", "hold": "HOLD", "avoid": "AVOID"}.get(verdict, verdict.upper())
-        tip = f"{t} · β {b:.2f} · α {a:+.0f} · {v} {conv}/10"
+        tip = f"{t} · β {b:.2f} · α {a:+.1f} · {v} {conv}/10"
+        out.append('<g class="tkpt">')
         out.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" fill="{col}" fill-opacity=".78" stroke="#06070f" stroke-width="1"><title>{tip}</title></circle>')
+        anchor = "start"; lx = cx + r + 7
+        if cx > ML + PW - 90:
+            anchor = "end"; lx = cx - r - 7
+        out.append(f'<text class="tk-label" x="{lx:.1f}" y="{cy+3.5:.1f}" text-anchor="{anchor}">{t}</text>')
+        out.append('</g>')
     out.append('</svg>')
     return "\n".join(out)
 
@@ -309,9 +330,9 @@ def main():
     tk_html = scatter_tickers_svg(portfolios, fresh)
     tk_html = ('  <section class="map-section" id="mapa-tickers">\n'
                '    <div class="sec-title"><span class="n">TK</span> Ticker map · β × α</div>\n'
-               '    <p class="map-sub">El mismo mapa, a nivel de <b>ticker individual</b>: cada punto es un análisis del archive con beta disponible — <b>α individual = convicción × signo del veredicto</b> (BUY + / HOLD 0 / AVOID −, escala −10..+10). El <b>tamaño del punto = convicción</b> y el <b>color = portafolio</b>. Los HOLD viven sobre la línea α 0: el engine está neutro en la mayoría. Pasa el cursor sobre cada punto.</p>\n'
+               '    <p class="map-sub">El mismo mapa, a nivel de <b>ticker individual</b>: cada punto es un análisis del archive con beta disponible — <b>α = promedio de las 5 posturas del engine</b> (cada lente con su convicción y signo: BUY + / HOLD 0 / AVOID −), por eso tiene <b>decimales y matices</b>: un HOLD dividido (2 lentes comprando, 3 neutros) flota sobre α 0. El <b>tamaño del punto = convicción</b> y el <b>color = portafolio</b>. Pasa el cursor: se ilumina el ticker.</p>\n'
                + tk_html + '\n'
-               '    <div class="map-legend"><span><i style="background:#00e5ff"></i>Color = portafolio</span><span>● Tamaño = convicción 1–10</span><span>HOLD → α 0</span></div>\n'
+               '    <div class="map-legend"><span><i style="background:#00e5ff"></i>Color = portafolio</span><span>● Tamaño = convicción 1–10</span><span>α = promedio de los 5 lentes</span></div>\n'
                '  </section>')
     html = between(html, "<!-- TICKERS:START -->", "<!-- TICKERS:END -->", tk_html)
     html = between(html, "<!-- MISC:START -->", "<!-- MISC:END -->", misc_html)
