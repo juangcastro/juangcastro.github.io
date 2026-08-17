@@ -235,6 +235,39 @@ def scatter_tickers_svg(portfolios, fresh):
     out.append('</svg>')
     return "\n".join(out)
 
+
+def entry_zones_html():
+    """Panel de zonas de entrada: lee entry_zones.json (generado por entry_zones.py)."""
+    zf = os.path.join(BASE, "scripts", "entry_zones.json")
+    if not os.path.exists(zf):
+        return '  <section class="map-section" id="entry-zones">\n    <div class="sec-title"><span class="n">EZ</span> Entry zones</div>\n    <p class="map-sub">Ejecuta <code>python3 scripts/entry_zones.py</code> para generar las zonas.</p>\n  </section>'
+    zonas = json.load(open(zf, encoding="utf-8"))
+    orden = {"ZONA ACTIVA": 0, "DESCUENTO": 1, "ESPERAR": 2}
+    items = sorted(zonas.values(), key=lambda z: (orden.get(z["estado"], 9), z["ticker"]))
+    est_cls = {"ZONA ACTIVA": "activa", "ESPERAR": "esperar", "DESCUENTO": "descuento"}
+    counts = {}
+    for z in zonas.values():
+        counts[z["estado"]] = counts.get(z["estado"], 0) + 1
+    rows = []
+    for z in items:
+        v = {"buy": "BUY", "hold": "HOLD"}.get(z["verdict"], z["verdict"].upper())
+        rows.append(
+            '<div class="ez-row">'
+            '<span class="ez-tk">' + z["ticker"] + '</span>'
+            '<span class="ez-v ez-' + z["verdict"] + '">' + v + ' ' + str(z["conv"]) + '</span>'
+            '<span class="ez-zone">' + z["moneda"] + format(z["zona"][0], ",.0f") + " - " + z["moneda"] + format(z["zona"][1], ",.0f") + '</span>'
+            '<span class="ez-px">' + z["moneda"] + format(z["precio"], ",.2f") + '</span>'
+            '<span class="ez-dist">' + format(z["dist_pct"], "+.0f") + '%</span>'
+            '<span class="ez-st ez-' + est_cls[z["estado"]] + '">' + z["estado"] + '</span>'
+            '</div>')
+    ch = "".join('<span class="ez-chip ez-chip-' + est_cls[k] + '">' + str(v) + ' ' + k + '</span>' for k, v in sorted(counts.items(), key=lambda x: orden.get(x[0], 9)))
+    return ('  <section class="map-section" id="entry-zones">\n'
+            '    <div class="sec-title"><span class="n">EZ</span> Entry zones</div>\n'
+            '    <p class="map-sub">Zona de entrada = intersección de <b>valoración con margen</b> (fwd P/E × múltiplo objetivo del tipo de negocio), <b>soporte técnico</b> (mínimo de 52 semanas) y el <b>gatillo fundamental</b> del reporte. Solo tickers BUY/HOLD; precio de hoy (stockanalysis). La zona no predice mínimos: marca dónde la asimetría esperada es favorable. <a href="alpha-beta.html">Guía α/β ↗</a>.</p>\n'
+            '    <div class="ez-chips">' + ch + '</div>\n'
+            '    <div class="ez-panel">\n' + "\n".join(rows) + '\n    </div>\n'
+            '  </section>')
+
 def chips_for(tickers, reports):
     chips = []
     for t in tickers:
@@ -335,6 +368,8 @@ def main():
                '    <div class="map-legend"><span><i style="background:#00e5ff"></i>Color = portafolio</span><span>● Tamaño = convicción 1–10</span><span>α = promedio de los 5 lentes</span></div>\n'
                '  </section>')
     html = between(html, "<!-- TICKERS:START -->", "<!-- TICKERS:END -->", tk_html)
+
+    html = between(html, "<!-- ENTRY:START -->", "<!-- ENTRY:END -->", entry_zones_html())
     html = between(html, "<!-- MISC:START -->", "<!-- MISC:END -->", misc_html)
     open(INDEX, "w", encoding="utf-8").write(html)
 
