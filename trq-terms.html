@@ -127,6 +127,25 @@
   footer a { color: var(--accent); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-top: 24px;
+    background: rgba(13, 15, 30, .55);
+    transition: border-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .back-btn:hover {
+    border-color: var(--accent); color: var(--accent);
+    box-shadow: 0 0 18px -6px var(--glow-accent);
+    transform: translateY(-1px);
+  }
+  .back-btn::before { content: "←"; font-size: 14px; line-height: 1; }
+
   @media (max-width: 560px) {
     .card { padding: 22px 20px; }
     .type-row { flex-direction: column; gap: 4px; }
@@ -141,6 +160,8 @@
     <div class="brand">THE RED<em> QUEEN</em><small>TRADING CON MÉTODO</small></div>
     <div class="meta">PRODUCTOS Y SERVICIOS<br><b>EDUCACIÓN · MENTORÍA · CONTENIDO</b></div>
   </header>
+
+  <a class="back-btn" href="index.html" aria-label="Volver al inicio de The Red Queen">Volver al inicio</a>
 
   <div class="doc-head">
     <div class="kicker">Documento legal</div>
