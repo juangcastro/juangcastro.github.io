@@ -173,9 +173,10 @@
   /* resultados */
   .results { display: flex; flex-direction: column; gap: 18px; }
   .kpis {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 12px;
   }
+  @media (max-width: 640px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
   .kpi {
     background: linear-gradient(160deg, var(--card), var(--card-2));
     border: 1px solid var(--border);
@@ -266,30 +267,30 @@
         </div>
       </div>
       <div class="field">
-        <label for="avgWin">Avg Win <span class="hint">en R</span></label>
+        <label for="avgWin">Avg Win (R)</label>
         <input id="avgWin" type="number" step="0.1" min="0.1" value="1.5">
       </div>
       <div class="field">
-        <label for="avgLoss">Avg Loss <span class="hint">en R</span></label>
+        <label for="avgLoss">Avg Loss (R)</label>
         <input id="avgLoss" type="number" step="0.1" min="0.1" value="1">
       </div>
       <div class="field">
-        <label for="winRate">Win rate <span class="hint">%</span></label>
-        <input id="winRate" type="number" step="1" min="1" max="99" value="40">
+        <label for="winRate">Win rate (%)</label>
+        <input id="winRate" type="number" step="1" min="1" max="99" value="65">
       </div>
       <div class="field">
-        <label for="riskPct">Risk por trade <span class="hint">%</span></label>
+        <label for="riskPct">Risk por trade (%)</label>
         <input id="riskPct" type="number" step="0.1" min="0.1" max="20" value="1">
       </div>
 
       <h2 style="margin-top:22px"><span class="n">02</span> Simulación</h2>
       <div class="field">
-        <label for="balance0">Starting Balance <span class="hint">$</span></label>
+        <label for="balance0">Starting Balance ($)</label>
         <input id="balance0" type="number" step="100" min="100" value="10000">
       </div>
       <div class="field">
-        <label for="nTrades"># Trades</label>
-        <input id="nTrades" type="number" step="10" min="10" max="5000" value="200">
+        <label for="nTrades"># Trades (50-3000)</label>
+        <input id="nTrades" type="number" step="10" min="50" max="3000" value="200">
       </div>
       <div class="field">
         <label for="nSims"># Simulaciones</label>
@@ -316,9 +317,9 @@
         <div class="kpis">
           <div class="kpi"><div class="lab">Avg Final Balance</div><div class="val acc" id="kAvg">—</div><div class="sub">promedio de simulaciones</div></div>
           <div class="kpi"><div class="lab">Median Final Balance</div><div class="val" id="kMed">—</div><div class="sub">caso central</div></div>
-          <div class="kpi"><div class="lab">Avg Max Drawdown</div><div class="val neg" id="kDD">—</div><div class="sub">promedio por simulación</div></div>
           <div class="kpi"><div class="lab">Best Case</div><div class="val pos" id="kBest">—</div><div class="sub">mejor balance final</div></div>
           <div class="kpi"><div class="lab">Worst Case</div><div class="val neg" id="kWorst">—</div><div class="sub">peor balance final</div></div>
+          <div class="kpi"><div class="lab">Avg Max Drawdown</div><div class="val neg" id="kDD">—</div><div class="sub">promedio por simulación</div></div>
           <div class="kpi"><div class="lab">Probability of Profit</div><div class="val pos" id="kProb">—</div><div class="sub">% de sims rentables</div></div>
         </div>
 
@@ -330,15 +331,15 @@
         </div>
 
         <div class="chart-card">
-          <h3>Spaghetti Chart — caminos posibles</h3>
-          <div class="note">cada línea es una simulación · la línea gruesa es la mediana · la blanca punteada es tu balance inicial</div>
-          <canvas id="spaghetti"></canvas>
-        </div>
-
-        <div class="chart-card">
           <h3>Distribución del balance final</h3>
           <div class="note">histograma de los resultados finales · la línea blanca punteada es el punto de equilibrio</div>
           <canvas id="histogram" class="short"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h3>Spaghetti Chart — caminos posibles</h3>
+          <div class="note">cada línea es una simulación · la línea gruesa es la mediana · la blanca punteada es tu balance inicial</div>
+          <canvas id="spaghetti"></canvas>
         </div>
       </div>
 
@@ -371,9 +372,9 @@
 
   /* ── presets ── */
   var PRESETS = {
-    conservador: { winRate: 30, avgWin: 2.0, avgLoss: 1.0, riskPct: 0.5 },
-    balanceado:  { winRate: 40, avgWin: 1.5, avgLoss: 1.0, riskPct: 1.0 },
-    agresivo:    { winRate: 50, avgWin: 1.0, avgLoss: 1.0, riskPct: 2.0 }
+    conservador: { winRate: 45, avgWin: 2.0, avgLoss: 1.0, riskPct: 0.5 },
+    balanceado:  { winRate: 65, avgWin: 1.5, avgLoss: 1.0, riskPct: 1.0 },
+    agresivo:    { winRate: 70, avgWin: 1.0, avgLoss: 1.0, riskPct: 2.0 }
   };
 
   /* ── estado ── */
@@ -399,7 +400,7 @@
     if (p.winRate <= 0 || p.winRate >= 100) errs.push('Win rate debe estar entre 1 y 99');
     if (p.riskPct <= 0 || p.riskPct > 20) errs.push('Risk por trade entre 0.1 y 20');
     if (p.balance0 < 100) errs.push('Balance inicial mínimo $100');
-    if (p.nTrades < 10 || p.nTrades > 5000) errs.push('# Trades entre 10 y 5000');
+    if (p.nTrades < 50 || p.nTrades > 3000) errs.push('# Trades entre 50 y 3000');
     if (p.nSims < 50 || p.nSims > 3000) errs.push('# Simulaciones entre 50 y 3000');
     return errs;
   }
