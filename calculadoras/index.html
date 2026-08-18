@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadoras — The Red Queen</title>
+<meta name="description" content="Herramientas de cálculo para traders: Monte-Carlo Simulator y más. Mide tu edge antes de arriesgar el capital.">
+<meta property="og:title" content="Calculadoras — The Red Queen">
+<meta property="og:description" content="El taller de herramientas: simula tu estrategia, mide tu riesgo, conoce tus números.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://theredqueen.co/calculadoras/">
+<meta property="og:image" content="https://theredqueen.co/assets/trq-logo-main.png">
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --accent: #ff3b5c;
+    --accent-2: #ff7a92;
+    --glow-accent: rgba(255, 59, 92, .45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 59, 92, .045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 59, 92, .045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1160px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 620px) { .nav-links a:not(.home) { display: none; } }
+
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px 80px; }
+
+  .masthead { padding: 72px 0 44px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .masthead .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
+  .masthead h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(30px, 4.6vw, 48px); font-weight: 800;
+    letter-spacing: -.02em; margin: 14px 0 10px;
+  }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
+  .masthead p { color: var(--muted); max-width: 600px; font-size: 15px; }
+  .masthead p b { color: var(--text); }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    position: relative;
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 28px 26px 24px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 22px 50px -22px rgba(0,0,0,.85), 0 0 34px -14px var(--glow-accent); }
+  .card .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .26em; text-transform: uppercase; color: var(--muted);
+  }
+  .card h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .card p { color: #aab0d0; font-size: 14px; flex: 1; }
+  .card .go {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .card:hover .go { text-shadow: 0 0 14px var(--glow-accent); }
+  .card .go::after { content: "→"; transition: transform .18s ease; }
+  .card:hover .go::after { transform: translateX(4px); }
+  .badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: #fff; background: var(--accent);
+    padding: 4px 9px; border-radius: 999px;
+    box-shadow: 0 0 16px -2px var(--glow-accent);
+  }
+  .badge-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); box-shadow: none; }
+  .featured { border-color: rgba(255, 59, 92, .55); }
+  .featured::before {
+    content: "";
+    position: absolute; inset: 0 0 auto 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    box-shadow: 0 0 18px var(--glow-accent);
+  }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-top: 48px; transition: color .16s ease;
+  }
+  .back:hover { color: var(--accent); }
+  .back::before { content: "←"; }
+
+  footer {
+    border-top: 1px solid var(--border); background: var(--surface);
+    padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a class="home" href="../index.html">Inicio</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">// El taller</div>
+    <h1>Calculadoras <span class="red">TRQ</span></h1>
+    <p>El mercado no perdona la improvisación. Estas herramientas convierten tu edge en <b>números</b>:
+    simula, mide y decide con datos — no con esperanza.</p>
+  </header>
+
+  <div class="grid">
+
+    <a class="card featured" href="monte-carlo.html">
+      <span class="tag">DISPONIBLE</span>
+      <h2>Monte-Carlo Simulator <span class="badge">Nuevo</span></h2>
+      <p>Miles de simulaciones de tu estrategia con un solo click: balance final, drawdown máximo, probabilidad de ganancia y la gráfica de todos los caminos posibles.</p>
+      <span class="go">Abrir calculadora</span>
+    </a>
+
+    <div class="card" style="cursor:default">
+      <span class="tag">PRÓXIMAMENTE</span>
+      <h2>Position Size <span class="badge badge-ghost">En camino</span></h2>
+      <p>¿Cuánto arriesgar en cada operación según tu balance, tu stop y tu tolerancia al drawdown?</p>
+    </div>
+
+    <div class="card" style="cursor:default">
+      <span class="tag">PRÓXIMAMENTE</span>
+      <h2>Expectancy &amp; R-Multiples <span class="badge badge-ghost">En camino</span></h2>
+      <p>Tu edge en números: expectancy por trade, profit factor y la distribución real de tus R-multiples.</p>
+    </div>
+
+    <div class="card" style="cursor:default">
+      <span class="tag">PRÓXIMAMENTE</span>
+      <h2>Kelly Criterion <span class="badge badge-ghost">En camino</span></h2>
+      <p>El tamaño óptimo de apuesta para maximizar el crecimiento a largo plazo — y por qué casi nadie lo usa al 100%.</p>
+    </div>
+
+    <div class="card" style="cursor:default">
+      <span class="tag">PRÓXIMAMENTE</span>
+      <h2>Risk of Ruin <span class="badge badge-ghost">En camino</span></h2>
+      <p>La probabilidad de que tu cuenta toque fondo antes de que tu edge se manifieste. El número que todo plan de riesgo debería mostrar primero.</p>
+    </div>
+
+    <div class="card" style="cursor:default">
+      <span class="tag">PRÓXIMAMENTE</span>
+      <h2>Compounding &amp; Growth <span class="badge badge-ghost">En camino</span></h2>
+      <p>El crecimiento real de tu cuenta con reinversión: cuánto tarda tu capital en duplicarse — y cuánto lo acelera tu edge.</p>
+    </div>
+
+  </div>
+
+  <a class="back" href="../index.html">Volver al inicio</a>
+
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
+</footer>
+
+</body>
+</html>

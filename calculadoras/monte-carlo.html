@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monte-Carlo Simulator — The Red Queen</title>
+<meta name="description" content="Simulador Monte-Carlo para estrategias de trading: proyecta tus resultados con miles de simulaciones, drawdown y probabilidad de ganancia.">
+<meta property="og:title" content="Monte-Carlo Simulator — The Red Queen">
+<meta property="og:description" content="Proyecta tu estrategia con miles de simulaciones: balance final, drawdown y probabilidad de ganancia.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://theredqueen.co/calculadoras/monte-carlo.html">
+<meta property="og:image" content="https://theredqueen.co/assets/trq-logo-main.png">
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f;
+    --surface: #0d0f1e;
+    --card: #12142a;
+    --card-2: #171a36;
+    --border: #252b52;
+    --text: #e8ecff;
+    --muted: #8b92b8;
+    --accent: #ff3b5c;
+    --accent-2: #ff7a92;
+    --glow-accent: rgba(255, 59, 92, .45);
+    --up: #34d399;
+    --down: #ff5c7a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 59, 92, .045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 59, 92, .045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px 72px; }
+
+  /* nav */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1240px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 620px) { .nav-links a:not(.back-link) { display: none; } }
+
+  /* header */
+  .masthead { padding: 56px 0 8px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .masthead .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
+  .masthead h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4.2vw, 44px); font-weight: 800;
+    letter-spacing: -.02em; margin: 14px 0 10px;
+  }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
+  .masthead p { color: var(--muted); max-width: 640px; font-size: 15px; }
+  .masthead p b { color: var(--text); }
+
+  /* layout */
+  .mc-grid {
+    display: grid; grid-template-columns: 360px 1fr;
+    gap: 22px; align-items: start; margin-top: 30px;
+  }
+  @media (max-width: 980px) { .mc-grid { grid-template-columns: 1fr; } }
+
+  /* panel inputs */
+  .panel {
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+  }
+  .panel h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700;
+    letter-spacing: .02em; display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px;
+  }
+  .panel h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--accent); border: 1px solid var(--border); border-radius: 6px;
+    padding: 2px 7px;
+  }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .field label .hint { text-transform: none; letter-spacing: 0; font-size: 10px; color: #5b6288; }
+  .field input, .field select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-variant-numeric: tabular-nums;
+    padding: 11px 13px;
+    outline: none;
+    transition: border-color .16s ease, box-shadow .16s ease;
+  }
+  .field input:focus, .field select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .field select option { background: var(--card); }
+  .field .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .presets { margin-bottom: 16px; }
+  .presets .pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 7px 13px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--muted);
+    background: transparent; cursor: pointer;
+    transition: all .16s ease;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--text); }
+  .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 18px -4px var(--glow-accent); }
+
+  .run {
+    width: 100%; margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+    padding: 15px; border-radius: 12px; border: none; cursor: pointer;
+    background: var(--accent); color: #fff;
+    box-shadow: 0 10px 34px -10px var(--glow-accent);
+    transition: transform .16s ease, background .16s ease;
+  }
+  .run:hover { background: var(--accent-2); transform: translateY(-1px); }
+  .run:disabled { opacity: .55; cursor: wait; transform: none; }
+  .disclaimer { margin-top: 14px; font-size: 11px; color: #5b6288; line-height: 1.5; }
+
+  /* resultados */
+  .results { display: flex; flex-direction: column; gap: 18px; }
+  .kpis {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  .kpi {
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 16px 14px;
+  }
+  .kpi .lab {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+  .kpi .val {
+    font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 700;
+    font-variant-numeric: tabular-nums; margin-top: 6px; letter-spacing: -.01em;
+  }
+  .kpi .val.pos { color: var(--up); }
+  .kpi .val.neg { color: var(--down); }
+  .kpi .val.acc { color: var(--accent); }
+  .kpi .sub { font-size: 10px; color: #5b6288; margin-top: 3px; font-family: 'JetBrains Mono', monospace; }
+  .kpi-row2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
+  .kpi.small .val { font-size: 15px; }
+
+  .chart-card {
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px 20px 14px;
+  }
+  .chart-card h3 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .chart-card .note { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #5b6288; margin-bottom: 12px; }
+  .chart-card canvas { width: 100%; height: 340px; display: block; }
+  .chart-card canvas.short { height: 200px; }
+
+  .placeholder {
+    border: 1px dashed var(--border); border-radius: 20px;
+    padding: 60px 24px; text-align: center; color: var(--muted);
+  }
+  .placeholder .big { font-family: 'Space Grotesk', sans-serif; font-size: 18px; color: #aab0d0; margin-bottom: 8px; }
+  .placeholder p { font-size: 13px; max-width: 380px; margin: 0 auto; }
+
+  footer {
+    border-top: 1px solid var(--border); background: var(--surface);
+    padding: 26px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a class="back-link" href="../calculadoras/">← Calculadoras</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">// Herramientas · Calculadoras</div>
+    <h1>Monte-Carlo <span class="red">Simulator</span></h1>
+    <p>Miles de caminos posibles para tu estrategia, trazados de una vez. Ingresa tu <b>edge</b> y descubre
+    lo que el azar puede hacerle a tu cuenta: balance final, drawdown y probabilidad de ganancia.</p>
+  </header>
+
+  <div class="mc-grid">
+
+    <!-- ═══ INPUTS ═══ -->
+    <aside class="panel">
+      <h2><span class="n">01</span> Estrategia — tu edge</h2>
+      <div class="presets">
+        <div class="pill-row" id="presetRow">
+          <button class="pill" data-preset="conservador">Conservador</button>
+          <button class="pill active" data-preset="balanceado">Balanceado</button>
+          <button class="pill" data-preset="agresivo">Agresivo</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="avgWin">Avg Win <span class="hint">en R</span></label>
+        <input id="avgWin" type="number" step="0.1" min="0.1" value="1.5">
+      </div>
+      <div class="field">
+        <label for="avgLoss">Avg Loss <span class="hint">en R</span></label>
+        <input id="avgLoss" type="number" step="0.1" min="0.1" value="1">
+      </div>
+      <div class="field">
+        <label for="winRate">Win rate <span class="hint">%</span></label>
+        <input id="winRate" type="number" step="1" min="1" max="99" value="40">
+      </div>
+      <div class="field">
+        <label for="riskPct">Risk por trade <span class="hint">%</span></label>
+        <input id="riskPct" type="number" step="0.1" min="0.1" max="20" value="1">
+      </div>
+
+      <h2 style="margin-top:22px"><span class="n">02</span> Simulación</h2>
+      <div class="field">
+        <label for="balance0">Starting Balance <span class="hint">$</span></label>
+        <input id="balance0" type="number" step="100" min="100" value="10000">
+      </div>
+      <div class="field">
+        <label for="nTrades"># Trades</label>
+        <input id="nTrades" type="number" step="10" min="10" max="5000" value="200">
+      </div>
+      <div class="field">
+        <label for="nSims"># Simulaciones</label>
+        <input id="nSims" type="number" step="50" min="50" max="3000" value="500">
+      </div>
+      <div class="field">
+        <label for="seed">Seed <span class="hint">opcional — reproducible</span></label>
+        <input id="seed" type="number" step="1" min="0" placeholder="aleatorio">
+      </div>
+
+      <button class="run" id="runBtn">▶ Ejecutar simulación</button>
+      <p class="disclaimer">Simulación educativa sobre resultados pasados o supuestos. El rendimiento pasado no garantiza resultados futuros — el azar siempre cobra su peaje.</p>
+    </aside>
+
+    <!-- ═══ RESULTADOS ═══ -->
+    <div class="results">
+
+      <div id="emptyState" class="placeholder">
+        <div class="big">Sin resultados todavía</div>
+        <p>Define tu edge y ejecuta la simulación. Verás miles de caminos posibles para tu cuenta y las probabilidades reales de tu estrategia.</p>
+      </div>
+
+      <div id="resultsContent" hidden>
+        <div class="kpis">
+          <div class="kpi"><div class="lab">Avg Final Balance</div><div class="val acc" id="kAvg">—</div><div class="sub">promedio de simulaciones</div></div>
+          <div class="kpi"><div class="lab">Median Final Balance</div><div class="val" id="kMed">—</div><div class="sub">caso central</div></div>
+          <div class="kpi"><div class="lab">Avg Max Drawdown</div><div class="val neg" id="kDD">—</div><div class="sub">promedio por simulación</div></div>
+          <div class="kpi"><div class="lab">Best Case</div><div class="val pos" id="kBest">—</div><div class="sub">mejor balance final</div></div>
+          <div class="kpi"><div class="lab">Worst Case</div><div class="val neg" id="kWorst">—</div><div class="sub">peor balance final</div></div>
+          <div class="kpi"><div class="lab">Probability of Profit</div><div class="val pos" id="kProb">—</div><div class="sub">% de sims rentables</div></div>
+        </div>
+
+        <div class="kpi-row2">
+          <div class="kpi small"><div class="lab">Expectancy</div><div class="val acc" id="kExp">—</div><div class="sub">en R por trade</div></div>
+          <div class="kpi small"><div class="lab">Profit Factor</div><div class="val" id="kPF">—</div><div class="sub">ganancia / pérdida</div></div>
+          <div class="kpi small"><div class="lab">P5 / P95</div><div class="val" id="kP5p95">—</div><div class="sub">rango 90% de sims</div></div>
+          <div class="kpi small"><div class="lab">P25 / P75</div><div class="val" id="kP25p75">—</div><div class="sub">rango 50% de sims</div></div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Spaghetti Chart — caminos posibles</h3>
+          <div class="note">cada línea es una simulación · la línea gruesa es la mediana · la blanca punteada es tu balance inicial</div>
+          <canvas id="spaghetti"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h3>Distribución del balance final</h3>
+          <div class="note">histograma de los resultados finales · la línea blanca punteada es el punto de equilibrio</div>
+          <canvas id="histogram" class="short"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var fmtUSD = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+  var fmtUSDc = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
+
+  /* ── PRNG reproducible (mulberry32) ── */
+  function mulberry32(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  /* ── presets ── */
+  var PRESETS = {
+    conservador: { winRate: 30, avgWin: 2.0, avgLoss: 1.0, riskPct: 0.5 },
+    balanceado:  { winRate: 40, avgWin: 1.5, avgLoss: 1.0, riskPct: 1.0 },
+    agresivo:    { winRate: 50, avgWin: 1.0, avgLoss: 1.0, riskPct: 2.0 }
+  };
+
+  /* ── estado ── */
+  var lastSim = null;      // { finals, dds, series, params }
+  var resizeTimer = null;
+
+  function readParams() {
+    return {
+      avgWin:   parseFloat($('avgWin').value)   || 1,
+      avgLoss:  parseFloat($('avgLoss').value)  || 1,
+      winRate:  parseFloat($('winRate').value)  || 40,
+      riskPct:  parseFloat($('riskPct').value)  || 1,
+      balance0: parseFloat($('balance0').value) || 10000,
+      nTrades:  parseInt($('nTrades').value, 10)  || 200,
+      nSims:    parseInt($('nSims').value, 10)    || 500,
+      seed:     $('seed').value === '' ? null : (parseInt($('seed').value, 10) || 0)
+    };
+  }
+
+  function validate(p) {
+    var errs = [];
+    if (p.avgWin <= 0 || p.avgLoss <= 0) errs.push('Avg Win / Avg Loss deben ser > 0');
+    if (p.winRate <= 0 || p.winRate >= 100) errs.push('Win rate debe estar entre 1 y 99');
+    if (p.riskPct <= 0 || p.riskPct > 20) errs.push('Risk por trade entre 0.1 y 20');
+    if (p.balance0 < 100) errs.push('Balance inicial mínimo $100');
+    if (p.nTrades < 10 || p.nTrades > 5000) errs.push('# Trades entre 10 y 5000');
+    if (p.nSims < 50 || p.nSims > 3000) errs.push('# Simulaciones entre 50 y 3000');
+    return errs;
+  }
+
+  /* ── núcleo Monte-Carlo ── */
+  function runSim(p) {
+    var rnd = p.seed === null ? Math.random : mulberry32(p.seed);
+    var nSims = p.nSims, nTrades = p.nTrades;
+    var finals = new Float64Array(nSims);
+    var dds = new Float64Array(nSims);
+    var totalPoints = nSims * nTrades;
+
+    // series para el spaghetti: todas si cabe en memoria, si no downsampling
+    var storeEvery = 1;
+    if (totalPoints > 600000) storeEvery = Math.ceil(totalPoints / 600000);
+    var series = [];
+    var seriesLen = Math.floor(nTrades / storeEvery) + 1;
+
+    var winP = p.winRate / 100;
+    var risk = p.riskPct / 100;
+
+    for (var s = 0; s < nSims; s++) {
+      var bal = p.balance0;
+      var peak = bal;
+      var maxDD = 0;
+      var pts = new Float64Array(seriesLen);
+      var idx = 0;
+      pts[idx++] = bal;
+      for (var t = 0; t < nTrades; t++) {
+        var riskAmt = bal * risk;
+        if (rnd() < winP) bal += riskAmt * p.avgWin;
+        else              bal -= riskAmt * p.avgLoss;
+        if (bal <= 0) bal = 0;               // ruina total
+        if (bal > peak) peak = bal;
+        var dd = peak > 0 ? (peak - bal) / peak : 1;
+        if (dd > maxDD) maxDD = dd;
+        if (t % storeEvery === 0) pts[idx++] = bal;
+      }
+      finals[s] = bal;
+      dds[s] = maxDD;
+      if (idx < seriesLen) pts = pts.subarray(0, idx);
+      series.push(pts);
+    }
+    return { finals: finals, dds: dds, series: series, params: p };
+  }
+
+  function stats(sim) {
+    var finals = sim.finals, n = finals.length;
+    var sorted = Array.prototype.slice.call(finals).sort(function (a, b) { return a - b; });
+    var sum = 0, i;
+    for (i = 0; i < n; i++) sum += finals[i];
+    var avg = sum / n;
+    var ddSum = 0;
+    for (i = 0; i < n; i++) ddSum += sim.dds[i];
+    var avgDD = ddSum / n;
+    var profits = 0;
+    for (i = 0; i < n; i++) if (finals[i] > sim.params.balance0) profits++;
+    function pct(q) { return sorted[Math.min(n - 1, Math.floor(q * n))]; }
+    return {
+      avg: avg,
+      median: pct(0.5),
+      avgDD: avgDD,
+      best: sorted[n - 1],
+      worst: sorted[0],
+      probProfit: profits / n,
+      p5: pct(0.05), p25: pct(0.25), p75: pct(0.75), p95: pct(0.95)
+    };
+  }
+
+  /* ── render KPIs ── */
+  function renderKpis(st) {
+    $('kAvg').textContent = fmtUSD.format(st.avg);
+    $('kAvg').className = 'val acc';
+    $('kMed').textContent = fmtUSD.format(st.median);
+    $('kDD').textContent = (st.avgDD * 100).toFixed(2) + '%';
+    $('kBest').textContent = fmtUSD.format(st.best);
+    $('kBest').className = 'val pos';
+    $('kWorst').textContent = fmtUSD.format(st.worst);
+    $('kWorst').className = 'val neg';
+    $('kProb').textContent = (st.probProfit * 100).toFixed(1) + '%';
+    $('kProb').className = 'val pos';
+
+    var p = lastSim.params;
+    var exp = (p.winRate / 100) * p.avgWin - (1 - p.winRate / 100) * p.avgLoss;
+    var pf = ((p.winRate / 100) * p.avgWin) / ((1 - p.winRate / 100) * p.avgLoss);
+    $('kExp').textContent = exp.toFixed(2) + 'R';
+    $('kExp').className = exp >= 0 ? 'val acc' : 'val neg';
+    $('kPF').textContent = pf.toFixed(2);
+    $('kPF').className = pf >= 1 ? 'val' : 'val neg';
+    $('kP5p95').textContent = fmtUSDc.format(st.p5) + ' / ' + fmtUSDc.format(st.p95);
+    $('kP25p75').textContent = fmtUSDc.format(st.p25) + ' / ' + fmtUSDc.format(st.p75);
+  }
+
+  /* ── render spaghetti ── */
+  function renderSpaghetti() {
+    var canvas = $('spaghetti');
+    var dpr = window.devicePixelRatio || 1;
+    var cssW = canvas.clientWidth, cssH = canvas.clientHeight;
+    canvas.width = cssW * dpr; canvas.height = cssH * dpr;
+    var ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cssW, cssH);
+
+    var sim = lastSim, p = sim.params, series = sim.series;
+    var n = series.length;
+
+    // escala: percentiles 1-99 del conjunto para no distorsionar por outliers
+    var lo = Infinity, hi = -Infinity;
+    series.forEach(function (pts) {
+      for (var i = 0; i < pts.length; i++) {
+        if (pts[i] < lo) lo = pts[i];
+        if (pts[i] > hi) hi = pts[i];
+      }
+    });
+    var margin = (hi - lo) * 0.04 || 1;
+    lo -= margin; hi += margin;
+
+    function x(i, len) { return 14 + (cssW - 28) * (i / (len - 1)); }
+    function y(v) { return 14 + (cssH - 34) * (1 - (v - lo) / (hi - lo)); }
+
+    // grid
+    ctx.strokeStyle = 'rgba(139,146,184,.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (var gy = 0; gy <= 4; gy++) {
+      var yy = 14 + (cssH - 34) * (gy / 4);
+      ctx.moveTo(14, yy); ctx.lineTo(cssW - 14, yy);
+    }
+    ctx.stroke();
+
+    // series tenues
+    var alpha = Math.max(0.02, Math.min(0.10, 55 / n));
+    ctx.strokeStyle = 'rgba(255,59,92,' + alpha + ')';
+    ctx.lineWidth = 1;
+    series.forEach(function (pts) {
+      ctx.beginPath();
+      for (var i = 0; i < pts.length; i++) {
+        var px = x(i, pts.length), py = y(pts[i]);
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+    });
+
+    // balance inicial (punteada blanca)
+    ctx.strokeStyle = 'rgba(232,236,255,.75)';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(14, y(p.balance0)); ctx.lineTo(cssW - 14, y(p.balance0));
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // mediana (gruesa rosa)
+    var sorted = Array.prototype.slice.call(sim.finals).sort(function (a, b) { return a - b; });
+    var medVals = new Float64Array(series[0].length);
+    for (var ti = 0; ti < series[0].length; ti++) {
+      var col = new Float64Array(n);
+      for (var si = 0; si < n; si++) col[si] = series[si][ti];
+      var c = Array.prototype.slice.call(col).sort(function (a, b) { return a - b; });
+      medVals[ti] = c[Math.floor(n / 2)];
+    }
+    ctx.strokeStyle = '#ff7a92';
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    for (var mi = 0; mi < medVals.length; mi++) {
+      var mx = x(mi, medVals.length), my = y(medVals[mi]);
+      if (mi === 0) ctx.moveTo(mx, my); else ctx.lineTo(mx, my);
+    }
+    ctx.stroke();
+
+    // etiquetas de balance (arriba/abajo izquierda)
+    ctx.fillStyle = 'rgba(139,146,184,.8)';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('$' + Math.round(hi).toLocaleString(), 6, 14);
+    ctx.fillText('$' + Math.round(lo).toLocaleString(), 6, cssH - 24);
+    // eje X: trades (base estándar)
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = 'rgba(139,146,184,.7)';
+    ctx.textAlign = 'left';
+    ctx.fillText('0', 14, cssH - 4);
+    ctx.textAlign = 'right';
+    ctx.fillText(p.nTrades.toLocaleString() + ' trades', cssW - 14, cssH - 4);
+    ctx.textAlign = 'left';
+  }
+
+  /* ── render histograma ── */
+  function renderHistogram() {
+    var canvas = $('histogram');
+    var dpr = window.devicePixelRatio || 1;
+    var cssW = canvas.clientWidth, cssH = canvas.clientHeight;
+    canvas.width = cssW * dpr; canvas.height = cssH * dpr;
+    var ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cssW, cssH);
+
+    var finals = lastSim.finals, p = lastSim.params;
+    var BINS = 48;
+    var lo = Math.min.apply(null, finals), hi = Math.max.apply(null, finals);
+    if (hi - lo < 1) hi = lo + 1;
+    var counts = new Array(BINS).fill(0);
+    var i, v;
+    for (i = 0; i < finals.length; i++) {
+      v = Math.min(BINS - 1, Math.floor(((finals[i] - lo) / (hi - lo)) * BINS));
+      counts[v]++;
+    }
+    var maxC = Math.max.apply(null, counts);
+    var bw = (cssW - 28) / BINS;
+
+    ctx.fillStyle = 'rgba(255,59,92,.55)';
+    for (i = 0; i < BINS; i++) {
+      var h = (counts[i] / maxC) * (cssH - 40);
+      ctx.fillRect(14 + i * bw, cssH - 18 - h, Math.max(1, bw - 1), h);
+    }
+
+    // breakeven
+    var bx = 14 + ((p.balance0 - lo) / (hi - lo)) * (cssW - 28);
+    ctx.strokeStyle = 'rgba(232,236,255,.8)';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(bx, 6); ctx.lineTo(bx, cssH - 18);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(232,236,255,.6)';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('breakeven $' + Math.round(p.balance0).toLocaleString(), bx, 12);
+    ctx.textAlign = 'left';
+  }
+
+  /* ── disparador principal ── */
+  function execute() {
+    var p = readParams();
+    var errs = validate(p);
+    if (errs.length) { alert('Revisa los valores:\n- ' + errs.join('\n- ')); return; }
+
+    var btn = $('runBtn');
+    btn.disabled = true;
+    btn.textContent = 'Calculando…';
+    setTimeout(function () {
+      lastSim = runSim(p);
+      var st = stats(lastSim);
+      $('emptyState').hidden = true;
+      $('resultsContent').hidden = false;
+      renderKpis(st);
+      renderSpaghetti();
+      renderHistogram();
+      btn.disabled = false;
+      btn.textContent = '▶ Ejecutar simulación';
+      window.scrollTo({ top: $('resultsContent').offsetTop - 20, behavior: 'smooth' });
+    }, 30);
+  }
+
+  /* ── presets ── */
+  var presetBtns = document.querySelectorAll('#presetRow .pill');
+  presetBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      presetBtns.forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      var pr = PRESETS[b.dataset.preset];
+      $('winRate').value = pr.winRate;
+      $('avgWin').value = pr.avgWin;
+      $('avgLoss').value = pr.avgLoss;
+      $('riskPct').value = pr.riskPct;
+    });
+  });
+
+  $('runBtn').addEventListener('click', execute);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT') execute();
+  });
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      if (lastSim) { renderSpaghetti(); renderHistogram(); }
+    }, 160);
+  });
+
+  /* correr una vez al cargar para mostrar el ejemplo */
+  execute();
+})();
+</script>
+</body>
+</html>
