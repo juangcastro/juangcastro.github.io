@@ -250,8 +250,8 @@
   <header class="masthead">
     <div class="kicker">// Herramientas · Calculadoras</div>
     <h1>Monte-Carlo <span class="red">Simulator</span></h1>
-    <p>Miles de caminos posibles para tu estrategia, trazados de una vez. Ingresa tu <b>edge</b> y descubre
-    lo que el azar puede hacerle a tu cuenta: balance final, drawdown y probabilidad de ganancia.</p>
+    <p>Corre cientos de simulaciones de tu estrategia y observa el rango de resultados posibles:
+    distribución del balance final, drawdown y probabilidad de terminar en verde. La varianza de tu edge, cuantificada.</p>
   </header>
 
   <div class="mc-grid">
@@ -302,43 +302,43 @@
       </div>
 
       <button class="run" id="runBtn">▶ Ejecutar simulación</button>
-      <p class="disclaimer">Simulación educativa sobre resultados pasados o supuestos. El rendimiento pasado no garantiza resultados futuros — el azar siempre cobra su peaje.</p>
+      <p class="disclaimer">Simulación sobre los supuestos que defines tú. No es predicción ni consejo financiero — el resultado depende de tus inputs.</p>
     </aside>
 
     <!-- ═══ RESULTADOS ═══ -->
     <div class="results">
 
       <div id="emptyState" class="placeholder">
-        <div class="big">Sin resultados todavía</div>
-        <p>Define tu edge y ejecuta la simulación. Verás miles de caminos posibles para tu cuenta y las probabilidades reales de tu estrategia.</p>
+        <div class="big">Sin resultados</div>
+        <p>Define tu edge y ejecuta la simulación para ver la distribución de resultados de tu estrategia.</p>
       </div>
 
       <div id="resultsContent" hidden>
         <div class="kpis">
-          <div class="kpi"><div class="lab">Avg Final Balance</div><div class="val acc" id="kAvg">—</div><div class="sub">promedio de simulaciones</div></div>
-          <div class="kpi"><div class="lab">Median Final Balance</div><div class="val" id="kMed">—</div><div class="sub">caso central</div></div>
-          <div class="kpi"><div class="lab">Best Case</div><div class="val pos" id="kBest">—</div><div class="sub">mejor balance final</div></div>
-          <div class="kpi"><div class="lab">Worst Case</div><div class="val neg" id="kWorst">—</div><div class="sub">peor balance final</div></div>
-          <div class="kpi"><div class="lab">Avg Max Drawdown</div><div class="val neg" id="kDD">—</div><div class="sub">promedio por simulación</div></div>
-          <div class="kpi"><div class="lab">Probability of Profit</div><div class="val pos" id="kProb">—</div><div class="sub">% de sims rentables</div></div>
+          <div class="kpi"><div class="lab">Avg Final Balance</div><div class="val acc" id="kAvg">—</div><div class="sub">media de las simulaciones</div></div>
+          <div class="kpi"><div class="lab">Median Final Balance</div><div class="val" id="kMed">—</div><div class="sub">percentil 50</div></div>
+          <div class="kpi"><div class="lab">Best Case</div><div class="val pos" id="kBest">—</div><div class="sub">máximo de las simulaciones</div></div>
+          <div class="kpi"><div class="lab">Worst Case</div><div class="val neg" id="kWorst">—</div><div class="sub">mínimo de las simulaciones</div></div>
+          <div class="kpi"><div class="lab">Avg Max Drawdown</div><div class="val neg" id="kDD">—</div><div class="sub">media del peor DD por simulación</div></div>
+          <div class="kpi"><div class="lab">Probability of Profit</div><div class="val pos" id="kProb">—</div><div class="sub">% de sims con balance final &gt; inicial</div></div>
         </div>
 
         <div class="kpi-row2">
-          <div class="kpi small"><div class="lab">Expectancy</div><div class="val acc" id="kExp">—</div><div class="sub">en R por trade</div></div>
-          <div class="kpi small"><div class="lab">Profit Factor</div><div class="val" id="kPF">—</div><div class="sub">ganancia / pérdida</div></div>
-          <div class="kpi small"><div class="lab">P5 / P95</div><div class="val" id="kP5p95">—</div><div class="sub">rango 90% de sims</div></div>
-          <div class="kpi small"><div class="lab">P25 / P75</div><div class="val" id="kP25p75">—</div><div class="sub">rango 50% de sims</div></div>
+          <div class="kpi small"><div class="lab">Expectancy</div><div class="val acc" id="kExp">—</div><div class="sub">E[R] por trade · WR×Win − (1−WR)×Loss</div></div>
+          <div class="kpi small"><div class="lab">Profit Factor</div><div class="val" id="kPF">—</div><div class="sub">ganancia bruta / pérdida bruta</div></div>
+          <div class="kpi small"><div class="lab">P5 / P95</div><div class="val" id="kP5p95">—</div><div class="sub">percentiles 5–95</div></div>
+          <div class="kpi small"><div class="lab">P25 / P75</div><div class="val" id="kP25p75">—</div><div class="sub">percentiles 25–75</div></div>
         </div>
 
         <div class="chart-card">
           <h3>Distribución del balance final</h3>
-          <div class="note">histograma de los resultados finales · la línea blanca punteada es el punto de equilibrio</div>
+          <div class="note">histograma de los balances finales · línea punteada = balance inicial</div>
           <canvas id="histogram" class="short"></canvas>
         </div>
 
         <div class="chart-card">
           <h3>Spaghetti Chart — caminos posibles</h3>
-          <div class="note">cada línea es una simulación · la línea gruesa es la mediana · la blanca punteada es tu balance inicial</div>
+          <div class="note">cada línea = una simulación · línea gruesa = mediana · punteada = balance inicial</div>
           <canvas id="spaghetti"></canvas>
         </div>
       </div>
