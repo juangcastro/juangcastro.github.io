@@ -333,6 +333,32 @@
   .foot-bottom a { color: var(--muted); }
   .foot-bottom a:hover { color: var(--accent); }
 
+  /* ── newsletter ──────────────────────── */
+  .nl-form {
+    display: flex; gap: 12px; max-width: 500px; margin: 0 auto;
+  }
+  .nl-form input {
+    flex: 1; min-width: 0;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    padding: 14px 16px; outline: none;
+    transition: border-color .16s ease, box-shadow .16s ease;
+  }
+  .nl-form input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .nl-form input::placeholder { color: #5b6288; }
+  .nl-form .btn { padding: 14px 24px; }
+  .nl-msg {
+    text-align: center; margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    min-height: 18px; letter-spacing: .04em;
+  }
+  .nl-msg.ok { color: #34d399; }
+  .nl-msg.err { color: var(--accent-2); }
+  @media (max-width: 520px) { .nl-form { flex-direction: column; } }
+
   /* ── animaciones ─────────────────────── */
   @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
   @keyframes pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
@@ -544,6 +570,19 @@
   </div>
 </section>
 
+<section id="newsletter">
+  <div class="sec-head">
+    <div class="tag">// Newsletter</div>
+    <h2>Novedades de The Red Queen</h2>
+    <p>Productos nuevos, informes del Engine y artículos de BrAIn — directo a tu correo, sin humo ni spam.</p>
+  </div>
+  <form class="nl-form" id="nlForm" novalidate>
+    <input type="email" id="nlEmail" placeholder="tu@email.com" autocomplete="email" aria-label="Tu email" required>
+    <button type="submit" class="btn btn-primary">Suscribirme</button>
+  </form>
+  <p class="nl-msg" id="nlMsg" role="status"></p>
+</section>
+
 <footer>
   <div class="foot-inner">
     <div class="foot-brand">
@@ -577,5 +616,51 @@
   </div>
 </footer>
 
+<script>
+(function () {
+  'use strict';
+  var FORM_URL = 'https://trq-newsletter.theredqueen.workers.dev/subscribe';
+  var form = document.getElementById('nlForm');
+  var email = document.getElementById('nlEmail');
+  var msg = document.getElementById('nlMsg');
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var val = email.value.trim();
+    if (!EMAIL_RE.test(val)) {
+      msg.textContent = 'Escribe un email válido.';
+      msg.className = 'nl-msg err';
+      email.focus();
+      return;
+    }
+    msg.textContent = 'Enviando…';
+    msg.className = 'nl-msg';
+    fetch(FORM_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: val })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.ok) {
+          msg.textContent = '¡Listo! Revisa tu correo para confirmar la suscripción.';
+          msg.className = 'nl-msg ok';
+          form.reset();
+        } else if (d.error === 'rate_limited') {
+          msg.textContent = 'Demasiados intentos. Espera un momento y vuelve a intentar.';
+          msg.className = 'nl-msg err';
+        } else {
+          msg.textContent = 'No pudimos suscribirte. Intenta de nuevo más tarde.';
+          msg.className = 'nl-msg err';
+        }
+      })
+      .catch(function () {
+        msg.textContent = 'Error de conexión. Intenta de nuevo.';
+        msg.className = 'nl-msg err';
+      });
+  });
+})();
+</script>
 </body>
 </html>

@@ -131,6 +131,46 @@
   }
   .soon p { color: var(--muted); max-width: 460px; margin: 0 auto; font-size: 14px; }
 
+  /* newsletter (Arcade Ivory) */
+  .nl-box {
+    text-align: center;
+    padding: 48px 28px 40px;
+    border: 1px solid var(--line); border-radius: 8px;
+    margin-bottom: 56px; background: var(--bg);
+  }
+  .nl-box h2 {
+    font-size: clamp(20px, 3vw, 26px); font-weight: 700;
+    letter-spacing: -.01em; margin: 14px 0 8px; color: var(--ink);
+  }
+  .nl-box p { color: var(--muted); max-width: 460px; margin: 0 auto 24px; font-size: 14px; }
+  .nl-form {
+    display: flex; gap: 10px; max-width: 480px; margin: 0 auto;
+  }
+  .nl-form input {
+    flex: 1; min-width: 0;
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    color: var(--ink); background: var(--surface);
+    outline: none; transition: border-color .15s ease;
+  }
+  .nl-form input:focus { border-color: var(--ink); }
+  .nl-form .btn-black {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    background: var(--ink); color: #fff;
+    border: none; border-radius: 6px; padding: 12px 22px; cursor: pointer;
+    transition: opacity .15s ease;
+  }
+  .nl-form .btn-black:hover { opacity: .82; }
+  .nl-msg {
+    margin-top: 14px; min-height: 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+  .nl-msg.ok { color: var(--accent); }
+  .nl-msg.err { color: #dc2626; }
+  @media (max-width: 520px) { .nl-form { flex-direction: column; } }
+
   .topics { margin-bottom: 16px; }
   .topics .sec-label {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
@@ -216,6 +256,17 @@
     <p>Análisis sobre IA aplicada al trading, tecnología y cultura digital — en la voz de The Red Queen.</p>
   </div>
 
+  <div class="nl-box">
+    <div class="sec-label">// Newsletter</div>
+    <h2>Enterate de cada artículo</h2>
+    <p>Novedades de BrAIn y de The Red Queen, directo a tu correo. Sin humo, sin spam, sin sorpresas.</p>
+    <form class="nl-form" id="nlForm" novalidate>
+      <input type="email" id="nlEmail" placeholder="tu@email.com" autocomplete="email" aria-label="Tu email" required>
+      <button type="submit" class="btn-black">Suscribirme</button>
+    </form>
+    <p class="nl-msg" id="nlMsg" role="status"></p>
+  </div>
+
   <div class="topics">
     <div class="sec-label">Temas que vamos a romper</div>
     <div class="grid">
@@ -234,5 +285,51 @@
   <span>© 2026 The Red Queen — Checkmate the System · <a href="trq-terms.html">Términos</a></span>
 </footer>
 
+<script>
+(function () {
+  'use strict';
+  var FORM_URL = 'https://trq-newsletter.theredqueen.workers.dev/subscribe';
+  var form = document.getElementById('nlForm');
+  var email = document.getElementById('nlEmail');
+  var msg = document.getElementById('nlMsg');
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var val = email.value.trim();
+    if (!EMAIL_RE.test(val)) {
+      msg.textContent = 'Escribe un email válido.';
+      msg.className = 'nl-msg err';
+      email.focus();
+      return;
+    }
+    msg.textContent = 'Enviando…';
+    msg.className = 'nl-msg';
+    fetch(FORM_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: val })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.ok) {
+          msg.textContent = '¡Listo! Revisa tu correo para confirmar la suscripción.';
+          msg.className = 'nl-msg ok';
+          form.reset();
+        } else if (d.error === 'rate_limited') {
+          msg.textContent = 'Demasiados intentos. Espera un momento y vuelve a intentar.';
+          msg.className = 'nl-msg err';
+        } else {
+          msg.textContent = 'No pudimos suscribirte. Intenta de nuevo más tarde.';
+          msg.className = 'nl-msg err';
+        }
+      })
+      .catch(function () {
+        msg.textContent = 'Error de conexión. Intenta de nuevo.';
+        msg.className = 'nl-msg err';
+      });
+  });
+})();
+</script>
 </body>
 </html>
