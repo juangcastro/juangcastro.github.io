@@ -58,7 +58,7 @@ def scan_reports():
         t = ALIASES.get(stem, stem.upper())
         html = open(f, encoding="utf-8").read()
         vm = re.search(r'class="verdict-badge (buy|hold|avoid)">(\w+)<', html)
-        cm = re.search(r'Convicción del Consejo: <b>(\d+)/10</b>', html)
+        cm = re.search(r'Convicción del (?:Consejo|engine): <b>(\d+)/10</b>', html)
         dm = re.search(r"Sesi[oó]n:\s*(?:<[^>]+>)?\s*(\d{2})\s+(\w{3})\s+(\d{4})", html)
         # 5 posturas por lente + alpha fino (promedio con signo: BUY + / HOLD 0 / AVOID −)
         lenses = {}

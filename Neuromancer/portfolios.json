@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13T18:00:28",
+  "generated_at": "2026-08-17T20:50:37",
   "portfolios": [
     {
       "name": "Manhattan Project 2.0",
@@ -140,6 +140,20 @@
         "BND",
         "TIP",
         "EMB"
+      ],
+      "sets": {}
+    },
+    {
+      "name": "Yellowcake",
+      "description": "El amanecer nuclear: 7 jugadores de la nueva era atómica — combustible (Cameco), reactores SMR (NuScale), reactores rápidos (Oklo), servicios y defensa (BWX Technologies), HALEU (Centrus), combustible avanzado (Lightbridge) y el ETF VanEck Uranium & Nuclear como exposición diversificada. Data centers e IA empujando la demanda de energía limpia de base.",
+      "tickers": [
+        "CCJ",
+        "SMR",
+        "OKLO",
+        "BWXT",
+        "LEU",
+        "LTBR",
+        "NLR"
       ],
       "sets": {}
     }

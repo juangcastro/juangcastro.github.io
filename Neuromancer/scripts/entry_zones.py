@@ -90,7 +90,7 @@ def parse_report(f):
     t = ALIAS.get(stem, stem.upper())
     vm = re.search(r'class="verdict-badge (buy|hold|avoid)">', h)
     verdict = vm.group(1) if vm else "hold"
-    cm = re.search(r"Convicción del Consejo: <b>(\d+)/10</b>", h)
+    cm = re.search(r"Convicción del (?:Consejo|engine): <b>(\d+)/10</b>", h)
     conv = int(cm.group(1)) if cm else 0
     # umbral de compra del reporte: "≤$230" / "≤ ~$13" / "<$38.19" / "≤¥4,100"
     # (solo ≤ o < como ancla — el "~" suelto captura "P/S ~3.5x" falso)

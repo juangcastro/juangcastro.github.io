@@ -287,24 +287,6 @@
   "margen": null,
   "conv": 5
  },
- "LEU": {
-  "ticker": "LEU",
-  "verdict": "hold",
-  "precio": 186.59,
-  "moneda": "$",
-  "zona": [
-   148.8,
-   171.2
-  ],
-  "estado": "ESPERAR",
-  "dist_pct": 9.0,
-  "fuente": "umbral del reporte",
-  "tipo": "growth",
-  "fwd": 79.23,
-  "52w_low": 142.13,
-  "margen": 65.94,
-  "conv": 6
- },
  "LYC": {
   "ticker": "LYC",
   "verdict": "hold",
