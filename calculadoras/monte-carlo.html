@@ -174,7 +174,7 @@
   .results { display: flex; flex-direction: column; gap: 18px; }
   .kpis {
     display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 16px;
   }
   @media (max-width: 640px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
   .kpi {
@@ -195,7 +195,7 @@
   .kpi .val.neg { color: var(--down); }
   .kpi .val.acc { color: var(--accent); }
   .kpi .sub { font-size: 10px; color: #5b6288; margin-top: 3px; font-family: 'JetBrains Mono', monospace; }
-  .kpi-row2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
+  .kpi-row2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 16px; }
   .kpi.small .val { font-size: 15px; }
 
   .chart-card {
@@ -289,11 +289,11 @@
         <input id="balance0" type="number" step="100" min="100" value="10000">
       </div>
       <div class="field">
-        <label for="nTrades"># Trades (50-3000)</label>
-        <input id="nTrades" type="number" step="10" min="50" max="3000" value="200">
+        <label for="nTrades"># Trades</label>
+        <input id="nTrades" type="number" step="10" min="10" max="5000" value="200">
       </div>
       <div class="field">
-        <label for="nSims"># Simulaciones</label>
+        <label for="nSims"># Simulaciones (50-3000)</label>
         <input id="nSims" type="number" step="50" min="50" max="3000" value="500">
       </div>
       <div class="field">
@@ -400,7 +400,7 @@
     if (p.winRate <= 0 || p.winRate >= 100) errs.push('Win rate debe estar entre 1 y 99');
     if (p.riskPct <= 0 || p.riskPct > 20) errs.push('Risk por trade entre 0.1 y 20');
     if (p.balance0 < 100) errs.push('Balance inicial mínimo $100');
-    if (p.nTrades < 50 || p.nTrades > 3000) errs.push('# Trades entre 50 y 3000');
+    if (p.nTrades < 10 || p.nTrades > 5000) errs.push('# Trades entre 10 y 5000');
     if (p.nSims < 50 || p.nSims > 3000) errs.push('# Simulaciones entre 50 y 3000');
     return errs;
   }
