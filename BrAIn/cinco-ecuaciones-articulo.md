@@ -6,9 +6,9 @@
 
 Aquí viene la verdad incómoda, la que nadie anuncia en la ceremonia de grado: **el dinero no es un misterio. Es matemática aplicada con traje.** Cada decisión que tomarás sobre un salario, una hipoteca, una inversión, una comisión, un préstamo o una pensión ya está decidida por cinco ecuaciones — las conozcas o no.
 
-Y esta es la parte que Jordan Peterson te señalaría con el dedo: **la diferencia entre tú y la gente que maneja estas cinco ecuaciones no es inteligencia. Es responsabilidad.** Ellos cargaron con el peso de aprender lo que a ti nadie te entregó. El conocimiento no cae del cielo: se levanta del suelo, y levantarlo es un acto de voluntad.
+Y aquí está la parte incómoda: **la diferencia entre tú y la gente que maneja estas cinco ecuaciones no es inteligencia. Es responsabilidad.** Ellos cargaron con el peso de aprender lo que a ti nadie te entregó. El conocimiento no cae del cielo: se levanta del suelo, y levantarlo es un acto de voluntad.
 
-Peterson diría que la ignorancia financiera no es inocencia — es deuda. Y la deuda, como toda deuda, se paga con intereses. [Compuestos, para más señas.]
+La ignorancia financiera no es inocencia — es deuda. Y la deuda, como toda deuda, se paga con intereses. [Compuestos, para más señas.]
 
 ---
 
@@ -57,7 +57,7 @@ Mira la forma. Cada década se duplica. La primera década agrega ~$12K. La últ
 
 Por eso un joven de 25 que invierte $10K y nunca agrega otro centavo termina a los 65 con más dinero que un cuarentón que invierte $10K **cada año** y llega a la misma meta. No es más listo. No es más rico. Solo está sosteniendo un exponente más grande.
 
-Y aquí entra Peterson, con toda su fuerza: **el sacrificio presente es la moneda del futuro.** Diferir la gratificación — no gastar lo que podrías gastar hoy para sembrar lo que cosecharás en treinta años — es el acto de responsabilidad más básico que existe. Los psicólogos lo llaman autocontrol; Peterson lo llama *cargar tu cruz*. El héroe arquetípico no es el que gana la batalla final: es el que hizo las 10,000 pequeñas renuncias invisibles que la hicieron posible. Atlas no se queja del peso; lo sostiene. [La diferencia entre Atlas y Sísifo: Atlas sostiene el mundo, Sísifo empuja la piedra. El primero construye. El segundo solo sufre. ¿Cuál eres tú con tu dinero?]
+Y aquí está el núcleo duro: **el sacrificio presente es la moneda del futuro.** Diferir la gratificación — no gastar lo que podrías gastar hoy para sembrar lo que cosecharás en treinta años — es el acto de responsabilidad más básico que existe. Los psicólogos lo llaman autocontrol; los estoicos lo llamaban *carácter*. El ganador no es el que acierta la jugada final: es el que hizo las 10,000 pequeñas renuncias invisibles que la hicieron posible. Atlas no se queja del peso; lo sostiene. [La diferencia entre Atlas y Sísifo: Atlas sostiene el mundo, Sísifo empuja la piedra. El primero construye. El segundo solo sufre. ¿Cuál eres tú con tu dinero?]
 
 > El talento crece lineal. El tiempo compone. Las matemáticas siempre terminarán favoreciendo al tiempo.
 
@@ -85,9 +85,9 @@ Y aquí viene la parte que casi nadie enseña — la regla invertida. Si algo **
 - Inflación al 6%: la mitad se fue en **12 años**.
 - Inflación al 9%: la mitad se fue en **8 años**.
 
-La regla funciona en ambas direcciones. Subir y bajar, crecer y pudrirse. [Peterson habla del orden y el caos como las dos fuerzas del ser. Esta regla es eso, en una servilleta: todo lo que sube puede bajar, y el que no mira la curva de bajada está ciego de un ojo.]
+La regla funciona en ambas direcciones. Subir y bajar, crecer y pudrirse. [Toda curva que sube tiene su espejo: la mitad del trabajo de quien maneja dinero es mirar la curva de bajada con el mismo respeto que la de subida. El que no lo hace va ciego de un ojo.]
 
-> La claridad mental no es un lujo: es una obligación. No puedes ordenar tu vida financiera si no puedes estimar tu futuro en tres segundos. Como dice Peterson: *limpia tu cuarto* — y tu cuarto, para bien o para mal, incluye tu balance.
+> La claridad mental no es un lujo: es una obligación. No puedes ordenar tu vida financiera si no puedes estimar tu futuro en tres segundos. Empieza por lo más pequeño que tienes delante — tu presupuesto, tu balance, tu deuda — y ordénalo. El orden se contagia hacia arriba.
 
 ![El 72 lo resuelve todo — la regla del doble](assets/eq2-rule72.png)
 
@@ -116,7 +116,7 @@ Las consecuencias de esta ecuación son enormes, y explican media industria fina
 
 La persona que conoce esta ecuación mira cada promesa futura — un cupón de bono, una oferta de equity, una pensión, un "ingreso pasivo" — y pregunta: *¿cuánto vale esto realmente hoy?* Todos los demás toman el número futuro al pie de la letra, y todos los demás pagan de más, en silencio.
 
-Peterson diría que esta es la ecuación de la **integridad**: la capacidad de mirar una promesa — la tuya o la de otro — y calcular su valor real, sin autoengaño. La procrastinación, después de todo, es un descuento que le aplicas a tu propio futuro. Cada "lo haré mañana" es un dólar futuro que se encoge en valor presente. Y la gente que prospera es la que dejó de mentirse sobre cuánto valen sus promesas. [Decir la verdad, o al menos no mentir — empieza por no mentirte a ti mismo sobre el tiempo.]
+Esta es la ecuación de la **integridad**: la capacidad de mirar una promesa — la tuya o la de otro — y calcular su valor real, sin autoengaño. La procrastinación, después de todo, es un descuento que le aplicas a tu propio futuro. Cada "lo haré mañana" es un dólar futuro que se encoge en valor presente. Y la gente que prospera es la que dejó de mentirse sobre cuánto valen sus promesas. [La honestidad empieza por casa: no mentirte a ti mismo sobre el tiempo.]
 
 ![El dólar futuro se encoge — valor presente](assets/eq3-present-value.png)
 
@@ -152,7 +152,7 @@ Por eso un 8% "suave" vale mucho más que un 8% "salvaje", aunque el número del
 
 Una vez que sabes esto, miras el "rendimiento promedio" de cada fondo con una pregunta extra en la cabeza: *¿aritmética o geométrica?* Y si no te la quieren responder, la respuesta casi siempre es la que no quieren que compares.
 
-Peterson lo pondría en términos de **mapa y territorio**: el promedio aritmético es el mapa bonito que te vende el corredor; la media geométrica es el territorio donde vive tu dinero. Y confundir el mapa con el territorio — creerle a la cifra que te halaga en vez de a la que te describe — es exactamente el tipo de autoengaño que Peterson identifica como la raíz del sufrimiento evitable. La realidad no negocia: se enfrenta. [Cauchy publicó la desigualdad aritmético-geométrica en 1821. Dos siglos después, sigue siendo el arma más afilada contra el marketing financiero.]
+Piénsalo en términos de **mapa y territorio**: el promedio aritmético es el mapa bonito que te vende el corredor; la media geométrica es el territorio donde vive tu dinero. Confundir el mapa con el territorio — creerle a la cifra que te halaga en vez de a la que te describe — es autoengaño con consecuencias medibles. La realidad no negocia: se enfrenta. [Cauchy publicó la desigualdad aritmético-geométrica en 1821. Dos siglos después, sigue siendo el arma más afilada contra el marketing financiero.]
 
 ![El promedio es una mentira — media geométrica](assets/eq4-geometric.png)
 
@@ -184,7 +184,7 @@ Los ricos no ganan necesariamente más retorno nominal que los demás. Solo se a
 
 > **El dinero que no invertiste no está "a salvo". Está siendo gravado por la inflación a una tasa a la que nunca consentiste.**
 
-Y aquí Peterson te agarra del hombro con la frase más incómoda de todas: **la inacción es una decisión.** La vida no premia la neutralidad. El que no elige, ya eligió — eligió el statu quo, eligió la cuenta al 0%, eligió que la inflación le coma el sueldo mientras "esperaba el momento perfecto". El coraje no es solo hacer cosas difíciles: es soportar la incomodidad de hacer algo *ahora* en vez de la comodidad de no hacer nada *siempre*.
+Y aquí está la frase más incómoda de todas: **la inacción es una decisión.** La vida no premia la neutralidad. El que no elige, ya eligió — eligió el statu quo, eligió la cuenta al 0%, eligió que la inflación le coma el sueldo mientras "esperaba el momento perfecto". El coraje no es solo hacer cosas difíciles: es soportar la incomodidad de hacer algo *ahora* en vez de la comodidad de no hacer nada *siempre*.
 
 Aprender a pensar en términos reales en vez de nominales es el interruptor mental que separa a la gente que entiende el dinero de la gente que solo lo maneja. [Y sí: el que "guarda bajo el colchón" no está siendo prudente. Está financiando su propia decadencia, dólar a dólar.]
 
@@ -244,7 +244,7 @@ El hábito mental más útil que puedes construir es este: **cuando enfrentes un
 
 > **Los ricos no son personas que vencen las ecuaciones. Son personas que nunca discutieron con ellas.**
 
-Y aquí está la pregunta que vale la pena contemplar — la pregunta que Peterson te dejaría flotando en el aire, con esa mezcla de compasión y severidad que lo caracteriza:
+Y aquí está la pregunta que vale la pena contemplar — la que no te deja dormir si la tomas en serio:
 
 Si cinco ecuaciones cortas — todas gratis, todas públicas, todas más viejas que cualquier banco de la Tierra — deciden la mayor parte de tu vida financiera, y llevas años navegando el dinero sin ellas, entonces la pregunta honesta no es *"¿por qué no entiendo de finanzas?"*
 
@@ -258,6 +258,6 @@ La matemática está en la servilleta. El resto depende de ti.
 
 ---
 
-*BrAIn — Breaking AI Non-sense. Artículo inspirado en "The Five Equations That Quietly Run Your Entire Financial Life" de @lumenxbt (X, jul 2026), reescrito en español con lente de responsabilidad individual — la lectura que Jordan Peterson haría de las finanzas. Ecuaciones originales: Fibonacci (1202), Pacioli (1494), Fisher (1907, 1930), Cauchy (1821).*
+*BrAIn — Breaking AI Non-sense. Artículo inspirado en "The Five Equations That Quietly Run Your Entire Financial Life" de @lumenxbt (X, jul 2026), reescrito en español con lente de responsabilidad individual. Ecuaciones originales: Fibonacci (1202), Pacioli (1494), Fisher (1907, 1930), Cauchy (1821).*
 
 *Si este artículo te cambió la forma de ver el dinero, sigue a BrAIn — cada pieza toma un tema y lo rompe hasta el fondo.*
