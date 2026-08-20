@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAS CINCO ECUACIONES QUE GOBIERNAN TU VIDA FINANCIERA — BrAIn · The Red Queen</title>
+<meta name="description" content="Crecimiento compuesto, regla del 72, valor presente, media geométrica y rendimiento real: las cinco ecuaciones que deciden tu vida financiera — explicadas sin humo, con la lente de la responsabilidad individual.">
+<meta property="og:title" content="LAS CINCO ECUACIONES QUE GOBIERNAN TU VIDA FINANCIERA">
+<meta property="og:description" content="Cinco fórmulas, cero jerga. La matemática que decide tu dinero — y por qué ignorarla es una decisión, no un accidente.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://theredqueen.co/BrAIn/cinco-ecuaciones.html">
+<meta property="og:image" content="https://theredqueen.co/BrAIn/assets/portada.png">
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Arcade Ivory: blanco puro + pixel display + emerald solo para status ── */
+  :root {
+    --bg: #FFFFFF;
+    --ink: #0A0A0A;
+    --muted: #666666;
+    --line: #E5E5E5;
+    --surface: #F5F5F5;
+    --accent: #10B981;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 13px; letter-spacing: .28em; text-transform: uppercase; color: var(--ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links .active { color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+  @media (max-width: 560px) { .nav-links a:not(.active) { display: none; } }
+
+  /* ── masthead del artículo ────────────────── */
+  .masthead {
+    position: relative; overflow: hidden;
+    text-align: center; padding: 72px 24px 56px;
+  }
+  .masthead::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background-image: radial-gradient(rgba(229, 229, 229, .55) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+  }
+  .masthead .kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
+  .masthead h1 {
+    max-width: 860px; margin: 0 auto;
+    font-size: clamp(28px, 5.4vw, 52px);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.14;
+  }
+  .masthead .sub {
+    margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .26em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .meta {
+    margin-top: 22px; color: var(--muted); font-size: 13px;
+  }
+  .masthead .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ── cuerpo ──────────────────────────────── */
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+
+  .lede {
+    font-size: 19px; line-height: 1.75; color: #333;
+    border-left: 3px solid var(--line); padding-left: 22px; margin: 8px 0 40px;
+  }
+  .lede strong { color: var(--ink); }
+
+  h2 {
+    font-size: clamp(22px, 3.4vw, 30px); font-weight: 800; letter-spacing: -.015em;
+    margin: 56px 0 14px; line-height: 1.25;
+  }
+  h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: .62em; font-weight: 600;
+    color: #b0b0b0; letter-spacing: .14em; display: block; margin-bottom: 8px;
+  }
+  h3 { font-size: 17px; font-weight: 700; margin: 28px 0 10px; }
+
+  p { margin: 0 0 18px; color: #222; font-size: 16.5px; }
+  p b, li b { color: var(--ink); font-weight: 700; }
+
+  ul { margin: 0 0 20px 4px; padding-left: 20px; }
+  li { margin-bottom: 8px; color: #222; font-size: 16.5px; }
+
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(15px, 2.6vw, 19px);
+    font-weight: 600; text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 20px 24px; margin: 26px 0;
+    color: var(--ink); letter-spacing: .01em;
+  }
+
+  blockquote {
+    margin: 24px 0; padding: 18px 24px;
+    border-left: 3px solid var(--ink);
+    background: var(--surface);
+    font-size: 16.5px; font-weight: 600; color: var(--ink);
+    line-height: 1.6; border-radius: 0 10px 10px 0;
+  }
+  blockquote.quote::before { content: "“"; color: #c8c8c8; font-size: 1.4em; font-weight: 800; margin-right: 2px; }
+
+  .fig { margin: 34px 0; }
+  .fig img {
+    width: 100%; height: auto;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(10, 10, 10, .10);
+  }
+  .fig figcaption {
+    margin-top: 10px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 26px 0 30px;
+    font-size: 14.5px;
+  }
+  th {
+    text-align: left; font-weight: 700; color: var(--ink);
+    border-bottom: 2px solid var(--ink); padding: 10px 12px;
+  }
+  td { border-bottom: 1px solid var(--line); padding: 10px 12px; color: #222; }
+  tr:last-child td { border-bottom: none; }
+
+  .divider {
+    height: 1px; background: var(--line); margin: 48px 0;
+  }
+
+  .outro {
+    margin-top: 48px;
+    font-size: 13px; color: var(--muted); line-height: 1.7;
+    border-top: 1px solid var(--line); padding-top: 22px;
+  }
+  .outro a { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--line); }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-top: 40px; transition: color .15s ease;
+  }
+  .back:hover { color: var(--ink); }
+  .back::before { content: "←"; }
+
+  footer {
+    border-top: 1px solid var(--line); background: var(--bg);
+    padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a class="active" href="../brain.html">BrAIn</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="kicker"><span class="dot"></span>BrAIn · Artículo 001</div>
+  <h1>LAS CINCO ECUACIONES QUE GOBIERNAN TU VIDA FINANCIERA</h1>
+  <div class="sub">Y por qué ignorarlas es una decisión, no un accidente</div>
+  <div class="meta"><b>Breaking AI Non-sense</b> · The Red Queen · inspirado en @lumenxbt</div>
+</header>
+
+<div class="wrap">
+
+  <div class="lede">
+    Te enseñaron aritmética en el colegio y la llamaron matemática. Luego, si tuviste suerte, te dieron
+    "finanzas personales" como una lista de tips: ahorra más, gasta menos, invierte temprano. Nadie te dijo
+    que debajo de cada tip hay una ecuación. Nadie te dijo que esas ecuaciones son cortas, gratis, más viejas
+    que tu abuelo, y que deciden el resultado de casi todos los ricos <strong>antes de que nazcan</strong>.
+    [Sí: antes de que nazcan. El exponente no espera a que madures.]
+  </div>
+
+  <p>Aquí viene la verdad incómoda, la que nadie anuncia en la ceremonia de grado: <b>el dinero no es un misterio. Es matemática aplicada con traje.</b> Cada decisión que tomarás sobre un salario, una hipoteca, una inversión, una comisión, un préstamo o una pensión ya está decidida por cinco ecuaciones — las conozcas o no.</p>
+
+  <p>Y esta es la parte que Jordan Peterson te señalaría con el dedo: <b>la diferencia entre tú y la gente que maneja estas cinco ecuaciones no es inteligencia. Es responsabilidad.</b> Ellos cargaron con el peso de aprender lo que a ti nadie te entregó. El conocimiento no cae del cielo: se levanta del suelo, y levantarlo es un acto de voluntad.</p>
+
+  <p>Peterson diría que la ignorancia financiera no es inocencia — es deuda. Y la deuda, como toda deuda, se paga con intereses. [Compuestos, para más señas.]</p>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">—</span>LAS CINCO ECUACIONES DE UN VISTAZO</h2>
+  <ul>
+    <li><b>Crecimiento compuesto</b> — en qué se convierte un dólar con el tiempo</li>
+    <li><b>Regla del 72</b> — qué tan rápido se duplica el dinero a cualquier tasa</li>
+    <li><b>Valor presente</b> — cuánto vale un dólar futuro, aquí y ahora</li>
+    <li><b>Media geométrica</b> — por qué el "rendimiento promedio" que te vendieron es una mentira</li>
+    <li><b>Rendimiento real</b> — qué hizo tu dinero después de que la inflación comiera su parte</li>
+  </ul>
+  <p>Cinco fórmulas. Cero jerga. Juntas explican el 90% de toda decisión financiera honesta que alguien haya tomado alguna vez.</p>
+
+  <figure class="fig">
+    <img src="assets/portada.png" alt="Las cinco ecuaciones — la matemática que gobierna tu dinero">
+    <figcaption>La matemática que gobierna tu dinero</figcaption>
+  </figure>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">ECUACIÓN 01</span>EL TIEMPO DOBLA EL DINERO</h2>
+  <h3>Crecimiento compuesto · Fibonacci, 1202</h3>
+
+  <p>La ecuación más importante del mundo del dinero se ve así:</p>
+  <div class="formula">FV = PV × (1 + r)^n</div>
+  <p>Cinco símbolos. Déjame traducirlos a humano:</p>
+  <ul>
+    <li><b>FV</b> = valor futuro. Lo que valdrá tu dinero después.</li>
+    <li><b>PV</b> = valor presente. Lo que tienes ahora.</li>
+    <li><b>r</b> = tasa de retorno por periodo, escrita como decimal (10% es 0.10).</li>
+    <li><b>n</b> = número de periodos (normalmente, años).</li>
+  </ul>
+  <p>Se lee: <i>"tu dinero en el futuro es igual a tu dinero de ahora, multiplicado por uno más tu tasa, elevado a los años."</i></p>
+  <p>La magia vive en ese pequeño exponente <b>^n</b>. Sin él, el dinero crecería en línea recta — aburrido, predecible, humano. Con él, crece en una curva que empieza como un susurro y termina como un grito. [Ese grito es la diferencia entre una vida de trabajo y una vida de trabajo <i>pagada</i>.]</p>
+
+  <p><b>Ejemplo concreto.</b> $10,000 al 8% anual, sin agregar un centavo:</p>
+  <table>
+    <tr><th>Año</th><th>Valor</th></tr>
+    <tr><td>10</td><td>$21,589</td></tr>
+    <tr><td>20</td><td>$46,610</td></tr>
+    <tr><td>30</td><td>$100,627</td></tr>
+    <tr><td>40</td><td>$217,245</td></tr>
+    <tr><td>50</td><td>$469,016</td></tr>
+  </table>
+  <p>Mira la forma. Cada década se duplica. La primera década agrega ~$12K. La última, sola, agrega ~$250K. Misma tasa. Misma apuesta inicial. <b>El exponente está haciendo todo el trabajo.</b></p>
+  <p>Por eso un joven de 25 que invierte $10K y nunca agrega otro centavo termina a los 65 con más dinero que un cuarentón que invierte $10K <b>cada año</b> y llega a la misma meta. No es más listo. No es más rico. Solo está sosteniendo un exponente más grande.</p>
+  <p>Y aquí entra Peterson, con toda su fuerza: <b>el sacrificio presente es la moneda del futuro.</b> Diferir la gratificación — no gastar lo que podrías gastar hoy para sembrar lo que cosecharás en treinta años — es el acto de responsabilidad más básico que existe. Los psicólogos lo llaman autocontrol; Peterson lo llama <i>cargar tu cruz</i>. El héroe arquetípico no es el que gana la batalla final: es el que hizo las 10,000 pequeñas renuncias invisibles que la hicieron posible. Atlas no se queja del peso; lo sostiene. [La diferencia entre Atlas y Sísifo: Atlas sostiene el mundo, Sísifo empuja la piedra. El primero construye. El segundo solo sufre. ¿Cuál eres tú con tu dinero?]</p>
+
+  <blockquote class="quote">El talento crece lineal. El tiempo compone. Las matemáticas siempre terminarán favoreciendo al tiempo.</blockquote>
+
+  <figure class="fig">
+    <img src="assets/eq1-compound.png" alt="El tiempo dobla el dinero — crecimiento compuesto">
+    <figcaption>El tiempo dobla el dinero</figcaption>
+  </figure>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">ECUACIÓN 02</span>EL 72 LO RESUELVE TODO</h2>
+  <h3>La regla del doble · Pacioli, 1494</h3>
+
+  <p>Nadie quiere hacer cuentas de <code>FV = PV × (1 + r)^n</code> de cabeza en una cena. Así que banqueros, actuarios y quants usan un atajo que existe desde 1494, cuando el fraile Luca Pacioli lo escribió en el mismo libro que le regaló a Europa la partida doble.</p>
+  <div class="formula">Tiempo de duplicación (en años) ≈ 72 ÷ tasa de retorno (en %)</div>
+  <p>Eso es todo el truco. ¿Cuánto tarda el dinero en duplicarse al 6%? 72 ÷ 6 = <b>12 años</b>. ¿Al 9%? <b>8 años</b>. ¿Al 3%? <b>24 años</b>.</p>
+  <p>No es perfectamente preciso, pero es exacto dentro de uno o dos puntos porcentuales para cualquier tasa normal — y te deja hacer en tres segundos lo que a otros les tomaría una hoja de cálculo.</p>
+  <p>Con esto en la cabeza, conversaciones enteras cambian. Alguien te dice que un bono paga 4% anual → ya sabes: ese dinero se duplica cada 18 años. Alguien te dice que la inflación corre al 6% → ya sabes: los precios se duplican cada 12 años, y lo que hoy cuesta $100 costará $200 en una década. Alguien te ofrece una "segura" cuenta al 2% → ya sabes: tu dinero se duplica cada 36 años, que para la mayoría de los humanos es <i>una vez en la vida adulta</i>.</p>
+  <p>Por eso los profesionales parecen tener intuición sobrenatural con los números. No la tienen. Cargan dos atajos mentales, y este es uno.</p>
+  <p>Y aquí viene la parte que casi nadie enseña — la regla invertida. Si algo <b>pierde</b> valor a tasa r, la regla te dice qué tan rápido se reduce a la mitad:</p>
+  <ul>
+    <li>Inflación al 3%: tu dinero pierde la mitad de su poder de compra en <b>24 años</b>.</li>
+    <li>Inflación al 6%: la mitad se fue en <b>12 años</b>.</li>
+    <li>Inflación al 9%: la mitad se fue en <b>8 años</b>.</li>
+  </ul>
+  <p>La regla funciona en ambas direcciones. Subir y bajar, crecer y pudrirse. [Peterson habla del orden y el caos como las dos fuerzas del ser. Esta regla es eso, en una servilleta: todo lo que sube puede bajar, y el que no mira la curva de bajada está ciego de un ojo.]</p>
+  <blockquote class="quote">La claridad mental no es un lujo: es una obligación. No puedes ordenar tu vida financiera si no puedes estimar tu futuro en tres segundos. Como dice Peterson: <i>limpia tu cuarto</i> — y tu cuarto, para bien o para mal, incluye tu balance.</blockquote>
+
+  <figure class="fig">
+    <img src="assets/eq2-rule72.png" alt="El 72 lo resuelve todo — la regla del doble">
+    <figcaption>El 72 lo resuelve todo</figcaption>
+  </figure>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">ECUACIÓN 03</span>EL DÓLAR FUTURO SE ENCOGE</h2>
+  <h3>Valor presente · Fisher, 1907</h3>
+
+  <p>Pregunta trampa. Alguien te ofrece $1,000 — hoy o dentro de un año. ¿Cuál vale más?</p>
+  <p>Casi todos responden "hoy", y casi todos dan la razón equivocada: "porque podría gastarlos ahora". La razón real es mucho más útil, y es la razón por la que cada adquisición, póliza de seguro, pensión, hipoteca y premio de lotería del mundo se cotiza como se cotiza.</p>
+  <p><b>La razón es que $1,000 hoy se pueden invertir.</b> Si tienes un 6% disponible, $1,000 hoy se convierten en $1,060 en un año. Así que $1,000 hoy no son iguales a $1,000 el año que viene: son iguales a ~$1,060. O, equivalentemente, $1,000 el año que viene valen solo ~$943 hoy.</p>
+  <p>Esto se llama <b>valor presente</b>, y la ecuación es simplemente la del crecimiento compuesto resuelta hacia atrás:</p>
+  <div class="formula">PV = FV ÷ (1 + r)^n</div>
+  <p>Mismos cinco símbolos. Misma idea. Te preguntas: <i>"¿cuánto tendría que invertir hoy a tasa r para terminar con esta cantidad futura en n años?"</i></p>
+  <p>Las consecuencias de esta ecuación son enormes, y explican media industria financiera:</p>
+  <ul>
+    <li><b>Loterías.</b> Cuando anuncian un "premio de $300 millones", casi nunca tienen $300 millones en efectivo. Tienen lo suficiente para comprar una anualidad que pagará $300M en 30 años. En valor presente, ese premio vale <b>la mitad</b> de lo que dice el cartel. La opción de pago único no es el premio "reducido": es el honesto.</li>
+    <li><b>Seguros.</b> Cuando una aseguradora te cotiza una póliza de vida, está corriendo valor presente sobre pagos futuros. Si la póliza pagará $500,000 en 30 años y su retorno asumido es 5%, ese pago futuro tiene un valor presente de ~$115,000. Eso es lo que realmente están reservando. Todo lo demás es spread.</li>
+    <li><b>Hipotecas.</b> Cuando un banco te cotiza una hipoteca a 30 años, está calculando el valor presente de tu flujo futuro de pagos. Entender esto es por qué la misma diferencia del 1% en la tasa puede significar $80,000 más o menos durante la vida del préstamo. El banco no es codicioso: está <b>cobrando tiempo</b>.</li>
+    <li><b>Ofertas de trabajo.</b> Un salario de $150,000 que empieza hoy vale más que uno de $170,000 que empieza en tres años, bajo cualquier supuesto razonable de crecimiento. El valor presente es por qué "espera unos años para el aumento" suele ser una propuesta perdedora, y por qué cambiar de carrera temprano paga más de lo que parece.</li>
+  </ul>
+  <p>La persona que conoce esta ecuación mira cada promesa futura — un cupón de bono, una oferta de equity, una pensión, un "ingreso pasivo" — y pregunta: <i>¿cuánto vale esto realmente hoy?</i> Todos los demás toman el número futuro al pie de la letra, y todos los demás pagan de más, en silencio.</p>
+  <p>Peterson diría que esta es la ecuación de la <b>integridad</b>: la capacidad de mirar una promesa — la tuya o la de otro — y calcular su valor real, sin autoengaño. La procrastinación, después de todo, es un descuento que le aplicas a tu propio futuro. Cada "lo haré mañana" es un dólar futuro que se encoge en valor presente. Y la gente que prospera es la que dejó de mentirse sobre cuánto valen sus promesas. [Decir la verdad, o al menos no mentir — empieza por no mentirte a ti mismo sobre el tiempo.]</p>
+
+  <figure class="fig">
+    <img src="assets/eq3-present-value.png" alt="El dólar futuro se encoge — valor presente">
+    <figcaption>El dólar futuro se encoge</figcaption>
+  </figure>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">ECUACIÓN 04</span>EL PROMEDIO ES UNA MENTIRA</h2>
+  <h3>Media geométrica · Cauchy, 1821</h3>
+
+  <p>Esta es la ecuación que la industria financiera no quiere particularmente que conozcas. Es corta. Es honesta. Y cambiará lo que piensas de cada anuncio de fondo que hayas visto.</p>
+  <p>Supón que un fondo te da estos retornos en tres años: <b>+50%, −50%, +50%.</b></p>
+  <p>Pregunta: ¿cuál es tu rendimiento promedio?</p>
+  <p>La respuesta instintiva: (50 − 50 + 50) ÷ 3 = <b>16.7%</b>. ¡Se ve genial! Un 16.7% promedio suena a producto de nivel Warren Buffett.</p>
+  <p>La respuesta real: más cerca de <b>+7%</b>. Y aquí es donde se pone feo.</p>
+  <p>Tu dinero real hizo esto: $100 → $150 → $75 → $112.50. En tres años, convertiste $100 en $112.50 — una ganancia total del 12.5%, o ~4% anual compuesto. <b>No 16.7%.</b></p>
+  <p>El número que la industria ama anunciar es la <b>media aritmética</b>, el promedio simple. El número que describe lo que realmente les pasó a tus dólares es la <b>media geométrica</b>:</p>
+  <div class="formula">Media geométrica = ((1 + r₁) × (1 + r₂) × ... × (1 + rₙ))^(1/n) − 1</div>
+  <p>Multiplicas los factores de crecimiento, sacas la raíz n, y restas 1. Suena complicado; es una línea en cualquier hoja de cálculo: <code>=GEOMEAN(...)−1</code>.</p>
+  <p>La regla despiadada que está debajo:</p>
+  <blockquote class="quote">La media geométrica es siempre menor o igual que la media aritmética. Son iguales solo cuando todos los años tienen exactamente el mismo retorno.</blockquote>
+  <p>Cuanto más volátil el retorno, más grande la brecha. Un fondo con +30% y −30% tiene media aritmética de 0% y media geométrica de ~−4.6%. "En promedio" no hiciste nada. En realidad, perdiste dinero. <b>La volatilidad misma tiene un costo, y ese costo tiene nombre: variance drag</b> (arrastre de varianza).</p>
+  <p>Por eso un 8% "suave" vale mucho más que un 8% "salvaje", aunque el número del folleto sea idéntico. Por eso los fondos de cobertura que oscilan fuerte a menudo decepcionan a sus inversores aunque sus pitch decks luzcan brillantes. Y por eso cualquier reporte de rendimiento honesto muestra el CAGR (tasa de crecimiento anual compuesta) — que es la media geométrica por otro nombre.</p>
+  <p>Una vez que sabes esto, miras el "rendimiento promedio" de cada fondo con una pregunta extra en la cabeza: <i>¿aritmética o geométrica?</i> Y si no te la quieren responder, la respuesta casi siempre es la que no quieren que compares.</p>
+  <p>Peterson lo pondría en términos de <b>mapa y territorio</b>: el promedio aritmético es el mapa bonito que te vende el corredor; la media geométrica es el territorio donde vive tu dinero. Y confundir el mapa con el territorio — creerle a la cifra que te halaga en vez de a la que te describe — es exactamente el tipo de autoengaño que Peterson identifica como la raíz del sufrimiento evitable. La realidad no negocia: se enfrenta. [Cauchy publicó la desigualdad aritmético-geométrica en 1821. Dos siglos después, sigue siendo el arma más afilada contra el marketing financiero.]</p>
+
+  <figure class="fig">
+    <img src="assets/eq4-geometric.png" alt="El promedio es una mentira — media geométrica">
+    <figcaption>El promedio es una mentira</figcaption>
+  </figure>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">ECUACIÓN 05</span>EL EFECTIVO SE PUDRE</h2>
+  <h3>Rendimiento real · Fisher, 1930</h3>
+
+  <p>Hay una ecuación final, y es la que la mayoría de la gente nunca piensa — que es exactamente por qué se los come.</p>
+  <p>Pones dinero en una cuenta de ahorros que paga 4%. La inflación es 3%. ¿Qué hizo tu dinero en realidad?</p>
+  <p>La respuesta intuitiva: "creció 4%". La respuesta correcta: creció ~1% en poder de compra. Tus dólares se multiplicaron, pero cada dólar ahora compra menos. Tu dinero creció nominalmente y se encogió en términos reales, casi simultáneamente.</p>
+  <div class="formula">Rendimiento real = ((1 + rendimiento nominal) ÷ (1 + inflación)) − 1</div>
+  <p>Divides 1 más tu retorno entre 1 más la inflación, y restas 1. O, para una aproximación rápida que funciona bien con números pequeños:</p>
+  <div class="formula">Rendimiento real ≈ rendimiento nominal − inflación</div>
+  <p>Esa es la ecuación. Pero la mentalidad que te obliga a adoptar es el verdadero regalo:</p>
+  <ul>
+    <li>Un "bono garantizado del 5%" durante 4% de inflación es un retorno del <b>1%</b>, no del 5%.</li>
+    <li>Una "cuenta corriente al 0%" durante 3% de inflación es un retorno de <b>−3%</b>. Te están pagando por perder dinero, lentamente.</li>
+    <li>Un mercado que promedia 10% nominal durante 3% de inflación es un retorno real del <b>7%</b>. Ese 7% es el número que de verdad importa.</li>
+  </ul>
+  <p>Esta ecuación es tan silenciosamente importante porque <b>la inflación es la única partida de tu vida financiera que nunca ves en ningún estado de cuenta.</b> Tu saldo sube. Tu tarjeta se paga. Todo se ve bien. Mientras tanto, un impuesto invisible corre en segundo plano, quitándote dos, tres, cinco por ciento de tu poder de compra cada año.</p>
+  <p>Los ricos no ganan necesariamente más retorno nominal que los demás. Solo se aseguran de que su retorno nominal esté cómodamente por encima de la inflación, siempre. Todos los demás se vuelven más pobres en silencio mientras su saldo bancario sube.</p>
+  <blockquote class="quote">El dinero que no invertiste no está "a salvo". Está siendo gravado por la inflación a una tasa a la que nunca consentiste.</blockquote>
+  <p>Y aquí Peterson te agarra del hombro con la frase más incómoda de todas: <b>la inacción es una decisión.</b> La vida no premia la neutralidad. El que no elige, ya eligió — eligió el statu quo, eligió la cuenta al 0%, eligió que la inflación le coma el sueldo mientras "esperaba el momento perfecto". El coraje no es solo hacer cosas difíciles: es soportar la incomodidad de hacer algo <i>ahora</i> en vez de la comodidad de no hacer nada <i>siempre</i>.</p>
+  <p>Aprender a pensar en términos reales en vez de nominales es el interruptor mental que separa a la gente que entiende el dinero de la gente que solo lo maneja. [Y sí: el que "guarda bajo el colchón" no está siendo prudente. Está financiando su propia decadencia, dólar a dólar.]</p>
+
+  <figure class="fig">
+    <img src="assets/eq5-real-return.png" alt="El efectivo se pudre — rendimiento real">
+    <figcaption>El efectivo se pudre</figcaption>
+  </figure>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">—</span>PONIENDO LAS CINCO ECUACIONES JUNTAS</h2>
+
+  <p>Cada ecuación por sí sola es una herramienta. Juntas, son una lente — y te dejan ver a través de casi cualquier afirmación financiera que encuentres.</p>
+  <table>
+    <tr><th>Ecuación</th><th>Qué hace por ti</th></tr>
+    <tr><td>Crecimiento compuesto</td><td>Entender por qué el tiempo vale más que el talento</td></tr>
+    <tr><td>Regla del 72</td><td>Estimar cualquier duplicación en tres segundos</td></tr>
+    <tr><td>Valor presente</td><td>Cotizar una promesa futura con honestidad</td></tr>
+    <tr><td>Media geométrica</td><td>Leer un reporte de fondos sin que te engañen</td></tr>
+    <tr><td>Rendimiento real</td><td>Separar lo nominal de lo real al instante</td></tr>
+  </table>
+  <p>Cinco ecuaciones. Dos son solo álgebra reordenada. Una es un atajo mental de 1494. Las cinco caben en una servilleta.</p>
+  <p>Y te permiten hacer cosas que casi nadie a tu alrededor puede hacer:</p>
+  <ul>
+    <li>Estimar cualquier tiempo de duplicación en tres segundos</li>
+    <li>Leer la hoja de rendimiento de un fondo sin que te engañen</li>
+    <li>Cotizar una promesa futura con honestidad</li>
+    <li>Separar instantáneamente retornos nominales de reales</li>
+    <li>Entender por qué el tiempo es el activo más valioso que posees</li>
+  </ul>
+
+  <h2><span class="n">—</span>POR QUÉ ESTO IMPORTA (EL DRAGÓN QUE NO VES)</h2>
+
+  <p>La industria financiera no quiere que seas malo en matemáticas. Quiere que seas <b>selectivamente malo</b>: lo suficientemente bueno para firmar contratos y pagar comisiones, no lo suficientemente bueno para notar lo que los contratos están haciendo.</p>
+  <ul>
+    <li>Una comisión de gestión del 2% suena a error de redondeo. Corre por la ecuación de crecimiento compuesto durante 40 años y <b>se come cerca de la mitad de tu riqueza final</b>. No lo notaste porque el 2% no se siente como la mitad.</li>
+    <li>Un "producto de ahorro garantizado al 5%" durante 4% de inflación suena seguro. Corre por la ecuación de rendimiento real y ganaste 1%. No lo notaste porque 5% sonaba a mucho.</li>
+    <li>Un "fondo de cobertura con 20% de rendimiento promedio" suena espectacular. Pide la media geométrica en vez de la aritmética y a menudo encuentras un número mucho más aburrido. No lo notaste porque solo anunciaron el halagador.</li>
+  </ul>
+  <p>Esto no es una conspiración. Es una característica. Toda industria que vende complejidad depende de que sus clientes no puedan hacer las matemáticas subyacentes. Seguros, hipotecas, fondos, pensiones, tarjetas de crédito: todos funcionan mejor cuando el cliente confía en el resumen del vendedor en vez de correr la ecuación él mismo.</p>
+  <p>Las cinco ecuaciones de arriba son toda la defensa. No contra el fraude, que es raro — sino contra el problema mucho más común de los malos negocios silenciosos disfrazados de lenguaje tranquilizador.</p>
+
+  <h2><span class="n">—</span>LO QUE DE VERDAD IMPORTA</h2>
+
+  <p>Juntemos todo en una imagen.</p>
+  <p><b>El dinero no es una fuerza misteriosa. Es un conjunto pequeño de ecuaciones que nunca te entregaron del todo.</b> La gente que parece rica o sabia con el dinero no está dotada psíquicamente: está corriendo las mismas cinco fórmulas que acabas de leer, una y otra vez, sobre cada decisión que cruza su escritorio. Ese es todo el "secreto".</p>
+  <ul>
+    <li>El crecimiento compuesto explica por qué el tiempo vale más que el talento.</li>
+    <li>La regla del 72 explica por qué los profesionales estiman cualquier cosa en segundos.</li>
+    <li>El valor presente explica por qué toda promesa futura vale menos de lo que parece.</li>
+    <li>La media geométrica explica por qué la mayoría de los rendimientos anunciados están inflados en silencio.</li>
+    <li>El rendimiento real explica por qué la seguridad nominal suele ser pérdida real.</li>
+  </ul>
+  <p>Ninguna de estas fórmulas está oculta. Ninguna requiere un título. Ninguna cuesta nada. Todas son más viejas que tus abuelos. Fueron escritas hace siglos por matemáticos y escribanos que nunca imaginaron que su trabajo seguiría gobernando la riqueza del mundo 500 años después.</p>
+  <p>El hábito mental más útil que puedes construir es este: <b>cuando enfrentes una afirmación financiera, antes de sentir nada, pregúntate cuál de las cinco ecuaciones la gobierna — y corre el número.</b></p>
+  <blockquote class="quote">Los ricos no son personas que vencen las ecuaciones. Son personas que nunca discutieron con ellas.</blockquote>
+  <p>Y aquí está la pregunta que vale la pena contemplar — la pregunta que Peterson te dejaría flotando en el aire, con esa mezcla de compasión y severidad que lo caracteriza:</p>
+  <p>Si cinco ecuaciones cortas — todas gratis, todas públicas, todas más viejas que cualquier banco de la Tierra — deciden la mayor parte de tu vida financiera, y llevas años navegando el dinero sin ellas, entonces la pregunta honesta no es <i>"¿por qué no entiendo de finanzas?"</i></p>
+  <p>Es:</p>
+  <blockquote class="quote">"¿Cuánto me ha costado ya no saber estas cinco cosas — y cuánto más estoy dispuesto a dejar que me cueste?"</blockquote>
+  <p>El conocimiento no te hace rico. El conocimiento te hace <b>responsable</b> — y la responsabilidad, bien cargada, es lo único que la vida termina pagando con interés.</p>
+  <p>La matemática está en la servilleta. El resto depende de ti.</p>
+
+  <div class="outro">
+    <b>BrAIn — Breaking AI Non-sense.</b> Artículo inspirado en "The Five Equations That Quietly Run Your Entire Financial Life" de @lumenxbt (X, jul 2026), reescrito en español con lente de responsabilidad individual — la lectura que Jordan Peterson haría de las finanzas. Ecuaciones originales: Fibonacci (1202), Pacioli (1494), Fisher (1907, 1930), Cauchy (1821).
+    <br><br>
+    Si este artículo te cambió la forma de ver el dinero, sigue a <a href="../brain.html">BrAIn</a> — cada pieza toma un tema y lo rompe hasta el fondo.
+  </div>
+
+  <a class="back" href="../brain.html">Volver a BrAIn</a>
+
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
+</footer>
+
+</body>
+</html>
