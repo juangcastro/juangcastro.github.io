@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SORT YOURSELF OUT — Cuando la IA te pregunta lo que evitas · BrAIn</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#FFFFFF; color:#1A1A1A; font-family:'Inter',system-ui,sans-serif; font-size:17px; line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .dotgrid { position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:radial-gradient(rgba(26,26,26,.07) 1px, transparent 1px); background-size:22px 22px; }
+  .wrap { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 24px; }
+
+  /* masthead */
+  header { padding:34px 0 10px; }
+  .crumbs { font-size:13px; color:#5E6B88; margin-bottom:18px; }
+  .crumbs a { color:#5E6B88; text-decoration:none; border-bottom:1px solid #E5E7EB; padding-bottom:1px; }
+  .crumbs a:hover { color:#1A1A1A; border-color:#1A1A1A; }
+  .mast { display:flex; align-items:center; gap:14px; margin-bottom:26px; }
+  .mast img { height:46px; width:auto; }
+  .mast .brand { font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:#5E6B88; }
+  .mast .brand b { color:#1A1A1A; font-weight:700; }
+
+  /* artículo */
+  .meta { font-size:12.5px; color:#5E6B88; font-family:'JetBrains Mono',monospace; letter-spacing:.04em; margin-bottom:14px; }
+  .meta .tag { display:inline-block; background:#E8F8EF; color:#0B7A4B; border-radius:999px; padding:3px 12px; margin-right:10px; font-size:11px; letter-spacing:.08em; }
+  h1 { font-size:38px; line-height:1.15; letter-spacing:-.015em; font-weight:800; margin-bottom:18px; }
+  .deck { font-size:19px; line-height:1.55; color:#4B5563; margin-bottom:34px; font-weight:400; }
+  .rule { border:none; border-top:1px solid #E5E7EB; margin:38px 0; }
+
+  article h2 { font-size:23px; font-weight:800; letter-spacing:-.01em; margin:44px 0 14px; }
+  article p { margin-bottom:18px; }
+  article p.lead::first-letter { font-size:52px; font-weight:800; float:left; line-height:.85; padding-right:8px; color:#10B981; }
+  article strong { font-weight:700; }
+  article em { font-style:italic; }
+  .note { color:#6B7280; font-size:14.5px; }
+  .note::before { content:"["; color:#10B981; font-weight:700; }
+  .note::after { content:"]"; color:#10B981; font-weight:700; }
+
+  /* tabla de sesiones */
+  table { width:100%; border-collapse:collapse; font-size:14px; margin:22px 0 8px; }
+  th { text-align:left; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#5E6B88; border-bottom:2px solid #1A1A1A; padding:8px 10px; }
+  td { border-bottom:1px solid #E5E7EB; padding:9px 10px; vertical-align:top; }
+  td code { font-family:'JetBrains Mono',monospace; font-size:12.5px; background:#F8FAFC; border:1px solid #E5E7EB; border-radius:5px; padding:1px 6px; white-space:nowrap; }
+
+  /* cita */
+  blockquote { border-left:3px solid #10B981; padding:4px 0 4px 20px; margin:26px 0; color:#374151; font-size:16.5px; }
+  blockquote p { margin-bottom:8px; }
+
+  /* cta final */
+  .cta { background:#F8FAFC; border:1px solid #E5E7EB; border-radius:12px; padding:26px 28px; margin:44px 0 10px; }
+  .cta h3 { font-size:18px; font-weight:800; margin-bottom:8px; }
+  .cta p { font-size:14.5px; color:#4B5563; margin-bottom:0; }
+  .cta a { display:inline-block; margin-top:14px; background:#1A1A1A; color:#FFF; text-decoration:none; font-size:14px; font-weight:600; padding:11px 22px; border-radius:8px; }
+
+  footer { border-top:1px solid #E5E7EB; margin-top:56px; padding:22px 0 34px; font-size:12.5px; color:#5E6B88; }
+  footer a { color:#5E6B88; }
+
+  @media (max-width:560px){
+    h1 { font-size:28px; }
+    .deck { font-size:17px; }
+    article h2 { font-size:20px; }
+    .mast img { height:38px; }
+  }
+</style>
+</head>
+<body>
+<div class="dotgrid"></div>
+<div class="wrap">
+
+<header>
+  <div class="crumbs"><a href="brain.html">← BrAIn</a></div>
+  <div class="mast">
+    <img src="assets/brain-logo.png" alt="BrAIn — Breaking AI Non-sense">
+    <span class="brand">Breaking AI <b>Non-sense</b></span>
+  </div>
+</header>
+
+<article>
+  <div class="meta"><span class="tag">IA · Psicología</span> 19 AGO 2026 · ~7 min</div>
+  <h1>SORT YOURSELF OUT: CUANDO LA IA TE PREGUNTA LO QUE EVITAS</h1>
+  <p class="deck">Un suite de skills de Claude Code convierte a un agente en un mentor socrático con el registro de Jordan Peterson: una sola pregunta a la vez, cero sermones, y un compromiso con plazo de 72 horas. No es autoayuda con esteroides. Es ingeniería de la responsabilidad — y esto es lo que su diseño le enseña a cualquiera que construya agentes.</p>
+
+  <hr class="rule">
+  <p class="lead">¿Cuándo fue la última vez que alguien te hizo una pregunta que no querías responder?</p>
+  <p>No una pregunta retórica. Una pregunta real, incómoda, que nombrara exactamente lo que estás evitando — y que no te soltara hasta que respondieras. La mayoría de las herramientas de inteligencia artificial te dan respuestas. Esta te las quita.</p>
+  <p>Se llama <strong>Sort Yourself Out</strong> — "Ordénate a ti mismo" — un proyecto de código abierto que convierte a Claude en un coach inspirado en los marcos publicados de Jordan Peterson: <em>12 Rules for Life</em>, <em>Beyond Order</em>, sus conferencias sobre responsabilidad y significado. <span class="note">El proyecto lo dice sin rodeos: no es Peterson, no fabrica citas suyas, y deja fuera deliberadamente sus posiciones políticas más disputadas.</span> Lo que queda es el esqueleto de su método.</p>
+
+  <h2>No es un chatbot que te lecciona sobre langostas</h2>
+  <p>La tentación al ver un "coach de IA" es imaginar un oráculo que te suelta aforismos. Esto es lo contrario. Cada sesión es un <strong>diálogo, no un ensayo</strong>: el coach mantiene sus turnos en 2 a 4 oraciones, hace exactamente una pregunta por turno, y conduce sin piedad desde <em>"lo que me pasó"</em> hacia <em>"lo que está bajo mi control, desde hoy"</em>.</p>
+  <p>El suite tiene siete sesiones y un enrutador que elige la correcta por ti:</p>
+  <table>
+    <tr><th>Comando</th><th>Cuándo usarlo</th></tr>
+    <tr><td><code>/clean-your-room</code></td><td>Sin rumbo, sin metas, tolerando desórdenes que ya conoces. Empieza aquí.</td></tr>
+    <tr><td><code>/slay-the-dragon</code></td><td>Evitando algo específico y conocido: un correo, una conversación, un número.</td></tr>
+    <tr><td><code>/tell-the-truth</code></td><td>Diciendo cosas que no te crees del todo. Viviendo una mentira que no has nombrado.</td></tr>
+    <tr><td><code>/compare-to-yesterday</code></td><td>Rendir cuentas de un compromiso, o atascado comparándote con otros.</td></tr>
+    <tr><td><code>/meaningful-not-expedient</code></td><td>Una decisión real entre el camino fácil y el que importa.</td></tr>
+    <tr><td><code>/be-precise</code></td><td>Un malestar vago que no puedes nombrar. El default cuando nada encaja.</td></tr>
+    <tr><td><code>/lobster</code></td><td>Entrevista, negociación o confrontación en las próximas horas o días.</td></tr>
+  </table>
+  <p>Fíjate en los nombres. No son eslóganes motivacionales: son <strong>categorías de evasión</strong>. La langosta, el dragón, la habitación sucia — Peterson toma el arquetipo y lo convierte en inventario de la cobardía cotidiana. La sesión <em>be-precise</em> lo dice mejor que yo: conviertes un pavor vago en un problema articulado con precisión, y luego lo enrutas. La precisión es el antídoto. Un miedo que no puedes nombrar no se puede matar; un miedo nombrado, sí.</p>
+
+  <h2>El espinazo oculto</h2>
+  <p>El README del proyecto describe una columna vertebral que el coach jamás revela al usuario, y es la parte más interesante para cualquiera que diseña agentes:</p>
+  <blockquote>
+    <p><strong>1. Abre con una pregunta</strong>, no con un discurso.</p>
+    <p><strong>2. Excava 2–4 intercambios</strong>, siguiendo tus respuestas reales, no un guion.</p>
+    <p><strong>3. Cierra con un compromiso</strong>: un acto concreto, con plazo de 24 a 72 horas, y una frase que conecte ese acto pequeño con algo más alto.</p>
+    <p><strong>4. Ofrece reconvocar</strong> — el seguimiento se hace con <code>/compare-to-yesterday</code>, y el coach jamás inventa un compromiso que no hiciste.</p>
+  </blockquote>
+  <p>Ahí está la tesis completa del proyecto, y es la razón por la que no es otra app de autoayuda: <strong>la conversación no termina en una sensación, termina en un acto con fecha</strong>. La sesión no se cierra hasta que te comprometiste con algo que puedes hacer — y que puedes fallar. El criterio de éxito no es que te sientas mejor, es que hagas la cosa.</p>
+  <p>Comparemos con lo que la industria llama "asistentes". El asistente te programa la reunión. El coach de Peterson te obliga a admitir por qué llevas tres semanas evitando la reunión. Una herramienta optimiza tu agenda; la otra te confronta con tu jerarquía de valores. Son productos distintos, para problemas distintos.</p>
+
+  <h2>Las barandillas: lo que lo hace seguro de verdad</h2>
+  <p>Un coach con "voz dura" es un riesgo de ingeniería, no solo un tema de tono. Por eso las guardas están <strong>diseñadas en cada skill, no dejadas a la vibra</strong>:</p>
+  <p><strong>No es terapia.</strong> Ante cualquier señal de angustia seria, la brusquedad cae de inmediato y da paso a calidez franca y a la indicación de apoyo profesional. El límite es un cortafuegos, no una preferencia.</p>
+  <p><strong>No fabrica citas.</strong> Las ideas se parafrasean y se atribuyen con cuidado solo cuando son precisas. El proyecto sabe que un coach que inventa a Peterson es un fraude con mejor prompt.</p>
+  <p><strong>Los actos irreversibles frenan en seco.</strong> Si el impulso de la sesión apunta a renunciar, terminar una relación o quemar un puente, el compromiso debe ser un precursor reversible — nunca el acto mismo. <em>Claridad rápida, consecuencias lentas.</em> Eso es diseño de seguridad de verdad: la velocidad no es un valor cuando el error no tiene vuelta atrás.</p>
+  <p><strong>La evasión tiene límite.</strong> Esquiva la misma pregunta dos veces y el coach nombra el patrón una vez, con calma, en lugar de hostigar. <strong>Sin política.</strong> Solo marcos de mejora personal.</p>
+
+  <h2>Probado, no solo prompteado</h2>
+  <p>Aquí es donde el proyecto deja de ser filosofía y se vuelve ingeniería: el suite se probó con un <strong>harness adversarial de pruebas de comportamiento</strong>. Cada escenario es una persona guionizada que ataca una regla concreta — el que esquiva preguntas, el que va camino de quemar un puente, el caso de crisis que debe disparar el límite de terapia. Un agente coach corre la sesión a ciegas (nunca sabe que lo están probando), los transcriptos se califican con chequeos deterministas — longitud de turno, una pregunta por turno, espinazo no expuesto, plazo dentro de límites — más un juez independiente que nunca ve las opiniones del orquestador.</p>
+  <p>Eso es lo que separa una demo de un sistema: <strong>una especificación de fallo con escenarios diseñados para romperla</strong>. La mayoría de los agentes que ves anunciados no tienen esto. Este proyecto, que es gratis, de código abierto y cabe en ocho archivos markdown, sí.</p>
+
+  <h2>La objeción</h2>
+  <p>Te la escucho venir: <em>"es autoayuda con esteroides, un prompt bien escrito no te cambia la vida"</em>. Justo. Un prompt no te cambia la vida. Pero eso no es lo que está sobre la mesa.</p>
+  <p>Lo que está sobre la mesa es el <strong>mecanismo</strong>: una conversación cuyo contrato explícito es terminar en un acto con plazo. Peterson cita con frecuencia la paradoja de que el pensamiento no cambia a las personas hasta que se encarna en conducta — y el diseño de estas sesiones toma eso literalmente. El compromiso de 72 horas es el puente entre la comprensión y el cambio. Puedes descartar a Peterson, puedes descartar la autoayuda, pero no puedes descartar la pregunta: <em>¿qué acto concreto, con qué fecha, vas a hacer porque leíste esto?</em></p>
+  <p>Para el trader, la pregunta es aún más afilada. El mercado no premia la información; premia la conducta. La mayoría de los sistemas de trading fallan en la ejecución, no en la señal. Un coach que te obliga a nombrar la operación que evitaste, compararte con quien fuiste ayer en vez de con el vecino, y comprometerte con un plan en 72 horas — está atacando el problema exacto donde el análisis técnico no llega. <span class="note">La Regla 4 de Peterson, parafraseada: compárate con quien eras ayer, no con quien es otro hoy.</span> Esa es la única carrera que un trader puede ganar.</p>
+
+  <h2>La pregunta final</h2>
+  <p>El suite se llama Sort Yourself Out, y el verbo importa: nadie va a ordenarte. El agente solo te hace la pregunta, una y otra vez, hasta que la precisión vuelve. El dragón no es el correo sin abrir — es la distancia entre lo que sabes que deberías hacer y lo que haces.</p>
+  <p>Los romanos construyeron edificios, y los edificios y los romanos desaparecieron. Los que escribieron quedaron, y lo que escribieron sigue aquí. Las palabras duran más que la piedra. Un buen agente no te da palabras: te arranca las tuyas, y te las devuelve convertidas en un acto con fecha.</p>
+  <p><strong>Finished beats perfect.</strong> El primer borrador de tu vida, el que llevas meses posponiendo, se entrega aunque sea imperfecto. El cero es el único resultado que no se puede corregir.</p>
+  <p>Y tú, ¿qué correo llevas tres semanas sin abrir?</p>
+</article>
+
+<div class="cta">
+  <h3>BrAIn — Breaking AI Non-sense</h3>
+  <p>Inteligencia artificial, mercados y tecnología, sin humo ni hype. Este artículo se basa en el proyecto de código abierto <em>Sort Yourself Out</em> (MIT), inspirado en los marcos publicados de Jordan Peterson — no afiliado a él.</p>
+  <a href="brain.html">← Volver a BrAIn</a>
+</div>
+
+<footer>
+  © 2026 The Red Queen — Checkmate the System · <a href="trq-terms.html">Términos</a>
+</footer>
+
+</div>
+</body>
+</html>
