@@ -43,9 +43,40 @@
             letter-spacing:.14em; text-transform:uppercase; color:#0B7A4B; margin-bottom:6px; }
 
   /* espacio de escritura */
-  .write { border:1.5px dashed #C9D2DE; border-radius:10px; min-height:110px; padding:14px 18px; margin:14px 0 22px;
-           color:#9AA3B2; font-size:13px; font-style:italic; }
+  .write { border:1.5px dashed #C9D2DE; border-radius:10px; padding:14px 18px; margin:14px 0 22px; }
+  .write label { display:block; color:#9AA3B2; font-size:13px; font-style:italic; margin-bottom:10px; }
   .write b { color:#5E6B88; font-style:normal; }
+  .write textarea { width:100%; min-height:96px; resize:vertical; border:1px solid #E5E7EB; border-radius:8px;
+                    padding:12px 14px; font-family:inherit; font-size:15px; line-height:1.6; color:#1A1A1A;
+                    background:#FFFFFF; outline:none; transition:border-color .15s ease, box-shadow .15s ease; }
+  .write textarea:focus { border-color:#10B981; box-shadow:0 0 0 3px rgba(16,185,129,.12); }
+  .write textarea::placeholder { color:#B4BCC8; font-style:italic; }
+
+  /* barra de acciones */
+  .actions { position:sticky; bottom:16px; z-index:20; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+             background:rgba(255,255,255,.94); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+             border:1px solid #E5E7EB; border-radius:14px; padding:12px 16px; margin:34px 0 8px;
+             box-shadow:0 8px 30px rgba(10,10,10,.10); }
+  .actions button { border:none; border-radius:8px; padding:11px 18px; font-family:inherit; font-size:14px; font-weight:700;
+                    cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; }
+  .actions button:active { transform:scale(.97); }
+  .btn-pdf { background:#1A1A1A; color:#FFFFFF; }
+  .btn-pdf:hover { box-shadow:0 4px 14px rgba(26,26,26,.28); }
+  .btn-mail { background:#E8F8EF; color:#0B7A4B; }
+  .btn-mail:hover { box-shadow:0 4px 14px rgba(16,185,129,.22); }
+  .actions .hint { width:100%; text-align:center; font-size:11.5px; color:#9AA3B2; font-family:'JetBrains Mono',monospace; }
+
+  /* impresión: solo preguntas + respuestas */
+  @media print {
+    header, .howto, .cta, footer, .actions, .crumbs, .note { display:none !important; }
+    .wrap { max-width:100%; padding:0; }
+    body { font-size:12px; }
+    article h2 { margin:22px 0 8px; font-size:16px; }
+    .q { break-inside:avoid; padding:10px 14px; margin:10px 0; font-size:14px; }
+    .write { border:1px solid #E5E7EB; border-radius:6px; padding:8px 12px; margin:8px 0 14px; break-inside:avoid; }
+    .write textarea { border:none; padding:0; min-height:auto; font-size:12.5px; }
+    .actions { display:none; }
+  }
 
   blockquote { border-left:3px solid #10B981; padding:4px 0 4px 20px; margin:26px 0; color:#374151; font-size:15px; }
   blockquote p { margin-bottom:8px; }
@@ -105,44 +136,65 @@
   <p>Empieza por lo pequeño, porque lo pequeño está bajo tu control — y porque el desorden que toleras es la firma del desorden que no ves. Nadie necesita que te expliques tu cuarto. Tú ya sabes cuál es.</p>
   <div class="q"><span>Pregunta uno</span>¿Qué desorden conoces, toleras y no has arreglado? ¿Por qué exactamente no?</div>
   <p>No vale "no tengo tiempo". El tiempo no se fue: se lo diste a otra cosa, y la otra cosa casi nunca era importante. Escríbelo.</p>
-  <div class="write"><b>Escribe aquí —</b> el desorden, y la razón real por la que sigue ahí.</div>
+  <div class="write">
+    <label for="q1"><b>Escribe aquí —</b> el desorden, y la razón real por la que sigue ahí.</label>
+    <textarea id="q1" rows="4" placeholder="El cajón que no abro, la pila de papeles, el correo sin responder…" data-q="1"></textarea>
+  </div>
 
   <h2>2 · EL DRAGÓN QUE TIENE NOMBRE</h2>
   <p>Hay una diferencia entre el pavor vago y el miedo con nombre. El dragón de esta sección no es una sensación: es una cosa concreta que llevas evitando — un correo sin abrir, una conversación sin tener, un número que no miras. Sabes cuál es. Llevas semanas sabiéndolo.</p>
   <div class="q"><span>Pregunta dos</span>¿Qué estás evitando que podrías nombrar con precisión absoluta en este momento?</div>
   <p>El nombre importa. Un miedo que no puedes nombrar no se puede matar; un miedo nombrado, sí. Si al escribir la frase te incomoda, bienvenido: la incomodidad es el ruido del dragón.</p>
-  <div class="write"><b>Escribe aquí —</b> el nombre exacto de lo que evitas. Una frase, sin adornos.</div>
+  <div class="write">
+    <label for="q2"><b>Escribe aquí —</b> el nombre exacto de lo que evitas. Una frase, sin adornos.</label>
+    <textarea id="q2" rows="4" placeholder="Ese correo. Esa conversación. Ese número que no miro." data-q="2"></textarea>
+  </div>
 
   <h2>3 · NÓMBRALO, O NO EXISTE</h2>
   <p>Esta es la pregunta que nadie quiere hacer porque destruye la comodidad de lo vago. "Algo anda mal" no es un problema: es una niebla. La precisión es el antídoto — no para sentirte mejor, sino para que el problema exista por primera vez en forma atacable.</p>
   <div class="q"><span>Pregunta tres</span>¿Qué es exactamente lo que te molesta? Descríbelo como si se lo explicaras a un ingeniero.</div>
   <p>Si no puedes articularlo, aún no lo has pensado — lo has sentido. Sentir no es pensar. Escríbelo hasta que la frase sea tan específica que dé casi vergüenza.</p>
-  <div class="write"><b>Escribe aquí —</b> el problema con precisión técnica. Sin adjetivos vagos: fechas, nombres, cifras.</div>
+  <div class="write">
+    <label for="q3"><b>Escribe aquí —</b> el problema con precisión técnica. Sin adjetivos vagos: fechas, nombres, cifras.</label>
+    <textarea id="q3" rows="4" placeholder="Qué, cuándo, cuánto. Sin 'más o menos'." data-q="3"></textarea>
+  </div>
 
   <h2>4 · LA MENTIRA QUE VIVES</h2>
   <p>El autoengaño más caro no es el que dices en voz alta: es el que sostienes en silencio, a solas contigo. Dices que vas a empezar el lunes. Dices que el plan está bajo control. Dices que esa persona no te importa. La pregunta no es si mientes — es dónde.</p>
   <div class="q"><span>Pregunta cuatro</span>¿Qué estás diciendo —a otros o a ti mismo— que ya no te crees?</div>
   <p>La regla es simple: si lo escribes y suena falso al leerlo en voz alta, es falso. La verdad no necesita que la defiendas; la mentira, sí. Todo el esfuerzo que gastas manteniéndola es energía que no inviertes en lo real.</p>
-  <div class="write"><b>Escribe aquí —</b> la frase exacta que dices, y la verdad que escondes debajo.</div>
+  <div class="write">
+    <label for="q4"><b>Escribe aquí —</b> la frase exacta que dices, y la verdad que escondes debajo.</label>
+    <textarea id="q4" rows="4" placeholder="Lo que digo: …  Lo que es cierto: …" data-q="4"></textarea>
+  </div>
 
   <h2>5 · EL CAMINO FÁCIL Y EL QUE IMPORTA</h2>
   <p>Casi ninguna decisión importante es entre el bien y el mal. Son entre lo conveniente y lo significativo: la llamada que no quieres hacer, el hábito que sabes que te sostiene, el proyecto que da miedo porque importa. Lo conveniente siempre tiene una excusa lista. Lo significativo casi nunca la necesita.</p>
   <div class="q"><span>Pregunta cinco</span>¿Qué decisión estás aplazando entre el camino fácil y el que sabes que importa?</div>
   <p>No la tomes todavía. Solo nómbrala: las dos opciones, sus costos reales, y por cuál sabes —no sientes— que deberías ir.</p>
-  <div class="write"><b>Escribe aquí —</b> la decisión, las dos opciones, y cuál eliges sabiendo.</div>
+  <div class="write">
+    <label for="q5"><b>Escribe aquí —</b> la decisión, las dos opciones, y cuál eliges sabiendo.</label>
+    <textarea id="q5" rows="4" placeholder="Opción A (fácil): …  Opción B (la que importa): …  Elijo: …" data-q="5"></textarea>
+  </div>
 
   <h2>6 · COMPÁRATE CON QUIEN FUISTE AYER</h2>
   <p>Compararte con otros es la forma más rápida de sentirte miserable sin aprender nada: su punto de partida no es el tuyo, su cartera no es la tuya, su vida no es la tuya. La única comparación justa es contra tu propio historial. Ahí no hay excusas ni injusticias: solo datos.</p>
   <div class="q"><span>Pregunta seis</span>¿En qué eres mejor que hace un año? ¿En qué eres peor? ¿Y hace cinco?</div>
   <p>La segunda parte duele más que la primera, y es la que importa. Lo que empeoró sin que lo notaras es lo que el ruido diario te ocultó.</p>
-  <div class="write"><b>Escribe aquí —</b> tres mejoras y tres retrocesos, con fechas aproximadas.</div>
+  <div class="write">
+    <label for="q6"><b>Escribe aquí —</b> tres mejoras y tres retrocesos, con fechas aproximadas.</label>
+    <textarea id="q6" rows="4" placeholder="Mejor: … · … · …   Peor: … · … · …" data-q="6"></textarea>
+  </div>
 
   <h2>7 · EL ACTO CON FECHA</h2>
   <p>Aquí está la lógica completa, y es la única parte que no puedes saltarte: <strong>la comprensión no cambia a nadie; el acto con plazo, sí.</strong> Una conversación puede terminar en una sensación. Esta termina en un compromiso — un acto concreto, pequeño, reversible, con fecha dentro de las próximas 72 horas.</p>
   <p>No el acto enorme. El primer escalón. La regla de oro: <em>claridad rápida, consecuencias lentas</em>. Nada de decisiones irreversibles con la adrenalina de un artículo — solo el primer paso, fechado.</p>
   <div class="q"><span>La pregunta final</span>¿Qué acto concreto, con qué fecha exacta (dentro de 72 horas), vas a hacer porque leíste esto?</div>
   <p>Escríbelo con el formato que no admite escape: <em>acción + fecha + la frase que lo conecta con algo más alto que tú</em>. Y si no puedes escribirlo, vuelve a la pregunta uno. El dragón sigue ahí.</p>
-  <div class="write"><b>Escribe aquí —</b> el compromiso: acción, fecha (día y hora), y por qué importa.</div>
+  <div class="write">
+    <label for="q7"><b>Escribe aquí —</b> el compromiso: acción, fecha (día y hora), y por qué importa.</label>
+    <textarea id="q7" rows="4" placeholder="Acción: …  Fecha: …  Por qué importa: …" data-q="7"></textarea>
+  </div>
 
   <h2>PARA EL TRADER QUE HAY EN TI</h2>
   <p>Si operas, las siete preguntas tienen una traducción inmediata — y no es casualidad que duela reconocerla:</p>
@@ -156,6 +208,12 @@
   <p><strong>Ahora cierra la página. Pero antes: ¿qué acto, con qué fecha?</strong></p>
 </article>
 
+<div class="actions">
+  <button class="btn-pdf" onclick="descargarPDF()">⬇ Descargar PDF</button>
+  <button class="btn-mail" onclick="enviarEmail()">✉ Enviar por email</button>
+  <span class="hint">Tus respuestas se guardan solas en este navegador (no se envían a ningún servidor).</span>
+</div>
+
 <div class="cta">
   <h3>BrAIn — Breaking AI Non-sense</h3>
   <p>Psicología, mercados y tecnología sin humo ni hype. Si este artículo te movió algo, el siguiente paso no es otro artículo — es el papel que dejaste a medias.</p>
@@ -167,5 +225,88 @@
 </footer>
 
 </div>
+
+<script>
+(function () {
+  var KEY = 'brAIn-7q-respuestas-v1';
+  var preguntas = [
+    '¿Qué desorden conoces, toleras y no has arreglado? ¿Por qué exactamente no?',
+    '¿Qué estás evitando que podrías nombrar con precisión absoluta en este momento?',
+    '¿Qué es exactamente lo que te molesta? Descríbelo como si se lo explicaras a un ingeniero.',
+    '¿Qué estás diciendo —a otros o a ti mismo— que ya no te crees?',
+    '¿Qué decisión estás aplazando entre el camino fácil y el que sabes que importa?',
+    '¿En qué eres mejor que hace un año? ¿En qué eres peor? ¿Y hace cinco?',
+    '¿Qué acto concreto, con qué fecha exacta (dentro de 72 horas), vas a hacer porque leíste esto?'
+  ];
+  var ids = ['q1','q2','q3','q4','q5','q6','q7'];
+
+  function leer() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function guardar() {
+    var data = {};
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) data[id] = el.value;
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+  }
+  var saved = leer();
+  ids.forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el && saved[id]) el.value = saved[id];
+    if (el) el.addEventListener('input', guardar);
+  });
+
+  function textoCompleto() {
+    var out = 'SIETE PREGUNTAS Y UN PAPEL — BrAIn\n';
+    out += 'Fecha: ' + new Date().toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' }) + '\n';
+    out += '==================================================\n\n';
+    ids.forEach(function (id, i) {
+      var el = document.getElementById(id);
+      var resp = (el && el.value.trim()) ? el.value.trim() : '(sin responder)';
+      out += 'PREGUNTA ' + (i + 1) + ': ' + preguntas[i] + '\n';
+      out += 'Respuesta: ' + resp + '\n\n';
+    });
+    out += '— The Red Queen · BrAIn (Breaking AI Non-sense)';
+    return out;
+  }
+
+  window.descargarPDF = function () {
+    var win = window.open('', '_blank');
+    if (!win) { alert('Permite ventanas emergentes para descargar el PDF.'); return; }
+    win.document.write(
+      '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Mis respuestas — Siete preguntas</title>' +
+      '<style>body{font-family:Georgia,serif;max-width:640px;margin:40px auto;padding:0 24px;color:#1a1a1a;line-height:1.6;}' +
+      'h1{font-size:22px;margin-bottom:4px;} .f{color:#666;font-size:13px;margin-bottom:28px;}' +
+      '.q{margin-bottom:22px;page-break-inside:avoid;} .qn{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#0B7A4B;font-weight:700;}' +
+      '.qt{font-weight:700;margin:4px 0 6px;} .qr{background:#F8FAFC;border-left:3px solid #10B981;padding:10px 14px;border-radius:0 6px 6px 0;}' +
+      '.foot{margin-top:36px;border-top:1px solid #e5e7eb;padding-top:14px;color:#666;font-size:12px;}' +
+      '@media print{body{margin:0;}}</style></head><body>' +
+      '<h1>SIETE PREGUNTAS Y UN PAPEL</h1>' +
+      '<div class="f">Mis respuestas · ' + new Date().toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' }) + ' · BrAIn — The Red Queen</div>' +
+      ids.map(function (id, i) {
+        var el = document.getElementById(id);
+        var resp = (el && el.value.trim()) ? el.value.replace(/\n/g, '<br>') : '<em>(sin responder)</em>';
+        return '<div class="q"><div class="qn">Pregunta ' + (i + 1) + '</div>' +
+               '<div class="qt">' + preguntas[i] + '</div>' +
+               '<div class="qr">' + resp + '</div></div>';
+      }).join('') +
+      '<div class="foot">Generado por BrAIn — Breaking AI Non-sense · theredqueen.co</div>' +
+      '</body></html>'
+    );
+    win.document.close();
+    win.focus();
+    setTimeout(function () { win.print(); }, 400);
+  };
+
+  window.enviarEmail = function () {
+    var cuerpo = textoCompleto();
+    var subject = 'Mis respuestas — Siete preguntas y un papel (BrAIn)';
+    var href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(cuerpo);
+    window.location.href = href;
+  };
+})();
+</script>
 </body>
 </html>
