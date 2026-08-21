@@ -7,120 +7,244 @@
 <link rel="icon" type="image/png" sizes="64x64" href="assets/braIn-favicon.png">
 <title>SIETE PREGUNTAS Y UN PAPEL — Ponte en orden · BrAIn</title>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#FFFFFF; color:#1A1A1A; font-family:'Inter',system-ui,sans-serif; font-size:15.5px; line-height:1.7; -webkit-font-smoothing:antialiased; }
-  .wrap { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 24px; }
+  :root {
+    --bg: #FFFFFF;
+    --ink: #0A0A0A;
+    --muted: #666666;
+    --line: #E5E5E5;
+    --surface: #F5F5F5;
+    --accent: #10B981;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
 
-  /* masthead */
-  header { padding:34px 0 10px; }
-  .crumbs { font-size:13px; color:#5E6B88; margin-bottom:18px; }
-  .crumbs a { color:#5E6B88; text-decoration:none; border-bottom:1px solid #E5E7EB; padding-bottom:1px; }
-  .crumbs a:hover { color:#1A1A1A; border-color:#1A1A1A; }
-  .mast { display:flex; align-items:center; gap:14px; margin-bottom:26px; }
-  .mast img { height:46px; width:auto; }
-  .mast .brand { font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:#5E6B88; }
-  .mast .brand b { color:#1A1A1A; font-weight:700; }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 13px; letter-spacing: .28em; text-transform: uppercase; color: var(--ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links .active { color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+  @media (max-width: 560px) { .nav-links a:not(.active) { display: none; } }
 
-  /* artículo */
-  .meta { font-size:12.5px; color:#5E6B88; font-family:'JetBrains Mono',monospace; letter-spacing:.04em; margin-bottom:14px; }
-  .meta .tag { display:inline-block; background:#E8F8EF; color:#0B7A4B; border-radius:999px; padding:3px 12px; margin-right:10px; font-size:11px; letter-spacing:.08em; }
-  h1 { font-size:31px; line-height:1.2; letter-spacing:-.015em; font-weight:800; margin-bottom:18px; }
-  .deck { font-size:16.5px; line-height:1.6; color:#4B5563; margin-bottom:34px; font-weight:400; }
-  .rule { border:none; border-top:1px solid #E5E7EB; margin:38px 0; }
+  .masthead {
+    position: relative; overflow: hidden;
+    text-align: center; padding: 72px 24px 56px;
+  }
+  .masthead::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background-image: radial-gradient(rgba(229, 229, 229, .55) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+  }
+  .masthead .kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
+  .masthead h1 {
+    max-width: 860px; margin: 0 auto;
+    font-size: clamp(23px, 4.2vw, 38px);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.14;
+  }
+  .masthead .sub {
+    margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .sub b { color: var(--ink); font-weight: 700; }
+  .masthead .meta { margin-top: 20px; color: var(--muted); font-size: 12px; }
+  .masthead .meta b { color: var(--ink); font-weight: 600; }
 
-  article h2 { font-size:20px; font-weight:800; letter-spacing:-.01em; margin:44px 0 14px; }
-  article p { margin-bottom:18px; }
-  article strong { font-weight:700; }
-  article em { font-style:italic; }
-  .note { color:#6B7280; font-size:14.5px; }
-  .note::before { content:"["; color:#10B981; font-weight:700; }
-  .note::after { content:"]"; color:#10B981; font-weight:700; }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
 
-  /* la pregunta de cada sección */
-  .q { background:#F8FAFC; border:1px solid #E5E7EB; border-left:3px solid #10B981; border-radius:8px;
-       padding:16px 20px; margin:18px 0; font-size:17px; font-weight:700; line-height:1.5; }
-  .q span { display:block; font-size:11px; font-family:'JetBrains Mono',monospace; font-weight:400;
-            letter-spacing:.14em; text-transform:uppercase; color:#0B7A4B; margin-bottom:6px; }
+  .lede {
+    font-size: 16px; line-height: 1.7; color: #333;
+    border-left: 3px solid var(--line); padding-left: 22px; margin: 8px 0 40px;
+  }
+  .lede strong { color: var(--ink); }
 
-  /* espacio de escritura */
-  .write { border:1.5px dashed #C9D2DE; border-radius:10px; padding:14px 18px; margin:14px 0 22px; }
-  .write label { display:block; color:#9AA3B2; font-size:13px; font-style:italic; margin-bottom:10px; }
-  .write b { color:#5E6B88; font-style:normal; }
-  .write textarea { width:100%; min-height:96px; resize:vertical; border:1px solid #E5E7EB; border-radius:8px;
-                    padding:12px 14px; font-family:inherit; font-size:15px; line-height:1.6; color:#1A1A1A;
-                    background:#FFFFFF; outline:none; transition:border-color .15s ease, box-shadow .15s ease; }
-  .write textarea:focus { border-color:#10B981; box-shadow:0 0 0 3px rgba(16,185,129,.12); }
-  .write textarea::placeholder { color:#B4BCC8; font-style:italic; }
+  h2 {
+    font-size: clamp(18px, 2.8vw, 24px); font-weight: 800; letter-spacing: -.015em;
+    margin: 48px 0 12px; line-height: 1.25;
+  }
+  h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: .62em; font-weight: 600;
+    color: #b0b0b0; letter-spacing: .14em; display: block; margin-bottom: 8px;
+  }
+  h3 { font-size: 15px; font-weight: 700; margin: 24px 0 8px; }
 
-  /* barra de acciones */
-  .actions { position:sticky; bottom:16px; z-index:20; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
-             background:rgba(255,255,255,.94); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-             border:1px solid #E5E7EB; border-radius:14px; padding:12px 16px; margin:34px 0 8px;
-             box-shadow:0 8px 30px rgba(10,10,10,.10); }
-  .actions button { border:none; border-radius:8px; padding:11px 18px; font-family:inherit; font-size:14px; font-weight:700;
-                    cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; }
-  .actions button:active { transform:scale(.97); }
-  .btn-pdf { background:#1A1A1A; color:#FFFFFF; }
-  .btn-pdf:hover { box-shadow:0 4px 14px rgba(26,26,26,.28); }
-  .btn-mail { background:#E8F8EF; color:#0B7A4B; }
-  .btn-mail:hover { box-shadow:0 4px 14px rgba(16,185,129,.22); }
-  .actions .hint { width:100%; text-align:center; font-size:11.5px; color:#9AA3B2; font-family:'JetBrains Mono',monospace; }
+  p { margin: 0 0 16px; color: #222; font-size: 14.5px; }
+  p b, li b { color: var(--ink); font-weight: 700; }
 
-  /* impresión: solo preguntas + respuestas */
-  @media print {
-    header, .howto, .cta, footer, .actions, .crumbs, .note { display:none !important; }
-    .wrap { max-width:100%; padding:0; }
-    body { font-size:12px; }
-    article h2 { margin:22px 0 8px; font-size:16px; }
-    .q { break-inside:avoid; padding:10px 14px; margin:10px 0; font-size:14px; }
-    .write { border:1px solid #E5E7EB; border-radius:6px; padding:8px 12px; margin:8px 0 14px; break-inside:avoid; }
-    .write textarea { border:none; padding:0; min-height:auto; font-size:12.5px; }
-    .actions { display:none; }
+  ul { margin: 0 0 16px 4px; padding-left: 20px; }
+  li { margin-bottom: 7px; color: #222; font-size: 14.5px; }
+
+  blockquote {
+    margin: 22px 0; padding: 16px 22px;
+    border-left: 3px solid var(--ink);
+    background: var(--surface);
+    font-size: 14.5px; font-weight: 600; color: var(--ink);
+    line-height: 1.6; border-radius: 0 10px 10px 0;
+  }
+  blockquote.quote::before { content: "“"; color: #c8c8c8; font-size: 1.4em; font-weight: 800; margin-right: 2px; }
+
+  .fig { margin: 30px 0; }
+  .fig img { width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(10, 10, 10, .10); }
+  .fig figcaption {
+    margin-top: 10px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
   }
 
-  blockquote { border-left:3px solid #10B981; padding:4px 0 4px 20px; margin:26px 0; color:#374151; font-size:15px; }
-  blockquote p { margin-bottom:8px; }
+  .divider { height: 1px; background: var(--line); margin: 44px 0; }
 
-  /* instrucciones de uso */
-  .howto { background:#0B7A4B; color:#FFFFFF; border-radius:12px; padding:22px 26px; margin:30px 0 8px; }
-  .howto h3 { font-size:15px; font-weight:800; margin-bottom:10px; letter-spacing:.02em; }
-  .howto ol { margin-left:18px; font-size:14.5px; line-height:1.8; }
-  .howto li { margin-bottom:4px; }
+  .note { color: var(--muted); font-size: 13px; }
+  .note::before { content: "["; color: var(--accent); font-weight: 700; }
+  .note::after { content: "]"; color: var(--accent); font-weight: 700; }
 
-  .cta { background:#F8FAFC; border:1px solid #E5E7EB; border-radius:12px; padding:26px 28px; margin:44px 0 10px; }
-  .cta h3 { font-size:18px; font-weight:800; margin-bottom:8px; }
-  .cta p { font-size:14.5px; color:#4B5563; margin-bottom:0; }
-  .cta a { display:inline-block; margin-top:14px; background:#1A1A1A; color:#FFF; text-decoration:none; font-size:14px; font-weight:600; padding:11px 22px; border-radius:8px; }
+  /* ── bloque interactivo: la pregunta + espacio de escritura ── */
+  .q {
+    background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--ink);
+    border-radius: 10px; padding: 16px 20px; margin: 18px 0;
+    font-size: 15.5px; font-weight: 700; line-height: 1.5; color: var(--ink);
+  }
+  .q span {
+    display: block; font-size: 10.5px; font-family: 'JetBrains Mono', monospace; font-weight: 400;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+  }
+  .write { border: 1.5px dashed var(--line); border-radius: 10px; padding: 14px 18px; margin: 12px 0 20px; }
+  .write label { display: block; color: var(--muted); font-size: 12.5px; font-style: italic; margin-bottom: 10px; }
+  .write b { color: var(--muted); font-style: normal; font-weight: 700; }
+  .write textarea {
+    width: 100%; min-height: 96px; resize: vertical; border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; font-family: inherit; font-size: 14.5px; line-height: 1.6; color: var(--ink);
+    background: var(--bg); outline: none; transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .write textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .12); }
+  .write textarea::placeholder { color: #b4bcc8; font-style: italic; }
 
-  footer { border-top:1px solid #E5E7EB; margin-top:56px; padding:22px 0 34px; font-size:12.5px; color:#5E6B88; }
-  footer a { color:#5E6B88; }
+  /* ── barra de acciones (artículos interactivos) ── */
+  .actions {
+    position: sticky; bottom: 16px; z-index: 20; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    background: rgba(255, 255, 255, .94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; margin: 34px 0 8px;
+    box-shadow: 0 8px 30px rgba(10, 10, 10, .10);
+  }
+  .actions button {
+    border: none; border-radius: 8px; padding: 11px 18px; font-family: inherit; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .actions button:active { transform: scale(.96); }
+  .btn-pdf { background: var(--ink); color: #FFFFFF; }
+  .btn-pdf:hover { box-shadow: 0 4px 14px rgba(26, 26, 26, .28); }
+  .btn-mail { background: #E8F8EF; color: #0B7A4B; }
+  .btn-mail:hover { box-shadow: 0 4px 14px rgba(16, 185, 129, .22); }
+  .actions .hint { width: 100%; text-align: center; font-size: 11.5px; color: #9AA3B2; font-family: 'JetBrains Mono', monospace; }
 
-  @media (max-width:560px){
-    h1 { font-size:26px; }
-    .deck { font-size:15.5px; }
-    article h2 { font-size:18px; }
-    .q { font-size:15.5px; }
-    .mast img { height:38px; }
+  /* ── caja "cómo usar" ── */
+  .howto { background: var(--ink); color: #FFFFFF; border-radius: 12px; padding: 22px 26px; margin: 30px 0 8px; }
+  .howto h3 { font-size: 14px; font-weight: 800; margin-bottom: 10px; letter-spacing: .02em; }
+  .howto ol { margin-left: 18px; font-size: 13.5px; line-height: 1.8; }
+  .howto li { margin-bottom: 4px; color: #e8e8e8; }
+
+  .outro {
+    margin-top: 44px; font-size: 12px; color: var(--muted); line-height: 1.65;
+    border-top: 1px solid var(--line); padding-top: 20px;
+  }
+  .outro a { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--line); }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-top: 36px; transition: color .15s ease;
+  }
+  .back:hover { color: var(--ink); }
+  .back::before { content: "←"; }
+
+  footer {
+    border-top: 1px solid var(--line); background: var(--bg);
+    padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--ink); }
+
+  /* impresión */
+  @media print {
+    header, .howto, .cta, footer, .actions, .crumbs, .note { display: none !important; }
+    .wrap { max-width: 100%; padding: 0; }
+    body { font-size: 12px; }
+    article h2, h2 { margin: 22px 0 8px; font-size: 16px; }
+    .q { break-inside: avoid; padding: 10px 14px; margin: 10px 0; font-size: 14px; }
+    .write { border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; margin: 8px 0 14px; break-inside: avoid; }
+    .write textarea { border: none; padding: 0; min-height: auto; font-size: 12.5px; }
+  }
+
+  @media (max-width: 560px) {
+    h1 { font-size: 24px; }
+    .q { font-size: 14.5px; }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<header>
-  <div class="crumbs"><a href="brain.html">← BrAIn</a></div>
-  <div class="mast">
-    <img src="assets/brain-logo.png" alt="BrAIn — Breaking AI Non-sense">
-    <span class="brand">Breaking <b>AI</b> Non-Sense</span>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img src="assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a class="active" href="brain.html">BrAIn</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="trq-program.html">Mentoría</a>
+    </div>
   </div>
+</nav>
+
+<header class="masthead">
+  <div class="kicker"><span class="dot"></span>BrAIn · Práctica · 7 preguntas</div>
+  <h1>SIETE PREGUNTAS Y UN PAPEL: PONTE EN ORDEN</h1>
+  <div class="sub">Breaking <b>AI</b> Non-Sense</div>
+  <div class="meta"><b>Psicología · Práctica</b> · 20 AGO 2026 · ~8 min</div>
 </header>
 
-<article>
-  <div class="meta"><span class="tag">Psicología · Práctica</span> 20 AGO 2026 · ~8 min</div>
-  <h1>SIETE PREGUNTAS Y UN PAPEL: PONTE EN ORDEN</h1>
-  <p class="deck">Este artículo no se lee: se hace. Siete preguntas, una a la vez, y un papel para responderlas. Al final no tendrás una opinión — tendrás un acto con fecha. La lógica detrás: una pregunta bien hecha vale más que mil respuestas, y ninguna respuesta cambia nada hasta que se escribe y se ejecuta.</p>
-
-  <hr class="rule">
+<div class="lede">
+  Este artículo no se lee: se hace. Siete preguntas, una a la vez, y un papel para responderlas. Al final no tendrás una opinión — tendrás un acto con fecha. <strong>Una pregunta bien hecha vale más que mil respuestas, y ninguna respuesta cambia nada hasta que se escribe y se ejecuta.</strong>
+</div>
 
   <div class="howto">
     <h3>CÓMO USAR ESTE ARTÍCULO</h3>
@@ -132,7 +256,7 @@
     </ol>
   </div>
 
-  <h2>1 · EL CUARTO QUE YA CONOCES</h2>
+  <h2><span class="n">PREGUNTA 01</span>EL CUARTO QUE YA CONOCES</h2>
   <p>Empieza por lo pequeño, porque lo pequeño está bajo tu control — y porque el desorden que toleras es la firma del desorden que no ves. Nadie necesita que te expliques tu cuarto. Tú ya sabes cuál es.</p>
   <div class="q"><span>Pregunta uno</span>¿Qué desorden conoces, toleras y no has arreglado? ¿Por qué exactamente no?</div>
   <p>No vale "no tengo tiempo". El tiempo no se fue: se lo diste a otra cosa, y la otra cosa casi nunca era importante. Escríbelo.</p>
@@ -141,7 +265,7 @@
     <textarea id="q1" rows="4" placeholder="El cajón que no abro, la pila de papeles, el correo sin responder…" data-q="1"></textarea>
   </div>
 
-  <h2>2 · EL DRAGÓN QUE TIENE NOMBRE</h2>
+  <h2><span class="n">PREGUNTA 02</span>EL DRAGÓN QUE TIENE NOMBRE</h2>
   <p>Hay una diferencia entre el pavor vago y el miedo con nombre. El dragón de esta sección no es una sensación: es una cosa concreta que llevas evitando — un correo sin abrir, una conversación sin tener, un número que no miras. Sabes cuál es. Llevas semanas sabiéndolo.</p>
   <div class="q"><span>Pregunta dos</span>¿Qué estás evitando que podrías nombrar con precisión absoluta en este momento?</div>
   <p>El nombre importa. Un miedo que no puedes nombrar no se puede matar; un miedo nombrado, sí. Si al escribir la frase te incomoda, bienvenido: la incomodidad es el ruido del dragón.</p>
@@ -150,7 +274,7 @@
     <textarea id="q2" rows="4" placeholder="Ese correo. Esa conversación. Ese número que no miro." data-q="2"></textarea>
   </div>
 
-  <h2>3 · NÓMBRALO, O NO EXISTE</h2>
+  <h2><span class="n">PREGUNTA 03</span>NÓMBRALO, O NO EXISTE</h2>
   <p>Esta es la pregunta que nadie quiere hacer porque destruye la comodidad de lo vago. "Algo anda mal" no es un problema: es una niebla. La precisión es el antídoto — no para sentirte mejor, sino para que el problema exista por primera vez en forma atacable.</p>
   <div class="q"><span>Pregunta tres</span>¿Qué es exactamente lo que te molesta? Descríbelo como si se lo explicaras a un ingeniero.</div>
   <p>Si no puedes articularlo, aún no lo has pensado — lo has sentido. Sentir no es pensar. Escríbelo hasta que la frase sea tan específica que dé casi vergüenza.</p>
@@ -159,7 +283,7 @@
     <textarea id="q3" rows="4" placeholder="Qué, cuándo, cuánto. Sin 'más o menos'." data-q="3"></textarea>
   </div>
 
-  <h2>4 · LA MENTIRA QUE VIVES</h2>
+  <h2><span class="n">PREGUNTA 04</span>LA MENTIRA QUE VIVES</h2>
   <p>El autoengaño más caro no es el que dices en voz alta: es el que sostienes en silencio, a solas contigo. Dices que vas a empezar el lunes. Dices que el plan está bajo control. Dices que esa persona no te importa. La pregunta no es si mientes — es dónde.</p>
   <div class="q"><span>Pregunta cuatro</span>¿Qué estás diciendo —a otros o a ti mismo— que ya no te crees?</div>
   <p>La regla es simple: si lo escribes y suena falso al leerlo en voz alta, es falso. La verdad no necesita que la defiendas; la mentira, sí. Todo el esfuerzo que gastas manteniéndola es energía que no inviertes en lo real.</p>
@@ -168,7 +292,7 @@
     <textarea id="q4" rows="4" placeholder="Lo que digo: …  Lo que es cierto: …" data-q="4"></textarea>
   </div>
 
-  <h2>5 · EL CAMINO FÁCIL Y EL QUE IMPORTA</h2>
+  <h2><span class="n">PREGUNTA 05</span>EL CAMINO FÁCIL Y EL QUE IMPORTA</h2>
   <p>Casi ninguna decisión importante es entre el bien y el mal. Son entre lo conveniente y lo significativo: la llamada que no quieres hacer, el hábito que sabes que te sostiene, el proyecto que da miedo porque importa. Lo conveniente siempre tiene una excusa lista. Lo significativo casi nunca la necesita.</p>
   <div class="q"><span>Pregunta cinco</span>¿Qué decisión estás aplazando entre el camino fácil y el que sabes que importa?</div>
   <p>No la tomes todavía. Solo nómbrala: las dos opciones, sus costos reales, y por cuál sabes —no sientes— que deberías ir.</p>
@@ -177,7 +301,7 @@
     <textarea id="q5" rows="4" placeholder="Opción A (fácil): …  Opción B (la que importa): …  Elijo: …" data-q="5"></textarea>
   </div>
 
-  <h2>6 · COMPÁRATE CON QUIEN FUISTE AYER</h2>
+  <h2><span class="n">PREGUNTA 06</span>COMPÁRATE CON QUIEN FUISTE AYER</h2>
   <p>Compararte con otros es la forma más rápida de sentirte miserable sin aprender nada: su punto de partida no es el tuyo, su cartera no es la tuya, su vida no es la tuya. La única comparación justa es contra tu propio historial. Ahí no hay excusas ni injusticias: solo datos.</p>
   <div class="q"><span>Pregunta seis</span>¿En qué eres mejor que hace un año? ¿En qué eres peor? ¿Y hace cinco?</div>
   <p>La segunda parte duele más que la primera, y es la que importa. Lo que empeoró sin que lo notaras es lo que el ruido diario te ocultó.</p>
@@ -186,7 +310,7 @@
     <textarea id="q6" rows="4" placeholder="Mejor: … · … · …   Peor: … · … · …" data-q="6"></textarea>
   </div>
 
-  <h2>7 · EL ACTO CON FECHA</h2>
+  <h2><span class="n">PREGUNTA 07</span>EL ACTO CON FECHA</h2>
   <p>Aquí está la lógica completa, y es la única parte que no puedes saltarte: <strong>la comprensión no cambia a nadie; el acto con plazo, sí.</strong> Una conversación puede terminar en una sensación. Esta termina en un compromiso — un acto concreto, pequeño, reversible, con fecha dentro de las próximas 72 horas.</p>
   <p>No el acto enorme. El primer escalón. La regla de oro: <em>claridad rápida, consecuencias lentas</em>. Nada de decisiones irreversibles con la adrenalina de un artículo — solo el primer paso, fechado.</p>
   <div class="q"><span>La pregunta final</span>¿Qué acto concreto, con qué fecha exacta (dentro de 72 horas), vas a hacer porque leíste esto?</div>
@@ -196,29 +320,27 @@
     <textarea id="q7" rows="4" placeholder="Acción: …  Fecha: …  Por qué importa: …" data-q="7"></textarea>
   </div>
 
-  <h2>PARA EL TRADER QUE HAY EN TI</h2>
+  <h2><span class="n">—</span>PARA EL TRADER QUE HAY EN TI</h2>
   <p>Si operas, las siete preguntas tienen una traducción inmediata — y no es casualidad que duela reconocerla:</p>
   <p><strong>El cuarto:</strong> la operación que sabías que debías cerrar y no cerraste. <strong>El dragón:</strong> el plan de trading que no has escrito porque escribir obliga a ver los huecos. <strong>La precisión:</strong> tu estrategia en una hoja — criterios de entrada, salida y tamaño, sin adjetivos. <strong>La mentira:</strong> "estoy gestionando el riesgo" mientras no tienes el tamaño por escrito. <strong>Lo significativo:</strong> el backtest que pospones porque el resultado podría no gustarte. <strong>El ayer:</strong> tu P&L del mes pasado, no el del vecino de X. <strong>El acto con fecha:</strong> tu regla de ejecución escrita, probada y fechada — porque el mercado no premia la información, premia la conducta.</p>
   <p>El mercado es el espejo más caro del mundo: te devuelve exactamente lo que eres, no lo que dices ser. Estas preguntas cuestan menos.</p>
 
-  <blockquote>
+  <blockquote class="quote">
     <p>Terminas cuando entregas, no cuando perfeccionas. El borrador imperfecto de tu vida, el que llevas meses posponiendo, se entrega aunque no esté listo. El cero es el único resultado que no se puede corregir.</p>
   </blockquote>
   <p>El método de las siete preguntas no es nuevo, ni es mío, ni necesita serlo: es la lógica de una sesión de coaching bien construida — una pregunta a la vez, precisión sobre consuelo, y un compromiso con fecha. <span class="note">La inspiración directa son los marcos publicados de Jordan Peterson sobre responsabilidad y significado; las preguntas, sin embargo, son tuyas. Y solo funcionan en papel.</span></p>
   <p><strong>Ahora cierra la página. Pero antes: ¿qué acto, con qué fecha?</strong></p>
-</article>
-
 <div class="actions">
   <button class="btn-pdf" onclick="descargarPDF()">⬇ Descargar PDF</button>
   <button class="btn-mail" onclick="enviarEmail()">✉ Envíate las respuestas!</button>
   <span class="hint">Tus respuestas se guardan solas en este navegador (no se envían a ningún servidor).</span>
 </div>
 
-<div class="cta">
-  <h3>BrAIn — Breaking AI Non-sense</h3>
-  <p>Psicología, mercados y tecnología sin humo ni hype. Si este artículo te movió algo, el siguiente paso no es otro artículo — es el papel que dejaste a medias.</p>
-  <a href="brain.html">← Volver a BrAIn</a>
+<div class="outro">
+  Si este artículo te movió algo, el siguiente paso no es otro artículo — es el papel que dejaste a medias. Sigue a <a href="brain.html">BrAIn</a>.
 </div>
+
+<a class="back" href="brain.html">Volver a BrAIn</a>
 
 <footer>
   © 2026 The Red Queen — Checkmate the System · <a href="trq-terms.html">Términos</a>
