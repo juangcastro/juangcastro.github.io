@@ -173,6 +173,27 @@
   .nl-msg.err { color: #dc2626; }
   @media (max-width: 520px) { .nl-form { flex-direction: column; } }
 
+  .articles { margin: 56px 0 0; }
+  .articles h2 { font-size: clamp(18px, 2.8vw, 24px); font-weight: 800; letter-spacing: -.015em; margin: 12px 0 24px; }
+  .art {
+    display: flex; align-items: flex-start; gap: 18px;
+    padding: 18px 20px; margin-bottom: 12px;
+    border: 1px solid var(--line); border-radius: 12px;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .art:hover { border-color: var(--ink); transform: translateX(3px); }
+  .art-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    color: var(--accent); letter-spacing: .1em; padding-top: 3px; flex-shrink: 0;
+  }
+  .art-info b { display: block; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.35; }
+  .art-info i {
+    display: block; margin-top: 4px; font-style: normal;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+  }
+  .soon-note { margin-top: 16px; font-size: 13px; color: var(--muted); }
+
   .topics { margin-bottom: 16px; }
   .topics .sec-label {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
@@ -252,10 +273,43 @@
 
 <div class="wrap">
 
-  <div class="soon">
-    <div class="tag"><span class="dot"></span>Próximamente</div>
-    <h2>Los primeros artículos están en camino</h2>
-    <p>Análisis sobre IA aplicada al trading, tecnología y cultura digital — en la voz de The Red Queen.</p>
+  <div class="articles">
+    <div class="tag"><span class="dot"></span>Artículos</div>
+    <h2>Lo que ya rompimos</h2>
+
+    <a class="art" href="BrAIn/cinco-ecuaciones.html">
+      <span class="art-num">002</span>
+      <span class="art-info">
+        <b>Las cinco ecuaciones que gobiernan tu vida financiera</b>
+        <i>03 AGO 2026 · Matemática · Inversión</i>
+      </span>
+    </a>
+
+    <a class="art" href="brain-sort-yourself-out.html">
+      <span class="art-num">003</span>
+      <span class="art-info">
+        <b>Siete preguntas y un papel: ponte en orden</b>
+        <i>10 AGO 2026 · Psicología · Práctica</i>
+      </span>
+    </a>
+
+    <a class="art" href="BrAIn/busqueda-de-la-verdad.html">
+      <span class="art-num">004</span>
+      <span class="art-info">
+        <b>La inversión es la búsqueda de la verdad</b>
+        <i>17 AGO 2026 · Filosofía · Inversión</i>
+      </span>
+    </a>
+
+    <a class="art" href="BrAIn/teoria-de-juegos.html">
+      <span class="art-num">005</span>
+      <span class="art-info">
+        <b>No juegas contra el mercado. Juegas contra quienes saben que estás jugando</b>
+        <i>24 AGO 2026 · Teoría de juegos · Trading</i>
+      </span>
+    </a>
+
+    <p class="soon-note">Artículo 001 — la presentación del proyecto — está en camino.</p>
   </div>
 
   <div class="nl-box">

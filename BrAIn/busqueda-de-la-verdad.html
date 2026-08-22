@@ -79,8 +79,12 @@
     -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
   }
   .masthead .kicker {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
     margin: 0 auto 28px;
+  }
+  .masthead .kicker .kicker-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
   }
   .masthead .kicker img.kicker-logo { height: 32px; width: auto; }
   .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
@@ -216,12 +220,15 @@
 
 <header class="masthead">
   <div class="masthead-inner">
-    <div class="kicker"><img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn"></div>
+    <div class="kicker">
+    <img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn">
+    <span class="kicker-num">ARTÍCULO 004</span>
+  </div>
     <h1>LA INVERSIÓN ES LA BÚSQUEDA DE LA VERDAD</h1>
     <div class="sub">Breaking <b>AI</b> Non-Sense</div>
     <div class="byline">
       <img src="../assets/braIn-favicon.png" alt="BrAIn">
-      <span class="b-name">BrAIn</span><span class="b-date">22 AGO 2026</span>
+      <span class="b-name">BrAIn</span><span class="b-date">17 AGO 2026</span>
     </div>
   </div>
 </header>

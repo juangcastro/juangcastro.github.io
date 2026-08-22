@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ═══════════════════════════════════════════════════════════════
+     PLANTILLA CANÓNICA DE ARTÍCULO — BrAIn · The Red Queen
+     Sistema: ARCADE IVORY (blanco puro + pixel/ink + emerald SOLO status)
+     Cuerpo 14.5px · Inter · JetBrains Mono para datos/fórmulas
+     Copiar este archivo a BrAIn/<slug>.html y reemplazar los VALORES
+     Mantener: nav, masthead, lede, h2 con .n, fig, blockquote, cierre, footer
+     ═══════════════════════════════════════════════════════════════ -->
+<title>NO JUEGAS CONTRA EL MERCADO. JUEGAS CONTRA QUIENES SABEN QUE ESTÁS JUGANDO — BrAIn · The Red Queen</title>
+<meta name="description" content="La teoría de juegos no es una teoría sobre juegos: es el idioma de toda decisión que tomas cuando alguien más decide al mismo tiempo. Un artículo para hacer, no para leer.">
+<meta property="og:title" content="NO JUEGAS CONTRA EL MERCADO. JUEGAS CONTRA QUIENES SABEN QUE ESTÁS JUGANDO">
+<meta property="og:description" content="La teoría de juegos no es una teoría sobre juegos: es el idioma de toda decisión que tomas cuando alguien más decide al mismo tiempo. Un artículo para hacer, no para leer.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://theredqueen.co/BrAIn/teoria-de-juegos.html">
+<meta property="og:image" content="https://theredqueen.co/BrAIn/assets/[portada].png">
+<link rel="icon" type="image/x-icon" href="../assets/braIn-favicon.ico">
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/braIn-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Arcade Ivory: blanco puro + ink + emerald SOLO para status ── */
+  :root {
+    --bg: #FFFFFF;
+    --ink: #0A0A0A;
+    --muted: #666666;
+    --line: #E5E5E5;
+    --surface: #F5F5F5;
+    --accent: #10B981;          /* emerald — SOLO status/vivo */
+      --display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Roboto', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ── nav (idéntico en todas las páginas TRQ) ── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 13px; letter-spacing: .28em; text-transform: uppercase; color: var(--ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links .active { color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+  @media (max-width: 560px) { .nav-links a:not(.active) { display: none; } }
+
+  /* ── masthead del artículo ── */
+  .masthead {
+    position: relative; overflow: hidden;
+    text-align: center; padding: 72px 24px 56px;
+  }
+  .masthead-inner {
+    max-width: 780px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .masthead .byline { align-self: flex-start; margin-left: 24px; }
+  .masthead::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background-image: radial-gradient(rgba(229, 229, 229, .55) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+  }
+  .masthead .kicker {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    margin: 0 auto 28px;
+  }
+  .masthead .kicker .kicker-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .kicker img.kicker-logo { height: 52px; width: auto; }
+  .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
+  .masthead h1 {
+    max-width: 860px; margin: 0 auto;
+    font-size: clamp(23px, 4.2vw, 38px);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.14;
+  }
+  .masthead .sub {
+    margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .sub b { color: var(--ink); font-weight: 700; }
+  .masthead .meta { margin-top: 20px; color: var(--muted); font-size: 12px; }
+  .masthead .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ── byline estilo Substack: avatar circular + fecha ── */
+  .byline {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 22px; align-self: flex-start; text-align: left;
+  }
+  .byline img {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1px solid var(--line); object-fit: cover;
+  }
+  .byline .b-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .byline .b-logo { height: 15px; width: auto; display: block; }
+  .byline .b-date {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .08em; color: var(--muted);
+  }
+  .byline .b-date::before { content: "·"; margin: 0 8px; color: #c8c8c8; }
+
+  /* ── cuerpo ── */
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+
+  .lede {
+    font-size: 16px; line-height: 1.7; color: #333;
+    border-left: 3px solid var(--line); padding-left: 22px; margin: 8px 0 40px;
+  }
+  .lede strong { color: var(--ink); }
+
+  h2 {
+    font-size: clamp(18px, 2.8vw, 24px); font-weight: 800; letter-spacing: -.015em;
+    margin: 48px 0 12px; line-height: 1.25;
+  }
+  h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: .48em; font-weight: 500;
+    color: #b0b0b0; letter-spacing: .24em; text-transform: uppercase;
+    display: block; margin-bottom: 10px;
+  }
+  h3 { font-size: 15px; font-weight: 700; margin: 24px 0 8px; }
+
+  p { margin: 0 0 16px; color: #222; font-size: 14.5px; }
+  p b, li b { color: var(--ink); font-weight: 700; }
+
+  ul { margin: 0 0 16px 4px; padding-left: 20px; }
+  li { margin-bottom: 7px; color: #222; font-size: 14.5px; }
+
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 2.2vw, 16px);
+    font-weight: 600; text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px 22px; margin: 24px 0;
+    color: var(--ink); letter-spacing: .01em;
+  }
+
+  blockquote {
+    margin: 22px 0; padding: 16px 22px;
+    border-left: 3px solid var(--ink);
+    background: var(--surface);
+    font-size: 14.5px; font-weight: 600; color: var(--ink);
+    line-height: 1.6; border-radius: 0 10px 10px 0;
+  }
+  blockquote.quote::before { content: "“"; color: #c8c8c8; font-size: 1.4em; font-weight: 800; margin-right: 2px; }
+
+  .fig { margin: 30px 0; }
+  .fig img {
+    width: 100%; height: auto;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(10, 10, 10, .10);
+  }
+  .fig figcaption {
+    margin-top: 10px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 22px 0 26px;
+    font-size: 13px;
+  }
+  th {
+    text-align: left; font-weight: 700; color: var(--ink);
+    border-bottom: 2px solid var(--ink); padding: 9px 12px;
+  }
+  td { border-bottom: 1px solid var(--line); padding: 9px 12px; color: #222; }
+  tr:last-child td { border-bottom: none; }
+
+  .divider { height: 1px; background: var(--line); margin: 44px 0; }
+
+  .outro {
+    margin-top: 44px;
+    font-size: 12px; color: var(--muted); line-height: 1.65;
+    border-top: 1px solid var(--line); padding-top: 20px;
+  }
+  .outro a { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--line); }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-top: 36px; transition: color .15s ease;
+  }
+  .back:hover { color: var(--ink); }
+  .back::before { content: "←"; }
+
+  footer {
+    border-top: 1px solid var(--line); background: var(--bg);
+    padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+.quote::before { content: "“"; color: #c8c8c8; font-size: 1.4em; font-weight: 800; margin-right: 2px; }
+.q {
+    background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--ink);
+    border-radius: 10px; padding: 16px 20px; margin: 18px 0;
+    font-size: 15.5px; font-weight: 700;
+  }
+.q span {
+    display: block; font-size: 10.5px; font-family: 'JetBrains Mono', monospace; font-weight: 400;
+    letter-spacing: .14em; text-transform: uppercase; color: #EA580C; margin-bottom: 6px;
+  }
+.q { break-inside: avoid; padding: 10px 14px; margin: 10px 0; font-size: 14px; }
+.write { border: 1.5px dashed var(--line); border-radius: 10px; padding: 14px 18px; margin: 12px 0 20px; }
+.write label { display: block; color: var(--muted); font-size: 12.5px; font-style: italic; margin-bottom: 10px; }
+.write b { color: var(--muted); font-style: normal; font-weight: 700; }
+.howto { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px; margin: 30px 0 8px; }
+.howto h3 { font-size: 14px; font-weight: 800; margin-bottom: 10px; letter-spacing: .02em; color: var(--ink); }
+.howto ol { margin-left: 18px; font-size: 13.5px; line-height: 1.8; color: var(--ink); }
+textarea {
+    width: 100%; min-height: 96px; resize: vertical; border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; font-family: inherit; font-size: 14.5px; line-height: 1.6; color: var(--ink);
+    background: #FFFFFF;
+  }
+textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .12); outline: none; }
+textarea::placeholder { color: #b4bcc8; font-style: italic; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a class="active" href="../brain.html">BrAIn</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="kicker">
+    <img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn">
+    <span class="kicker-num">ARTÍCULO 005</span>
+  </div>
+    <h1>NO JUEGAS CONTRA EL MERCADO. JUEGAS CONTRA QUIENES SABEN QUE ESTÁS JUGANDO</h1>
+    <div class="sub">Decisiones interactivas · el vocabulario que revela el juego</div>
+    <div class="byline">
+      <img src="../assets/braIn-favicon.png" alt="BrAIn">
+      <span class="b-name">BrAIn</span><span class="b-date">24 AGO 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="lede">
+    <strong>Este artículo no se lee: se juega.</strong> No te llevará a una opinión sobre la teoría de juegos — te llevará a descubrir en qué juego llevas años jugando sin saberlo, y a escribir tu próxima jugada en papel. Los juegos no son un capricho de matemáticos aburridos: son la estructura oculta de toda decisión que tomas cuando hay alguien más decidiendo al mismo tiempo que tú. [Y cuando hay alguien más decidiendo al mismo tiempo que tú, ya estás jugando. La única pregunta es si lo sabes.]
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="howto">
+    <h3>CÓMO USAR ESTE ARTÍCULO</h3>
+    <ol>
+      <li>Papel y lápiz. No en la cabeza — en papel.</li>
+      <li>Una sección a la vez. No pases a la siguiente sin escribir la respuesta.</li>
+      <li>No hay respuestas correctas. Hay respuestas honestas.</li>
+      <li>El último bloque te pedirá un compromiso con fecha. Cúmplelo en ≤72 horas.</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">SECCIÓN 01</span>El dilema que todos jugamos sin saberlo</h2>
+  <p>Se llama <b>teoría de juegos</b> y no es una teoría sobre juegos. Es una teoría sobre <b>decisiones interactivas</b>: qué hago yo cuando lo que me conviene depende de lo que hagas tú, y lo que te conviene a ti depende de lo que haga yo. El dinero, la negociación, la guerra, el matrimonio, el mercado: todos son juegos con reglas, jugadores y pagos. [Pagos: lo que ganas o pierdes según la combinación de jugadas.]</p>
+  <p>El juego más famoso de todos — el <b>Dilema del Prisionero</b> — dice así: dos personas son arrestadas por separado y no pueden hablar entre sí. El fiscal les ofrece lo mismo a ambas: <i>"delata a tu cómplice y sales libre; él se lleva diez años. Si los dos se callan, un año cada uno. Si los dos se delatan, cinco años cada uno."</i></p>
+  <p>La matemática dice: <b>delatar</b>. Pase lo que pase, delatar te deja mejor — si el otro se calla, sales libre; pero si tú no delatas y el otro sí lo hace, te tocan diez años. La traición es la <i>estrategia dominante</i>. Y sin embargo, los dos delatando terminan con cinco años cada uno — <b>peor para ambos</b> que si se hubieran callado. La jugada racional individual produce el peor resultado colectivo. [Ahí está la trampa perfecta: dos personas racionales, persiguiendo cada una su interés, terminan peor que dos que cooperaron en silencio.]</p>
+
+  <div class="q"><span>PREGUNTA 01</span>¿En qué situación de tu vida estás jugando el Dilema del Prisionero ahora mismo — donde la jugada "racional" individual te cuesta más que cooperar? ¿Con quién? ¿Qué te impide ser el primero en cooperar?</div>
+  <div class="write"><label>Escribe aquí — el dilema, los jugadores y lo que te cuesta la desconfianza mutua:</label><textarea rows="4" placeholder="El dilema que reconozco es…"></textarea></div>
+
+  <blockquote class="quote">La paradoja del Prisionero no es que la gente sea mala. Es que la estructura del juego castiga la confianza. Cambia la estructura, y cambias la conducta.</blockquote>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">SECCIÓN 02</span>El juego que te enseñaron mal: cooperar no es ser bonito</h2>
+  <p>Aquí está el giro que cambió todo: si el mismo prisionero juega contra el mismo rival <b>más de una vez</b>, la jugada óptima deja de ser delatar siempre. En 1980, un politólogo convocó un torneo mundial de estrategias para este juego repetido: investigadores de todo el planeta enviaron programas que jugaban miles de rondas entre sí. La estrategia más simple de todas ganó. Se llama <b>Tit-for-Tat</b> — ojo por ojo:</p>
+  <div class="formula">PRIMERA JUGADA: COOPERA · DESPUÉS: HAZ LO QUE EL OTRO HIZO EN LA RONDA ANTERIOR</div>
+  <p>Eso es todo. Amable, provocable, perdonador. No traiciona primero; castiga la traición <i>una vez</i>; perdona en cuanto el otro vuelve a cooperar. Ganó el torneo entero contra estrategias mucho más complicadas. La lección no es romántica — es matemática: <b>en juegos repetidos, la cooperación es la estrategia más rentable a largo plazo, siempre que haya memoria y castigo proporcional.</b> El que traiciona gana una ronda y pierde el juego.</p>
+
+  <div class="q"><span>PREGUNTA 02</span>¿Con quién juegas repetido — socio, cliente, equipo, pareja — y qué pasó en tu última ronda: cooperaste, traicionaste, o castigaste a tiempo? ¿Tu castigo es proporcional o desproporcionado?</div>
+  <div class="write"><label>Escribe aquí — tu Tit-for-Tat real, ronda por ronda:</label><textarea rows="4" placeholder="En mi relación repetida con… la última jugada fue…"></textarea></div>
+
+  <blockquote class="quote">Ojo por ojo gana porque es predecible. El que siempre perdona es explotado. El que nunca perdona mata la relación. La proporción es la estrategia.</blockquote>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">SECCIÓN 03</span>El juego que nadie te enseñó y que decides todos los días</h2>
+  <p>El <b>Stag Hunt</b> — la caza del ciervo — es el juego de la coordinación, el más relevante para tu vida y el más ignorado. Dos cazadores. Dos opciones: cazar un ciervo (premio grande, requiere que <b>ambos</b> colaboren) o cazar una liebre (premio pequeño, se caza solo). Si los dos van al ciervo, festín. Si uno se desvía a la liebre, el otro se queda sin nada.</p>
+  <p>A diferencia del Prisionero, aquí <b>no hay conflicto de intereses</b>: ambos prefieren el ciervo. El único problema es la confianza: <i>¿y si yo voy al ciervo y tú te vas a la liebre?</i> El miedo a quedarte sin nada te empuja a la liebre "segura" — y los dos terminan con liebres, habiendo preferido el ciervo. Es el juego de las empresas que no se fusionan, de los equipos que no se comprometen, de las parejas que no se entregan. No es que la gente no quiera el gran premio — es que <b>el miedo a que el otro deserte la hace desertar a ella primero.</b></p>
+
+  <div class="q"><span>PREGUNTA 03</span>¿Dónde hay un ciervo en tu vida que solo se caza con otro — un proyecto, una sociedad, una conversación pendiente — y llevas años cazando liebres por miedo a que te dejen con las manos vacías?</div>
+  <div class="write"><label>Escribe aquí — el ciervo, el cazador que necesitas, y el miedo exacto que te mantiene en la liebre:</label><textarea rows="4" placeholder="El ciervo que no me atrevo a cazar es…"></textarea></div>
+
+  <blockquote class="quote">El Stag Hunt no se gana con valentía. Se gana con señales: compromisos que el otro pueda ver. El que espera a estar seguro nunca caza el ciervo.</blockquote>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">SECCIÓN 04</span>El juego donde perder es cooperar</h2>
+  <p>El juego del <b>Gallina (Chicken)</b>: dos coches a toda velocidad, uno contra el otro. El primero que esquiva pierde. Es el juego del escalamiento: cada jugador gana si el otro cede, y pierde si cede él. Si ninguno cede, chocan — el peor resultado posible para ambos. La estrategia clásica: <b>tirar el volante por la ventana</b>. Si el otro ve que físicamente no puedes esquivar, no le queda opción: esquiva él.</p>
+  <p>En la vida real: guerras de precios, ultimátums, huelgas, disputas de herencia. El que puede <b>comprometerse creíblemente</b> primero — quemar las naves, volverse incapaz de ceder — gana el juego. El problema: si ambos tiran el volante, ambos mueren. [El compromiso es un arma de doble filo: te da el juego, o te mata en él.]</p>
+
+  <div class="q"><span>PREGUNTA 04</span>¿Estás en un Chicken ahora mismo — una negociación, un conflicto, una guerra de egos donde ambos pretenden no poder ceder? ¿Tiraste el volante, o estás a tiempo de soltarlo?</div>
+  <div class="write"><label>Escribe aquí — el choque, el volante, y quién está más comprometido a no esquivar:</label><textarea rows="4" placeholder="El Chicken donde estoy es… mi volante real es…"></textarea></div>
+
+  <blockquote class="quote">En Chicken, la pregunta no es quién tiene razón. Es quién puede demostrar que no puede ceder. Y a veces la jugada ganadora es salir del auto antes de que empiece la carrera.</blockquote>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">SECCIÓN 05</span>El equilibrio que no es justicia</h2>
+  <p>Hay un concepto que lo une todo: el <b>equilibrio de Nash</b>. Una combinación de jugadas donde <b>ningún jugador puede mejorar cambiando su jugada unilateralmente</b> — asumiendo que los demás no cambian la suya. No es "lo mejor para todos". No es justo. Es simplemente: <i>nadie se mueve porque moverse solo empeora.</i></p>
+  <p>El Dilema del Prisionero tiene un equilibrio de Nash — traicionar/traicionar — y es el peor resultado posible para ambos. <b>El equilibrio no es el paraíso. Es el punto donde la estructura te deja clavado.</b> Los malos equilibrios existen: matrimonios que nadie mejora rompiendo solo, trabajos que nadie mejora renunciando solo, hábitos que nadie mejora cambiando solo.</p>
+
+  <div class="q"><span>PREGUNTA 05</span>¿En qué equilibrio estás clavado — donde no mejoras cambiando tú solo, pero todos perderían algo si cambiaran primero? ¿Cuál es el pago que te mantiene ahí?</div>
+  <div class="write"><label>Escribe aquí — tu equilibrio, tu pago, y qué tendría que cambiar (no solo tú) para moverte:</label><textarea rows="4" placeholder="Estoy clavado en… el pago que me mantiene es…"></textarea></div>
+
+  <blockquote class="quote">El equilibrio de Nash explica por qué lo malo persiste: nadie mejora moviéndose solo. Romper un mal equilibrio casi nunca es unilateral — es coordinado. Y la coordinación empieza con alguien que dice la verdad sobre el pago.</blockquote>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">SECCIÓN 06</span>El juego con información que no tienes</h2>
+  <p>Todos los juegos anteriores asumen que conoces los pagos. La vida real casi nunca es así. En los juegos de <b>información incompleta</b>, el otro jugador conoce sus cartas y tú solo tienes una probabilidad — un prior. Y aquí está la regla que todo negociador conoce sin poder nombrarla: <b>actualizas tu creencia con cada señal que el otro emite.</b></p>
+  <p>El que miente emite señales. El que sabe, calla. El que no sabe, habla demasiado. Cada palabra, cada silencio, cada retraso en responder es un dato que actualiza tu prior. [Los buenos jugadores no "leen mentes": actualizan probabilidades. Los malos deciden una vez y se quedan con su creencia congelada.]</p>
+
+  <div class="q"><span>PREGUNTA 06</span>¿Con quién estás jugando con información incompleta — y cuál es tu prior sobre sus cartas? ¿Qué señales recientes deberían haber actualizado tu creencia y no lo hicieron?</div>
+  <div class="write"><label>Escribe aquí — el jugador, tu prior, y la señal que no actualizaste:</label><textarea rows="4" placeholder="Con… mi prior es… la señal que ignoré fue…"></textarea></div>
+
+  <blockquote class="quote">La información incompleta se gana con dos cosas: actualizar sin ego, y diseñar preguntas que revelen lo que el otro no quiere revelar. El resto es ruido.</blockquote>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">SECCIÓN 07</span>El acto con fecha</h2>
+  <p>La teoría te da vocabulario. El vocabulario sin acto es otro curso más. Ya escribiste seis respuestas. Ya nombraste tus juegos: el dilema donde desconfías, el repetido donde no castigas o castigas de más, el ciervo que no cazas, el choque donde no cedes, el equilibrio que no rompes, la información que no actualizas. Ahora la única pregunta que importa:</p>
+
+  <div class="q"><span>PREGUNTA 07</span>¿Cuál de los seis juegos vas a mover esta semana? ¿Cuál es la jugada concreta — la primera jugada de Tit-for-Tat, la señal de coordinación, el volante que sueltas o el que tiras — y en qué fecha exacta, dentro de las próximas 72 horas, la ejecutas?</div>
+  <div class="write"><label>Escribe aquí — el juego, la jugada, la fecha, y qué pierdes si no la haces:</label><textarea rows="4" placeholder="Esta semana muevo el juego… con la jugada… el día…"></textarea></div>
+
+  <blockquote class="quote">La regla del compromiso: acción + fecha ≤72 horas + conexión con algo más alto. Claridad rápida, consecuencias lentas. Nada de actos irreversibles — solo la primera jugada de una partida que ya estás jugando.</blockquote>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">PARA EL TRADER</span>Para el trader que hay en ti</h2>
+  <p>Si operas mercados, ya sabes que no se trata solo de ti. Traduce:</p>
+  <ul>
+    <li><b>Dilema del Prisionero:</b> el mercado es un juego repetido contra el mismo tipo de jugador. Los que traicionan cada ronda (overtrading, saltarse el plan) ganan una y pierden la carrera. Tit-for-Tat aplicado: plan claro, castigo inmediato a la violación del plan (el stop), perdón al volver al plan.</li>
+    <li><b>Stag Hunt:</b> el ciervo es el setup que solo se caza con paciencia y con el plan completo; la liebre es la operación mediocre que te consuela. La mayoría caza liebres porque no confía en que el setup llegue.</li>
+    <li><b>Chicken:</b> escalar una posición perdedora es tirar el volante contra un mercado que no puede esquivar. El mercado no esquiva nunca. [Tú puedes: el stop es el volante que sí puedes soltar.]</li>
+    <li><b>Equilibrio de Nash:</b> tu propio sistema es un equilibrio — no mejoras cambiando una regla sola. Los cambios de sistema funcionan coordinados (reglas + risk + psicología), no parcheados.</li>
+    <li><b>Información incompleta:</b> el precio es la señal que actualiza tu prior. Si tu creencia no se actualiza con el precio, no estás jugando contra el mercado — estás jugando contra tu propio guion.</li>
+  </ul>
+
+  <div class="outro">
+    Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — cada pieza toma un tema y lo rompe hasta el fondo.
+  </div>
+
+  <a class="back" href="../brain.html">Volver a BrAIn</a>
+
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
+</footer>
+
+</body>
+</html>

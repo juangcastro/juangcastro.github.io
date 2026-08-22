@@ -14,13 +14,14 @@
     --line: #E5E5E5;
     --surface: #F5F5F5;
     --accent: #10B981;
+      --display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Roboto', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     line-height: 1.7;
     overflow-x: hidden;
@@ -64,13 +65,28 @@
     -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
   }
   .masthead .kicker {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
-    margin-bottom: 24px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    margin: 0 auto 28px;
   }
+  .masthead .kicker .kicker-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .kicker img.kicker-logo { height: 32px; width: auto; }
   .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
-  .masthead h1 {
+.masthead-inner {
+    max-width: 780px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .masthead .byline { align-self: flex-start; margin-left: 24px; display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; text-align: left; }
+  .masthead .byline img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); object-fit: cover; }
+  .masthead .byline .b-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .masthead .byline .b-date {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .08em; color: var(--muted);
+  }
+  .masthead .byline .b-date::before { content: "·"; margin: 0 8px; color: #c8c8c8; }
+    .masthead h1 {
     max-width: 860px; margin: 0 auto;
     font-size: clamp(23px, 4.2vw, 38px);
     font-weight: 800; letter-spacing: -.02em; line-height: 1.14;
@@ -216,6 +232,9 @@
     .q { font-size: 14.5px; }
   }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="wrap">
@@ -236,10 +255,18 @@
 </nav>
 
 <header class="masthead">
-  <div class="kicker"><span class="dot"></span>BrAIn · Práctica · 7 preguntas</div>
-  <h1>SIETE PREGUNTAS Y UN PAPEL: PONTE EN ORDEN</h1>
-  <div class="sub">Breaking <b>AI</b> Non-Sense</div>
-  <div class="meta"><b>Psicología · Práctica</b> · 20 AGO 2026 · ~8 min</div>
+  <div class="masthead-inner">
+    <div class="kicker">
+      <img class="kicker-logo" src="assets/brain-logo-only.png" alt="BrAIn">
+      <span class="kicker-num">ARTÍCULO 003</span>
+    </div>
+    <h1>SIETE PREGUNTAS Y UN PAPEL: PONTE EN ORDEN</h1>
+    <div class="sub">Breaking <b>AI</b> Non-Sense</div>
+    <div class="byline">
+      <img src="assets/braIn-favicon.png" alt="BrAIn">
+      <span class="b-name">BrAIn</span><span class="b-date">10 AGO 2026</span>
+    </div>
+  </div>
 </header>
 
 <div class="lede">
@@ -256,7 +283,7 @@
     </ol>
   </div>
 
-  <h2><span class="n">PREGUNTA 01</span>EL CUARTO QUE YA CONOCES</h2>
+  <h2><span class="n">PREGUNTA 01</span>El cuarto que ya conoces</h2>
   <p>Empieza por lo pequeño, porque lo pequeño está bajo tu control — y porque el desorden que toleras es la firma del desorden que no ves. Nadie necesita que te expliques tu cuarto. Tú ya sabes cuál es.</p>
   <div class="q"><span>Pregunta uno</span>¿Qué desorden conoces, toleras y no has arreglado? ¿Por qué exactamente no?</div>
   <p>No vale "no tengo tiempo". El tiempo no se fue: se lo diste a otra cosa, y la otra cosa casi nunca era importante. Escríbelo.</p>
@@ -265,7 +292,7 @@
     <textarea id="q1" rows="4" placeholder="El cajón que no abro, la pila de papeles, el correo sin responder…" data-q="1"></textarea>
   </div>
 
-  <h2><span class="n">PREGUNTA 02</span>EL DRAGÓN QUE TIENE NOMBRE</h2>
+  <h2><span class="n">PREGUNTA 02</span>El dragón que tiene nombre</h2>
   <p>Hay una diferencia entre el pavor vago y el miedo con nombre. El dragón de esta sección no es una sensación: es una cosa concreta que llevas evitando — un correo sin abrir, una conversación sin tener, un número que no miras. Sabes cuál es. Llevas semanas sabiéndolo.</p>
   <div class="q"><span>Pregunta dos</span>¿Qué estás evitando que podrías nombrar con precisión absoluta en este momento?</div>
   <p>El nombre importa. Un miedo que no puedes nombrar no se puede matar; un miedo nombrado, sí. Si al escribir la frase te incomoda, bienvenido: la incomodidad es el ruido del dragón.</p>
@@ -274,7 +301,7 @@
     <textarea id="q2" rows="4" placeholder="Ese correo. Esa conversación. Ese número que no miro." data-q="2"></textarea>
   </div>
 
-  <h2><span class="n">PREGUNTA 03</span>NÓMBRALO, O NO EXISTE</h2>
+  <h2><span class="n">PREGUNTA 03</span>Nómbralo, o no existe</h2>
   <p>Esta es la pregunta que nadie quiere hacer porque destruye la comodidad de lo vago. "Algo anda mal" no es un problema: es una niebla. La precisión es el antídoto — no para sentirte mejor, sino para que el problema exista por primera vez en forma atacable.</p>
   <div class="q"><span>Pregunta tres</span>¿Qué es exactamente lo que te molesta? Descríbelo como si se lo explicaras a un ingeniero.</div>
   <p>Si no puedes articularlo, aún no lo has pensado — lo has sentido. Sentir no es pensar. Escríbelo hasta que la frase sea tan específica que dé casi vergüenza.</p>
@@ -283,7 +310,7 @@
     <textarea id="q3" rows="4" placeholder="Qué, cuándo, cuánto. Sin 'más o menos'." data-q="3"></textarea>
   </div>
 
-  <h2><span class="n">PREGUNTA 04</span>LA MENTIRA QUE VIVES</h2>
+  <h2><span class="n">PREGUNTA 04</span>La mentira que vives</h2>
   <p>El autoengaño más caro no es el que dices en voz alta: es el que sostienes en silencio, a solas contigo. Dices que vas a empezar el lunes. Dices que el plan está bajo control. Dices que esa persona no te importa. La pregunta no es si mientes — es dónde.</p>
   <div class="q"><span>Pregunta cuatro</span>¿Qué estás diciendo —a otros o a ti mismo— que ya no te crees?</div>
   <p>La regla es simple: si lo escribes y suena falso al leerlo en voz alta, es falso. La verdad no necesita que la defiendas; la mentira, sí. Todo el esfuerzo que gastas manteniéndola es energía que no inviertes en lo real.</p>
@@ -292,7 +319,7 @@
     <textarea id="q4" rows="4" placeholder="Lo que digo: …  Lo que es cierto: …" data-q="4"></textarea>
   </div>
 
-  <h2><span class="n">PREGUNTA 05</span>EL CAMINO FÁCIL Y EL QUE IMPORTA</h2>
+  <h2><span class="n">PREGUNTA 05</span>El camino fácil y el que importa</h2>
   <p>Casi ninguna decisión importante es entre el bien y el mal. Son entre lo conveniente y lo significativo: la llamada que no quieres hacer, el hábito que sabes que te sostiene, el proyecto que da miedo porque importa. Lo conveniente siempre tiene una excusa lista. Lo significativo casi nunca la necesita.</p>
   <div class="q"><span>Pregunta cinco</span>¿Qué decisión estás aplazando entre el camino fácil y el que sabes que importa?</div>
   <p>No la tomes todavía. Solo nómbrala: las dos opciones, sus costos reales, y por cuál sabes —no sientes— que deberías ir.</p>
@@ -301,7 +328,7 @@
     <textarea id="q5" rows="4" placeholder="Opción A (fácil): …  Opción B (la que importa): …  Elijo: …" data-q="5"></textarea>
   </div>
 
-  <h2><span class="n">PREGUNTA 06</span>COMPÁRATE CON QUIEN FUISTE AYER</h2>
+  <h2><span class="n">PREGUNTA 06</span>Compárate con quien fuiste ayer</h2>
   <p>Compararte con otros es la forma más rápida de sentirte miserable sin aprender nada: su punto de partida no es el tuyo, su cartera no es la tuya, su vida no es la tuya. La única comparación justa es contra tu propio historial. Ahí no hay excusas ni injusticias: solo datos.</p>
   <div class="q"><span>Pregunta seis</span>¿En qué eres mejor que hace un año? ¿En qué eres peor? ¿Y hace cinco?</div>
   <p>La segunda parte duele más que la primera, y es la que importa. Lo que empeoró sin que lo notaras es lo que el ruido diario te ocultó.</p>
@@ -310,7 +337,7 @@
     <textarea id="q6" rows="4" placeholder="Mejor: … · … · …   Peor: … · … · …" data-q="6"></textarea>
   </div>
 
-  <h2><span class="n">PREGUNTA 07</span>EL ACTO CON FECHA</h2>
+  <h2><span class="n">PREGUNTA 07</span>El acto con fecha</h2>
   <p>Aquí está la lógica completa, y es la única parte que no puedes saltarte: <strong>la comprensión no cambia a nadie; el acto con plazo, sí.</strong> Una conversación puede terminar en una sensación. Esta termina en un compromiso — un acto concreto, pequeño, reversible, con fecha dentro de las próximas 72 horas.</p>
   <p>No el acto enorme. El primer escalón. La regla de oro: <em>claridad rápida, consecuencias lentas</em>. Nada de decisiones irreversibles con la adrenalina de un artículo — solo el primer paso, fechado.</p>
   <div class="q"><span>La pregunta final</span>¿Qué acto concreto, con qué fecha exacta (dentro de 72 horas), vas a hacer porque leíste esto?</div>
@@ -320,7 +347,7 @@
     <textarea id="q7" rows="4" placeholder="Acción: …  Fecha: …  Por qué importa: …" data-q="7"></textarea>
   </div>
 
-  <h2><span class="n">—</span>PARA EL TRADER QUE HAY EN TI</h2>
+  <h2><span class="n">—</span>Para el trader que hay en ti</h2>
   <p>Si operas, las siete preguntas tienen una traducción inmediata — y no es casualidad que duela reconocerla:</p>
   <p><strong>El cuarto:</strong> la operación que sabías que debías cerrar y no cerraste. <strong>El dragón:</strong> el plan de trading que no has escrito porque escribir obliga a ver los huecos. <strong>La precisión:</strong> tu estrategia en una hoja — criterios de entrada, salida y tamaño, sin adjetivos. <strong>La mentira:</strong> "estoy gestionando el riesgo" mientras no tienes el tamaño por escrito. <strong>Lo significativo:</strong> el backtest que pospones porque el resultado podría no gustarte. <strong>El ayer:</strong> tu P&L del mes pasado, no el del vecino de X. <strong>El acto con fecha:</strong> tu regla de ejecución escrita, probada y fechada — porque el mercado no premia la información, premia la conducta.</p>
   <p>El mercado es el espejo más caro del mundo: te devuelve exactamente lo que eres, no lo que dices ser. Estas preguntas cuestan menos.</p>

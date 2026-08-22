@@ -14,7 +14,7 @@
 <link rel="icon" type="image/png" sizes="64x64" href="../assets/braIn-favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ── Arcade Ivory: blanco puro + pixel display + emerald solo para status ── */
   :root {
@@ -24,13 +24,14 @@
     --line: #E5E5E5;
     --surface: #F5F5F5;
     --accent: #10B981;
+      --display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Roboto', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     line-height: 1.7;
     overflow-x: hidden;
@@ -75,13 +76,28 @@
     -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
   }
   .masthead .kicker {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
-    margin-bottom: 24px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    margin: 0 auto 28px;
   }
+  .masthead .kicker .kicker-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .kicker img.kicker-logo { height: 32px; width: auto; }
   .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
-  .masthead h1 {
+.masthead-inner {
+    max-width: 780px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .masthead .byline { align-self: flex-start; margin-left: 24px; display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; text-align: left; }
+  .masthead .byline img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); object-fit: cover; }
+  .masthead .byline .b-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .masthead .byline .b-date {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .08em; color: var(--muted);
+  }
+  .masthead .byline .b-date::before { content: "·"; margin: 0 8px; color: #c8c8c8; }
+    .masthead h1 {
     max-width: 860px; margin: 0 auto;
     font-size: clamp(23px, 4.2vw, 38px);
     font-weight: 800; letter-spacing: -.02em; line-height: 1.14;
@@ -217,10 +233,18 @@
 </nav>
 
 <header class="masthead">
-  <div class="kicker"><span class="dot"></span>BrAIn · Artículo 001</div>
-  <h1>LAS CINCO ECUACIONES QUE GOBIERNAN TU VIDA FINANCIERA</h1>
-  <div class="sub">Y por qué ignorarlas es una decisión, no un accidente</div>
-  <div class="meta">Breaking <b>AI</b> Non-Sense · The Red Queen</div>
+  <div class="masthead-inner">
+    <div class="kicker">
+      <img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn">
+      <span class="kicker-num">ARTÍCULO 002</span>
+    </div>
+    <h1>LAS CINCO ECUACIONES QUE GOBIERNAN TU VIDA FINANCIERA</h1>
+    <div class="sub">Y por qué ignorarlas es una decisión, no un accidente</div>
+    <div class="byline">
+      <img src="../assets/braIn-favicon.png" alt="BrAIn">
+      <span class="b-name">BrAIn</span><span class="b-date">3 AGO 2026</span>
+    </div>
+  </div>
 </header>
 
 <div class="wrap">
@@ -237,7 +261,7 @@
 
   <div class="divider"></div>
 
-  <h2><span class="n">—</span>LAS CINCO ECUACIONES DE UN VISTAZO</h2>
+  <h2><span class="n">—</span>Las cinco ecuaciones de un vistazo</h2>
   <ul>
     <li><b>Crecimiento compuesto</b> — en qué se convierte un dólar con el tiempo</li>
     <li><b>Regla del 72</b> — qué tan rápido se duplica el dinero a cualquier tasa</li>
@@ -254,7 +278,7 @@
 
   <div class="divider"></div>
 
-  <h2><span class="n">ECUACIÓN 01</span>EL TIEMPO DOBLA EL DINERO</h2>
+  <h2><span class="n">ECUACIÓN 01</span>El tiempo dobla el dinero</h2>
   <h3>Crecimiento compuesto · Fibonacci, 1202</h3>
 
   <p>La ecuación más importante del mundo del dinero:</p>
@@ -280,7 +304,7 @@
 
   <div class="divider"></div>
 
-  <h2><span class="n">ECUACIÓN 02</span>EL 72 LO RESUELVE TODO</h2>
+  <h2><span class="n">ECUACIÓN 02</span>El 72 lo resuelve todo</h2>
   <h3>La regla del doble · Pacioli, 1494</h3>
 
   <p>Un atajo que existe desde 1494, cuando el fraile Luca Pacioli lo escribió en el libro que le dio a Europa la partida doble:</p>
@@ -296,7 +320,7 @@
 
   <div class="divider"></div>
 
-  <h2><span class="n">ECUACIÓN 03</span>EL DÓLAR FUTURO SE ENCOGE</h2>
+  <h2><span class="n">ECUACIÓN 03</span>El dólar futuro se encoge</h2>
   <h3>Valor presente · Fisher, 1907</h3>
 
   <p>Pregunta trampa: ¿$1,000 hoy o $1,000 dentro de un año? Casi todos dicen "hoy", y casi todos dan la razón equivocada ("porque podría gastarlos"). La razón real: <b>$1,000 hoy se pueden invertir.</b> Con un 6% disponible, hoy son $1,060 en un año — o, equivalentemente, $1,000 el año que viene valen solo ~$943 hoy.</p>
@@ -318,7 +342,7 @@
 
   <div class="divider"></div>
 
-  <h2><span class="n">ECUACIÓN 04</span>EL PROMEDIO ES UNA MENTIRA</h2>
+  <h2><span class="n">ECUACIÓN 04</span>El promedio es una mentira</h2>
   <h3>Media geométrica · Cauchy, 1821</h3>
 
   <p>La ecuación que la industria financiera no quiere que conozcas. Supón que un fondo te da estos retornos en tres años: <b>+50%, −50%, +50%.</b> ¿Cuál es tu rendimiento promedio?</p>
@@ -338,7 +362,7 @@
 
   <div class="divider"></div>
 
-  <h2><span class="n">ECUACIÓN 05</span>EL EFECTIVO SE PUDRE</h2>
+  <h2><span class="n">ECUACIÓN 05</span>El efectivo se pudre</h2>
   <h3>Rendimiento real · Fisher, 1930</h3>
 
   <p>Cuenta que paga 4%, inflación al 3%: tu dinero "creció 4%" — en realidad creció ~1% en poder de compra. Tus dólares se multiplicaron mientras cada dólar compraba menos.</p>
@@ -362,7 +386,7 @@
 
   <div class="divider"></div>
 
-  <h2><span class="n">—</span>PONIENDO LAS CINCO ECUACIONES JUNTAS</h2>
+  <h2><span class="n">—</span>Poniendo las cinco ecuaciones juntas</h2>
 
   <p>Juntas, son una lente que te deja ver a través de casi cualquier afirmación financiera:</p>
   <table>
@@ -375,7 +399,7 @@
   </table>
   <p>Cinco ecuaciones. Dos son álgebra reordenada. Una es un atajo de 1494. Las cinco caben en una servilleta.</p>
 
-  <h2><span class="n">—</span>POR QUÉ ESTO IMPORTA (EL DRAGÓN QUE NO VES)</h2>
+  <h2><span class="n">—</span>Por qué esto importa (el dragón que no ves)</h2>
 
   <p>La industria financiera no quiere que seas malo en matemáticas. Quiere que seas <b>selectivamente malo</b>: lo suficientemente bueno para firmar contratos y pagar comisiones, no lo suficientemente bueno para notar lo que los contratos están haciendo.</p>
   <ul>
@@ -385,7 +409,7 @@
   </ul>
   <p>Esto no es una conspiración: es una característica. Toda industria que vende complejidad depende de que sus clientes no hagan las matemáticas subyacentes. Las cinco ecuaciones son toda la defensa — no contra el fraude, sino contra los malos negocios silenciosos disfrazados de lenguaje tranquilizador.</p>
 
-  <h2><span class="n">—</span>LO QUE DE VERDAD IMPORTA</h2>
+  <h2><span class="n">—</span>Lo que de verdad importa</h2>
 
   <p><b>El dinero no es una fuerza misteriosa. Es un conjunto pequeño de ecuaciones que nunca te entregaron del todo.</b> Quien parece rico o sabio no está dotado psíquicamente: corre las mismas cinco fórmulas, una y otra vez, sobre cada decisión. Ese es todo el "secreto".</p>
   <p>Ninguna está oculta. Ninguna requiere un título. Ninguna cuesta nada. Todas son más viejas que tus abuelos.</p>
