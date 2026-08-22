@@ -72,9 +72,13 @@
   /* ── masthead del artículo ── */
   .masthead {
     position: relative; overflow: hidden;
-    display: flex; flex-direction: column; align-items: center;
     text-align: center; padding: 72px 24px 56px;
   }
+  .masthead-inner {
+    max-width: 780px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .masthead .kicker, .masthead .byline { align-self: flex-start; }
   .masthead::before {
     content: "";
     position: absolute; inset: 0; z-index: -1;
@@ -89,7 +93,7 @@
     letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
     margin-bottom: 24px;
   }
-  .masthead .kicker img.kicker-logo { height: 14px; width: auto; }
+  .masthead .kicker img.kicker-logo { height: 20px; width: auto; }
   .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
   .masthead h1 {
     max-width: 860px; margin: 0 auto;
@@ -242,12 +246,14 @@
 </nav>
 
 <header class="masthead">
-  <div class="kicker"><span class="dot"></span><img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn"></div>
-  <h1>[TÍTULO DEL ARTÍCULO EN ALL CAPS]</h1>
-  <div class="sub">[Subtítulo corto en mono]</div>
-  <div class="byline">
-    <img src="../assets/braIn-favicon.png" alt="BrAIn">
-    <span class="b-name">BrAIn</span><span class="b-date">[FECHA — MES EN MAYÚSCULAS, ej. 22 AGO 2026]</span>
+  <div class="masthead-inner">
+    <div class="kicker"><img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn"></div>
+    <h1>[TÍTULO DEL ARTÍCULO EN ALL CAPS]</h1>
+    <div class="sub">[Subtítulo corto en mono]</div>
+    <div class="byline">
+      <img src="../assets/braIn-favicon.png" alt="BrAIn">
+      <span class="b-name">BrAIn</span><span class="b-date">[FECHA — MES EN MAYÚSCULAS, ej. 22 AGO 2026]</span>
+    </div>
   </div>
 </header>
 
