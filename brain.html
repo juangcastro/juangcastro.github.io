@@ -69,8 +69,8 @@
   }
   .masthead-grid {
     max-width: 1000px; margin: 0 auto;
-    display: grid; grid-template-columns: minmax(280px, 380px) 1fr;
-    gap: 40px; align-items: center;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 48px; align-items: center;
   }
   .brand-side { text-align: center; }
   .masthead::before {
@@ -92,23 +92,24 @@
     background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18);
   }
   .brand-side .brain-logo {
-    width: min(640px, 100%);
+    width: min(720px, 100%);
     height: auto;
     aspect-ratio: 1407 / 768;
     object-fit: contain;
   }
   .brand-side .sub { margin-top: 18px; }
-  .brand-side .desc { margin: 14px auto 0; max-width: 460px; }
+.desc {
+    max-width: 620px; margin: 44px auto 0; text-align: center;
+    color: var(--muted); font-size: 15px; line-height: 1.7;
+  }
+  .desc b { color: var(--ink); font-weight: 600; }
   .masthead .sub {
     margin-top: 20px;
     font-family: 'JetBrains Mono', monospace; font-size: 12px;
     letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
   }
   .masthead .sub b { color: var(--ink); font-weight: 700; }
-  .masthead .desc {
-    max-width: 560px; margin: 16px auto 0; color: var(--muted); font-size: 15px;
-  }
-  .masthead .desc b { color: var(--ink); font-weight: 600; }
+
 
   /* ── contenido ───────────────────────── */
   .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
@@ -222,14 +223,14 @@
     border: 1px solid var(--line); border-radius: 12px;
     background: var(--bg);
   }
-  .nl-hero { text-align: left; }
+  .nl-hero { text-align: left; max-width: 340px; justify-self: end; width: 100%; }
   .nl-hero .sec-label { margin-bottom: 4px; }
   .nl-hero h2 { margin: 10px 0 8px; }
   .nl-hero p { margin: 0 0 18px; }
   .nl-hero .nl-form { max-width: none; }
   @media (max-width: 860px) {
     .masthead-grid { grid-template-columns: 1fr; gap: 36px; }
-    .nl-hero { text-align: center; }
+    .nl-hero { text-align: center; max-width: 480px; justify-self: center; }
     .nl-hero .nl-form { max-width: 480px; margin: 0 auto; }
   }
   .sec-label {
@@ -329,17 +330,11 @@
   <div class="masthead-grid">
     <div class="brand-side">
       <h1 class="brain-logo"><img src="assets/brain-logo.png" alt="BrAIn — Breaking AI Non-sense"></h1>
-      <div class="sub">Breaking <b>AI</b> Non-Sense</div>
-      <p class="desc">
-        Inteligencia artificial, inversión y mercados, tecnología, filosofía, matemática,
-        psicología, historia, mezclados, a veces con opiniones, contados <b>sin hype</b>.
-        Un esfuerzo por entender lo que importa. Con curiosidad y mente abierta.
-      </p>
     </div>
     <div class="nl-box nl-hero">
       <div class="sec-label">// Newsletter</div>
       <h2>Entérate de cada artículo</h2>
-      <p>Novedades de BrAIn y de The Red Queen, directo a tu correo. Sin humo, sin spam, sin sorpresas.</p>
+      <p>Novedades de BrAIn y The Red Queen, directo a tu correo. Todos los lunes, sin spam, solo contenido que yo quisiera leer.</p>
       <form class="nl-form" id="nlForm" novalidate>
         <input type="email" id="nlEmail" placeholder="tu@email.com" autocomplete="email" aria-label="Tu email" required>
         <button type="submit" class="btn-black">Suscribirme</button>
@@ -347,6 +342,11 @@
       <p class="nl-msg" id="nlMsg" role="status"></p>
     </div>
   </div>
+  <p class="desc">
+    Inteligencia artificial, inversión y mercados, tecnología, filosofía, matemática,
+    psicología, historia, mezclados, a veces con opiniones, contados <b>sin hype</b>.
+    Un esfuerzo por entender lo que importa. Con curiosidad y mente abierta.
+  </p>
 </header>
 
 <div class="wrap">
