@@ -113,7 +113,11 @@
     border: 1px solid var(--line); object-fit: cover;
   }
   .byline .b-name { font-size: 13px; font-weight: 700; color: var(--ink); }
-  .byline .b-date { font-size: 13px; color: var(--muted); }
+  .byline .b-logo { height: 15px; width: auto; display: block; }
+  .byline .b-date {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .08em; color: var(--muted);
+  }
   .byline .b-date::before { content: "·"; margin: 0 8px; color: #c8c8c8; }
 
   /* ── cuerpo ── */
@@ -130,8 +134,9 @@
     margin: 48px 0 12px; line-height: 1.25;
   }
   h2 .n {
-    font-family: 'JetBrains Mono', monospace; font-size: .62em; font-weight: 600;
-    color: #b0b0b0; letter-spacing: .14em; display: block; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: .48em; font-weight: 500;
+    color: var(--accent); letter-spacing: .24em; text-transform: uppercase;
+    display: block; margin-bottom: 10px;
   }
   h3 { font-size: 15px; font-weight: 700; margin: 24px 0 8px; }
 
@@ -240,9 +245,8 @@
   <div class="sub">[Subtítulo corto en mono]</div>
   <div class="byline">
     <img src="../assets/braIn-favicon.png" alt="BrAIn">
-    <div>
-      <span class="b-name">BrAIn</span><span class="b-date">[FECHA DE PUBLICACIÓN]</span>
-    </div>
+    <img class="b-logo" src="../assets/brain-logo-only.png" alt="BrAIn">
+    <span class="b-date">[FECHA DE PUBLICACIÓN]</span>
   </div>
 </header>
 
