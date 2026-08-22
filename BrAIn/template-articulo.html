@@ -72,6 +72,7 @@
   /* ── masthead del artículo ── */
   .masthead {
     position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center;
     text-align: center; padding: 72px 24px 56px;
   }
   .masthead::before {
@@ -88,6 +89,7 @@
     letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
     margin-bottom: 24px;
   }
+  .masthead .kicker img.kicker-logo { height: 14px; width: auto; }
   .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
   .masthead h1 {
     max-width: 860px; margin: 0 auto;
@@ -106,7 +108,7 @@
   /* ── byline estilo Substack: avatar circular + fecha ── */
   .byline {
     display: inline-flex; align-items: center; gap: 10px;
-    margin-top: 22px;
+    margin-top: 22px; align-self: flex-start; text-align: left;
   }
   .byline img {
     width: 30px; height: 30px; border-radius: 50%;
@@ -115,7 +117,7 @@
   .byline .b-name { font-size: 13px; font-weight: 700; color: var(--ink); }
   .byline .b-logo { height: 15px; width: auto; display: block; }
   .byline .b-date {
-    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
     letter-spacing: .08em; color: var(--muted);
   }
   .byline .b-date::before { content: "·"; margin: 0 8px; color: #c8c8c8; }
@@ -135,7 +137,7 @@
   }
   h2 .n {
     font-family: 'JetBrains Mono', monospace; font-size: .48em; font-weight: 500;
-    color: var(--accent); letter-spacing: .24em; text-transform: uppercase;
+    color: #b0b0b0; letter-spacing: .24em; text-transform: uppercase;
     display: block; margin-bottom: 10px;
   }
   h3 { font-size: 15px; font-weight: 700; margin: 24px 0 8px; }
@@ -240,13 +242,12 @@
 </nav>
 
 <header class="masthead">
-  <div class="kicker"><span class="dot"></span>[BrAIn · Artículo 00N · TEMA]</div>
+  <div class="kicker"><span class="dot"></span><img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn"></div>
   <h1>[TÍTULO DEL ARTÍCULO EN ALL CAPS]</h1>
   <div class="sub">[Subtítulo corto en mono]</div>
   <div class="byline">
     <img src="../assets/braIn-favicon.png" alt="BrAIn">
-    <img class="b-logo" src="../assets/brain-logo-only.png" alt="BrAIn">
-    <span class="b-date">[FECHA DE PUBLICACIÓN]</span>
+    <span class="b-name">BrAIn</span><span class="b-date">[FECHA — MES EN MAYÚSCULAS, ej. 22 AGO 2026]</span>
   </div>
 </header>
 
