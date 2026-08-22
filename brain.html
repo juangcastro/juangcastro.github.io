@@ -65,8 +65,15 @@
   /* ── hero ────────────────────────────── */
   .masthead {
     position: relative; overflow: hidden;
-    text-align: center; padding: 88px 24px 64px;
+    padding: 72px 24px 56px;
   }
+  .masthead-grid {
+    max-width: 1000px; margin: 0 auto;
+    display: grid; grid-template-columns: minmax(280px, 380px) 1fr;
+    gap: 40px; align-items: center;
+  }
+  .brand-side { text-align: center; }
+  .brand-side .brain-logo { width: 100%; max-width: 520px; margin: 0 auto 8px; }
   .masthead::before {
     content: "";
     position: absolute; inset: 0; z-index: -1;
@@ -85,13 +92,14 @@
     width: 8px; height: 8px; border-radius: 50%;
     background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18);
   }
-  .masthead .brain-logo {
-    width: min(520px, 88vw);
+  .brand-side .brain-logo {
+    width: min(560px, 100%);
     height: auto;
     aspect-ratio: 1407 / 768;
     object-fit: contain;
-    margin: 0 auto 8px;
   }
+  .brand-side .sub { margin-top: 18px; }
+  .brand-side .desc { margin: 14px auto 0; max-width: 460px; }
   .masthead .sub {
     margin-top: 20px;
     font-family: 'JetBrains Mono', monospace; font-size: 12px;
@@ -211,9 +219,19 @@
   /* ── newsletter (Arcade Ivory) ───────── */
   .nl-box {
     text-align: center;
-    padding: 48px 28px 40px;
+    padding: 36px 30px 32px;
     border: 1px solid var(--line); border-radius: 12px;
-    margin: 56px 0; background: var(--bg);
+    background: var(--bg);
+  }
+  .nl-hero { text-align: left; }
+  .nl-hero .sec-label { margin-bottom: 4px; }
+  .nl-hero h2 { margin: 10px 0 8px; }
+  .nl-hero p { margin: 0 0 18px; }
+  .nl-hero .nl-form { max-width: none; }
+  @media (max-width: 860px) {
+    .masthead-grid { grid-template-columns: 1fr; gap: 36px; }
+    .nl-hero { text-align: center; }
+    .nl-hero .nl-form { max-width: 480px; margin: 0 auto; }
   }
   .sec-label {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
@@ -309,13 +327,26 @@
 </nav>
 
 <header class="masthead">
-  <div class="status"><span class="dot"></span>Breaking AI Non-Sense · Artículos cada lunes</div>
-  <h1 class="brain-logo"><img src="assets/brain-logo.png" alt="BrAIn — Breaking AI Non-sense"></h1>
-  <div class="sub">Breaking <b>AI</b> Non-Sense</div>
-  <p class="desc">
-    Inteligencia artificial, mercados y tecnología, contados <b>sin humo ni hype</b>.
-    Entender lo que importa antes de que sea mainstream.
-  </p>
+  <div class="masthead-grid">
+    <div class="nl-box nl-hero">
+      <div class="sec-label">// Newsletter</div>
+      <h2>Entérate de cada artículo</h2>
+      <p>Novedades de BrAIn y de The Red Queen, directo a tu correo. Sin humo, sin spam, sin sorpresas.</p>
+      <form class="nl-form" id="nlForm" novalidate>
+        <input type="email" id="nlEmail" placeholder="tu@email.com" autocomplete="email" aria-label="Tu email" required>
+        <button type="submit" class="btn-black">Suscribirme</button>
+      </form>
+      <p class="nl-msg" id="nlMsg" role="status"></p>
+    </div>
+    <div class="brand-side">
+      <h1 class="brain-logo"><img src="assets/brain-logo.png" alt="BrAIn — Breaking AI Non-sense"></h1>
+      <div class="sub">Breaking <b>AI</b> Non-Sense</div>
+      <p class="desc">
+        Inteligencia artificial, mercados y tecnología, contados <b>sin humo ni hype</b>.
+        Entender lo que importa antes de que sea mainstream.
+      </p>
+    </div>
+  </div>
 </header>
 
 <div class="wrap">
@@ -450,17 +481,6 @@
 
     <p class="empty-state" id="emptyState">No hay artículos en esta temática todavía — pero ya están en camino.</p>
   </section>
-
-  <div class="nl-box">
-    <div class="sec-label">// Newsletter</div>
-    <h2>Entérate de cada artículo</h2>
-    <p>Novedades de BrAIn y de The Red Queen, directo a tu correo. Sin humo, sin spam, sin sorpresas.</p>
-    <form class="nl-form" id="nlForm" novalidate>
-      <input type="email" id="nlEmail" placeholder="tu@email.com" autocomplete="email" aria-label="Tu email" required>
-      <button type="submit" class="btn-black">Suscribirme</button>
-    </form>
-    <p class="nl-msg" id="nlMsg" role="status"></p>
-  </div>
 
   <section class="topics">
     <div class="sec-label">Temas en el radar</div>
