@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EL DIVORCIO: UN JUEGO REPETIDO QUE ALGUIEN DECIDE TERMINAR — BrAIn · The Red Queen</title>
+<meta name="description" content="El divorcio explicado con teoría de juegos, psicología conductual y cultura: por qué se termina lo que prometió ser para siempre.">
+<meta property="og:title" content="EL DIVORCIO: EL JUEGO QUE PROMETISTE JUGAR PARA SIEMPRE">
+<meta property="og:description" content="Teoría de juegos, psicología conductual y cultura: por qué se termina lo que prometió ser para siempre.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://theredqueen.co/BrAIn/el-divorcio.html">
+<meta property="og:image" content="https://theredqueen.co/assets/trq-logo-main.png">
+<link rel="icon" type="image/x-icon" href="../assets/braIn-favicon.ico">
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/braIn-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Arcade Ivory: blanco puro + ink + emerald SOLO para status ── */
+  :root {
+    --bg: #FFFFFF;
+    --ink: #0A0A0A;
+    --muted: #666666;
+    --line: #E5E5E5;
+    --surface: #F5F5F5;
+    --accent: #10B981;          /* emerald — SOLO status/vivo */
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ── nav (idéntico en todas las páginas TRQ) ── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 13px; letter-spacing: .28em; text-transform: uppercase; color: var(--ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links .active { color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+  @media (max-width: 560px) { .nav-links a:not(.active) { display: none; } }
+
+  /* ── masthead del artículo ── */
+  .masthead {
+    position: relative; overflow: hidden;
+    text-align: center; padding: 72px 24px 56px;
+  }
+  .masthead-inner {
+    max-width: 780px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .masthead .byline { align-self: flex-start; margin-left: 24px; }
+  .masthead::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background-image: radial-gradient(rgba(229, 229, 229, .55) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+  }
+  .masthead .kicker {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    margin: 0 auto 28px;
+  }
+  .masthead .kicker .kicker-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .kicker img.kicker-logo { height: 32px; width: auto; }
+  .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
+  .masthead h1 {
+    max-width: 860px; margin: 0 auto;
+    font-size: clamp(23px, 4.2vw, 38px);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.14;
+  }
+  .masthead .sub {
+    margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .sub b { color: var(--ink); font-weight: 700; }
+  .masthead .meta { margin-top: 20px; color: var(--muted); font-size: 12px; }
+  .masthead .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ── byline estilo Substack: avatar circular + fecha ── */
+  .byline {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 22px; align-self: flex-start; text-align: left;
+  }
+  .byline img {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1px solid var(--line); object-fit: cover;
+  }
+  .byline .b-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .byline .b-logo { height: 15px; width: auto; display: block; }
+  .byline .b-date {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .08em; color: var(--muted);
+  }
+  .byline .b-date::before { content: "·"; margin: 0 8px; color: #c8c8c8; }
+
+  /* ── cuerpo ── */
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+
+  .lede {
+    font-size: 16px; line-height: 1.7; color: #333;
+    border-left: 3px solid var(--line); padding-left: 22px; margin: 8px 0 40px;
+  }
+  .lede strong { color: var(--ink); }
+
+  h2 {
+    font-size: clamp(18px, 2.8vw, 24px); font-weight: 800; letter-spacing: -.015em;
+    margin: 48px 0 12px; line-height: 1.25;
+  }
+  h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: .48em; font-weight: 500;
+    color: #b0b0b0; letter-spacing: .24em; text-transform: uppercase;
+    display: block; margin-bottom: 10px;
+  }
+  h3 { font-size: 15px; font-weight: 700; margin: 24px 0 8px; }
+
+  p { margin: 0 0 16px; color: #222; font-size: 14.5px; }
+  p b, li b { color: var(--ink); font-weight: 700; }
+
+  ul { margin: 0 0 16px 4px; padding-left: 20px; }
+  li { margin-bottom: 7px; color: #222; font-size: 14.5px; }
+
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 2.2vw, 16px);
+    font-weight: 600; text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px 22px; margin: 24px 0;
+    color: var(--ink); letter-spacing: .01em;
+  }
+
+  blockquote {
+    margin: 22px 0; padding: 16px 22px;
+    border-left: 3px solid var(--ink);
+    background: var(--surface);
+    font-size: 14.5px; font-weight: 600; color: var(--ink);
+    line-height: 1.6; border-radius: 0 10px 10px 0;
+  }
+  blockquote.quote::before { content: "“"; color: #c8c8c8; font-size: 1.4em; font-weight: 800; margin-right: 2px; }
+
+  .fig { margin: 30px 0; }
+  .fig img {
+    width: 100%; height: auto;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(10, 10, 10, .10);
+  }
+  .fig figcaption {
+    margin-top: 10px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 22px 0 26px;
+    font-size: 13px;
+  }
+  th {
+    text-align: left; font-weight: 700; color: var(--ink);
+    border-bottom: 2px solid var(--ink); padding: 9px 12px;
+  }
+  td { border-bottom: 1px solid var(--line); padding: 9px 12px; color: #222; }
+  tr:last-child td { border-bottom: none; }
+
+  .divider { height: 1px; background: var(--line); margin: 44px 0; }
+
+  .outro {
+    margin-top: 44px;
+    font-size: 12px; color: var(--muted); line-height: 1.65;
+    border-top: 1px solid var(--line); padding-top: 20px;
+  }
+  .outro a { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--line); }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-top: 36px; transition: color .15s ease;
+  }
+  .back:hover { color: var(--ink); }
+  .back::before { content: "←"; }
+
+  footer {
+    border-top: 1px solid var(--line); background: var(--bg);
+    padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a class="active" href="../brain.html">BrAIn</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="kicker">
+      <img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn">
+      <span class="kicker-num">ARTÍCULO 009</span>
+    </div>
+    <h1>EL DIVORCIO: EL JUEGO QUE PROMETISTE JUGAR PARA SIEMPRE</h1>
+    <div class="sub">Breaking <b>AI</b> Non-Sense</div>
+    <div class="byline">
+      <img src="../assets/braIn-favicon.png" alt="BrAIn">
+      <span class="b-name">BrAIn</span><span class="b-date">21 SEP 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="lede">
+    Hay una escena que se repite en las conversaciones de cualquier grupo de amigos que pasa los cuarenta: <strong>alguien menciona un divorcio — el suyo, el de un hermano, el de un amigo — y todos asienten como si fuera una epidemia</strong>.
+    No es una impresión: es un fenómeno estadístico. Y detrás de cada divorcio hay una estructura que la teoría de juegos, la psicología conductual y la cultura explican mejor que cualquier drama personal.
+  </div>
+
+  <p>Este artículo no es sobre salvar matrimonios. Es sobre entender <b>por qué se termina lo que prometió ser para siempre</b> — y por qué la respuesta no está en los culpables, sino en las reglas del juego.</p>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">SECCIÓN 01</span>El matrimonio es un juego repetido</h2>
+
+  <p>En teoría de juegos, hay dos tipos de juegos: los de una sola jugada y los repetidos. <b>El matrimonio es un juego repetido con horizonte indefinido</b> — se juega todos los días, sin saber cuándo termina, y las decisiones de hoy afectan las de mañana.</p>
+
+  <p>Los juegos repetidos tienen una propiedad fascinante: <b>permiten la cooperación incluso cuando la traición sería más rentable en el corto plazo</b>. El famoso "tit for tat" — ojo por ojo — gana en torneos de juegos repetidos porque castiga la traición y perdona rápido. En un matrimonio sano, eso se parece a: "si hoy me apoyas, mañana te apoyo; si me fallas, lo noto — y vuelvo a confiar cuando demuestras que lo lamentas".</p>
+
+  <blockquote class="quote">El matrimonio no se rompe por una traición: se rompe cuando la cooperación deja de ser la jugada racional.</blockquote>
+
+  <h2><span class="n">SECCIÓN 02</span>El dilema del prisionero de la pareja</h2>
+
+  <p>El dilema del prisionero clásico dice que dos personas, actuando cada una en su propio interés, producen un resultado peor para ambas que si hubieran cooperado. <b>La pareja vive una versión cotidiana de este dilema</b>: cada uno decide cuánto dar sin saber cuánto recibirá.</p>
+
+  <p>La jugada egoísta — "yo pongo menos, que ponga el otro" — es racional si el otro coopera. Pero si ambos la eligen, la relación se vacía: dos personas que conviven sin darse nada. <b>La diferencia entre una pareja que dura y una que se hunde no es la ausencia del dilema — es la repetición</b>. Cuando el juego se repite, el costo de la traición se paga con creces: la confianza es un activo que tarda años en construirse y segundos en destruirse.</p>
+
+  <h2><span class="n">SECCIÓN 03</span>El costo hundido: la trampa de "ya llevamos 15 años"</h2>
+
+  <p>La psicología conductual explica lo que la teoría de juegos no: por qué la gente <b>se queda en relaciones que ya no funcionan</b>. Se llama falacia del costo hundido — la tendencia a seguir invirtiendo en algo solo porque ya invertiste mucho en ello.</p>
+
+  <p>"No puedo dejarlo, llevamos 15 años juntos", "pensamos en los niños", "qué dirá la familia". <b>Todos son costos hundidos: dinero gastado, años vividos, identidad construida alrededor de "nosotros"</b>. La decisión racional debería mirar solo hacia adelante: ¿esta relación produce más de lo que cuesta, de aquí en adelante? Pero el cerebro humano no decide así — decide mirando hacia atrás, tratando de no "perder" lo invertido.</p>
+
+  <p>[La ironía es que la falacia del costo hundido también opera al revés: muchos se divorcian por la misma razón por la que otros se quedan — por el peso de lo invertido. Unos no soportan perder lo que construyeron; otros no soportan seguir pagando por algo que ya no produce.]</p>
+
+  <h2><span class="n">SECCIÓN 04</span>La curva de la infelicidad</h2>
+
+  <p>Hay un dato que la investigación repite con consistencia incómoda: <b>la satisfacción matrimonial sigue una curva en forma de U a lo largo de la vida</b>. Alta al principio, baja en los años de crianza — cuando el trabajo, los hijos y el dinero devoran la energía — y vuelve a subir cuando los hijos se van y la pareja vuelve a quedar a solas.</p>
+
+  <p>El problema es que <b>el valle de la curva coincide con la edad en la que la gente se divorcia más</b>. Es decir: muchos divorcios ocurren en el punto más bajo de una curva que habría subido si hubieran esperado. La psicología conductual lo llama descuento temporal: valoramos el dolor de hoy más que el alivio de mañana, y tomamos decisiones permanentes con información del momento más distorsionado.</p>
+
+  <h2><span class="n">SECCIÓN 05</span>La cultura: cuando la salida se vuelve aceptable</h2>
+
+  <p>La teoría de juegos y la psicología explican el mecanismo individual. La cultura explica por qué hay una <b>epidemia</b> — por qué el divorcio dejó de ser un escándalo y se volvió una opción normal.</p>
+
+  <p>Cada era tiene su narrativa sobre el matrimonio. La era agrícola lo veía como una <b>unidad económica</b>: dos familias, una tierra, una herencia. La era industrial lo veía como un <b>contrato social</b>: estatus, religión, deber. La era actual lo ve como un <b>vehículo de realización personal</b>: "encontré a mi alma gemela", "crecí", "necesito ser feliz". Y aquí está el punto: <b>cuando el matrimonio promete felicidad personal, el divorcio deja de ser un fracaso y se vuelve una corrección de rumbo</b>. La misma cultura que lo hizo deseable es la que hace la salida legítima.</p>
+
+  <blockquote class="quote">El divorcio no es el fracaso del matrimonio — es el fracaso de la promesa cultural de que el matrimonio te haría feliz.</blockquote>
+
+  <h2><span class="n">SECCIÓN 06</span>Lo que esto significa para ti</h2>
+
+  <p>Si estás viendo divorcios a tu alrededor — los tuyos, los de tus amigos — este artículo no te da una respuesta. Te da un <b>marco</b>.</p>
+
+  <p>Los divorcios que ves no son tragedias aleatorias: son el resultado predecible de un juego repetido donde la cooperación dejó de pagar, una mente que sobrevalora lo invertido, una curva de satisfacción en su punto más bajo, y una cultura que cambió las reglas del contrato a mitad del partido. <b>Entender el juego no evita que se juegue — pero te dice dónde están las fichas cuando se cae la mesa.</b></p>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">—</span>Para el inversionista que hay en ti</h2>
+
+  <p>Hay una lección de este tema que trasciende lo personal: <b>los costos hundidos no son costos — son información sobre el pasado, no sobre el futuro</b>. En tus inversiones, en tu trabajo, en tus relaciones: la pregunta no es cuánto has invertido, sino cuánto vale lo que tienes de aquí en adelante. El mercado no te devuelve lo que perdiste por lástima; te paga por lo que produces desde hoy. Lo mismo aplica a todo lo demás.</p>
+
+  <div class="outro">
+    Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.
+  </div>
+
+  <a class="back" href="../brain.html">Volver a BrAIn</a>
+
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
+</footer>
+
+</body>
+</html>
