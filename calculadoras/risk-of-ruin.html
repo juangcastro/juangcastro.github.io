@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk of Ruin · Calculadoras TRQ</title>
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f; --surface: #0d0f1e; --card: #12142a; --card-2: #171a36;
+    --border: #252b52; --text: #e8ecff; --muted: #8b92b8;
+    --accent: #ff3b5c; --glow-accent: rgba(255, 59, 92, .35);
+    --up: #34d399; --down: #ff5c7a; --amber: #fbbf24;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+
+  .masthead { padding: 34px 0 8px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .masthead .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
+  .masthead h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(30px, 4.6vw, 42px); letter-spacing: -.02em; }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
+  .masthead p { color: var(--muted); max-width: 660px; font-size: 15px; margin-top: 10px; line-height: 1.65; }
+  .masthead p b { color: var(--text); }
+
+  .panel {
+    margin-top: 26px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px 22px 24px;
+  }
+  .panel h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .panel h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    color: var(--accent); border: 1px solid var(--border); border-radius: 6px;
+    padding: 3px 7px; background: rgba(6, 7, 15, .45);
+  }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 640px) { .grid, .grid-2, .grid-4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 420px) { .grid, .grid-2, .grid-4 { grid-template-columns: 1fr; } }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: .02em; }
+  label .hint { color: #5b6288; font-size: 11px; }
+  input[type="number"] {
+    width: 100%; padding: 10px 12px;
+    background: rgba(6, 7, 15, .55); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    outline: none; transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
+
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pill {
+    padding: 7px 14px; font-size: 12px; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+    background: rgba(6, 7, 15, .45); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .pill:hover { color: var(--text); border-color: #3a4170; }
+  .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 18px rgba(255, 59, 92, .28); }
+
+  .run {
+    margin-top: 22px; width: 100%;
+    padding: 14px; border: none; border-radius: 12px; cursor: pointer;
+    background: var(--accent); color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; letter-spacing: .06em;
+    box-shadow: 0 10px 30px -12px rgba(255, 59, 92, .55);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .run:hover { box-shadow: 0 14px 36px -12px rgba(255, 59, 92, .7); }
+  .run:active { transform: scale(0.96); }
+
+  .results { margin-top: 26px; }
+  .placeholder {
+    border: 1px dashed var(--border); border-radius: 16px;
+    padding: 44px 20px; text-align: center; color: var(--muted); font-size: 14px;
+  }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .kpis .kpi {
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 16px 14px;
+  }
+  .kpi .lab { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+  .kpi .val { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi .val.pos { color: var(--up); }
+  .kpi .val.neg { color: var(--down); }
+  .kpi .val.acc { color: var(--accent); }
+  .kpi .val.amber { color: var(--amber); }
+  .kpi .sub { font-size: 11px; color: #5b6288; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+  @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
+
+  .note {
+    margin-top: 14px; padding: 14px 16px; border-radius: 12px;
+    border: 1px solid var(--border); background: rgba(6, 7, 15, .4);
+    font-size: 13px; color: var(--muted); line-height: 1.6;
+  }
+  .note.warn { border-color: rgba(255, 92, 122, .5); background: rgba(255, 92, 122, .07); color: #ffb3c2; }
+  .note b { color: var(--text); }
+  .canvas-box { margin-top: 14px; }
+  .canvas-box .cap { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+  canvas { width: 100%; height: auto; background: rgba(6, 7, 15, .4); border: 1px solid var(--border); border-radius: 14px; }
+
+  footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 40px; }
+  .foot-inner { max-width: 780px; margin: 0 auto; padding: 18px 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+  footer span { color: var(--muted); font-size: 12px; }
+  .back { color: var(--muted); text-decoration: none; font-size: 13px; font-family: 'JetBrains Mono', monospace; transition: color .15s ease; }
+  .back:hover { color: var(--accent); }
+  .back::before { content: "← "; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">Calculadoras</div>
+    <h1>Risk of <span class="red">Ruin</span></h1>
+    <p>La probabilidad de que tu cuenta <b>toque fondo antes de que tu edge se manifieste</b>. Es el problema clásico de la ruina del jugador aplicado al trading: aunque tu estrategia sea ganadora, la secuencia de trades puede matarte antes de que la estadística trabaje a tu favor.</p>
+  </header>
+
+  <div class="panel">
+    <h2><span class="n">01</span> Tu edge</h2>
+    <div class="pill-row" id="presetRow">
+      <button class="pill" data-preset="sobrio">Sobrio</button>
+      <button class="pill active" data-preset="balanceado">Balanceado</button>
+      <button class="pill" data-preset="afilado">Afilado</button>
+    </div>
+    <div class="grid">
+      <div>
+        <label for="winRate">Win rate (%)</label>
+        <input id="winRate" type="number" step="1" min="1" max="99" value="60">
+      </div>
+      <div>
+        <label for="avgWin">Avg Win (R)</label>
+        <input id="avgWin" type="number" step="0.1" min="0.1" value="1.5">
+      </div>
+      <div>
+        <label for="avgLoss">Avg Loss (R)</label>
+        <input id="avgLoss" type="number" step="0.1" min="0.1" value="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2><span class="n">02</span> Cuenta y reglas de ruina</h2>
+    <div class="grid-4">
+      <div>
+        <label for="bankroll">Bankroll inicial ($)</label>
+        <input id="bankroll" type="number" step="100" min="100" value="10000">
+      </div>
+      <div>
+        <label for="riskPct">Riesgo por trade (%)</label>
+        <input id="riskPct" type="number" step="0.1" min="0.1" max="20" value="1">
+      </div>
+      <div>
+        <label for="ruinPct">Umbral de ruina <span class="hint">% del inicial</span></label>
+        <input id="ruinPct" type="number" step="1" min="5" max="95" value="20">
+      </div>
+      <div>
+        <label for="targetPct">Objetivo <span class="hint">% de ganancia</span></label>
+        <input id="targetPct" type="number" step="10" min="10" value="100">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2><span class="n">03</span> Simulación</h2>
+    <div class="grid-2">
+      <div>
+        <label for="nTrades">Máximo de trades</label>
+        <input id="nTrades" type="number" step="25" min="25" max="2000" value="250">
+      </div>
+      <div>
+        <label for="nSims"># Caminos (500-5000)</label>
+        <input id="nSims" type="number" step="100" min="500" max="5000" value="1000">
+      </div>
+    </div>
+    <div style="margin-top:14px">
+      <label for="seed">Seed <span class="hint">opcional — reproducible</span></label>
+      <input id="seed" type="number" step="1" min="0" placeholder="aleatorio" style="max-width:220px">
+    </div>
+  </div>
+
+  <button class="run" id="runBtn">▶ Ejecutar simulación</button>
+
+  <div class="results">
+    <div id="emptyState" class="placeholder">Define tu estrategia y tu cuenta, luego ejecuta la simulación.</div>
+    <div id="resultsContent" hidden>
+      <div class="kpis">
+        <div class="kpi"><div class="lab">Probabilidad de ruina</div><div class="val neg" id="kRuin">—</div><div class="sub" id="kRuinSub"></div></div>
+        <div class="kpi"><div class="lab">Probabilidad de objetivo</div><div class="val pos" id="kTarget">—</div><div class="sub" id="kTargetSub"></div></div>
+        <div class="kpi"><div class="lab">Trades medios hasta ruina</div><div class="val amber" id="kLife">—</div><div class="sub">si la ruina ocurre</div></div>
+      </div>
+      <div class="kpis" style="margin-top:12px">
+        <div class="kpi"><div class="lab">Balance final mediano</div><div class="val" id="kMed">—</div><div class="sub">de todos los caminos</div></div>
+        <div class="kpi"><div class="lab">Drawdown máx. medio</div><div class="val neg" id="kDD">—</div><div class="sub">peor caída por camino</div></div>
+        <div class="kpi"><div class="lab">Caminos ni ruina ni objetivo</div><div class="val" id="kNeither">—</div><div class="sub">siguen vivos al final</div></div>
+      </div>
+
+      <div class="canvas-box">
+        <div class="cap">Distribución de balances finales — zona roja = ruina · línea verde = objetivo</div>
+        <canvas id="chartHist" width="720" height="260"></canvas>
+      </div>
+      <div class="canvas-box">
+        <div class="cap">20 caminos de ejemplo — la línea roja punteada es el umbral de ruina</div>
+        <canvas id="chartSpag" width="720" height="240"></canvas>
+      </div>
+
+      <div class="note" id="noteOk">
+        <b>Cómo leerlo:</b> la ruina no exige perder siempre — basta una <b>racha adversa</b> más larga que la tolerancia de tu cuenta. Reducir el riesgo por trade es la palanca más potente: si la probabilidad de ruina te incomoda, baja el riesgo antes de tocar el edge.
+      </div>
+      <div class="note warn" id="noteBad" hidden>
+        <b>Probabilidad de ruina alta.</b> Con estos parámetros la cuenta tiene más probabilidad de quebrar que de crecer. Revisa el riesgo por trade (bájalo), el umbral de ruina o el edge antes de operar.
+      </div>
+
+      <footer>
+        <div class="foot-inner">
+          <span>Risk of Ruin · Calculadoras TRQ — data informativa, no constituye asesoría financiera.</span>
+          <a class="back" href="index.html">Volver a las calculadoras</a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html" style="color:var(--muted)">Términos</a></span>
+    <a class="back" href="index.html">Volver a las calculadoras</a>
+  </div>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const PRESETS = {
+  sobrio:     { wr: 50, win: 1.5, loss: 1 },
+  balanceado: { wr: 60, win: 1.5, loss: 1 },
+  afilado:    { wr: 45, win: 2.5, loss: 1 },
+};
+
+// RNG reproducible (mulberry32)
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function setPills(rowId, active, handler) {
+  $(rowId).querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      $(rowId).querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      handler(p.dataset.preset);
+    });
+  });
+}
+
+setPills('presetRow', 'balanceado', key => {
+  const pr = PRESETS[key];
+  $('winRate').value = pr.wr;
+  $('avgWin').value = pr.win;
+  $('avgLoss').value = pr.loss;
+});
+
+$('runBtn').addEventListener('click', run);
+['winRate', 'avgWin', 'avgLoss', 'bankroll', 'riskPct', 'ruinPct', 'targetPct', 'nTrades', 'nSims', 'seed'].forEach(id =>
+  $(id).addEventListener('keydown', e => { if (e.key === 'Enter') run(); })
+);
+
+function fmtPct(v) { return (v * 100).toFixed(1) + '%'; }
+function fmtUsd(v) { return '$' + Math.round(v).toLocaleString('en-US'); }
+function median(arr) {
+  const s = [...arr].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+
+function run() {
+  const p = parseFloat($('winRate').value) / 100;
+  const B = parseFloat($('avgWin').value);
+  const C = parseFloat($('avgLoss').value);
+  const bank0 = parseFloat($('bankroll').value) || 10000;
+  const riskPct = (parseFloat($('riskPct').value) || 1) / 100;
+  const ruinLevel = bank0 * ((parseFloat($('ruinPct').value) || 20) / 100);
+  const targetLevel = bank0 * (1 + ((parseFloat($('targetPct').value) || 100) / 100));
+  const nTrades = parseInt($('nTrades').value, 10) || 250;
+  const nSims = parseInt($('nSims').value, 10) || 1000;
+  const seed = parseInt($('seed').value, 10);
+  const rand = Number.isInteger(seed) ? mulberry32(seed) : Math.random;
+
+  let ruined = 0, succeeded = 0, neither = 0;
+  const ruinTrades = [], successTrades = [], finals = [], dds = [], curves = [];
+
+  for (let s = 0; s < nSims; s++) {
+    let bal = bank0, peak = bank0, maxDD = 0, t = 0;
+    const curve = [bank0];
+    while (t < nTrades) {
+      const risk$ = bal * riskPct;
+      bal += rand() < p ? risk$ * B : -risk$ * C;
+      if (bal > peak) peak = bal;
+      const dd = (peak - bal) / peak;
+      if (dd > maxDD) maxDD = dd;
+      if (bal <= ruinLevel) { ruined++; ruinTrades.push(t + 1); break; }
+      if (bal >= targetLevel) { succeeded++; successTrades.push(t + 1); break; }
+      t++;
+      curve.push(bal);
+    }
+    if (t >= nTrades) neither++;
+    finals.push(bal);
+    dds.push(maxDD);
+    if (curves.length < 20) curves.push(curve);
+  }
+
+  const pRuin = ruined / nSims;
+  const pTarget = succeeded / nSims;
+  const avgRuinTrades = ruinTrades.length ? ruinTrades.reduce((a, b) => a + b, 0) / ruinTrades.length : 0;
+  const medFinal = median(finals);
+  const avgDD = dds.reduce((a, b) => a + b, 0) / nSims;
+
+  $('emptyState').hidden = true;
+  $('resultsContent').hidden = false;
+  const bad = pRuin > 0.5;
+  $('noteOk').hidden = bad;
+  $('noteBad').hidden = !bad;
+
+  $('kRuin').textContent = fmtPct(pRuin);
+  $('kRuinSub').textContent = pRuin > 0.5 ? 'más probable que el objetivo' : 'aceptable — vigila el riesgo';
+  $('kTarget').textContent = fmtPct(pTarget);
+  $('kTargetSub').textContent = 'duplicar antes de quebrar';
+  $('kLife').textContent = avgRuinTrades ? Math.round(avgRuinTrades) + ' trades' : '—';
+  $('kMed').textContent = fmtUsd(medFinal);
+  $('kDD').textContent = fmtPct(avgDD);
+  $('kNeither').textContent = fmtPct(neither / nSims);
+
+  drawHist(finals, bank0, ruinLevel, targetLevel);
+  drawSpag(curves, bank0, ruinLevel, targetLevel, nTrades);
+  window.scrollTo({ top: $('resultsContent').offsetTop - 20, behavior: 'smooth' });
+}
+
+function setupCanvas(id, H) {
+  const cv = $(id);
+  const dpr = window.devicePixelRatio || 1;
+  const rect = cv.getBoundingClientRect();
+  const cssW = rect.width || cv.clientWidth || 720;
+  cv.width = cssW * dpr;
+  cv.height = H * dpr;
+  const ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return { ctx, W: cssW, H };
+}
+
+function drawHist(finals, bank0, ruinLevel, targetLevel) {
+  const { ctx, W, H } = setupCanvas('chartHist', 260);
+  const padL = 56, padR = 14, padT = 14, padB = 26;
+  const iw = W - padL - padR, ih = H - padT - padB;
+
+  const lo = Math.min(ruinLevel, ...finals) * 0.9;
+  const hi = Math.max(targetLevel, ...finals) * 1.05;
+  const bins = 42;
+  const counts = new Array(bins).fill(0);
+  for (const f of finals) {
+    const b = Math.min(bins - 1, Math.max(0, Math.floor(((f - lo) / (hi - lo)) * bins)));
+    counts[b]++;
+  }
+  const maxC = Math.max(...counts);
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(37, 43, 82, .55)';
+  ctx.fillStyle = '#8b92b8';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  for (let i = 0; i <= 4; i++) {
+    const x = padL + iw * i / 4;
+    ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + ih); ctx.stroke();
+    const v = lo + (hi - lo) * i / 4;
+    ctx.fillText(v >= 1000 ? (v / 1000).toFixed(1) + 'k' : Math.round(v), x - 14, H - 8);
+  }
+
+  const X = v => padL + ((v - lo) / (hi - lo)) * iw;
+  const bw = iw / bins;
+  for (let b = 0; b < bins; b++) {
+    const h = counts[b] / maxC * ih;
+    const x = padL + b * bw;
+    const center = lo + (hi - lo) * (b + 0.5) / bins;
+    ctx.fillStyle = center < ruinLevel ? 'rgba(255, 92, 122, .65)' : center >= targetLevel ? 'rgba(52, 211, 153, .55)' : 'rgba(255, 59, 92, .4)';
+    ctx.fillRect(x + 1, padT + ih - h, bw - 2, h);
+  }
+
+  // línea del inicial
+  ctx.strokeStyle = '#8b92b8';
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(X(bank0), padT); ctx.lineTo(X(bank0), padT + ih); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#8b92b8';
+  ctx.fillText('inicial', X(bank0) + 4, padT + 10);
+  // línea del objetivo
+  ctx.strokeStyle = '#34d399';
+  ctx.beginPath(); ctx.moveTo(X(targetLevel), padT); ctx.lineTo(X(targetLevel), padT + ih); ctx.stroke();
+  ctx.fillStyle = '#34d399';
+  ctx.fillText('objetivo', X(targetLevel) - 44, padT + 10);
+  // zona de ruina etiqueta
+  ctx.fillStyle = '#ff5c7a';
+  ctx.fillText('ruina', Math.min(X(ruinLevel) + 6, W - 60), padT + 10);
+}
+
+function drawSpag(curves, bank0, ruinLevel, targetLevel, nTrades) {
+  const { ctx, W, H } = setupCanvas('chartSpag', 240);
+  const padL = 56, padR = 14, padT = 14, padB = 26;
+  const iw = W - padL - padR, ih = H - padT - padB;
+
+  let lo = ruinLevel * 0.9, hi = bank0 * 1.3;
+  for (const c of curves) for (const v of c) { if (v < lo) lo = v; if (v > hi) hi = v; }
+  const span = hi - lo || 1;
+  const X = t => padL + (t / nTrades) * iw;
+  const Y = v => padT + ih - ((v - lo) / span) * ih;
+
+  ctx.clearRect(0, 0, W, H);
+  // nivel de ruina
+  ctx.strokeStyle = 'rgba(255, 92, 122, .7)';
+  ctx.setLineDash([5, 4]);
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(padL, Y(ruinLevel)); ctx.lineTo(padL + iw, Y(ruinLevel)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#ff5c7a';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.fillText('umbral de ruina', padL + 6, Y(ruinLevel) - 6);
+  // nivel de objetivo
+  ctx.strokeStyle = 'rgba(52, 211, 153, .55)';
+  ctx.setLineDash([5, 4]);
+  ctx.beginPath(); ctx.moveTo(padL, Y(targetLevel)); ctx.lineTo(padL + iw, Y(targetLevel)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#34d399';
+  ctx.fillText('objetivo', padL + 6, Y(targetLevel) - 6);
+
+  // curvas
+  const colors = ['#ff3b5c', '#ff7a8f', '#c9a0ff', '#4aa8ff', '#34d399', '#fbbf24'];
+  curves.forEach((c, i) => {
+    ctx.strokeStyle = colors[i % colors.length];
+    ctx.globalAlpha = .55;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    c.forEach((v, t) => { const px = X(t), py = Y(v); t === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); });
+    ctx.stroke();
+  });
+  ctx.globalAlpha = 1;
+  // etiquetas de eje
+  ctx.fillStyle = '#8b92b8';
+  for (let i = 0; i <= 4; i++) {
+    const x = padL + iw * i / 4;
+    ctx.fillText(Math.round(nTrades * i / 4), x - 6, H - 8);
+  }
+  ctx.fillStyle = '#5b6288';
+  ctx.fillText('trades →', W - 52, H - 8);
+}
+</script>
+</body>
+</html>
