@@ -95,6 +95,19 @@
   .masthead .meta { margin-top: 20px; color: var(--muted); font-size: 12px; }
   .masthead .meta b { color: var(--ink); font-weight: 600; }
 
+  /* ── byline estilo Substack: avatar circular + fecha ── */
+  .byline {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 22px;
+  }
+  .byline img {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1px solid var(--line); object-fit: cover;
+  }
+  .byline .b-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .byline .b-date { font-size: 13px; color: var(--muted); }
+  .byline .b-date::before { content: "·"; margin: 0 8px; color: #c8c8c8; }
+
   .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
 
   .lede {
@@ -196,6 +209,12 @@
   <div class="kicker"><span class="dot"></span>BrAIn</div>
   <h1>LA INVERSIÓN ES LA BÚSQUEDA DE LA VERDAD</h1>
   <div class="sub">Breaking <b>AI</b> Non-Sense</div>
+  <div class="byline">
+    <img src="../assets/braIn-favicon.png" alt="BrAIn">
+    <div>
+      <span class="b-name">BrAIn</span><span class="b-date">22 ago 2026</span>
+    </div>
+  </div>
 </header>
 
 <div class="wrap">
