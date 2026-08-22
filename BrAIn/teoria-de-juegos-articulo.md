@@ -152,7 +152,7 @@ Si operas mercados, ya sabes que no se trata solo de ti. Traduce:
 - **Stag Hunt**: el ciervo es el setup que solo se caza con paciencia y con el plan completo; la liebre es la operación mediocre que te consuela. La mayoría caza liebres porque no confía en que el setup llegue.
 - **Chicken**: escalar una posición perdedora es tirar el volante contra un mercado que no puede esquivar. El mercado no esquiva nunca. [Tú puedes. El stop es el volante que sí puedes soltar.]
 - **Equilibrio de Nash**: tu propio sistema es un equilibrio — no mejoras cambiando una regla sola. Los cambios de sistema funcionan coordinados (reglas + risk + psicología), no parcheados.
-- **Información incompleta**: el precio es la señal que actualiza tu prior. Si tu creencia no se actualiza con el precio, no estás jugando contra el mercado — estás jugando contra tu propio guion.
+- **Información incompleta**: el precio es la señal que actualiza tu prior (Daily bias). Si tu creencia no se actualiza con la zona de invalidación y estructura del precio, no estás jugando contra el mercado — estás jugando contra tu propio guion.
 
 ---
 
