@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelly Criterion · Calculadoras TRQ</title>
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f; --surface: #0d0f1e; --card: #12142a; --card-2: #171a36;
+    --border: #252b52; --text: #e8ecff; --muted: #8b92b8;
+    --accent: #ff3b5c; --glow-accent: rgba(255, 59, 92, .35);
+    --up: #34d399; --down: #ff5c7a; --amber: #fbbf24;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+
+  /* ── masthead ─────────────────────── */
+  .masthead { padding: 34px 0 8px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .masthead .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
+  .masthead h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(30px, 4.6vw, 42px); letter-spacing: -.02em; }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
+  .masthead p { color: var(--muted); max-width: 640px; font-size: 15px; margin-top: 10px; line-height: 1.65; }
+  .masthead p b { color: var(--text); }
+
+  /* ── paneles ──────────────────────── */
+  .panel {
+    margin-top: 26px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px 22px 24px;
+  }
+  .panel h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .panel h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    color: var(--accent); border: 1px solid var(--border); border-radius: 6px;
+    padding: 3px 7px; background: rgba(6, 7, 15, .45);
+  }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media (max-width: 560px) { .grid, .grid-2 { grid-template-columns: 1fr; } }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: .02em; }
+  label .hint { color: #5b6288; font-size: 11px; }
+  input[type="number"] {
+    width: 100%; padding: 10px 12px;
+    background: rgba(6, 7, 15, .55); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    outline: none; transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
+
+  /* ── pills (presets + fracción) ───── */
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pill {
+    padding: 7px 14px; font-size: 12px; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+    background: rgba(6, 7, 15, .45); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .pill:hover { color: var(--text); border-color: #3a4170; }
+  .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 18px rgba(255, 59, 92, .28); }
+
+  /* ── botón ────────────────────────── */
+  .run {
+    margin-top: 22px; width: 100%;
+    padding: 14px; border: none; border-radius: 12px; cursor: pointer;
+    background: var(--accent); color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; letter-spacing: .06em;
+    box-shadow: 0 10px 30px -12px rgba(255, 59, 92, .55);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .run:hover { box-shadow: 0 14px 36px -12px rgba(255, 59, 92, .7); }
+  .run:active { transform: scale(0.96); }
+
+  /* ── resultados ───────────────────── */
+  .results { margin-top: 26px; }
+  .placeholder {
+    border: 1px dashed var(--border); border-radius: 16px;
+    padding: 44px 20px; text-align: center; color: var(--muted); font-size: 14px;
+  }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .kpis .kpi {
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 16px 14px;
+  }
+  .kpi .lab { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+  .kpi .val { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi .val.pos { color: var(--up); }
+  .kpi .val.neg { color: var(--down); }
+  .kpi .val.acc { color: var(--accent); }
+  .kpi .sub { font-size: 11px; color: #5b6288; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+  @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
+
+  /* ── barra de fracción ────────────── */
+  .frac-box { margin-top: 14px; }
+  .frac-box .row { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .frac-box .row b { color: var(--text); font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+  .frac-track {
+    position: relative; height: 14px; border-radius: 999px;
+    background: rgba(6, 7, 15, .55); border: 1px solid var(--border); overflow: hidden;
+  }
+  .frac-fill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, rgba(255, 59, 92, .75), var(--accent)); border-radius: 999px; transition: width .3s ease; }
+  .frac-opt { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--up); box-shadow: 0 0 8px rgba(52, 211, 153, .8); }
+  .frac-half { position: absolute; top: -3px; bottom: -3px; width: 1px; background: rgba(52, 211, 153, .45); }
+
+  /* ── nota + descargo ──────────────── */
+  .note {
+    margin-top: 14px; padding: 14px 16px; border-radius: 12px;
+    border: 1px solid var(--border); background: rgba(6, 7, 15, .4);
+    font-size: 13px; color: var(--muted); line-height: 1.6;
+  }
+  .note.warn { border-color: rgba(255, 92, 122, .5); background: rgba(255, 92, 122, .07); color: #ffb3c2; }
+  .note b { color: var(--text); }
+  .canvas-box { margin-top: 14px; }
+  .canvas-box .cap { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+  canvas { width: 100%; height: auto; background: rgba(6, 7, 15, .4); border: 1px solid var(--border); border-radius: 14px; }
+
+  footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 40px; }
+  .foot-inner { max-width: 780px; margin: 0 auto; padding: 18px 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+  footer span { color: var(--muted); font-size: 12px; }
+  .back { color: var(--muted); text-decoration: none; font-size: 13px; font-family: 'JetBrains Mono', monospace; transition: color .15s ease; }
+  .back:hover { color: var(--accent); }
+  .back::before { content: "← "; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">Calculadoras</div>
+    <h1>Kelly <span class="red">Criterion</span></h1>
+    <p>Qué fracción de tu bankroll arriesgar por trade para que <b>crezca lo más rápido posible sin quebrarte</b>. La fórmula de John L. Kelly (1956) convierte tu edge — win rate, ganancia y pérdida promedio — en un número de apuesta óptimo.</p>
+  </header>
+
+  <div class="panel">
+    <h2><span class="n">01</span> Tu edge</h2>
+    <div class="pill-row" id="presetRow">
+      <button class="pill" data-preset="sobrio">Sobrio</button>
+      <button class="pill active" data-preset="balanceado">Balanceado</button>
+      <button class="pill" data-preset="afilado">Afilado</button>
+    </div>
+    <div class="grid">
+      <div>
+        <label for="winRate">Win rate (%)</label>
+        <input id="winRate" type="number" step="1" min="1" max="99" value="60">
+      </div>
+      <div>
+        <label for="avgWin">Avg Win (R)</label>
+        <input id="avgWin" type="number" step="0.1" min="0.1" value="1.5">
+      </div>
+      <div>
+        <label for="avgLoss">Avg Loss (R)</label>
+        <input id="avgLoss" type="number" step="0.1" min="0.1" value="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2><span class="n">02</span> Bankroll y apetito</h2>
+    <div class="grid-2">
+      <div>
+        <label for="bankroll">Bankroll ($)</label>
+        <input id="bankroll" type="number" step="100" min="100" value="10000">
+      </div>
+      <div>
+        <label>Fracción de Kelly <span class="hint">— la práctica recomienda Half</span></label>
+        <div class="pill-row" id="fracRow" style="margin-bottom:0">
+          <button class="pill" data-frac="1">Full</button>
+          <button class="pill active" data-frac="0.5">Half</button>
+          <button class="pill" data-frac="0.25">Quarter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="run" id="runBtn">▶ Calcular Kelly</button>
+
+  <div class="results">
+    <div id="emptyState" class="placeholder">Introduce tu edge y pulsa Calcular.</div>
+    <div id="resultsContent" hidden>
+      <div class="kpis">
+        <div class="kpi"><div class="lab">Kelly completo (f*)</div><div class="val acc" id="kFull">—</div><div class="sub" id="kFullSub"></div></div>
+        <div class="kpi"><div class="lab">Fracción seleccionada</div><div class="val" id="kFrac">—</div><div class="sub" id="kFracSub"></div></div>
+        <div class="kpi"><div class="lab">Capital por trade</div><div class="val pos" id="kUsd">—</div><div class="sub">con el bankroll actual</div></div>
+      </div>
+      <div class="kpis" style="margin-top:12px">
+        <div class="kpi"><div class="lab">Expectancy (E[R])</div><div class="val" id="kExp">—</div><div class="sub">edge por trade en R</div></div>
+        <div class="kpi"><div class="lab">Crecimiento máx. por trade</div><div class="val" id="kG">—</div><div class="sub">log-growth en f*</div></div>
+        <div class="kpi"><div class="lab">Punto de quiebre (2f*)</div><div class="val neg" id="kBreak">—</div><div class="sub">apostar más = destruir valor</div></div>
+      </div>
+
+      <div class="frac-box">
+        <div class="row"><span>Fracción del bankroll</span><span><b id="fracPct">—</b> · óptimo <b id="optPct">—</b></span></div>
+        <div class="frac-track">
+          <div class="frac-fill" id="fracFill"></div>
+          <div class="frac-half" id="fracHalfMark"></div>
+          <div class="frac-opt" id="fracOptMark"></div>
+        </div>
+      </div>
+
+      <div class="canvas-box">
+        <div class="cap">Crecimiento esperado por trade g(f) vs fracción apostada</div>
+        <canvas id="chart" width="720" height="300"></canvas>
+      </div>
+
+      <div class="note" id="noteOk">
+        <b>Half-Kelly</b> reduce la volatilidad a la mitad conservando ~75% del crecimiento. El Kelly completo asume que tus números son exactos: si tu win rate real está inflado, el Kelly completo sobre-apuesta. Fraccionar es el seguro contra el error de estimación.
+      </div>
+      <div class="note warn" id="noteNeg" hidden>
+        <b>Edge negativo.</b> Con estos números el valor esperado es ≤ 0 — no existe fracción positiva de apuesta. La única jugada correcta es no operar con este sistema hasta mejorar el edge.
+      </div>
+
+      <footer>
+        <div class="foot-inner">
+          <span>Kelly Criterion · Calculadoras TRQ — data informativa, no constituye asesoría financiera.</span>
+          <a class="back" href="index.html">Volver a las calculadoras</a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html" style="color:var(--muted)">Términos</a></span>
+    <a class="back" href="index.html">Volver a las calculadoras</a>
+  </div>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const PRESETS = {
+  sobrio:     { wr: 50, win: 1.5, loss: 1 },
+  balanceado: { wr: 60, win: 1.5, loss: 1 },
+  afilado:    { wr: 45, win: 2.5, loss: 1 },
+};
+
+let frac = 0.5;
+
+function setPills(rowId, active, handler) {
+  $(rowId).querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      $(rowId).querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      handler(p.dataset.preset || p.dataset.frac);
+    });
+  });
+}
+
+setPills('presetRow', 'balanceado', key => {
+  const pr = PRESETS[key];
+  $('winRate').value = pr.wr;
+  $('avgWin').value = pr.win;
+  $('avgLoss').value = pr.loss;
+});
+setPills('fracRow', '0.5', key => { frac = parseFloat(key); if (!$('resultsContent').hidden) calc(); });
+
+$('runBtn').addEventListener('click', calc);
+['winRate', 'avgWin', 'avgLoss', 'bankroll'].forEach(id =>
+  $(id).addEventListener('keydown', e => { if (e.key === 'Enter') calc(); })
+);
+
+function fmtPct(v) { return (v * 100).toFixed(v * 100 < 10 ? 2 : 1) + '%'; }
+function fmtUsd(v) { return '$' + Math.round(v).toLocaleString('en-US'); }
+
+function calc() {
+  const p = parseFloat($('winRate').value) / 100;
+  const B = parseFloat($('avgWin').value);
+  const C = parseFloat($('avgLoss').value);
+  const bank = parseFloat($('bankroll').value) || 0;
+  const q = 1 - p;
+
+  // Kelly generalizado: ganas B·f, pierdes C·f por unidad apostada
+  const fStar = (p * B - q * C) / (B * C);
+  const exp = p * B - q * C;            // expectancy en R
+  const edgeOk = fStar > 0 && exp > 0;
+
+  const f = Math.max(0, fStar) * frac;
+  const gStar = edgeOk ? (p * Math.log(1 + B * fStar) + q * Math.log(1 - C * fStar)) : 0;
+  const gFrac = edgeOk ? (p * Math.log(1 + B * f) + q * Math.log(1 - C * f)) : 0;
+
+  $('emptyState').hidden = true;
+  $('resultsContent').hidden = false;
+  $('noteOk').hidden = !edgeOk;
+  $('noteNeg').hidden = edgeOk;
+
+  $('kFull').textContent = edgeOk ? fmtPct(fStar) : '—';
+  $('kFullSub').textContent = edgeOk ? (fStar >= 0.25 ? 'agresivo — fraccionar' : 'dentro de rango prudente') : 'sin apuesta';
+  $('kFrac').textContent = edgeOk ? fmtPct(f) : '0%';
+  $('kFracSub').textContent = edgeOk ? (frac === 1 ? 'Full Kelly' : frac === 0.5 ? 'Half Kelly' : 'Quarter Kelly') : 'no operar';
+  $('kUsd').textContent = edgeOk && bank > 0 ? fmtUsd(f * bank) : '—';
+  $('kExp').textContent = (exp >= 0 ? '+' : '') + exp.toFixed(3) + 'R';
+  $('kG').textContent = edgeOk ? fmtPct(gFrac) : '—';
+  $('kBreak').textContent = edgeOk ? fmtPct(2 * fStar) : '—';
+
+  // barra de fracción (escala 0 → 50% del bankroll)
+  const scale = 0.5;
+  const optPct = Math.min(100, (fStar / scale) * 100);
+  const halfPct = Math.min(100, (fStar * 0.5 / scale) * 100);
+  const fillPct = Math.min(100, (f / scale) * 100);
+  $('fracPct').textContent = edgeOk ? fmtPct(f) : '0%';
+  $('optPct').textContent = edgeOk ? fmtPct(fStar) : '—';
+  $('fracFill').style.width = fillPct + '%';
+  $('fracOptMark').style.left = optPct + '%';
+  $('fracHalfMark').style.left = halfPct + '%';
+
+  drawChart(p, B, C, fStar, f);
+}
+
+function drawChart(p, B, C, fStar, f) {
+  const q = 1 - p;
+  const cv = $('chart');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = cv.getBoundingClientRect();
+  const cssW = rect.width || cv.clientWidth || 720;   // fallback si el layout aún no computó
+  cv.width = cssW * dpr;
+  cv.height = 300 * dpr;
+  const ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = 300;
+  const padL = 44, padR = 16, padT = 18, padB = 30;
+  const iw = W - padL - padR, ih = H - padT - padB;
+
+  // cap: x < 1/C para que 1 - C*x > 0 (evita log(0) = -Inf que rompe el rango)
+  const fMax = Math.min(Math.max(fStar * 3, 0.3), 0.95 / C);
+  const g = x => p * Math.log(1 + B * x) + q * Math.log(1 - C * x);
+
+  // rango de g
+  let gMax = 0, gMin = 0;
+  for (let i = 0; i <= 200; i++) {
+    const x = fMax * i / 200;
+    const v = g(x);
+    if (v > gMax) gMax = v;
+    if (v < gMin) gMin = v;
+  }
+  const gPad = (gMax - gMin) * 0.12 || 0.001;
+
+  const X = x => padL + (x / fMax) * iw;
+  const Y = v => padT + ih - ((v - gMin + gPad) / (gMax - gMin + 2 * gPad)) * ih;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // fondo del gráfico
+  ctx.strokeStyle = 'rgba(37, 43, 82, .55)';
+  ctx.fillStyle = '#8b92b8';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.lineWidth = 1;
+  // ejes
+  for (let i = 0; i <= 4; i++) {
+    const x = padL + iw * i / 4;
+    ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + ih); ctx.stroke();
+    ctx.fillText((fMax * i / 4 * 100).toFixed(0) + '%', x - 12, H - 10);
+  }
+  // línea 0
+  if (gMin < 0) {
+    ctx.strokeStyle = 'rgba(255, 92, 122, .35)';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(padL, Y(0)); ctx.lineTo(padL + iw, Y(0)); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // zona de destrucción (f > 2f*)
+  if (fStar > 0) {
+    const xBreak = X(Math.min(fMax, 2 * fStar));
+    ctx.fillStyle = 'rgba(255, 92, 122, .08)';
+    ctx.fillRect(xBreak, padT, padL + iw - xBreak, ih);
+    ctx.fillStyle = '#ff5c7a';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.fillText('sobre-apuesta → destruye valor', xBreak + 6, padT + 12);
+  }
+
+  // curva g(f)
+  ctx.strokeStyle = '#ff3b5c';
+  ctx.lineWidth = 2;
+  ctx.shadowColor = 'rgba(255, 59, 92, .35)';
+  ctx.shadowBlur = 8;
+  ctx.beginPath();
+  for (let i = 0; i <= 200; i++) {
+    const x = fMax * i / 200;
+    const px = X(x), py = Y(g(x));
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // marcadores
+  if (fStar > 0) {
+    // Half-Kelly
+    ctx.strokeStyle = 'rgba(52, 211, 153, .5)';
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath(); ctx.moveTo(X(fStar * 0.5), padT); ctx.lineTo(X(fStar * 0.5), padT + ih); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#34d399';
+    ctx.fillText('½K', X(fStar * 0.5) - 8, padT - 4);
+
+    // f* óptimo
+    ctx.strokeStyle = '#34d399';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(X(fStar), padT); ctx.lineTo(X(fStar), padT + ih); ctx.stroke();
+    ctx.fillText('f*', X(fStar) - 6, padT - 4);
+
+    // fracción seleccionada
+    ctx.fillStyle = '#e8ecff';
+    ctx.beginPath(); ctx.arc(X(f), Y(g(f)), 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#e8ecff';
+    ctx.fillText('tu fracción', Math.min(X(f) + 8, W - 90), Y(g(f)) - 10);
+  }
+}
+</script>
+</body>
+</html>
