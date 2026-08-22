@@ -262,7 +262,7 @@
 </nav>
 
 <header class="masthead">
-  <div class="status"><span class="dot"></span>Newsletter · En construcción</div>
+  <div class="status"><span class="dot"></span>Breaking AI Non-Sense · Artículos cada lunes</div>
   <h1 class="brain-logo"><img src="assets/brain-logo.png" alt="BrAIn — Breaking AI Non-sense"></h1>
   <div class="sub">Breaking <b>AI</b> Non-Sense</div>
   <p class="desc">
@@ -290,6 +290,7 @@
       <span class="art-info">
         <b>Siete preguntas y un papel: ponte en orden</b>
         <i>10 AGO 2026 · Psicología · Práctica</i>
+        <span class="badge-int">⌨ Interactivo</span>
       </span>
     </a>
 
@@ -306,10 +307,17 @@
       <span class="art-info">
         <b>No juegas contra el mercado. Juegas contra quienes saben que estás jugando</b>
         <i>24 AGO 2026 · Teoría de juegos · Trading</i>
+        <span class="badge-int">⌨ Interactivo</span>
       </span>
     </a>
 
     <p class="soon-note">Artículo 001 — la presentación del proyecto — está en camino.</p>
+
+    <p class="int-note">
+      No todo en BrAIn se lee: algunos artículos se juegan. Los marcados <span class="badge-int">⌨ Interactivo</span>
+      no entregan solo conocimiento nuevo y cruce de ideas — te piden <b>aplicarlo</b>: escribir, decidir,
+      comprometerte con una fecha. Leer está bien. Hacer es el punto.
+    </p>
   </div>
 
   <div class="nl-box">
@@ -364,7 +372,7 @@
     fetch(FORM_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: val })
+      body: JSON.stringify({ email: val, source: 'brain' })
     })
       .then(function (r) { return r.json(); })
       .then(function (d) {

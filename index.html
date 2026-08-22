@@ -668,7 +668,7 @@
     fetch(FORM_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: val })
+      body: JSON.stringify({ email: val, source: 'trq' })
     })
       .then(function (r) { return r.json(); })
       .then(function (d) {

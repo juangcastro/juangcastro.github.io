@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestionar suscripciones — The Red Queen</title>
+<meta name="description" content="Elige de qué newsletters de The Red Queen quieres darte de baja.">
+<link rel="icon" type="image/x-icon" href="assets/trq-favicon.ico">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/trq-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --ink: #0A0A0A;
+    --muted: #666666;
+    --line: #E5E5E5;
+    --surface: #F5F5F5;
+    --accent: #10B981;
+    --display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Roboto', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased; line-height: 1.6;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 13px; letter-spacing: .28em; text-transform: uppercase; color: var(--ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  @media (max-width: 560px) { .nav-links a:not(.active) { display: none; } }
+
+  .wrap { flex: 1; max-width: 640px; margin: 0 auto; padding: 64px 24px 80px; width: 100%; }
+
+  .kicker {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(24px, 4vw, 34px); font-weight: 800; letter-spacing: -.02em; line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .lead { color: var(--muted); font-size: 15px; margin-bottom: 36px; max-width: 520px; }
+
+  .unsub-box {
+    border: 1px solid var(--line); border-radius: 14px;
+    padding: 26px 28px; margin-bottom: 18px;
+  }
+  .unsub-box .field-label {
+    display: block; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+  .unsub-box input[type="email"] {
+    width: 100%; border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; font-size: 15px; color: var(--ink);
+    background: var(--surface); outline: none; transition: border-color .15s ease;
+  }
+  .unsub-box input[type="email"]:focus { border-color: var(--ink); }
+
+  .services { margin: 22px 0 4px; }
+  .svc {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 0; border-top: 1px solid var(--line);
+  }
+  .svc:first-of-type { border-top: none; }
+  .svc input[type="checkbox"] {
+    width: 20px; height: 20px; margin-top: 2px; accent-color: var(--ink); cursor: pointer; flex-shrink: 0;
+  }
+  .svc .svc-info b { display: block; font-size: 15px; font-weight: 700; }
+  .svc .svc-info span { font-size: 13px; color: var(--muted); }
+  .svc.danger input[type="checkbox"] { accent-color: #dc2626; }
+  .svc .hint { font-size: 12px; color: #b0b0b0; font-style: italic; }
+
+  .btn-black {
+    display: inline-block; margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    background: var(--ink); color: #fff;
+    border: none; border-radius: 8px; padding: 13px 26px; cursor: pointer;
+    transition: opacity .15s ease, transform .12s ease;
+  }
+  .btn-black:hover { opacity: .85; }
+  .btn-black:active { transform: scale(.96); }
+
+  .msg { margin-top: 16px; font-size: 14px; min-height: 20px; }
+  .msg.ok { color: var(--accent); }
+  .msg.err { color: #dc2626; }
+
+  .note {
+    margin-top: 24px; font-size: 12px; color: #b0b0b0; line-height: 1.6;
+  }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img src="assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="brain.html">BrAIn</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="kicker"><span class="dot"></span>Gestiona tu suscripción</div>
+  <h1>¿De qué quieres darte de baja?</h1>
+  <p class="lead">Pon tu correo y marca los servicios que quieres dejar de recibir. Lo que no marques, lo sigues recibiendo.</p>
+
+  <div class="unsub-box">
+    <label class="field-label" for="email">Tu correo</label>
+    <input type="email" id="email" placeholder="tu@email.com" autocomplete="email" required>
+  </div>
+
+  <div class="unsub-box">
+    <div class="field-label">Servicios</div>
+    <div class="services">
+      <label class="svc">
+        <input type="checkbox" data-list="trq">
+        <span class="svc-info">
+          <b>The Red Queen — Newsletter</b>
+          <span>Análisis, trading con método y el manifiesto.</span>
+        </span>
+      </label>
+      <label class="svc">
+        <input type="checkbox" data-list="brain">
+        <span class="svc-info">
+          <b>BrAIn — Breaking AI Non-Sense</b>
+          <span>IA, mercados y tecnología, sin humo ni hype.</span>
+        </span>
+      </label>
+      <label class="svc danger">
+        <input type="checkbox" id="all">
+        <span class="svc-info">
+          <b>Todos los servicios</b>
+          <span>Darme de baja de todo, sin excepciones.</span>
+        </span>
+      </label>
+    </div>
+
+    <button class="btn-black" id="btn">Confirmar baja</button>
+    <p class="msg" id="msg" role="status"></p>
+  </div>
+
+  <p class="note">
+    Esto solo afecta los correos de The Red Queen y BrAIn. No recibirás confirmación por email — el cambio es inmediato.
+  </p>
+</div>
+
+<footer>
+  © 2026 The Red Queen — Checkmate the System · <a href="trq-terms.html">Términos</a>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var URL = 'https://trq-newsletter.theredqueen.workers.dev/unsubscribe';
+  var email = document.getElementById('email');
+  var btn = document.getElementById('btn');
+  var msg = document.getElementById('msg');
+  var all = document.getElementById('all');
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  all.addEventListener('change', function () {
+    var boxes = document.querySelectorAll('.svc input[data-list]');
+    boxes.forEach(function (b) { b.checked = all.checked; });
+  });
+
+  btn.addEventListener('click', function () {
+    var val = email.value.trim();
+    if (!EMAIL_RE.test(val)) {
+      msg.textContent = 'Escribe un email válido.';
+      msg.className = 'msg err';
+      email.focus();
+      return;
+    }
+    var lists = [];
+    document.querySelectorAll('.svc input[data-list]:checked').forEach(function (b) {
+      lists.push(b.getAttribute('data-list'));
+    });
+    if (!lists.length) {
+      msg.textContent = 'Marca al menos un servicio (o usa "Todos los servicios").';
+      msg.className = 'msg err';
+      return;
+    }
+    msg.textContent = 'Procesando…';
+    msg.className = 'msg';
+    fetch(URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: val, lists: lists })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.ok) {
+          msg.textContent = 'Listo. Te diste de baja de: ' + lists.join(', ') + '.';
+          msg.className = 'msg ok';
+        } else {
+          msg.textContent = 'No pudimos procesar la baja. Intenta de nuevo más tarde.';
+          msg.className = 'msg err';
+        }
+      })
+      .catch(function () {
+        msg.textContent = 'Error de conexión. Intenta de nuevo.';
+        msg.className = 'msg err';
+      });
+  });
+})();
+</script>
+</body>
+</html>
