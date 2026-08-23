@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HYPERLIQUID Y LA EVOLUCIÓN DE LA BOLSA: CUANDO EL MERCADO SE VOLVIÓ PROTOCOLO — BrAIn · The Red Queen</title>
+<meta name="description" content="De los cafés de Ámsterdam a Hyperliquid: la bolsa como organismo que evoluciona — y qué pasa cuando el mercado se vuelve código.">
+<meta property="og:title" content="HYPERLIQUID: CUANDO LA BOLSA SE VOLVIÓ PROTOCOLO">
+<meta property="og:description" content="La evolución de la bolsa desde 1602 hasta un libro de órdenes on-chain sin intermediarios.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://theredqueen.co/BrAIn/hyperliquid-evolucion-de-la-bolsa.html">
+<meta property="og:image" content="https://theredqueen.co/assets/trq-logo-main.png">
+<link rel="icon" type="image/x-icon" href="../assets/braIn-favicon.ico">
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/braIn-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Arcade Ivory: blanco puro + ink + emerald SOLO para status ── */
+  :root {
+    --bg: #FFFFFF;
+    --ink: #0A0A0A;
+    --muted: #666666;
+    --line: #E5E5E5;
+    --surface: #F5F5F5;
+    --accent: #10B981;          /* emerald — SOLO status/vivo */
+      --display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Roboto', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ── nav (idéntico en todas las páginas TRQ) ── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 13px; letter-spacing: .28em; text-transform: uppercase; color: var(--ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links .active { color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+  @media (max-width: 560px) { .nav-links a:not(.active) { display: none; } }
+
+  /* ── masthead del artículo ── */
+  .masthead {
+    position: relative; overflow: hidden;
+    text-align: center; padding: 72px 24px 56px;
+  }
+  .masthead-inner {
+    max-width: 780px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .masthead .byline { align-self: flex-start; margin-left: 24px; }
+  .masthead::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background-image: radial-gradient(rgba(229, 229, 229, .55) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+  }
+  .masthead .kicker {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    margin: 0 auto 28px;
+  }
+  .masthead .kicker .kicker-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .kicker img.kicker-logo { height: 32px; width: auto; }
+  .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
+  .masthead h1 {
+    font-family: var(--display);
+    max-width: 860px; margin: 0 auto;
+    font-size: clamp(23px, 4.2vw, 38px);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.14;
+  }
+  .masthead .sub {
+    margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .sub b { color: var(--ink); font-weight: 700; }
+  .masthead .meta { margin-top: 20px; color: var(--muted); font-size: 12px; }
+  .masthead .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ── byline estilo Substack: avatar circular + fecha ── */
+  .byline {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 22px; align-self: flex-start; text-align: left;
+  }
+  .byline img {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1px solid var(--line); object-fit: cover;
+  }
+  .byline .b-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .byline .b-logo { height: 15px; width: auto; display: block; }
+  .byline .b-date {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .08em; color: var(--muted);
+  }
+  .byline .b-date::before { content: "·"; margin: 0 8px; color: #c8c8c8; }
+
+  /* ── cuerpo ── */
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+
+  .lede {
+    font-size: 16px; line-height: 1.7; color: #333;
+    border-left: 3px solid var(--line); padding-left: 22px; margin: 8px 0 40px;
+  }
+  .lede strong { color: var(--ink); }
+
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(18px, 2.8vw, 24px); font-weight: 800; letter-spacing: -.015em;
+    margin: 48px 0 12px; line-height: 1.25;
+  }
+  h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: .48em; font-weight: 500;
+    color: #b0b0b0; letter-spacing: .24em; text-transform: uppercase;
+    display: block; margin-bottom: 10px;
+  }
+  h3 { font-family: var(--display); font-size: 15px; font-weight: 700; margin: 24px 0 8px; }
+
+  p { margin: 0 0 16px; color: #222; font-size: 15.5px; }
+  p b, li b { color: var(--ink); font-weight: 700; }
+
+  ul { margin: 0 0 16px 4px; padding-left: 20px; }
+  li { margin-bottom: 7px; color: #222; font-size: 15.5px; }
+
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 2.2vw, 16px);
+    font-weight: 600; text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px 22px; margin: 24px 0;
+    color: var(--ink); letter-spacing: .01em;
+  }
+
+  blockquote {
+    margin: 22px 0; padding: 16px 22px;
+    border-left: 3px solid var(--ink);
+    background: var(--surface);
+    font-size: 15.5px; font-weight: 600; color: var(--ink);
+    line-height: 1.6; border-radius: 0 10px 10px 0;
+  }
+  blockquote.quote::before { content: "“"; color: #c8c8c8; font-size: 1.4em; font-weight: 800; margin-right: 2px; }
+
+  .fig { margin: 30px 0; }
+  .fig img {
+    width: 100%; height: auto;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(10, 10, 10, .10);
+  }
+  .fig figcaption {
+    margin-top: 10px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 22px 0 26px;
+    font-size: 13px;
+  }
+  th {
+    text-align: left; font-weight: 700; color: var(--ink);
+    border-bottom: 2px solid var(--ink); padding: 9px 12px;
+  }
+  td { border-bottom: 1px solid var(--line); padding: 9px 12px; color: #222; }
+  tr:last-child td { border-bottom: none; }
+
+  .divider { height: 1px; background: var(--line); margin: 44px 0; }
+
+  .outro {
+    margin-top: 44px;
+    font-size: 12px; color: var(--muted); line-height: 1.65;
+    border-top: 1px solid var(--line); padding-top: 20px;
+  }
+  .outro a { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--line); }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-top: 36px; transition: color .15s ease;
+  }
+  .back:hover { color: var(--ink); }
+  .back::before { content: "←"; }
+
+  footer {
+    border-top: 1px solid var(--line); background: var(--bg);
+    padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</
+  /* ── calculadora Kelly ─────────────────── */
+  .calc-box {
+    border: 1px solid var(--line); border-radius: 12px;
+    padding: 28px 28px 24px; margin: 24px 0 10px; background: var(--bg);
+  }
+  .calc-head {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .calc-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .calc-grid label {
+    display: flex; flex-direction: column; gap: 6px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .06em; color: var(--muted);
+  }
+  .calc-grid input {
+    border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 12px; font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    color: var(--ink); background: var(--surface); outline: none;
+    transition: border-color .15s ease;
+  }
+  .calc-grid input:focus { border-color: var(--ink); }
+  .calc-frac {
+    display: flex; align-items: center; gap: 12px; margin: 18px 0;
+  }
+  .frac-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .06em; color: var(--muted);
+  }
+  .frac-pills { display: flex; gap: 8px; }
+  .frac-pills .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: .06em; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 6px 14px; background: var(--bg); cursor: pointer;
+    transition: all .15s ease;
+  }
+  .frac-pills .pill:hover { border-color: var(--ink); }
+  .frac-pills .pill.active {
+    color: #fff; background: var(--ink); border-color: var(--ink);
+  }
+  .calc-box .btn-black {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    background: var(--ink); color: #fff;
+    border: none; border-radius: 8px; padding: 12px 26px; cursor: pointer;
+    transition: opacity .15s ease, transform .12s ease;
+  }
+  .calc-box .btn-black:hover { opacity: .85; }
+  .calc-box .btn-black:active { transform: scale(.96); }
+  .calc-results {
+    margin-top: 20px; border-top: 1px solid var(--line); padding-top: 14px;
+  }
+  .result-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid var(--line-soft);
+  }
+  .result-row span {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+  }
+  .result-row b {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700;
+    color: var(--ink);
+  }
+  .result-verdict {
+    margin-top: 14px; padding: 12px 16px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; line-height: 1.5;
+  }
+  .result-verdict.good { background: rgba(16, 185, 129, .08); color: #047857; border: 1px solid rgba(16, 185, 129, .3); }
+  .result-verdict.warn { background: rgba(245, 158, 11, .08); color: #92400e; border: 1px solid rgba(245, 158, 11, .3); }
+  .result-verdict.bad { background: rgba(220, 38, 38, .06); color: #b91c1c; border: 1px solid rgba(220, 38, 38, .25); }
+  #kellyChart { width: 100%; height: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: 8px; }
+  .calc-note { font-size: 12px; color: var(--muted); margin: 6px 0 30px; line-height: 1.6; }
+  @media (max-width: 560px) { .calc-grid { grid-template-columns: 1fr; } }
+  }
+  .nm-link { color: #7C3AED; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+  .nm-link:hover { color: #5B21B6; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a class="active" href="../brain.html">BrAIn</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="kicker">
+      <img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn">
+      <span class="kicker-num">ARTÍCULO 013</span>
+    </div>
+    <h1>HYPERLIQUID Y LA EVOLUCIÓN DE LA BOLSA: CUANDO EL MERCADO SE VOLVIÓ PROTOCOLO</h1>
+    <div class="sub">Breaking <b>AI</b> Non-Sense</div>
+    <div class="byline">
+      <img src="../assets/braIn-favicon.png" alt="BrAIn">
+      <span class="b-name">BrAIn</span><span class="b-date">19 OCT 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="lede">
+    La bolsa no es un lugar: es una <strong>tecnología que resuelve un problema</strong> — conectar a alguien que quiere comprar con alguien que quiere vender, con confianza suficiente para que ambos se atrevan.
+    Desde los cafés de Ámsterdam hasta Hyperliquid, esa tecnología ha evolucionado como un organismo: cada generación resuelve un problema y crea otro.
+  </div>
+
+  <p>Este artículo recorre esa evolución y se detiene en su última mutación: <b>Hyperliquid, un exchange de derivados donde el libro de órdenes no vive en un servidor de una empresa, sino en una blockchain que cualquiera puede auditar</b>. No es una mejora de lo anterior — es un cambio de clase, y entenderlo es entender hacia dónde va el dinero.</p>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">SECCIÓN 01</span>La bolsa como tecnología: 400 años de mutaciones</h2>
+
+  <p>En 1602, la primera bolsa del mundo nació en un café de Ámsterdam. No había pantallas ni terminales: <b>un corredor gritaba precios, otro levantaba la mano, y la confianza se cerraba con un apretón de manos</b>. El problema que resolvía era simple: hasta entonces, si querías vender tus acciones de la Compañía de las Indias, tenías que encontrar físicamente a un comprador. La bolsa creó un lugar donde todos los compradores y vendedores convergían.</p>
+
+  <p>Dos siglos después, Wall Street llevó el modelo al extremo: pisos atestados, códigos de chaqueta, especialistas que mantenían el libro de órdenes en papel. La tecnología seguía siendo la misma — <b>gente en una habitación</b> — pero a una escala y con una ceremonia que la hacía parecer permanente.</p>
+
+  <blockquote class="quote">Cada generación cree que su forma de hacer mercado es la definitiva. Cada generación se equivoca.</blockquote>
+
+  <h2><span class="n">SECCIÓN 02</span>La electrónica: la bolsa se vuelve máquina</h2>
+
+  <p>El primer gran salto evolutivo llegó en 1971 con el NASDAQ: <b>la bolsa sin piso</b>. Los precios dejaron de gritarse y empezaron a mostrarse en pantallas. La ejecución pasó de segundos (levantar la mano) a milisegundos (un clic). Parecía el final de la evolución — y lo era, hasta que la evolución encontró un nuevo problema.</p>
+
+  <p>El problema que creó el NASDAQ fue la <b>fragmentación</b>: cuando la información y la ejecución se volvieron electrónicas, cada exchange se convirtió en un silo con su propio libro de órdenes. El mismo activo cotizaba en diez lugares distintos, con precios ligeramente distintos. Nació una nueva especie: <b>el high-frequency trader, que gana dinero arbitrando entre los silos</b>. No crea valor: cosecha la inconsistencia que la propia estructura creó.</p>
+
+  <p>[Y aquí está la lección evolutiva: cada mejora técnica no elimina el intermediario — lo transforma. El piso fue reemplazado por el algoritmo, pero el algoritmo pertenece a unas pocas firmas con servidores al lado del exchange. La velocidad se convirtió en la nueva puerta de entrada.]</p>
+
+  <h2><span class="n">SECCIÓN 03</span>La descentralización: cuando la confianza se volvió código</h2>
+
+  <p>La criptografía planteó una pregunta radical: <b>¿y si el libro de órdenes no necesita un dueño?</b> En 2020, Uniswap demostró que un mercado puede funcionar con un algoritmo en lugar de un intermediario — un creador de mercado automatizado (AMM) que fija precios con una fórmula matemática. El intercambio sin empresa. La confianza reemplazada por código.</p>
+
+  <p>Pero los AMM tenían un costo: <b>sacrificaron el libro de órdenes</b>, la herramienta más precisa jamás inventada para descubrir precios. El mercado se volvió más abierto pero menos eficiente: slippage, impermanent loss, y precios que se movían en bloques discretos. La evolución había abierto una puerta, pero había tirado por la ventana el mejor invento de la bolsa.</p>
+
+  <h2><span class="n">SECCIÓN 04</span>Hyperliquid: el libro de órdenes sin dueño</h2>
+
+  <p>Hyperliquid resolvió la contradicción: <b>tomó el libro de órdenes — el invento de 400 años — y lo puso en una blockchain propia, diseñada desde cero para velocidad</b>. Un exchange de derivados perpetuos donde el ordenador central de la empresa no existe: el matching ocurre on-chain, y cualquiera puede auditar cada transacción.</p>
+
+  <p>Las cifras importan menos que la estructura, pero la estructura se nota en las cifras: <b>latencias de milisegundos, comisiones que una fracción de lo que cobran los exchanges tradicionales, y un volumen que en periodos pico ha superado al de exchanges centralizados establecidos</b>. Y la pieza más interesante: el HLP — el HyperLiquidity Provider, un pool de liquidez comunitario que actúa como creador de mercado automático, cuyas ganancias se reparten entre quienes depositaron.</p>
+
+  <blockquote class="quote">Hyperliquid no es un exchange con blockchain. Es una blockchain que ES un exchange — y esa inversión cambia todo.</blockquote>
+
+  <p>[La diferencia no es técnica, es de propiedad: en un exchange centralizado, el libro de órdenes es un activo privado de la empresa — los datos, el flujo, el edge. En Hyperliquid, el libro es público y el creador de mercado puede ser la propia comunidad. La renta del intermediario se redistribuye a los participantes.]</p>
+
+  <h2><span class="n">SECCIÓN 05</span>Teoría de juegos: el market maker como especie</h2>
+
+  <p>La evolución de la bolsa es también la historia de una especie: <b>el creador de mercado</b>. Su trabajo es simple de describir y brutal de ejecutar: comprar cuando nadie quiere y vender cuando todos quieren, ganando el spread a cambio de asumir el riesgo de quedarse con inventario.</p>
+
+  <p>En el casino de la bolsa (sí, el mismo del artículo sobre WallStreetBets), <b>el market maker es el único jugador que gana con la ley de los grandes números en su favor</b> — no porque sepa más, sino porque cobra por cada transacción que facilita. La teoría de juegos lo explica: en un juego de suma negativa para la mayoría, el que cobra la entrada siempre gana. El HLP de Hyperliquid democratiza esa posición: cualquiera puede apostar a ser el casino, compartiendo el riesgo y el spread con la comunidad.</p>
+
+  <p>El giro evolutivo: <b>el creador de mercado pasó de ser un gremio cerrado (especialistas del piso) a un algoritmo propietario (HFT), y ahora a un pool abierto donde el algoritmo y el capital son comunitarios</b>. La renta se democratiza — y la pregunta es si eso la hace más estable o simplemente la reparte.</p>
+
+  <h2><span class="n">SECCIÓN 06</span>Lo que esto significa para ti</h2>
+
+  <p>La evolución de la bolsa tiene una dirección, y es la misma desde 1602: <b>menos fricción, menos intermediarios, más acceso</b>. Cada salto — del piso a la pantalla, de la pantalla al protocolo — ha transferido una porción de la renta del intermediario al participante.</p>
+
+  <p>Para ti, eso tiene dos lecturas. La primera es de <b>oportunidad</b>: plataformas como Hyperliquid ofrecen costos de transacción que eran impensables hace una década, y acceso sin permiso a mercados de derivados que antes requerían un bróker y un mínimo de capital. La segunda es de <b>advertencia</b>: menos fricción también significa menos protección, y la ausencia de intermediario no elimina el riesgo — lo hace más visible. El mercado no te protege porque no necesite tu lealtad.</p>
+
+  <p>La evolución no se detiene. La pregunta no es si habrá otra mutación — es cuál será el problema que resuelva. [Y si la historia es guía, será el mismo de siempre: alguien descubrirá que la fricción que queda es una renta disfrazada de necesidad.]</p>
+
+  <div class="divider"></div>
+
+  <h2><span class="n">—</span>Para el trader que hay en ti</h2>
+
+  <p>La evolución de la bolsa te toca en el lugar más concreto: <b>el costo de ejecutar tu idea</b>. El spread, la comisión, la latencia — todo lo que se interpone entre tu análisis y el precio — es la fricción que la bolsa lleva 400 años eliminando. El trader que no presta atención a la infraestructura paga la renta del intermediario sin saberlo: ejecuta en plataformas lentas, paga spreads amplios, y compite contra algoritmos con mejor acceso. Las plataformas de nueva generación no te hacen mejor trader — pero te devuelven la parte del spread que antes financiaba a un intermediario. Si quieres saber en qué plataformas de esta nueva generación estoy mirando, visita nuestro <a class="nm-link" href="https://neuromancer-ai.app/">Neuromancer Engine</a> — <a class="nm-link" href="https://neuromancer-ai.app/">clic aquí</a>.</p>
+
+  <div class="outro">
+    Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.
+  </div>
+
+  <a class="back" href="../brain.html">Volver a BrAIn</a>
+
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
+</footer>
+
+</body>
+</html>
