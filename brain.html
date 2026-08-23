@@ -316,6 +316,11 @@
   #brainGraph .g-node { transition: opacity .2s ease; }
   #brainGraph .g-edge { transition: opacity .2s ease; }
   .viz-legend { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: center; margin-top: 14px; }
+
+  /* ── estados de publicación ── */
+  .art-locked { opacity: .55; pointer-events: none; }
+  .badge-new { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: .1em; color: #047857; background: rgba(16, 185, 129, .12); border: 1px solid rgba(16, 185, 129, .35); border-radius: 6px; padding: 4px 10px; align-self: center; white-space: nowrap; }
+  .badge-soon { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: .1em; color: #9AA3B2; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; align-self: center; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -384,166 +389,161 @@
     </div>
 
     <div class="art-list" id="artList">
-
-      <a class="art" href="BrAIn/cinco-ecuaciones.html" data-tags="matematica inversion">
+      <a class="art" href="BrAIn/primeros-principios.html" data-tags="filosofia metodo">
         <span class="art-num">002</span>
-        <span class="art-info">
-          <b>Las cinco ecuaciones que gobiernan tu vida financiera</b>
-          <span class="meta">
-            <span>03 AGO 2026</span>
-            <span class="sep">·</span>
-            <span class="chip-tag">matemática</span>
-            <span class="chip-tag">inversión</span>
-          </span>
-        </span>
-      </a>
-
-      <a class="art" href="brain-sort-yourself-out.html" data-tags="psicologia practica">
-        <span class="art-num">003</span>
-        <span class="art-info">
-          <b>Siete preguntas y un papel: ponte en orden</b>
-          <span class="meta">
-            <span>10 AGO 2026</span>
-            <span class="sep">·</span>
-            <span class="chip-tag">psicología</span>
-            <span class="chip-tag">práctica</span>
-          </span>
-        </span>
-        <span class="badge-int">Interactivo</span>
-      </a>
-
-      <a class="art" href="BrAIn/busqueda-de-la-verdad.html" data-tags="filosofia inversion">
-        <span class="art-num">004</span>
-        <span class="art-info">
-          <b>La inversión es la búsqueda de la verdad</b>
-          <span class="meta">
-            <span>17 AGO 2026</span>
-            <span class="sep">·</span>
-            <span class="chip-tag">filosofía</span>
-            <span class="chip-tag">inversión</span>
-          </span>
-        </span>
-      </a>
-
-      <a class="art" href="BrAIn/teoria-de-juegos.html" data-tags="trading practica">
-        <span class="art-num">005</span>
-        <span class="art-info">
-          <b>No juegas contra el mercado. Juegas contra quienes saben que estás jugando</b>
-          <span class="meta">
-            <span>24 AGO 2026</span>
-            <span class="sep">·</span>
-            <span class="chip-tag">trading</span>
-            <span class="chip-tag">práctica</span>
-          </span>
-        </span>
-        <span class="badge-int">Interactivo</span>
-      </a>
-
-      <a class="art" href="BrAIn/watts-y-wafers.html" data-tags="tecnologia inversion">
-        <span class="art-num">006</span>
-        <span class="art-info">
-          <b>Watts y wafers: las dos monedas de la nueva era</b>
-          <span class="meta">
-            <span>31 AGO 2026</span>
-            <span class="sep">·</span>
-            <span class="chip-tag">tecnología</span>
-            <span class="chip-tag">inversión</span>
-          </span>
-        </span>
-      </a>
-
-      <a class="art" href="BrAIn/economia-de-la-ia.html" data-tags="ia tecnologia">
-        <span class="art-num">007</span>
-        <span class="art-info">
-          <b>La economía de la IA: cuando pensar se vuelve barato</b>
-          <span class="meta">
-            <span>07 SEP 2026</span>
-            <span class="sep">·</span>
-            <span class="chip-tag">IA</span>
-            <span class="chip-tag">tecnología</span>
-          </span>
-        </span>
-      </a>
-
-      <a class="art" href="BrAIn/crecimiento-tech-y-consumo.html" data-tags="inversion consumo">
-        <span class="art-num">008</span>
-        <span class="art-info">
-          <b>Crecimiento tecnológico y consumo: comprar antes que todos</b>
-          <span class="meta">
-            <span>14 SEP 2026</span>
-            <span class="sep">·</span>
-            <span class="chip-tag">inversión</span>
-            <span class="chip-tag">consumo</span>
-          </span>
-        </span>
-      </a>
-
-      <a class="art" href="BrAIn/el-divorcio.html" data-tags="psicologia filosofia">
-        <span class="art-num">009</span>
-        <span class="art-info">
-          <b>El divorcio: el juego que prometiste jugar para siempre</b>
-          <span class="meta">
-            <span>21 SEP 2026</span>
-            <span class="sep">·</span>
-            <span class="chip-tag">psicología</span>
-            <span class="chip-tag">filosofía</span>
-          </span>
-        </span>
-      </a>
-
-      <a class="art" href="BrAIn/casino-de-la-opinion.html" data-tags="psicologia filosofia">
-        <span class="art-num">010</span>
-        <span class="art-info">
-          <b>El casino de la opinión: por qué apostamos a todo</b>
-          <span class="meta">
-            <span>28 SEP 2026</span>
-            <span class="sep">·</span>
-            <span class="chip-tag">psicología</span>
-            <span class="chip-tag">cultura</span>
-          </span>
-        </span>
-      </a>
-
-      <a class="art" href="BrAIn/primeros-principios.html" data-tags="filosofia psicologia">
-        <span class="art-num">011</span>
         <span class="art-info">
           <b>Primeros principios: la cadena que nunca se rompió</b>
           <span class="meta">
-            <span>05 OCT 2026</span>
+            <span>31 AGO 2026</span>
             <span class="sep">·</span>
-            <span class="chip-tag">filosofía</span>
-            <span class="chip-tag">método</span>
+            <span class="chip-tag">filosofia</span><span class="chip-tag">metodo</span>
           </span>
         </span>
+        <span class="badge-new">NUEVO</span>
       </a>
 
-      <a class="art" href="BrAIn/kelly-para-vender.html" data-tags="matematica practica">
-        <span class="art-num">012</span>
+      <div class="art art-locked" data-tags="psicologia cultura">
+        <span class="art-num">003</span>
         <span class="art-info">
-          <b>Kelly para vender: cuánto de tu tiempo apostar a cada deal</b>
+          <b>El casino de la opinión: por qué apostamos a todo</b>
+          <span class="meta">
+            <span>07 SEP 2026</span>
+            <span class="sep">·</span>
+            <span class="chip-tag">psicologia</span><span class="chip-tag">cultura</span>
+          </span>
+        </span>
+        <span class="badge-soon">Próximamente</span>
+      </div>
+
+      <div class="art art-locked" data-tags="matematica inversion">
+        <span class="art-num">004</span>
+        <span class="art-info">
+          <b>Las cinco ecuaciones que gobiernan tu vida financiera</b>
+          <span class="meta">
+            <span>14 SEP 2026</span>
+            <span class="sep">·</span>
+            <span class="chip-tag">matematica</span><span class="chip-tag">inversion</span>
+          </span>
+        </span>
+        <span class="badge-soon">Próximamente</span>
+      </div>
+
+      <div class="art art-locked" data-tags="tecnologia energia">
+        <span class="art-num">005</span>
+        <span class="art-info">
+          <b>Watts y wafers: las dos monedas de la nueva era</b>
+          <span class="meta">
+            <span>21 SEP 2026</span>
+            <span class="sep">·</span>
+            <span class="chip-tag">tecnologia</span><span class="chip-tag">energia</span>
+          </span>
+        </span>
+        <span class="badge-soon">Próximamente</span>
+      </div>
+
+      <div class="art art-locked" data-tags="psicologia filosofia">
+        <span class="art-num">006</span>
+        <span class="art-info">
+          <b>El divorcio: el juego que prometiste jugar para siempre</b>
+          <span class="meta">
+            <span>28 SEP 2026</span>
+            <span class="sep">·</span>
+            <span class="chip-tag">psicologia</span><span class="chip-tag">filosofia</span>
+          </span>
+        </span>
+        <span class="badge-soon">Próximamente</span>
+      </div>
+
+      <div class="art art-locked" data-tags="ia tecnologia">
+        <span class="art-num">007</span>
+        <span class="art-info">
+          <b>La economía de la IA: cuando pensar se vuelve moneda</b>
+          <span class="meta">
+            <span>05 OCT 2026</span>
+            <span class="sep">·</span>
+            <span class="chip-tag">ia</span><span class="chip-tag">tecnologia</span>
+          </span>
+        </span>
+        <span class="badge-soon">Próximamente</span>
+      </div>
+
+      <div class="art art-locked" data-tags="trading filosofia">
+        <span class="art-num">008</span>
+        <span class="art-info">
+          <b>Teoría de juegos: no juegas contra el mercado</b>
           <span class="meta">
             <span>12 OCT 2026</span>
             <span class="sep">·</span>
-            <span class="chip-tag">matemática</span>
-            <span class="chip-tag">práctica</span>
+            <span class="chip-tag">trading</span><span class="chip-tag">filosofia</span>
           </span>
         </span>
-        <span class="badge-int">Interactivo</span>
-      </a>
+        <span class="badge-soon">Próximamente</span>
+      </div>
 
-      <a class="art" href="BrAIn/hyperliquid-evolucion-de-la-bolsa.html" data-tags="tecnologia inversion">
-        <span class="art-num">013</span>
+      <div class="art art-locked" data-tags="inversion consumo">
+        <span class="art-num">009</span>
         <span class="art-info">
-          <b>Hyperliquid y la evolución de la bolsa: cuando el mercado se volvió protocolo</b>
+          <b>Crecimiento tecnológico y consumo: comprar el futuro</b>
           <span class="meta">
             <span>19 OCT 2026</span>
             <span class="sep">·</span>
-            <span class="chip-tag">tecnología</span>
-            <span class="chip-tag">inversión</span>
+            <span class="chip-tag">inversion</span><span class="chip-tag">consumo</span>
           </span>
         </span>
-      </a>
+        <span class="badge-soon">Próximamente</span>
+      </div>
 
+      <div class="art art-locked" data-tags="filosofia inversion">
+        <span class="art-num">010</span>
+        <span class="art-info">
+          <b>La inversión es la búsqueda de la verdad</b>
+          <span class="meta">
+            <span>26 OCT 2026</span>
+            <span class="sep">·</span>
+            <span class="chip-tag">filosofia</span><span class="chip-tag">inversion</span>
+          </span>
+        </span>
+        <span class="badge-soon">Próximamente</span>
+      </div>
+
+      <div class="art art-locked" data-tags="matematica practica">
+        <span class="art-num">011</span>
+        <span class="art-info">
+          <b>Kelly para vender: cuánto de tu tiempo apostar a cada deal</b>
+          <span class="meta">
+            <span>02 NOV 2026</span>
+            <span class="sep">·</span>
+            <span class="chip-tag">matematica</span><span class="chip-tag">practica</span>
+          </span>
+        </span>
+        <span class="badge-soon">Próximamente</span>
+      </div>
+
+      <div class="art art-locked" data-tags="tecnologia inversion">
+        <span class="art-num">012</span>
+        <span class="art-info">
+          <b>Hyperliquid y la evolución de la bolsa: cuando el mercado se volvió protocolo</b>
+          <span class="meta">
+            <span>09 NOV 2026</span>
+            <span class="sep">·</span>
+            <span class="chip-tag">tecnologia</span><span class="chip-tag">inversion</span>
+          </span>
+        </span>
+        <span class="badge-soon">Próximamente</span>
+      </div>
+
+      <div class="art art-locked" data-tags="psicologia practica">
+        <span class="art-num">013</span>
+        <span class="art-info">
+          <b>Siete preguntas y un papel: ponte en orden</b>
+          <span class="meta">
+            <span>16 NOV 2026</span>
+            <span class="sep">·</span>
+            <span class="chip-tag">psicologia</span><span class="chip-tag">practica</span>
+          </span>
+        </span>
+        <span class="badge-soon">Próximamente</span>
+      </div>
     </div>
 
     <p class="soon-note">Artículo 001 — la presentación del proyecto — está en camino.</p>
@@ -562,7 +562,7 @@
     <div class="sec-label">// Mapa del conocimiento</div>
     <h2 class="viz-title">Los artículos no viven solos: forman una red</h2>
     <p class="viz-desc">Cada artículo enlaza con los que comparten su lógica. Pasa el cursor para ver las conexiones de un artículo, y haz clic para leerlo.</p>
-    <svg id="brainGraph" viewBox="0 0 820 500" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="background:#fff;border:1px solid #E5E5E5;border-radius:12px;"><line class="g-edge" data-s="007" data-t="010" x1="257.5" y1="153.7" x2="409.6" y2="318.8" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="004" data-t="008" x1="237.9" y1="261.1" x2="160.2" y2="99.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="005" data-t="010" x1="520.1" y1="301.3" x2="409.6" y2="318.8" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="003" data-t="009" x1="659.8" y1="430.0" x2="535.1" y2="413.0" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="009" data-t="012" x1="535.1" y1="413.0" x2="587.6" y2="221.9" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="007" data-t="008" x1="257.5" y1="153.7" x2="160.2" y2="99.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="006" data-t="008" x1="344.4" y1="78.9" x2="160.2" y2="99.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="005" data-t="009" x1="520.1" y1="301.3" x2="535.1" y2="413.0" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="009" data-t="010" x1="535.1" y1="413.0" x2="409.6" y2="318.8" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="004" data-t="011" x1="237.9" y1="261.1" x2="477.7" y2="130.3" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="011" data-t="013" x1="477.7" y1="130.3" x2="356.6" y2="203.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="002" data-t="011" x1="628.9" y1="70.0" x2="477.7" y2="130.3" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="011" data-t="012" x1="477.7" y1="130.3" x2="587.6" y2="221.9" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="003" data-t="005" x1="659.8" y1="430.0" x2="520.1" y2="301.3" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="006" data-t="007" x1="344.4" y1="78.9" x2="257.5" y2="153.7" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="004" data-t="013" x1="237.9" y1="261.1" x2="356.6" y2="203.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="002" data-t="012" x1="628.9" y1="70.0" x2="587.6" y2="221.9" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="007" data-t="013" x1="257.5" y1="153.7" x2="356.6" y2="203.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="010" data-t="013" x1="409.6" y1="318.8" x2="356.6" y2="203.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="010" data-t="012" x1="409.6" y1="318.8" x2="587.6" y2="221.9" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="005" data-t="006" x1="520.1" y1="301.3" x2="344.4" y2="78.9" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="005" data-t="012" x1="520.1" y1="301.3" x2="587.6" y2="221.9" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="006" data-t="013" x1="344.4" y1="78.9" x2="356.6" y2="203.4" stroke="#D8D8D8" stroke-width="1.2"/><g class="g-node" data-id="002" data-slug="BrAIn/cinco-ecuaciones.html" transform="translate(628.9,70.0)"><circle r="9" fill="#0A0A0A" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">002</text></g><g class="g-node" data-id="003" data-slug="brain-sort-yourself-out.html" transform="translate(659.8,430.0)"><circle r="9" fill="#0A0A0A" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">003</text></g><g class="g-node" data-id="004" data-slug="BrAIn/busqueda-de-la-verdad.html" transform="translate(237.9,261.1)"><circle r="9" fill="#0A0A0A" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">004</text></g><g class="g-node" data-id="005" data-slug="BrAIn/teoria-de-juegos.html" transform="translate(520.1,301.3)"><circle r="9" fill="#0A0A0A" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">005</text></g><g class="g-node" data-id="006" data-slug="BrAIn/watts-y-wafers.html" transform="translate(344.4,78.9)"><circle r="9" fill="#10B981" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">006</text></g><g class="g-node" data-id="007" data-slug="BrAIn/economia-de-la-ia.html" transform="translate(257.5,153.7)"><circle r="9" fill="#10B981" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">007</text></g><g class="g-node" data-id="008" data-slug="BrAIn/crecimiento-tech-y-consumo.html" transform="translate(160.2,99.4)"><circle r="9" fill="#10B981" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">008</text></g><g class="g-node" data-id="009" data-slug="BrAIn/el-divorcio.html" transform="translate(535.1,413.0)"><circle r="9" fill="#F59E0B" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">009</text></g><g class="g-node" data-id="010" data-slug="BrAIn/casino-de-la-opinion.html" transform="translate(409.6,318.8)"><circle r="9" fill="#F59E0B" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">010</text></g><g class="g-node" data-id="011" data-slug="BrAIn/primeros-principios.html" transform="translate(477.7,130.3)"><circle r="9" fill="#7C3AED" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">011</text></g><g class="g-node" data-id="012" data-slug="BrAIn/kelly-para-vender.html" transform="translate(587.6,221.9)"><circle r="9" fill="#7C3AED" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">012</text></g><g class="g-node" data-id="013" data-slug="BrAIn/hyperliquid-evolucion-de-la-bolsa.html" transform="translate(356.6,203.4)"><circle r="9" fill="#7C3AED" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">013</text></g></svg>
+    <svg id="brainGraph" viewBox="0 0 820 500" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="background:#fff;border:1px solid #E5E5E5;border-radius:12px;"><line class="g-edge" data-s="006" data-t="011" x1="439.5" y1="148.5" x2="373.3" y2="129.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="003" data-t="006" x1="320.7" y1="214.8" x2="439.5" y2="148.5" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="003" data-t="012" x1="320.7" y1="214.8" x2="396.6" y2="303.3" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="006" data-t="013" x1="439.5" y1="148.5" x2="535.8" y2="159.7" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="002" data-t="011" x1="479.4" y1="236.5" x2="373.3" y2="129.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="005" data-t="007" x1="346.0" y1="355.3" x2="284.2" y2="325.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="008" data-t="011" x1="399.2" y1="213.7" x2="373.3" y2="129.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="005" data-t="008" x1="346.0" y1="355.3" x2="399.2" y2="213.7" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="008" data-t="013" x1="399.2" y1="213.7" x2="535.8" y2="159.7" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="005" data-t="012" x1="346.0" y1="355.3" x2="396.6" y2="303.3" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="006" data-t="008" x1="439.5" y1="148.5" x2="399.2" y2="213.7" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="007" data-t="012" x1="284.2" y1="325.4" x2="396.6" y2="303.3" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="005" data-t="009" x1="346.0" y1="355.3" x2="375.1" y2="430.0" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="003" data-t="011" x1="320.7" y1="214.8" x2="373.3" y2="129.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="004" data-t="011" x1="464.2" y1="70.0" x2="373.3" y2="129.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="007" data-t="009" x1="284.2" y1="325.4" x2="375.1" y2="430.0" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="002" data-t="010" x1="479.4" y1="236.5" x2="475.6" y2="364.6" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="002" data-t="012" x1="479.4" y1="236.5" x2="396.6" y2="303.3" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="009" data-t="010" x1="375.1" y1="430.0" x2="475.6" y2="364.6" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="010" data-t="012" x1="475.6" y1="364.6" x2="396.6" y2="303.3" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="003" data-t="007" x1="320.7" y1="214.8" x2="284.2" y2="325.4" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="003" data-t="008" x1="320.7" y1="214.8" x2="399.2" y2="213.7" stroke="#D8D8D8" stroke-width="1.2"/><line class="g-edge" data-s="002" data-t="004" x1="479.4" y1="236.5" x2="464.2" y2="70.0" stroke="#D8D8D8" stroke-width="1.2"/><g class="g-node" data-id="002" data-slug="BrAIn/primeros-principios.html" transform="translate(479.4,236.5)"><circle r="9" fill="#0A0A0A" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">002</text></g><g class="g-node" data-id="003" data-slug="BrAIn/casino-de-la-opinion.html" transform="translate(320.7,214.8)"><circle r="9" fill="#F59E0B" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">003</text></g><g class="g-node" data-id="004" data-slug="BrAIn/cinco-ecuaciones.html" transform="translate(464.2,70.0)"><circle r="9" fill="#0A0A0A" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">004</text></g><g class="g-node" data-id="005" data-slug="BrAIn/watts-y-wafers.html" transform="translate(346.0,355.3)"><circle r="9" fill="#10B981" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">005</text></g><g class="g-node" data-id="006" data-slug="BrAIn/el-divorcio.html" transform="translate(439.5,148.5)"><circle r="9" fill="#F59E0B" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">006</text></g><g class="g-node" data-id="007" data-slug="BrAIn/economia-de-la-ia.html" transform="translate(284.2,325.4)"><circle r="9" fill="#10B981" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">007</text></g><g class="g-node" data-id="008" data-slug="BrAIn/teoria-de-juegos.html" transform="translate(399.2,213.7)"><circle r="9" fill="#0A0A0A" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">008</text></g><g class="g-node" data-id="009" data-slug="BrAIn/crecimiento-tech-y-consumo.html" transform="translate(375.1,430.0)"><circle r="9" fill="#10B981" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">009</text></g><g class="g-node" data-id="010" data-slug="BrAIn/busqueda-de-la-verdad.html" transform="translate(475.6,364.6)"><circle r="9" fill="#0A0A0A" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">010</text></g><g class="g-node" data-id="011" data-slug="BrAIn/kelly-para-vender.html" transform="translate(373.3,129.4)"><circle r="9" fill="#7C3AED" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">011</text></g><g class="g-node" data-id="012" data-slug="BrAIn/hyperliquid-evolucion-de-la-bolsa.html" transform="translate(396.6,303.3)"><circle r="9" fill="#7C3AED" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="-16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">012</text></g><g class="g-node" data-id="013" data-slug="brain-sort-yourself-out.html" transform="translate(535.8,159.7)"><circle r="9" fill="#0A0A0A" stroke="#fff" stroke-width="1.5" style="cursor:pointer"/><text y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#555" style="pointer-events:none">013</text></g></svg>
     <p class="viz-legend">Fundamentos · Serie Baker · Conducta · Método — los colores agrupan las cuatro familias de la red.</p>
   </div>
 
