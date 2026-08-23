@@ -144,11 +144,11 @@
   }
   h3 { font-family: var(--display); font-size: 15px; font-weight: 700; margin: 24px 0 8px; }
 
-  p { margin: 0 0 16px; color: #222; font-size: 15px; }
+  p { margin: 0 0 16px; color: #222; font-size: 15.5px; }
   p b, li b { color: var(--ink); font-weight: 700; }
 
   ul { margin: 0 0 16px 4px; padding-left: 20px; }
-  li { margin-bottom: 7px; color: #222; font-size: 15px; }
+  li { margin-bottom: 7px; color: #222; font-size: 15.5px; }
 
   .formula {
     font-family: 'JetBrains Mono', monospace;
@@ -164,7 +164,7 @@
     margin: 22px 0; padding: 16px 22px;
     border-left: 3px solid var(--ink);
     background: var(--surface);
-    font-size: 15px; font-weight: 600; color: var(--ink);
+    font-size: 15.5px; font-weight: 600; color: var(--ink);
     line-height: 1.6; border-radius: 0 10px 10px 0;
   }
   blockquote.quote::before { content: "“"; color: #c8c8c8; font-size: 1.4em; font-weight: 800; margin-right: 2px; }
@@ -224,6 +224,13 @@
     html { scroll-behavior: auto; }
     * { transition: none !important; }
   }
+
+  /* curva de infelicidad */
+  .curve-box { border: 1px solid var(--line); border-radius: 12px; padding: 22px 22px 16px; margin: 20px 0 26px; background: var(--bg); }
+  .curve-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  #uCurve { width: 100%; height: auto; display: block; }
+  .curve-note { font-size: 12px !important; color: var(--muted); margin: 10px 0 0 !important; line-height: 1.6; }
+  .curve-note b { color: #b91c1c; }
 </style>
 </head>
 <body>
@@ -297,6 +304,12 @@
 
   <p>El problema es que <b>el valle de la curva coincide con la edad en la que la gente se divorcia más</b>. Es decir: muchos divorcios ocurren en el punto más bajo de una curva que habría subido si hubieran esperado. La psicología conductual lo llama descuento temporal: valoramos el dolor de hoy más que el alivio de mañana, y tomamos decisiones permanentes con información del momento más distorsionado.</p>
 
+  <div class="curve-box">
+    <div class="curve-head">// La curva de la satisfacción matrimonial</div>
+    <canvas id="uCurve" width="640" height="260"></canvas>
+    <p class="curve-note">La satisfacción sube al inicio, cae durante los años de crianza y vuelve a subir cuando la pareja queda a solas. <b>El valle (en rojo) es donde ocurren la mayoría de los divorcios</b> — en el punto más bajo de una curva que habría subido.</p>
+  </div>
+
   <h2><span class="n">SECCIÓN 05</span>La cultura: cuando la salida se vuelve aceptable</h2>
 
   <p>La teoría de juegos y la psicología explican el mecanismo individual. La cultura explica por qué hay una <b>epidemia</b> — por qué el divorcio dejó de ser un escándalo y se volvió una opción normal.</p>
@@ -331,5 +344,69 @@
   <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
 </footer>
 
+
+<script>
+(function () {
+  'use strict';
+  var cv = document.getElementById('uCurve');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var W = cv.width, H = cv.height;
+  var padL = 46, padR = 14, padT = 22, padB = 30;
+  var pw = W - padL - padR, ph = H - padT - padB;
+
+  // satisfacción (0-10) vs años de matrimonio (0-40): curva en U simétrica
+  // alta al inicio (~6.4), mínima en ~17 años (~4.5), vuelve a subir al final (~8.0)
+  function sat(a) {
+    var norm = (a - 17) / 23;
+    return 4.5 + 3.5 * (norm * norm);
+  }
+  function x(a) { return padL + (a / 40) * pw; }
+  function y(s) { return padT + (1 - (s - 4) / 5) * ph; }
+
+  ctx.font = '11px "JetBrains Mono", monospace';
+
+  // zona del valle (años 8-22, donde ocurren la mayoría de divorcios)
+  var grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, 'rgba(220, 38, 38, .10)');
+  grad.addColorStop(1, 'rgba(220, 38, 38, .03)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(x(8), padT, x(25) - x(8), ph);
+  ctx.fillStyle = '#b91c1c';
+  ctx.fillText('zona de divorcios', x(8) + 8, padT + 14);
+
+  // ejes
+  ctx.strokeStyle = '#E5E5E5'; ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(padL, padT); ctx.lineTo(padL, H - padB); ctx.lineTo(W - padR, H - padB);
+  ctx.stroke();
+
+  // etiquetas de años
+  ctx.fillStyle = '#999';
+  for (var a = 0; a <= 40; a += 10) {
+    ctx.fillText(a + 'a', x(a) - 8, H - padB + 16);
+  }
+  ctx.fillText('años de matrimonio', padL + pw / 2 - 60, H - 4);
+  ctx.fillText('satisfacción →', 10, padT + ph / 2);
+
+  // curva en U
+  ctx.strokeStyle = '#0A0A0A'; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  for (var a = 0; a <= 40; a += 0.25) {
+    var px = x(a), py = y(sat(a));
+    if (a === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // punto del valle (14 años — el más bajo)
+  var vx = x(17), vy = y(sat(17));
+  ctx.fillStyle = '#b91c1c';
+  ctx.beginPath();
+  ctx.arc(vx, vy, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#b91c1c';
+  ctx.fillText('el valle', vx + 10, vy - 8);
+})();
+</script>
 </body>
 </html>
