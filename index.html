@@ -234,10 +234,10 @@
     aspect-ratio: 997 / 540;
     margin: 10px 0 2px;
   }
-      .mini-logo.n {
+        .mini-logo.n {
     display: block;
-    width: 185px;
-    aspect-ratio: 512 / 279;
+    width: 150px;
+    aspect-ratio: 600 / 791;
     margin: 12px auto 4px;
   }
     .mini-logo.silhouette {
@@ -292,6 +292,11 @@
   }
   .buy:hover { background: var(--accent-2); transform: translateY(-2px); }
   .buy.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); box-shadow: none; }
+  .buy.disabled {
+    background: #1a1e38; color: #5b6288;
+    box-shadow: none; cursor: not-allowed;
+  }
+  .buy.disabled:hover { background: #1a1e38; transform: none; }
   .buy.ghost:hover { border-color: var(--accent); color: var(--accent); }
 
   /* ── banda cita ──────────────────────── */
@@ -493,7 +498,7 @@
     <a class="card" href="https://neuromancer-ai.app/" target="_blank" rel="noopener">
       <span class="num">02 — MOTOR DE ANÁLISIS</span>
       <h3>Neuromancer Engine</h3>
-      <img class="mini-logo n" src="neuromancer-logo-single.png" alt="Logo Neuromancer Engine">
+      <img class="mini-logo n" src="assets/neuromancer-logo-hi.png" alt="Logo Neuromancer Engine">
       <p>Para inversionistas: Análisis cuantitativo de narrativas y stocks. Un proceso sistemático que cruza múltiples señales y te muestra dónde se alinean y dónde no.</p>
       <span class="go">Ver el engine</span>
     </a>
@@ -533,45 +538,45 @@
   </div>
   <div class="grid">
 
-    <a class="card" href="https://whop.com/checkout/plan_gNFLXrOwEg95E" target="_blank" rel="noopener">
+    <div class="card" style="cursor:default">
       <span class="num">NIVEL 0</span>
       <h3>e4 — Cómo comenzar <span class="badge badge-ghost">Gratis</span></h3>
       <p>Si no sabes cómo entrar al mundo del trading, empieza acá. Tu primera cuenta, sin humo.</p>
       <span class="price">$0<small>Acceso inmediato</small></span>
-      <span class="buy ghost">Comenzar</span>
-    </a>
+      <span class="buy ghost disabled">Próximamente</span>
+    </div>
 
-    <a class="card" href="https://whop.com/checkout/plan_FmS0L72LrzlJf" target="_blank" rel="noopener">
+    <div class="card" style="cursor:default">
       <span class="num">PROTOCOLO</span>
       <h3>Gambit Trader</h3>
       <p>Instructivo simple del protocolo 9:30am. Si no quieres aprender, este es un buen punto de partida.</p>
       <span class="price">$17<small>Pago único</small></span>
-      <span class="buy">Comprar</span>
-    </a>
+      <span class="buy disabled">Próximamente</span>
+    </div>
 
-    <a class="card" href="https://whop.com/checkout/plan_GlFNCRI6x5r7y" target="_blank" rel="noopener">
+    <div class="card" style="cursor:default">
       <span class="num">MANUAL</span>
       <h3>Red Queen Protocol</h3>
       <p>El manual de trading en PDF: lo que necesitas saber para ganar en el mercado, sin paja.</p>
       <span class="price">$57<small>Pago único</small></span>
-      <span class="buy">Comprar</span>
-    </a>
+      <span class="buy disabled">Próximamente</span>
+    </div>
 
-    <a class="card" href="https://whop.com/checkout/plan_DEHvr4kTWXNW6" target="_blank" rel="noopener">
+    <div class="card" style="cursor:default">
       <span class="num">HERRAMIENTA</span>
       <h3>Trading Core <span class="badge badge-ghost">Suscripción</span></h3>
       <p>El indicador de TradingView como ayuda en el setup: señales claras, sin ruido.</p>
       <span class="price">$25<small>Por mes</small></span>
-      <span class="buy">Suscribirse</span>
-    </a>
+      <span class="buy disabled">Próximamente</span>
+    </div>
 
-    <a class="card" href="https://whop.com/checkout/plan_XICHu11O2GH0W" target="_blank" rel="noopener">
+    <div class="card" style="cursor:default">
       <span class="num">CURSO</span>
       <h3>The Red Pill</h3>
       <p>El curso completo pregrabado: todo lo que necesitas para ganar en el mercado, a tu ritmo.</p>
       <span class="price">$197<small>Pago único</small></span>
-      <span class="buy">Comprar</span>
-    </a>
+      <span class="buy disabled">Próximamente</span>
+    </div>
 
     <a class="card featured" href="trq-program.html">
       <span class="num">MENTORÍA</span>
