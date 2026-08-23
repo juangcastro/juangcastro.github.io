@@ -230,7 +230,7 @@
   .curve-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
   #uCurve { width: 100%; height: auto; display: block; }
   .curve-note { font-size: 12px !important; color: var(--muted); margin: 10px 0 0 !important; line-height: 1.6; }
-  .curve-note b { color: #b91c1c; }
+  .curve-note b { color: #ea580c; }
 </style>
 </head>
 <body>
@@ -307,7 +307,7 @@
   <div class="curve-box">
     <div class="curve-head">// La curva de la satisfacción matrimonial</div>
     <canvas id="uCurve" width="640" height="260"></canvas>
-    <p class="curve-note">La satisfacción sube al inicio, cae durante los años de crianza y vuelve a subir cuando la pareja queda a solas. <b>El valle (en rojo) es donde ocurren la mayoría de los divorcios</b> — en el punto más bajo de una curva que habría subido.</p>
+    <p class="curve-note">La satisfacción sube al inicio, cae durante los años de crianza y vuelve a subir cuando la pareja queda a solas. <b>El valle (en naranja) es donde ocurren la mayoría de los divorcios</b> — en el punto más bajo de una curva que habría subido.</p>
   </div>
 
   <h2><span class="n">SECCIÓN 05</span>La cultura: cuando la salida se vuelve aceptable</h2>
@@ -368,11 +368,11 @@
 
   // zona del valle (años 8-22, donde ocurren la mayoría de divorcios)
   var grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, 'rgba(220, 38, 38, .10)');
-  grad.addColorStop(1, 'rgba(220, 38, 38, .03)');
+  grad.addColorStop(0, 'rgba(249, 115, 22, .12)');
+  grad.addColorStop(1, 'rgba(249, 115, 22, .04)');
   ctx.fillStyle = grad;
   ctx.fillRect(x(8), padT, x(25) - x(8), ph);
-  ctx.fillStyle = '#b91c1c';
+  ctx.fillStyle = '#ea580c';
   ctx.fillText('zona de divorcios', x(8) + 8, padT + 14);
 
   // ejes
@@ -400,11 +400,11 @@
 
   // punto del valle (14 años — el más bajo)
   var vx = x(17), vy = y(sat(17));
-  ctx.fillStyle = '#b91c1c';
+  ctx.fillStyle = '#ea580c';
   ctx.beginPath();
   ctx.arc(vx, vy, 5, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = '#b91c1c';
+  ctx.fillStyle = '#ea580c';
   ctx.fillText('el valle', vx + 10, vy - 8);
 })();
 </script>
