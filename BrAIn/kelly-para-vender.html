@@ -305,6 +305,15 @@
   }
   .nm-link { color: #7C3AED; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
   .nm-link:hover { color: #5B21B6; }
+
+  /* ── artículos relacionados ── */
+  .related { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .related-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .related-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .related-list li { font-size: 14px; color: #222; margin: 0; }
+  .related-list a { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--line); transition: text-decoration-color .15s ease; }
+  .related-list a:hover { text-decoration-color: var(--ink); }
+  .rel-why { color: var(--muted); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -451,6 +460,18 @@
 
   <p>La misma fórmula que mide tus apuestas comerciales mide tus apuestas de trading — porque es la misma apuesta. <b>Tu win rate como operador, tu ganancia promedio, tu pérdida promedio: Kelly te dice qué fracción de tu capital arriesgar en cada idea, y te advierte cuándo la idea no tiene ventaja</b>. El trader que ignora Kelly apuesta de más cuando gana confianza y de menos cuando la pierde — exactamente al revés de lo óptimo. La ventaja no es tener razón: es saber cuánto arriesgar cuando la tienes. Si quieres calcular el Kelly de tu modelo de operación de trading, visita nuestra <a class="nm-link" href="../calculadoras/kelly-criterion.html">calculadora acá</a>.</p>
 
+  
+  
+  <div class="related">
+    <div class="related-head">// Artículos relacionados</div>
+    <ul class="related-list">
+      <li><a href="cinco-ecuaciones.html"><b>Las cinco ecuaciones</b></a> <span class="rel-why">· la matemática de la decisión</span></li>
+      <li><a href="teoria-de-juegos.html"><b>Teoría de juegos</b></a> <span class="rel-why">· dimensionar la apuesta</span></li>
+      <li><a href="el-divorcio.html"><b>El divorcio</b></a> <span class="rel-why">· el costo hundido del deal</span></li>
+      <li><a href="casino-de-la-opinion.html"><b>El casino de la opinión</b></a> <span class="rel-why">· la ventaja esperada</span></li>
+      <li><a href="primeros-principios.html"><b>Primeros principios</b></a> <span class="rel-why">· descomponer en componentes</span></li>
+    </ul>
+  </div>
   <div class="outro">
     Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.
   </div>

@@ -215,6 +215,15 @@
     html { scroll-behavior: auto; }
     * { transition: none !important; }
   }
+
+  /* ── artículos relacionados ── */
+  .related { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .related-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .related-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .related-list li { font-size: 14px; color: #222; margin: 0; }
+  .related-list a { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--line); transition: text-decoration-color .15s ease; }
+  .related-list a:hover { text-decoration-color: var(--ink); }
+  .rel-why { color: var(--muted); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -421,6 +430,15 @@
   <blockquote class="quote">"¿Cuánto me ha costado ya no saber estas cinco cosas — y cuánto más estoy dispuesto a dejar que me cueste?"</blockquote>
   <p>El conocimiento no te hace rico. Te hace <b>responsable</b> — y la responsabilidad, bien cargada, es lo único que la vida paga con interés. La matemática está en la servilleta. El resto depende de ti.</p>
 
+  
+  
+  <div class="related">
+    <div class="related-head">// Artículos relacionados</div>
+    <ul class="related-list">
+      <li><a href="primeros-principios.html"><b>Primeros principios</b></a> <span class="rel-why">· primeros principios del dinero</span></li>
+      <li><a href="kelly-para-vender.html"><b>Kelly para vender</b></a> <span class="rel-why">· la matemática de la decisión</span></li>
+    </ul>
+  </div>
   <div class="outro">
     Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.
   </div>

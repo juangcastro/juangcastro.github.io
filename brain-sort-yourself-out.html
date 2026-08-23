@@ -365,6 +365,16 @@
   <span class="hint">Tus respuestas se guardan solas en este navegador (no se envían a ningún servidor).</span>
 </div>
 
+  
+
+  <div class="related">
+    <div class="related-head">// Artículos relacionados</div>
+    <ul class="related-list">
+      <li><a href="BrAIn/teoria-de-juegos.html"><b>Teoría de juegos</b></a> <span class="rel-why">· juegos que reconoces</span></li>
+      <li><a href="BrAIn/el-divorcio.html"><b>El divorcio</b></a> <span class="rel-why">· el papel y la honestidad</span></li>
+    </ul>
+  </div>
+
 <div class="outro">
     Si este artículo te movió algo, sigue a <a href="brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.
   </div>
@@ -433,7 +443,16 @@
       '.q{margin-bottom:22px;page-break-inside:avoid;} .qn{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#0B7A4B;font-weight:700;}' +
       '.qt{font-weight:700;margin:4px 0 6px;} .qr{background:#F8FAFC;border-left:3px solid #10B981;padding:10px 14px;border-radius:0 6px 6px 0;}' +
       '.foot{margin-top:36px;border-top:1px solid #e5e7eb;padding-top:14px;color:#666;font-size:12px;}' +
-      '@media print{body{margin:0;}}</style></head><body>' +
+      '@media print{body{margin:0;}}
+  /* ── artículos relacionados ── */
+  .related { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .related-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .related-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .related-list li { font-size: 14px; color: #222; margin: 0; }
+  .related-list a { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--line); transition: text-decoration-color .15s ease; }
+  .related-list a:hover { text-decoration-color: var(--ink); }
+  .rel-why { color: var(--muted); font-size: 13px; }
+</style></head><body>' +
       '<h1>SIETE PREGUNTAS Y UN PAPEL</h1>' +
       '<div class="f">Mis respuestas · ' + new Date().toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' }) + ' · BrAIn — The Red Queen</div>' +
       ids.map(function (id, i) {

@@ -305,6 +305,15 @@
   }
   .nm-link { color: #7C3AED; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
   .nm-link:hover { color: #5B21B6; }
+
+  /* ── artículos relacionados ── */
+  .related { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .related-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .related-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .related-list li { font-size: 14px; color: #222; margin: 0; }
+  .related-list a { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--line); transition: text-decoration-color .15s ease; }
+  .related-list a:hover { text-decoration-color: var(--ink); }
+  .rel-why { color: var(--muted); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -404,6 +413,18 @@
 
   <p>La evolución de la bolsa te toca en el lugar más concreto: <b>el costo de ejecutar tu idea</b>. El spread, la comisión, la latencia — todo lo que se interpone entre tu análisis y el precio — es la fricción que la bolsa lleva 400 años eliminando. El trader que no presta atención a la infraestructura paga la renta del intermediario sin saberlo: ejecuta en plataformas lentas, paga spreads amplios, y compite contra algoritmos con mejor acceso. Las plataformas de nueva generación no te hacen mejor trader — pero te devuelven la parte del spread que antes financiaba a un intermediario. Si quieres saber en qué plataformas de esta nueva generación estoy mirando, visita nuestro <a class="nm-link" href="https://neuromancer-ai.app/">Neuromancer Engine</a> — <a class="nm-link" href="https://neuromancer-ai.app/">clic aquí</a>.</p>
 
+  
+  
+  <div class="related">
+    <div class="related-head">// Artículos relacionados</div>
+    <ul class="related-list">
+      <li><a href="busqueda-de-la-verdad.html"><b>La búsqueda de la verdad</b></a> <span class="rel-why">· entender cómo funciona la bolsa</span></li>
+      <li><a href="watts-y-wafers.html"><b>Watts y wafers</b></a> <span class="rel-why">· la nueva infraestructura de mercado</span></li>
+      <li><a href="economia-de-la-ia.html"><b>La economía de la IA</b></a> <span class="rel-why">· infraestructura y tokens</span></li>
+      <li><a href="casino-de-la-opinion.html"><b>El casino de la opinión</b></a> <span class="rel-why">· el casino de la bolsa</span></li>
+      <li><a href="primeros-principios.html"><b>Primeros principios</b></a> <span class="rel-why">· qué es una bolsa de verdad</span></li>
+    </ul>
+  </div>
   <div class="outro">
     Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.
   </div>

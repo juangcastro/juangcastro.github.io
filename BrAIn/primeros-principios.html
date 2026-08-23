@@ -224,6 +224,15 @@
     html { scroll-behavior: auto; }
     * { transition: none !important; }
   }
+
+  /* ── artículos relacionados ── */
+  .related { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .related-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .related-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .related-list li { font-size: 14px; color: #222; margin: 0; }
+  .related-list a { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--line); transition: text-decoration-color .15s ease; }
+  .related-list a:hover { text-decoration-color: var(--ink); }
+  .rel-why { color: var(--muted); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -323,6 +332,17 @@
 
   <p>El mercado es el campo de pruebas perfecto para los primeros principios. <b>Cuando un precio cae, la analogía dice "es una corrección". Los primeros principios preguntan: ¿qué negocio hay debajo, cuánto genera, cuánto cuesta su capital?</b> La mayoría de los movimientos del precio son ruido — costumbre, momentum, miedo. Los primeros principios buscan el valor físico: cuánto produce el activo de verdad, de aquí en adelante. Es la misma pregunta de Musk con los cohetes: ¿cuánto cuesta el metal, y cuánto cobran los demás? El inversionista que responde esa pregunta no reacciona al mercado — lo lee.</p>
 
+  
+  
+  <div class="related">
+    <div class="related-head">// Artículos relacionados</div>
+    <ul class="related-list">
+      <li><a href="cinco-ecuaciones.html"><b>Las cinco ecuaciones</b></a> <span class="rel-why">· primeros principios del dinero</span></li>
+      <li><a href="busqueda-de-la-verdad.html"><b>La búsqueda de la verdad</b></a> <span class="rel-why">· la verdad como primer principio</span></li>
+      <li><a href="kelly-para-vender.html"><b>Kelly para vender</b></a> <span class="rel-why">· descomponer el deal</span></li>
+      <li><a href="hyperliquid-evolucion-de-la-bolsa.html"><b>Hyperliquid y la evolución de la bolsa</b></a> <span class="rel-why">· qué es realmente una bolsa</span></li>
+    </ul>
+  </div>
   <div class="outro">
     Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.
   </div>

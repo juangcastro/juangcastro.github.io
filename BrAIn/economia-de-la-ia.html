@@ -226,6 +226,15 @@
     html { scroll-behavior: auto; }
     * { transition: none !important; }
   }
+
+  /* ── artículos relacionados ── */
+  .related { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .related-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .related-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .related-list li { font-size: 14px; color: #222; margin: 0; }
+  .related-list a { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--line); transition: text-decoration-color .15s ease; }
+  .related-list a:hover { text-decoration-color: var(--ink); }
+  .rel-why { color: var(--muted); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -313,6 +322,17 @@
 
   <p>Si quieres conocer las empresas importantes en esta narrativa, visita nuestro <a class="nm-link" href="https://neuromancer-ai.app/">Neuromancer Engine</a> — <a class="nm-link" href="https://neuromancer-ai.app/">clic aquí</a>.</p>
 
+  
+  
+  <div class="related">
+    <div class="related-head">// Artículos relacionados</div>
+    <ul class="related-list">
+      <li><a href="watts-y-wafers.html"><b>Watts y wafers</b></a> <span class="rel-why">· watts y wafers: la física de la IA</span></li>
+      <li><a href="crecimiento-tech-y-consumo.html"><b>Crecimiento tech y consumo</b></a> <span class="rel-why">· el tamaño del mercado</span></li>
+      <li><a href="casino-de-la-opinion.html"><b>El casino de la opinión</b></a> <span class="rel-why">· el casino y los tokens</span></li>
+      <li><a href="hyperliquid-evolucion-de-la-bolsa.html"><b>Hyperliquid y la evolución de la bolsa</b></a> <span class="rel-why">· protocolo vs intermediario</span></li>
+    </ul>
+  </div>
   <div class="outro">
     Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.
   </div>
