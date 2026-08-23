@@ -256,6 +256,15 @@ textarea {
   }
 textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .12); outline: none; }
 textarea::placeholder { color: #b4bcc8; font-style: italic; }
+
+  /* ── barra de acciones (PDF / email) ── */
+  .actions { position: sticky; bottom: 16px; z-index: 20; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: rgba(255, 255, 255, .94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; margin: 34px 0 8px; box-shadow: 0 8px 30px rgba(10, 10, 10, .10); }
+  .actions button { border: none; border-radius: 8px; padding: 11px 18px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .12s ease, box-shadow .12s ease; }
+  .btn-pdf { background: var(--ink); color: #FFFFFF; }
+  .btn-pdf:hover { box-shadow: 0 4px 14px rgba(26, 26, 26, .28); }
+  .btn-mail { background: #E8F8EF; color: #0B7A4B; }
+  .btn-mail:hover { box-shadow: 0 4px 14px rgba(16, 185, 129, .22); }
+  .hint { width: 100%; text-align: center; font-size: 11.5px; color: #9AA3B2; font-family: 'JetBrains Mono', monospace; }
 </style>
 </head>
 <body>
@@ -314,7 +323,7 @@ textarea::placeholder { color: #b4bcc8; font-style: italic; }
   <p>La matemática dice: <b>delatar</b>. Pase lo que pase, delatar te deja mejor — si el otro se calla, sales libre; pero si tú no delatas y el otro sí lo hace, te tocan diez años. La traición es la <i>estrategia dominante</i>. Y sin embargo, los dos delatando terminan con cinco años cada uno — <b>peor para ambos</b> que si se hubieran callado. La jugada racional individual produce el peor resultado colectivo. [Ahí está la trampa perfecta: dos personas racionales, persiguiendo cada una su interés, terminan peor que dos que cooperaron en silencio.]</p>
 
   <div class="q"><span>PREGUNTA 01</span>¿En qué situación de tu vida estás jugando el Dilema del Prisionero ahora mismo — donde la jugada "racional" individual te cuesta más que cooperar? ¿Con quién? ¿Qué te impide ser el primero en cooperar?</div>
-  <div class="write"><label>Escribe aquí — el dilema, los jugadores y lo que te cuesta la desconfianza mutua:</label><textarea rows="4" placeholder="El dilema que reconozco es…"></textarea></div>
+  <div class="write"><label>Escribe aquí — el dilema, los jugadores y lo que te cuesta la desconfianza mutua:</label><textarea id="t1" rows="4" placeholder="El dilema que reconozco es…"></textarea></div>
 
   <blockquote class="quote">La paradoja del Prisionero no es que la gente sea mala. Es que la estructura del juego castiga la confianza. Cambia la estructura, y cambias la conducta.</blockquote>
 
@@ -326,7 +335,7 @@ textarea::placeholder { color: #b4bcc8; font-style: italic; }
   <p>Eso es todo. Amable, provocable, perdonador. No traiciona primero; castiga la traición <i>una vez</i>; perdona en cuanto el otro vuelve a cooperar. Ganó el torneo entero contra estrategias mucho más complicadas. La lección no es romántica — es matemática: <b>en juegos repetidos, la cooperación es la estrategia más rentable a largo plazo, siempre que haya memoria y castigo proporcional.</b> El que traiciona gana una ronda y pierde el juego.</p>
 
   <div class="q"><span>PREGUNTA 02</span>¿Con quién juegas repetido — socio, cliente, equipo, pareja — y qué pasó en tu última ronda: cooperaste, traicionaste, o castigaste a tiempo? ¿Tu castigo es proporcional o desproporcionado?</div>
-  <div class="write"><label>Escribe aquí — tu Tit-for-Tat real, ronda por ronda:</label><textarea rows="4" placeholder="En mi relación repetida con… la última jugada fue…"></textarea></div>
+  <div class="write"><label>Escribe aquí — tu Tit-for-Tat real, ronda por ronda:</label><textarea id="t2" rows="4" placeholder="En mi relación repetida con… la última jugada fue…"></textarea></div>
 
   <blockquote class="quote">Ojo por ojo gana porque es predecible. El que siempre perdona es explotado. El que nunca perdona mata la relación. La proporción es la estrategia.</blockquote>
 
@@ -337,7 +346,7 @@ textarea::placeholder { color: #b4bcc8; font-style: italic; }
   <p>A diferencia del Prisionero, aquí <b>no hay conflicto de intereses</b>: ambos prefieren el ciervo. El único problema es la confianza: <i>¿y si yo voy al ciervo y tú te vas a la liebre?</i> El miedo a quedarte sin nada te empuja a la liebre "segura" — y los dos terminan con liebres, habiendo preferido el ciervo. Es el juego de las empresas que no se fusionan, de los equipos que no se comprometen, de las parejas que no se entregan. No es que la gente no quiera el gran premio — es que <b>el miedo a que el otro deserte la hace desertar a ella primero.</b></p>
 
   <div class="q"><span>PREGUNTA 03</span>¿Dónde hay un ciervo en tu vida que solo se caza con otro — un proyecto, una sociedad, una conversación pendiente — y llevas años cazando liebres por miedo a que te dejen con las manos vacías?</div>
-  <div class="write"><label>Escribe aquí — el ciervo, el cazador que necesitas, y el miedo exacto que te mantiene en la liebre:</label><textarea rows="4" placeholder="El ciervo que no me atrevo a cazar es…"></textarea></div>
+  <div class="write"><label>Escribe aquí — el ciervo, el cazador que necesitas, y el miedo exacto que te mantiene en la liebre:</label><textarea id="t3" rows="4" placeholder="El ciervo que no me atrevo a cazar es…"></textarea></div>
 
   <blockquote class="quote">El Stag Hunt no se gana con valentía. Se gana con señales: compromisos que el otro pueda ver. El que espera a estar seguro nunca caza el ciervo.</blockquote>
 
@@ -348,7 +357,7 @@ textarea::placeholder { color: #b4bcc8; font-style: italic; }
   <p>En la vida real: guerras de precios, ultimátums, huelgas, disputas de herencia. El que puede <b>comprometerse creíblemente</b> primero — quemar las naves, volverse incapaz de ceder — gana el juego. El problema: si ambos tiran el volante, ambos mueren. [El compromiso es un arma de doble filo: te da el juego, o te mata en él.]</p>
 
   <div class="q"><span>PREGUNTA 04</span>¿Estás en un Chicken ahora mismo — una negociación, un conflicto, una guerra de egos donde ambos pretenden no poder ceder? ¿Tiraste el volante, o estás a tiempo de soltarlo?</div>
-  <div class="write"><label>Escribe aquí — el choque, el volante, y quién está más comprometido a no esquivar:</label><textarea rows="4" placeholder="El Chicken donde estoy es… mi volante real es…"></textarea></div>
+  <div class="write"><label>Escribe aquí — el choque, el volante, y quién está más comprometido a no esquivar:</label><textarea id="t4" rows="4" placeholder="El Chicken donde estoy es… mi volante real es…"></textarea></div>
 
   <blockquote class="quote">En Chicken, la pregunta no es quién tiene razón. Es quién puede demostrar que no puede ceder. Y a veces la jugada ganadora es salir del auto antes de que empiece la carrera.</blockquote>
 
@@ -359,7 +368,7 @@ textarea::placeholder { color: #b4bcc8; font-style: italic; }
   <p>El Dilema del Prisionero tiene un equilibrio de Nash — traicionar/traicionar — y es el peor resultado posible para ambos. <b>El equilibrio no es el paraíso. Es el punto donde la estructura te deja clavado.</b> Los malos equilibrios existen: matrimonios que nadie mejora rompiendo solo, trabajos que nadie mejora renunciando solo, hábitos que nadie mejora cambiando solo.</p>
 
   <div class="q"><span>PREGUNTA 05</span>¿En qué equilibrio estás clavado — donde no mejoras cambiando tú solo, pero todos perderían algo si cambiaran primero? ¿Cuál es el pago que te mantiene ahí?</div>
-  <div class="write"><label>Escribe aquí — tu equilibrio, tu pago, y qué tendría que cambiar (no solo tú) para moverte:</label><textarea rows="4" placeholder="Estoy clavado en… el pago que me mantiene es…"></textarea></div>
+  <div class="write"><label>Escribe aquí — tu equilibrio, tu pago, y qué tendría que cambiar (no solo tú) para moverte:</label><textarea id="t5" rows="4" placeholder="Estoy clavado en… el pago que me mantiene es…"></textarea></div>
 
   <blockquote class="quote">El equilibrio de Nash explica por qué lo malo persiste: nadie mejora moviéndose solo. Romper un mal equilibrio casi nunca es unilateral — es coordinado. Y la coordinación empieza con alguien que dice la verdad sobre el pago.</blockquote>
 
@@ -370,7 +379,7 @@ textarea::placeholder { color: #b4bcc8; font-style: italic; }
   <p>El que miente emite señales. El que sabe, calla. El que no sabe, habla demasiado. Cada palabra, cada silencio, cada retraso en responder es un dato que actualiza tu prior. [Los buenos jugadores no "leen mentes": actualizan probabilidades. Los malos deciden una vez y se quedan con su creencia congelada.]</p>
 
   <div class="q"><span>PREGUNTA 06</span>¿Con quién estás jugando con información incompleta — y cuál es tu prior sobre sus cartas? ¿Qué señales recientes deberían haber actualizado tu creencia y no lo hicieron?</div>
-  <div class="write"><label>Escribe aquí — el jugador, tu prior, y la señal que no actualizaste:</label><textarea rows="4" placeholder="Con… mi prior es… la señal que ignoré fue…"></textarea></div>
+  <div class="write"><label>Escribe aquí — el jugador, tu prior, y la señal que no actualizaste:</label><textarea id="t6" rows="4" placeholder="Con… mi prior es… la señal que ignoré fue…"></textarea></div>
 
   <blockquote class="quote">La información incompleta se gana con dos cosas: actualizar sin ego, y diseñar preguntas que revelen lo que el otro no quiere revelar. El resto es ruido.</blockquote>
 
@@ -380,7 +389,7 @@ textarea::placeholder { color: #b4bcc8; font-style: italic; }
   <p>La teoría te da vocabulario. El vocabulario sin acto es otro curso más. Ya escribiste seis respuestas. Ya nombraste tus juegos: el dilema donde desconfías, el repetido donde no castigas o castigas de más, el ciervo que no cazas, el choque donde no cedes, el equilibrio que no rompes, la información que no actualizas. Ahora la única pregunta que importa:</p>
 
   <div class="q"><span>PREGUNTA 07</span>¿Cuál de los seis juegos vas a mover esta semana? ¿Cuál es la jugada concreta — la primera jugada de Tit-for-Tat, la señal de coordinación, el volante que sueltas o el que tiras — y en qué fecha exacta, dentro de las próximas 72 horas, la ejecutas?</div>
-  <div class="write"><label>Escribe aquí — el juego, la jugada, la fecha, y qué pierdes si no la haces:</label><textarea rows="4" placeholder="Esta semana muevo el juego… con la jugada… el día…"></textarea></div>
+  <div class="write"><label>Escribe aquí — el juego, la jugada, la fecha, y qué pierdes si no la haces:</label><textarea id="t7" rows="4" placeholder="Esta semana muevo el juego… con la jugada… el día…"></textarea></div>
 
   <blockquote class="quote">La regla del compromiso: acción + fecha ≤72 horas + conexión con algo más alto. Claridad rápida, consecuencias lentas. Nada de actos irreversibles — solo la primera jugada de una partida que ya estás jugando.</blockquote>
 
@@ -396,6 +405,12 @@ textarea::placeholder { color: #b4bcc8; font-style: italic; }
     <li><b>Información incompleta:</b> el precio es la señal que actualiza tu prior (Daily bias). Si tu creencia no se actualiza con la zona de invalidación y estructura del precio, no estás jugando contra el mercado — estás jugando contra tu propio guion.</li>
   </ul>
 
+  <div class="actions">
+    <button class="btn-pdf" onclick="descargarPDF()">⬇ Descargar PDF</button>
+    <button class="btn-mail" onclick="enviarEmail()">✉ Envíate las respuestas!</button>
+    <span class="hint">Tus respuestas se guardan solas en este navegador (no se envían a ningún servidor).</span>
+  </div>
+
   <div class="outro">
     Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.
   </div>
@@ -408,5 +423,88 @@ textarea::placeholder { color: #b4bcc8; font-style: italic; }
   <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
 </footer>
 
+<script>
+(function () {
+  'use strict';
+  var KEY = 'brAIn-tdj-respuestas-v1';
+  var preguntas = [
+    '¿En qué situación de tu vida estás jugando el Dilema del Prisionero ahora mismo — donde la jugada "racional" individual te cuesta más que cooperar? ¿Con quién? ¿Qué te impide ser el primero en cooperar?',
+    '¿Con quién juegas repetido — socio, cliente, equipo, pareja — y qué pasó en tu última ronda: cooperaste, traicionaste, o castigaste a tiempo? ¿Tu castigo es proporcional o desproporcionado?',
+    '¿Dónde hay un ciervo en tu vida que solo se caza con otro — un proyecto, una sociedad, una conversación pendiente — y llevas años cazando liebres por miedo a que te dejen con las manos vacías?',
+    '¿Estás en un Chicken ahora mismo — una negociación, un conflicto, una guerra de egos donde ambos pretenden no poder ceder? ¿Tiraste el volante, o estás a tiempo de soltarlo?',
+    '¿En qué equilibrio estás clavado — donde no mejoras cambiando tú solo, pero todos perderían algo si cambiaran primero? ¿Cuál es el pago que te mantiene ahí?',
+    '¿Con quién estás jugando con información incompleta — y cuál es tu prior sobre sus cartas? ¿Qué señales recientes deberían haber actualizado tu creencia y no lo hicieron?',
+    '¿Cuál de los seis juegos vas a mover esta semana? ¿Cuál es la jugada concreta — la primera jugada de Tit-for-Tat, la señal de coordinación, el volante que sueltas o el que tiras — y en qué fecha exacta, dentro de las próximas 72 horas, la ejecutas?'
+  ];
+  var ids = ['t1','t2','t3','t4','t5','t6','t7'];
+
+  function leer() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function guardar() {
+    var data = {};
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) data[id] = el.value;
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+  }
+  var saved = leer();
+  ids.forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el && saved[id]) el.value = saved[id];
+    if (el) el.addEventListener('input', guardar);
+  });
+
+  function textoCompleto() {
+    var out = 'TEORÍA DE JUEGOS — BrAIn\n';
+    out += 'Fecha: ' + new Date().toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' }) + '\n';
+    out += '==================================================\n\n';
+    ids.forEach(function (id, i) {
+      var el = document.getElementById(id);
+      var resp = (el && el.value.trim()) ? el.value.trim() : '(sin responder)';
+      out += 'PREGUNTA ' + (i + 1) + ': ' + preguntas[i] + '\n';
+      out += 'Respuesta: ' + resp + '\n\n';
+    });
+    out += '— The Red Queen · BrAIn (Breaking AI Non-sense)';
+    return out;
+  }
+
+  window.descargarPDF = function () {
+    var win = window.open('', '_blank');
+    if (!win) { alert('Permite ventanas emergentes para descargar el PDF.'); return; }
+    win.document.write(
+      '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Mis respuestas — Teoría de juegos</title>' +
+      '<style>body{font-family:Georgia,serif;max-width:640px;margin:40px auto;padding:0 24px;color:#1a1a1a;line-height:1.6;}' +
+      'h1{font-size:22px;margin-bottom:4px;} .f{color:#666;font-size:13px;margin-bottom:28px;}' +
+      '.q{margin-bottom:22px;page-break-inside:avoid;} .qn{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#0B7A4B;font-weight:700;}' +
+      '.qt{font-weight:700;margin:4px 0 6px;} .qr{background:#F8FAFC;border-left:3px solid #10B981;padding:10px 14px;border-radius:0 6px 6px 0;}' +
+      '.foot{margin-top:36px;border-top:1px solid #e5e7eb;padding-top:14px;color:#666;font-size:12px;}' +
+      '@media print{body{margin:0;}}</style></head><body>' +
+      '<h1>TEORÍA DE JUEGOS</h1>' +
+      '<div class="f">Mis respuestas · ' + new Date().toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' }) + ' · BrAIn — The Red Queen</div>' +
+      ids.map(function (id, i) {
+        var el = document.getElementById(id);
+        var resp = (el && el.value.trim()) ? el.value.replace(/\n/g, '<br>') : '<em>(sin responder)</em>';
+        return '<div class="q"><div class="qn">Pregunta ' + (i + 1) + '</div>' +
+               '<div class="qt">' + preguntas[i] + '</div>' +
+               '<div class="qr">' + resp + '</div></div>';
+      }).join('') +
+      '<div class="foot">Generado por BrAIn — Breaking AI Non-sense · theredqueen.co</div>' +
+      '</body></html>'
+    );
+    win.document.close();
+    win.focus();
+    setTimeout(function () { win.print(); }, 400);
+  };
+
+  window.enviarEmail = function () {
+    var cuerpo = textoCompleto();
+    var subject = 'Mis respuestas — Teoría de juegos (BrAIn)';
+    var href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(cuerpo);
+    window.location.href = href;
+  };
+})();
+</script>
 </body>
 </html>
