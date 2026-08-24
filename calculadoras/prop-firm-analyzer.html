@@ -210,7 +210,7 @@
   <header class="masthead">
     <div class="kicker">Calculadoras</div>
     <h1>Prop Firm <span class="red">Analyzer</span></h1>
-    <p>Antes de pagar una evaluación: ¿tu estrategia puede pasar el examen? Con win rate, R:R, cuenta, drawdown permitido y objetivo, esta calculadora corre el problema clásico de la ruina del jugador — vía Monte-Carlo y Kelly — para decirte el tamaño de riesgo óptimo y la probabilidad de lograr el objetivo antes de ser descalificado.</p>
+    <p>Antes de pagar una evaluación: ¿tu estrategia puede pasar el examen? Con win rate, R:R, cuenta, drawdown permitido y objetivo, esta calculadora corre el problema clásico de la ruina del jugador — vía Monte-Carlo y Kelly — sin límite de trades: cada camino corre hasta lograr el objetivo o ser descalificado. Te da el Kelly prop-ajustado (el riesgo que maximiza tu probabilidad de pasar), la probabilidad de éxito y cuántos trades (y semanas) tomaría.</p>
   </header>
 
   <div class="panel">
@@ -251,9 +251,9 @@
         <div class="hint">Lo que necesitas ganar para pasar. Ej: 8% de 50k = $4,000.</div>
       </div>
       <div>
-        <label for="nTrades">Trades estimados en la evaluación</label>
-        <input id="nTrades" type="number" min="5" max="500" step="5" value="60">
-        <div class="hint">Cuántos trades esperas ejecutar antes de que cierre el plazo.</div>
+        <label for="tradesPerWeek">Trades por semana — opcional</label>
+        <input id="tradesPerWeek" type="number" min="1" max="100" step="1" value="5">
+        <div class="hint">Para estimar cuántas semanas tomaría pasar. Si no lo sabes, déjalo — el análisis no lo necesita.</div>
       </div>
     </div>
   </div>
@@ -267,10 +267,10 @@
 
   <div class="results" id="results" hidden>
     <div class="kpis">
-      <div class="kpi"><div class="k">Kelly óptimo (Half)</div><div class="v gold" id="kKelly">—</div></div>
-      <div class="kpi"><div class="k">Riesgo óptimo Monte-Carlo</div><div class="v" id="kOpt">—</div></div>
+      <div class="kpi"><div class="k">Kelly prop-ajustado</div><div class="v gold" id="kKelly">—</div></div>
       <div class="kpi"><div class="k">Prob. de lograr el objetivo</div><div class="v ok" id="kPSucc">—</div></div>
       <div class="kpi"><div class="k">Prob. de descalificación</div><div class="v risk" id="kPRuin">—</div></div>
+      <div class="kpi"><div class="k">Trades para pasar</div><div class="v" id="kTime">—</div></div>
       <div class="kpi"><div class="k">R de drawdown disponible</div><div class="v" id="kRd">—</div></div>
       <div class="kpi"><div class="k">Expectancy por trade</div><div class="v" id="kExp">—</div></div>
     </div>
@@ -281,7 +281,7 @@
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> el <b>Kelly</b> maximiza el crecimiento, pero en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. El óptimo Monte-Carlo es el riesgo que equilibra crecer rápido contra no ser descalificado: con riesgo muy bajo no llegas al objetivo a tiempo; con riesgo alto, una racha mala te elimina. La línea dorada en la gráfica es el Half-Kelly: suele estar cerca del óptimo real. La probabilidad de éxito se calcula con 5,000 caminos simulados por riesgo.
+      <b>Cómo leer esto:</b> en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. Sin límite de trades, cualquier riesgo funciona si esperas lo suficiente (el edge positivo eventualmente llega al objetivo) — por eso el <b>Kelly prop-ajustado</b> es el <b>mayor riesgo que conserva ≥95% de probabilidad de pasar</b>: el punto más rápido sin sacrificar seguridad. Con riesgo menor tardas más (0.25% → ~61 trades); con riesgo mayor te descalificas (5% → 49% de ruina). La línea dorada es el Half-Kelly clásico — referencia de crecimiento, no de prop. Los "trades para pasar" son la mediana de los caminos que sí lograron el objetivo; divídelos entre tus trades por semana.
     </div>
   </div>
 
@@ -334,24 +334,32 @@ function kelly(p, rr) {
   return Math.max(0, (p * rr - q) / rr);
 }
 
-// Simula la evaluación: P(éxito), P(descalificación)
-function simulate(p, rr, riskPct, account, dd, target, nTrades, nSims, seed) {
+// Simula la evaluación sin límite de trades: cada camino corre hasta el objetivo o la descalificación.
+// Devuelve P(éxito), P(ruina) y la mediana de trades de los caminos que lograron el objetivo.
+function simulate(p, rr, riskPct, account, dd, target, nSims, seed) {
   const rand = rng(seed);
   const riskUsd = account * riskPct / 100;
   const floor = account - dd;
   const ceil = account + target;
+  const MAX_T = 5000; // tope de seguridad interno (proceso con drift: resuelve mucho antes)
   let success = 0, ruin = 0;
+  const succTrades = [];
   for (let s = 0; s < nSims; s++) {
     let bal = account;
     let t = 0;
-    while (t < nTrades) {
+    while (t < MAX_T) {
       if (rand() < p) bal += riskUsd * rr; else bal -= riskUsd;
       t++;
-      if (bal >= ceil) { success++; break; }
+      if (bal >= ceil) { success++; succTrades.push(t); break; }
       if (bal <= floor) { ruin++; break; }
     }
   }
-  return { pSucc: success / nSims, pRuin: ruin / nSims };
+  let medianT = null;
+  if (succTrades.length) {
+    succTrades.sort((a, b) => a - b);
+    medianT = succTrades[Math.floor(succTrades.length / 2)];
+  }
+  return { pSucc: success / nSims, pRuin: ruin / nSims, medianT };
 }
 
 const fmt = v => v.toLocaleString('en-US', { maximumFractionDigits: 2 });
@@ -422,10 +430,10 @@ function drawChart(points, kellyHalf, optIdx) {
     ctx.fillStyle = i === optIdx ? '#fff' : '#ff5c78';
     ctx.beginPath(); ctx.arc(x, y, i === optIdx ? 5 : 3.5, 0, Math.PI * 2); ctx.fill();
   });
-  // etiqueta del óptimo
+  // etiqueta del Kelly prop-ajustado
   const o = points[optIdx];
   ctx.fillStyle = '#fff'; ctx.font = '11px JetBrains Mono, monospace';
-  ctx.fillText('óptimo ' + o.risk + '% → ' + (o.p * 100).toFixed(1) + '%', Math.min(X(o.risk) + 8, padL + iw - 150), Math.max(Y(o.p) - 8, 12));
+  ctx.fillText('prop-ajustado ' + o.risk + '% · ' + (o.p * 100).toFixed(1) + '%', Math.min(X(o.risk) + 8, padL + iw - 170), Math.max(Y(o.p) - 8, 12));
 }
 
 function calc() {
@@ -436,10 +444,10 @@ function calc() {
   const account = parseFloat($('account').value);
   const dd = parseFloat($('ddUsd').value);
   const target = parseFloat($('target').value);
-  const nTrades = parseInt($('nTrades').value, 10);
+  const tradesPerWeek = parseFloat($('tradesPerWeek').value);
 
-  if (![p, rr, account, dd, target, nTrades].every(Number.isFinite) ||
-      p <= 0 || p >= 1 || rr <= 0 || account <= 0 || dd <= 0 || target <= 0 || nTrades < 5) {
+  if (![p, rr, account, dd, target].every(Number.isFinite) ||
+      p <= 0 || p >= 1 || rr <= 0 || account <= 0 || dd <= 0 || target <= 0) {
     err.textContent = 'Completa todos los campos con valores válidos (win rate entre 1 y 99%).';
     err.hidden = false;
     return;
@@ -447,33 +455,50 @@ function calc() {
 
   const kFull = kelly(p, rr);
   const kHalf = kFull / 2;
-  const riskKellyUsd = account * kHalf / 100;
 
   // expectancy por trade (en $ por 1% de riesgo)
   const expPct = p * rr - (1 - p); // en R por trade
   const kExp = account * 0.01 * expPct;
 
-  // barrido de riesgos
+  // barrido de riesgos (sin límite de trades)
   const risks = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5];
   const N = 5000;
   const points = risks.map(r => {
-    const sim = simulate(p, rr, r, account, dd, target, nTrades, N, 1234 + Math.round(r * 100));
-    return { risk: r, p: sim.pSucc, ruin: sim.pRuin };
+    const sim = simulate(p, rr, r, account, dd, target, N, 1234 + Math.round(r * 100));
+    return { risk: r, p: sim.pSucc, ruin: sim.pRuin, medianT: sim.medianT };
   });
 
-  // óptimo: el riesgo con mayor P(éxito)
+  // Kelly prop-ajustado: el mayor riesgo del barrido que conserva P(éxito) >= 95%
+  // (el punto más rápido sin sacrificar la probabilidad de pasar). Si ninguno llega al
+  // umbral, se usa el de mayor P(éxito).
   let optIdx = 0;
-  points.forEach((d, i) => { if (d.p > points[optIdx].p) optIdx = i; });
+  for (let i = points.length - 1; i >= 0; i--) {
+    if (points[i].p >= 0.95) { optIdx = i; break; }
+  }
   const opt = points[optIdx];
   const optUsd = account * opt.risk / 100;
 
   // R de drawdown con el óptimo
   const rd = dd / optUsd;
 
-  $('kKelly').innerHTML = kHalf.toFixed(2) + '% <span class="sub">$' + fmt(riskKellyUsd) + ' por trade</span>';
-  $('kOpt').innerHTML = opt.risk + '% <span class="sub">$' + fmt(optUsd) + ' por trade</span>';
-  $('kPSucc').innerHTML = fmtPct(opt.p) + ' <span class="sub">con el riesgo óptimo</span>';
+  // tiempo estimado: mediana de trades de los caminos exitosos → semanas
+  const mt = opt.medianT;
+  let timeHtml;
+  if (mt) {
+    if (Number.isFinite(tradesPerWeek) && tradesPerWeek > 0) {
+      const weeks = mt / tradesPerWeek;
+      timeHtml = mt + ' <span class="sub">≈ ' + (weeks < 1 ? (weeks * 7).toFixed(0) + ' días' : weeks.toFixed(1) + ' semanas') + ' (' + tradesPerWeek + '/sem)</span>';
+    } else {
+      timeHtml = mt + ' <span class="sub">trades con el riesgo óptimo</span>';
+    }
+  } else {
+    timeHtml = '— <span class="sub">sin caminos exitosos</span>';
+  }
+
+  $('kKelly').innerHTML = opt.risk + '% <span class="sub">$' + fmt(optUsd) + ' por trade</span>';
+  $('kPSucc').innerHTML = fmtPct(opt.p) + ' <span class="sub">sin límite de trades</span>';
   $('kPRuin').innerHTML = fmtPct(opt.ruin) + ' <span class="sub">con el riesgo óptimo</span>';
+  $('kTime').innerHTML = timeHtml;
   $('kRd').innerHTML = rd.toFixed(1) + ' <span class="sub">pérdidas seguidas que aguantas</span>';
   $('kExp').innerHTML = '$' + fmt(kExp) + ' <span class="sub">por 1% de riesgo</span>';
 
@@ -484,13 +509,13 @@ function calc() {
 $('calcBtn').addEventListener('click', calc);
 $('resetBtn').addEventListener('click', () => {
   $('winRate').value = 50; $('rr').value = 2;
-  $('account').value = 50000; $('ddUsd').value = 2500; $('target').value = 4000; $('nTrades').value = 60;
+  $('account').value = 50000; $('ddUsd').value = 2500; $('target').value = 4000; $('tradesPerWeek').value = 5;
   document.querySelector('#edgePresets .pill[data-preset="balanceado"]').classList.add('active');
   document.querySelector('#edgePresets .pill[data-preset="sobrio"]').classList.remove('active');
   document.querySelector('#edgePresets .pill[data-preset="afilado"]').classList.remove('active');
   $('results').hidden = true; $('err').hidden = true;
 });
-['winRate', 'rr', 'account', 'ddUsd', 'target', 'nTrades'].forEach(id => $(id).addEventListener('input', calc));
+['winRate', 'rr', 'account', 'ddUsd', 'target', 'tradesPerWeek'].forEach(id => $(id).addEventListener('input', calc));
 
 calc();
 </script>
