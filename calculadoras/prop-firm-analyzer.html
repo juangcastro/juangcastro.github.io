@@ -242,13 +242,13 @@
       </div>
       <div>
         <label for="ddUsd">Drawdown permitido ($)</label>
-        <input id="ddUsd" type="number" min="1" step="50" value="2500">
-        <div class="hint">Lo que la prop firm te deja perder antes de descalificarte. Ej: 5% de 50k = $2,500.</div>
+        <input id="ddUsd" type="number" min="1" step="50" value="2000">
+        <div class="hint">Lo que la prop firm te deja perder antes de descalificarte. Ej: 4% de 50k = $2,000.</div>
       </div>
       <div>
         <label for="target">Objetivo ($)</label>
-        <input id="target" type="number" min="1" step="50" value="4000">
-        <div class="hint">Lo que necesitas ganar para pasar. Ej: 8% de 50k = $4,000.</div>
+        <input id="target" type="number" min="1" step="50" value="3000">
+        <div class="hint">Lo que necesitas ganar para pasar. Ej: 6% de 50k = $3,000.</div>
       </div>
       <div>
         <label for="tradesPerWeek">Trades por semana — opcional</label>
@@ -534,7 +534,7 @@ function calc() {
 $('calcBtn').addEventListener('click', calc);
 $('resetBtn').addEventListener('click', () => {
   $('winRate').value = 50; $('rr').value = 2;
-  $('account').value = 50000; $('ddUsd').value = 2500; $('target').value = 4000; $('tradesPerWeek').value = 5; $('consistency').value = 50;
+  $('account').value = 50000; $('ddUsd').value = 2000; $('target').value = 3000; $('tradesPerWeek').value = 5; $('consistency').value = 50;
   document.querySelector('#edgePresets .pill[data-preset="balanceado"]').classList.add('active');
   document.querySelector('#edgePresets .pill[data-preset="sobrio"]').classList.remove('active');
   document.querySelector('#edgePresets .pill[data-preset="afilado"]').classList.remove('active');
