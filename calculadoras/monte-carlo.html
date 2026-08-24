@@ -625,7 +625,10 @@
 
     var finals = lastSim.finals, p = lastSim.params;
     var BINS = 48;
+    // rango SIEMPRE incluyendo el balance inicial (para que la línea punteada se vea)
     var lo = Math.min.apply(null, finals), hi = Math.max.apply(null, finals);
+    if (p.balance0 < lo) lo = p.balance0;
+    if (p.balance0 > hi) hi = p.balance0;
     if (hi - lo < 1) hi = lo + 1;
     var counts = new Array(BINS).fill(0);
     var i, v;
@@ -634,28 +637,53 @@
       counts[v]++;
     }
     var maxC = Math.max.apply(null, counts);
-    var bw = (cssW - 28) / BINS;
+    var padL = 52, padB = 26, padT = 16, padR = 10;
+    var plotW = cssW - padL - padR, plotH = cssH - padT - padB;
+    var bw = plotW / BINS;
 
+    // ── ejes ──
+    ctx.font = '10px "JetBrains Mono", monospace';
+    // grid horizontal (frecuencia relativa %)
+    for (var g = 0; g <= 4; g++) {
+      var gy = padT + plotH - (g / 4) * plotH;
+      ctx.strokeStyle = 'rgba(35,40,69,.5)';
+      ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(padL + plotW, gy); ctx.stroke();
+      ctx.fillStyle = '#8a90b3'; ctx.textAlign = 'right';
+      ctx.fillText(Math.round((g / 4) * 100) + '%', padL - 6, gy + 3);
+    }
+    // marco
+    ctx.strokeStyle = '#232845'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH);
+    ctx.stroke();
+    // eje X: valores de balance ($)
+    ctx.textAlign = 'center'; ctx.fillStyle = '#8a90b3';
+    var xVals = [lo, lo + (hi - lo) * 0.25, (lo + hi) / 2, lo + (hi - lo) * 0.75, hi];
+    xVals.forEach(function (xv) {
+      var xx = padL + ((xv - lo) / (hi - lo)) * plotW;
+      ctx.fillText(xv >= 1000 ? '$' + (xv / 1000).toFixed(xv % 1000 === 0 ? 0 : 1).replace('.0', '') + 'k' : '$' + Math.round(xv), xx, cssH - 8);
+    });
+
+    // ── barras ──
     ctx.fillStyle = 'rgba(255,59,92,.55)';
     for (i = 0; i < BINS; i++) {
-      var h = (counts[i] / maxC) * (cssH - 40);
-      ctx.fillRect(14 + i * bw, cssH - 18 - h, Math.max(1, bw - 1), h);
+      var h = (counts[i] / maxC) * plotH;
+      ctx.fillRect(padL + i * bw, padT + plotH - h, Math.max(1, bw - 1), h);
     }
 
-    // breakeven
-    var bx = 14 + ((p.balance0 - lo) / (hi - lo)) * (cssW - 28);
-    ctx.strokeStyle = 'rgba(232,236,255,.8)';
+    // ── balance inicial (punteada blanca, siempre visible) ──
+    var bx = padL + ((p.balance0 - lo) / (hi - lo)) * plotW;
+    ctx.strokeStyle = 'rgba(232,236,255,.85)';
     ctx.setLineDash([5, 5]);
     ctx.lineWidth = 1.2;
     ctx.beginPath();
-    ctx.moveTo(bx, 6); ctx.lineTo(bx, cssH - 18);
+    ctx.moveTo(bx, padT); ctx.lineTo(bx, padT + plotH);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = 'rgba(232,236,255,.6)';
+    ctx.fillStyle = 'rgba(232,236,255,.8)';
     ctx.font = '10px "JetBrains Mono", monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('breakeven $' + Math.round(p.balance0).toLocaleString(), bx, 12);
     ctx.textAlign = 'left';
+    ctx.fillText('balance inicial $' + Math.round(p.balance0).toLocaleString(), Math.min(bx + 5, padL + plotW - 140), padT + 12);
   }
 
   /* ── disparador principal ── */
