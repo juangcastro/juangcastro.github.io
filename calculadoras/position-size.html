@@ -300,13 +300,13 @@
   <div class="results" id="results" hidden>
     <div class="kpis">
       <div class="kpi"><div class="k">Riesgo por trade</div><div class="v risk" id="kRisk">—</div></div>
-      <div class="kpi"><div class="k">Tamaño de posición</div><div class="v" id="kUnits">—</div></div>
       <div class="kpi"><div class="k">Valor de la posición</div><div class="v" id="kValue">—</div></div>
       <div class="kpi"><div class="k">Margen requerido</div><div class="v" id="kMargin">—</div></div>
       <div class="kpi"><div class="k">Distancia al stop</div><div class="v" id="kDist">—</div></div>
       <div class="kpi"><div class="k">Compromiso (margen)</div><div class="v" id="kCommit">—</div></div>
-      <div class="kpi"><div class="k">Margen libre</div><div class="v ok" id="kFree">—</div></div>
+      <div class="kpi"><div class="k">Margen disponible</div><div class="v ok" id="kAvail">—</div></div>
       <div class="kpi"><div class="k">R:R de la operación</div><div class="v ok" id="kRR">—</div></div>
+      <div class="kpi"><div class="k">Ganancia potencial</div><div class="v ok" id="kGain">—</div></div>
     </div>
 
     <div class="bar-box">
@@ -398,25 +398,27 @@ function calc() {
   const freeMargin = bank - margin;
 
   $('kRisk').textContent = '$' + fmt(riskUsd);
-  $('kUnits').innerHTML = fmt(units) + ' <span class="sub">unidades</span>';
-  $('kValue').textContent = '$' + fmt(posValue);
+  $('kValue').innerHTML = '$' + fmt(posValue) + ' <span class="sub">' + fmt(units) + ' unidades</span>';
   $('kMargin').innerHTML = '$' + fmt(margin) + ' <span class="sub">' + commitPct.toFixed(1) + '% del bankroll</span>';
   $('kDist').innerHTML = '$' + fmt(distUsd) + ' <span class="sub">(' + distPct.toFixed(2) + '%)</span>';
   $('kCommit').textContent = commitPct.toFixed(1) + '%';
   $('kCommit').className = 'v' + (commitPct > 25 ? ' risk' : '');
-  $('kFree').innerHTML = '$' + fmt(Math.max(0, freeMargin)) + ' <span class="sub">de ' + fmt(bank) + '</span>';
+  $('kAvail').innerHTML = '$' + fmt(Math.max(0, freeMargin)) + ' <span class="sub">para otras operaciones</span>';
   if (Number.isFinite(tp) && tp > 0) {
     const badTp = side === 'long' ? tp <= entry : tp >= entry;
     if (badTp) {
-      $('kRR').innerHTML = '— <span class="sub">TP inválido</span>';
+      $('kRR').textContent = '—';
+      $('kGain').innerHTML = '— <span class="sub">TP inválido</span>';
     } else {
       const reward = Math.abs(tp - entry);
       const rr = reward / distUsd;
       const gain = reward * units;
-      $('kRR').innerHTML = '1 : ' + rr.toFixed(2) + ' <span class="sub">+$' + fmt(gain) + '</span>';
+      $('kRR').textContent = '1 : ' + rr.toFixed(2);
+      $('kGain').innerHTML = '+$' + fmt(gain) + ' <span class="sub">si toca el TP</span>';
     }
   } else {
-    $('kRR').innerHTML = '— <span class="sub">sin TP</span>';
+    $('kRR').textContent = '—';
+    $('kGain').innerHTML = '— <span class="sub">sin TP</span>';
   }
 
   // barra de compromiso (margen): escala 0-25% del bankroll
