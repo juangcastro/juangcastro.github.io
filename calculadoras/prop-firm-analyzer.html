@@ -426,6 +426,7 @@ function simulate(p, rr, riskPct, account, dd, target, consistency, ddType, nSim
 
 const fmt = v => v.toLocaleString('en-US', { maximumFractionDigits: 2 });
 const fmtPct = v => (v * 100).toFixed(1) + '%';
+const fmtRisk = r => (+r.toFixed(2)); // riesgo % sin ceros ni decimales flotantes (0.30000000000000004 → 0.3)
 
 // Simula caminos individuales (para el spaghetti): devuelve {pts, result} por camino.
 function simulatePaths(p, rr, riskPct, account, dd, target, consistency, ddType, nPaths, seed, maxT) {
@@ -518,7 +519,7 @@ function drawChart(points, kellyHalf, optIdx, agg) {
     // etiqueta del Kelly ideal
     const o = points[optIdx];
     ctx.fillStyle = '#fff'; ctx.font = '11px JetBrains Mono, monospace';
-    ctx.fillText('ideal ' + o.risk + '% · ' + (o.p * 100).toFixed(1) + '%', Math.min(X(o.risk) + 8, padL + iw - 170), Math.max(Y(o.p) - 8, 12));
+    ctx.fillText('ideal ' + fmtRisk(o.risk) + '% · ' + (o.p * 100).toFixed(1) + '%', Math.min(X(o.risk) + 8, padL + iw - 170), Math.max(Y(o.p) - 8, 12));
     // marcador del Kelly agresivo (oro)
     if (agg) {
       const ax = X(agg.risk), ay = Y(agg.p);
@@ -527,7 +528,7 @@ function drawChart(points, kellyHalf, optIdx, agg) {
       ctx.fillStyle = 'rgba(245,197,24,.25)';
       ctx.beginPath(); ctx.arc(ax, ay, 3, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = 'rgba(245,197,24,.95)'; ctx.font = '11px JetBrains Mono, monospace';
-      ctx.fillText('agresivo ' + agg.risk + '% · ' + (agg.p * 100).toFixed(1) + '%', Math.min(ax + 8, padL + iw - 180), Math.max(ay + 16, 12));
+      ctx.fillText('agresivo ' + fmtRisk(agg.risk) + '% · ' + (agg.p * 100).toFixed(1) + '%', Math.min(ax + 8, padL + iw - 180), Math.max(ay + 16, 12));
     }
     // highlight del hover
     if (hi >= 0) {
@@ -542,7 +543,7 @@ function drawChart(points, kellyHalf, optIdx, agg) {
       ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.stroke();
       // tooltip
       const lines = [
-        'Riesgo ' + d.risk + '%',
+        'Riesgo ' + fmtRisk(d.risk) + '%',
         'P(éxito) ' + (d.p * 100).toFixed(1) + '%',
         'P(ruina) ' + (d.ruin * 100).toFixed(1) + '%',
         'P(consistencia) ' + (d.viol * 100).toFixed(1) + '%',
@@ -693,7 +694,7 @@ function calc() {
     timeHtml = '— <span class="sub">sin caminos exitosos</span>';
   }
 
-  $('kKelly').innerHTML = opt.risk + '% <span class="sub">$' + fmt(optUsd) + ' por trade · dd ' + (ddType === 'trailing' ? 'trailing' : 'fijo') + '</span>';
+  $('kKelly').innerHTML = fmtRisk(opt.risk) + '% <span class="sub">$' + fmt(optUsd) + ' por trade · dd ' + (ddType === 'trailing' ? 'trailing' : 'fijo') + '</span>';
   $('kPSucc').innerHTML = fmtPct(opt.p) + ' <span class="sub">sin límite de trades</span>';
   $('kFail').innerHTML = fmtPct(opt.ruin + opt.viol) + ' <span class="sub">descalificación ' + fmtPct(opt.ruin) + (consistency > 0 ? ' · consistencia ' + fmtPct(opt.viol) : '') + '</span>';
   $('kTime').innerHTML = timeHtml;
@@ -714,7 +715,7 @@ function calc() {
     timeHtmlA = '— <span class="sub">sin caminos exitosos</span>';
   }
 
-  $('kKellyA').innerHTML = agg.risk + '% <span class="sub">$' + fmt(aggUsd) + ' por trade · dd ' + (ddType === 'trailing' ? 'trailing' : 'fijo') + '</span>';
+  $('kKellyA').innerHTML = fmtRisk(agg.risk) + '% <span class="sub">$' + fmt(aggUsd) + ' por trade · dd ' + (ddType === 'trailing' ? 'trailing' : 'fijo') + '</span>';
   $('kPSuccA').innerHTML = fmtPct(agg.p) + ' <span class="sub">sin límite de trades</span>';
   $('kFailA').innerHTML = fmtPct(agg.ruin + agg.viol) + ' <span class="sub">descalificación ' + fmtPct(agg.ruin) + (consistency > 0 ? ' · consistencia ' + fmtPct(agg.viol) : '') + '</span>';
   $('kTimeA').innerHTML = timeHtmlA;
@@ -794,7 +795,7 @@ function drawPaths(key) {
   ctx.fillText('objetivo $' + (account + target).toLocaleString('en-US'), 6, Y(account + target) + 3);
   ctx.fillText('ruina $' + (account - dd).toLocaleString('en-US'), 6, Y(account - dd) + 3);
   ctx.fillStyle = '#e8eaf6';
-  ctx.fillText('riesgo ' + meta.risk + '% · P(pasar) ' + (meta.p * 100).toFixed(1) + '%', padL + 8, padT + 12);
+  ctx.fillText('riesgo ' + fmtRisk(meta.risk) + '% · P(pasar) ' + (meta.p * 100).toFixed(1) + '%', padL + 8, padT + 12);
   // eje X
   ctx.fillStyle = '#8a90b3';
   [0, 15, 30, 45, 60, 75, 90].forEach(t => ctx.fillText(t + 't', X(t) - 6, padT + ih + 16));
