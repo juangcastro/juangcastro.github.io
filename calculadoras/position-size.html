@@ -243,6 +243,21 @@
         <label for="riskPct">Riesgo por trade (%)</label>
         <input id="riskPct" type="number" min="0.05" max="100" step="0.05" value="1">
       </div>
+      <div>
+        <label for="leverage">Apalancamiento (x)</label>
+        <input id="leverage" type="number" min="1" max="200" step="1" value="10">
+        <div class="hint">Futuros/CFD: 10x típico. El margen requerido = valor de la posición ÷ apalancamiento.</div>
+      </div>
+      <div>
+        <label>Acceso rápido</label>
+        <div class="pill-row" id="levPresets" style="margin-bottom:0">
+          <button class="pill" data-lev="1">1x</button>
+          <button class="pill" data-lev="5">5x</button>
+          <button class="pill active" data-lev="10">10x</button>
+          <button class="pill" data-lev="20">20x</button>
+          <button class="pill" data-lev="50">50x</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -287,14 +302,16 @@
       <div class="kpi"><div class="k">Riesgo por trade</div><div class="v risk" id="kRisk">—</div></div>
       <div class="kpi"><div class="k">Tamaño de posición</div><div class="v" id="kUnits">—</div></div>
       <div class="kpi"><div class="k">Valor de la posición</div><div class="v" id="kValue">—</div></div>
+      <div class="kpi"><div class="k">Margen requerido</div><div class="v" id="kMargin">—</div></div>
       <div class="kpi"><div class="k">Distancia al stop</div><div class="v" id="kDist">—</div></div>
-      <div class="kpi"><div class="k">Capital comprometido</div><div class="v" id="kCommit">—</div></div>
+      <div class="kpi"><div class="k">Compromiso (margen)</div><div class="v" id="kCommit">—</div></div>
+      <div class="kpi"><div class="k">Margen libre</div><div class="v ok" id="kFree">—</div></div>
       <div class="kpi"><div class="k">R:R de la operación</div><div class="v ok" id="kRR">—</div></div>
     </div>
 
     <div class="bar-box">
       <div class="bar-label">
-        <span>Capital comprometido en esta operación</span>
+        <span>Margen comprometido en esta operación</span>
         <b id="barPct">—</b>
       </div>
       <div class="bar">
@@ -310,7 +327,7 @@
     </div>
 
     <div class="note">
-      <b>La lección del position sizing:</b> arriesgar el 1% del bankroll no significa comprometer el 1% — significa que <b>la operación entera</b> (unidades × entrada) puede llegar a ser el 10–30% de tu capital si el stop está lejos. Cuanto más cerca el stop, más unidades entran con el mismo riesgo; cuanto más lejos, menos unidades y más capital comprometido. El tamaño correcto es el que hace que <b>perder el stop cueste exactamente tu riesgo planeado</b>.
+      <b>La lección del position sizing:</b> arriesgar el 1% del bankroll no significa comprometer el 1%. El tamaño correcto es el que hace que <b>perder el stop cueste exactamente tu riesgo planeado</b> — sin apalancamiento, la operación entera (unidades × entrada) puede ser el 10–30% de tu capital; con apalancamiento solo bloqueas el <b>margen</b> (valor ÷ apalancamiento), y el resto queda libre. El apalancamiento no cambia cuánto arriesgas — cambia cuánto capital queda expuesto y bloqueado.
     </div>
   </div>
 
@@ -340,6 +357,7 @@ function setPills(rowId, activeSel, handler) {
 
 setPills('riskPresets', 'preset', v => { $('riskPct').value = RISK_PRESETS[v]; calc(); });
 setPills('sideRow', 'side', () => calc());
+setPills('levPresets', 'lev', v => { $('leverage').value = v; calc(); });
 
 let side = 'long';
 
@@ -369,19 +387,24 @@ function calc() {
     return;
   }
 
+  const lev = Math.max(1, parseFloat($('leverage').value) || 1);
   const riskUsd = bank * riskPct / 100;
   const distUsd = Math.abs(entry - stop);
   const distPct = distUsd / entry * 100;
   const units = riskUsd / distUsd;
   const posValue = units * entry;
-  const commitPct = posValue / bank * 100;
+  const margin = posValue / lev;
+  const commitPct = margin / bank * 100;
+  const freeMargin = bank - margin;
 
   $('kRisk').textContent = '$' + fmt(riskUsd);
   $('kUnits').innerHTML = fmt(units) + ' <span class="sub">unidades</span>';
   $('kValue').textContent = '$' + fmt(posValue);
+  $('kMargin').innerHTML = '$' + fmt(margin) + ' <span class="sub">' + commitPct.toFixed(1) + '% del bankroll</span>';
   $('kDist').innerHTML = '$' + fmt(distUsd) + ' <span class="sub">(' + distPct.toFixed(2) + '%)</span>';
   $('kCommit').textContent = commitPct.toFixed(1) + '%';
-  $('kCommit').className = 'v' + (commitPct > 35 ? ' risk' : '');
+  $('kCommit').className = 'v' + (commitPct > 25 ? ' risk' : '');
+  $('kFree').innerHTML = '$' + fmt(Math.max(0, freeMargin)) + ' <span class="sub">de ' + fmt(bank) + '</span>';
   if (Number.isFinite(tp) && tp > 0) {
     const badTp = side === 'long' ? tp <= entry : tp >= entry;
     if (badTp) {
@@ -396,13 +419,13 @@ function calc() {
     $('kRR').innerHTML = '— <span class="sub">sin TP</span>';
   }
 
-  // barra de compromiso: 0-50% del bankroll
-  const maxShow = 50;
+  // barra de compromiso (margen): escala 0-25% del bankroll
+  const maxShow = 25;
   const pct = Math.min(commitPct, maxShow);
-  $('zone').style.width = '4%'; // zona de riesgo típica 1-2% (muy pequeña, se marca al inicio)
+  $('zone').style.width = '8%'; // zona de riesgo típica 1-2% (margen de 1-2% del bankroll)
   $('fill').style.width = pct + '%';
   $('mark').style.left = Math.min(riskPct, maxShow) + '%';
-  $('barPct').textContent = commitPct.toFixed(1) + '% del bankroll';
+  $('barPct').textContent = commitPct.toFixed(1) + '% del bankroll (margen)';
   $('fill').style.background = commitPct > 35
     ? 'linear-gradient(90deg, #ff3b5c, #ff5c78)'
     : 'linear-gradient(90deg, #ff3b5c, #ff5c78)';
@@ -411,16 +434,17 @@ function calc() {
 
 $('calcBtn').addEventListener('click', calc);
 $('resetBtn').addEventListener('click', () => {
-  $('bankroll').value = 10000; $('riskPct').value = 1;
+  $('bankroll').value = 10000; $('riskPct').value = 1; $('leverage').value = 10;
   $('entry').value = 100; $('stop').value = 95; $('tp').value = 110;
   document.querySelector('#riskPresets .pill[data-preset="balanceado"]').classList.add('active');
   document.querySelector('#riskPresets .pill[data-preset="sobrio"]').classList.remove('active');
   document.querySelector('#riskPresets .pill[data-preset="afilado"]').classList.remove('active');
   document.querySelector('#sideRow .pill[data-side="long"]').classList.add('active');
   document.querySelector('#sideRow .pill[data-side="short"]').classList.remove('active');
+  document.querySelectorAll('#levPresets .pill').forEach(p => p.classList.toggle('active', p.dataset.lev === '10'));
   $('results').hidden = true; $('err').hidden = true;
 });
-['bankroll', 'riskPct', 'entry', 'stop', 'tp'].forEach(id => $(id).addEventListener('input', calc));
+['bankroll', 'riskPct', 'leverage', 'entry', 'stop', 'tp'].forEach(id => $(id).addEventListener('input', calc));
 
 calc();
 </script>
