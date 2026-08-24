@@ -255,6 +255,11 @@
         <input id="tradesPerWeek" type="number" min="1" max="100" step="1" value="5">
         <div class="hint">Para estimar cuántas semanas tomaría pasar. Si no lo sabes, déjalo — el análisis no lo necesita.</div>
       </div>
+      <div>
+        <label for="consistency">Consistencia — % máx. del profit en un día</label>
+        <input id="consistency" type="number" min="0" max="100" step="5" value="50">
+        <div class="hint">La regla de la prop firm (FTMO: 50% en 2-step, 30% en 1-step). Si un trade aporta más de ese % del profit total al pasar, el resultado no cuenta. 0 = sin regla.</div>
+      </div>
     </div>
   </div>
 
@@ -269,7 +274,7 @@
     <div class="kpis">
       <div class="kpi"><div class="k">Kelly prop-ajustado</div><div class="v gold" id="kKelly">—</div></div>
       <div class="kpi"><div class="k">Prob. de lograr el objetivo</div><div class="v ok" id="kPSucc">—</div></div>
-      <div class="kpi"><div class="k">Prob. de descalificación</div><div class="v risk" id="kPRuin">—</div></div>
+      <div class="kpi"><div class="k">Prob. de fallar</div><div class="v risk" id="kFail">—</div></div>
       <div class="kpi"><div class="k">Trades para pasar</div><div class="v" id="kTime">—</div></div>
       <div class="kpi"><div class="k">R de drawdown disponible</div><div class="v" id="kRd">—</div></div>
       <div class="kpi"><div class="k">Expectancy por trade</div><div class="v" id="kExp">—</div></div>
@@ -281,7 +286,7 @@
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. Sin límite de trades, cualquier riesgo funciona si esperas lo suficiente (el edge positivo eventualmente llega al objetivo) — por eso el <b>Kelly prop-ajustado</b> es el <b>mayor riesgo que conserva ≥95% de probabilidad de pasar</b>: el punto más rápido sin sacrificar seguridad. Con riesgo menor tardas más (0.25% → ~61 trades); con riesgo mayor te descalificas (5% → 49% de ruina). La línea dorada es el Half-Kelly clásico — referencia de crecimiento, no de prop. Los "trades para pasar" son la mediana de los caminos que sí lograron el objetivo; divídelos entre tus trades por semana.
+      <b>Cómo leer esto:</b> en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. Sin límite de trades, cualquier riesgo funciona si esperas lo suficiente (el edge positivo eventualmente llega al objetivo) — por eso el <b>Kelly prop-ajustado</b> es el <b>mayor riesgo que conserva ≥95% de probabilidad de pasar</b>: el punto más rápido sin sacrificar seguridad. La <b>regla de consistencia</b> se modela así: si un solo trade aporta más de ese % del profit total al cruzar el objetivo, el resultado se invalida (aproximación del máximo diario de la prop firm) — con 0 no hay regla. Los "trades para pasar" son la mediana de los caminos exitosos sin violar consistencia; divídelos entre tus trades por semana.
     </div>
   </div>
 
@@ -335,22 +340,36 @@ function kelly(p, rr) {
 }
 
 // Simula la evaluación sin límite de trades: cada camino corre hasta el objetivo o la descalificación.
-// Devuelve P(éxito), P(ruina) y la mediana de trades de los caminos que lograron el objetivo.
-function simulate(p, rr, riskPct, account, dd, target, nSims, seed) {
+// La regla de consistencia (consistency > 0) invalida un éxito si un solo trade aportó más de ese
+// % del profit total al llegar al objetivo (aproximación del máximo diario de la prop firm).
+// Devuelve P(éxito limpio), P(ruina), P(violación de consistencia) y la mediana de trades exitosos.
+function simulate(p, rr, riskPct, account, dd, target, consistency, nSims, seed) {
   const rand = rng(seed);
   const riskUsd = account * riskPct / 100;
   const floor = account - dd;
   const ceil = account + target;
   const MAX_T = 5000; // tope de seguridad interno (proceso con drift: resuelve mucho antes)
-  let success = 0, ruin = 0;
+  let success = 0, ruin = 0, viol = 0;
   const succTrades = [];
   for (let s = 0; s < nSims; s++) {
     let bal = account;
+    let maxGain = 0;
     let t = 0;
     while (t < MAX_T) {
-      if (rand() < p) bal += riskUsd * rr; else bal -= riskUsd;
+      if (rand() < p) {
+        const g = riskUsd * rr;
+        bal += g;
+        if (g > maxGain) maxGain = g;
+      } else {
+        bal -= riskUsd;
+      }
       t++;
-      if (bal >= ceil) { success++; succTrades.push(t); break; }
+      if (bal >= ceil) {
+        const profit = bal - account;
+        if (consistency > 0 && maxGain > profit * consistency / 100) { viol++; }
+        else { success++; succTrades.push(t); }
+        break;
+      }
       if (bal <= floor) { ruin++; break; }
     }
   }
@@ -359,7 +378,7 @@ function simulate(p, rr, riskPct, account, dd, target, nSims, seed) {
     succTrades.sort((a, b) => a - b);
     medianT = succTrades[Math.floor(succTrades.length / 2)];
   }
-  return { pSucc: success / nSims, pRuin: ruin / nSims, medianT };
+  return { pSucc: success / nSims, pRuin: ruin / nSims, pViol: viol / nSims, medianT };
 }
 
 const fmt = v => v.toLocaleString('en-US', { maximumFractionDigits: 2 });
@@ -445,10 +464,16 @@ function calc() {
   const dd = parseFloat($('ddUsd').value);
   const target = parseFloat($('target').value);
   const tradesPerWeek = parseFloat($('tradesPerWeek').value);
+  const consistency = parseFloat($('consistency').value) || 0;
 
   if (![p, rr, account, dd, target].every(Number.isFinite) ||
       p <= 0 || p >= 1 || rr <= 0 || account <= 0 || dd <= 0 || target <= 0) {
     err.textContent = 'Completa todos los campos con valores válidos (win rate entre 1 y 99%).';
+    err.hidden = false;
+    return;
+  }
+  if (consistency < 0 || consistency > 100) {
+    err.textContent = 'La consistencia debe estar entre 0 (sin regla) y 100.';
     err.hidden = false;
     return;
   }
@@ -464,8 +489,8 @@ function calc() {
   const risks = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5];
   const N = 5000;
   const points = risks.map(r => {
-    const sim = simulate(p, rr, r, account, dd, target, N, 1234 + Math.round(r * 100));
-    return { risk: r, p: sim.pSucc, ruin: sim.pRuin, medianT: sim.medianT };
+    const sim = simulate(p, rr, r, account, dd, target, consistency, N, 1234 + Math.round(r * 100));
+    return { risk: r, p: sim.pSucc, ruin: sim.pRuin, viol: sim.pViol, medianT: sim.medianT };
   });
 
   // Kelly prop-ajustado: el mayor riesgo del barrido que conserva P(éxito) >= 95%
@@ -497,7 +522,7 @@ function calc() {
 
   $('kKelly').innerHTML = opt.risk + '% <span class="sub">$' + fmt(optUsd) + ' por trade</span>';
   $('kPSucc').innerHTML = fmtPct(opt.p) + ' <span class="sub">sin límite de trades</span>';
-  $('kPRuin').innerHTML = fmtPct(opt.ruin) + ' <span class="sub">con el riesgo óptimo</span>';
+  $('kFail').innerHTML = fmtPct(opt.ruin + opt.viol) + ' <span class="sub">descalificación ' + fmtPct(opt.ruin) + (consistency > 0 ? ' · consistencia ' + fmtPct(opt.viol) : '') + '</span>';
   $('kTime').innerHTML = timeHtml;
   $('kRd').innerHTML = rd.toFixed(1) + ' <span class="sub">pérdidas seguidas que aguantas</span>';
   $('kExp').innerHTML = '$' + fmt(kExp) + ' <span class="sub">por 1% de riesgo</span>';
@@ -509,13 +534,13 @@ function calc() {
 $('calcBtn').addEventListener('click', calc);
 $('resetBtn').addEventListener('click', () => {
   $('winRate').value = 50; $('rr').value = 2;
-  $('account').value = 50000; $('ddUsd').value = 2500; $('target').value = 4000; $('tradesPerWeek').value = 5;
+  $('account').value = 50000; $('ddUsd').value = 2500; $('target').value = 4000; $('tradesPerWeek').value = 5; $('consistency').value = 50;
   document.querySelector('#edgePresets .pill[data-preset="balanceado"]').classList.add('active');
   document.querySelector('#edgePresets .pill[data-preset="sobrio"]').classList.remove('active');
   document.querySelector('#edgePresets .pill[data-preset="afilado"]').classList.remove('active');
   $('results').hidden = true; $('err').hidden = true;
 });
-['winRate', 'rr', 'account', 'ddUsd', 'target', 'tradesPerWeek'].forEach(id => $(id).addEventListener('input', calc));
+['winRate', 'rr', 'account', 'ddUsd', 'target', 'tradesPerWeek', 'consistency'].forEach(id => $(id).addEventListener('input', calc));
 
 calc();
 </script>
