@@ -160,6 +160,13 @@
     background: var(--accent); box-shadow: 0 0 10px var(--glow-accent);
   }
   .res-head .red { color: var(--accent); }
+  .res-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent-2); margin: -6px 0 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .res-tag::before { content: '◆'; font-size: 8px; color: var(--accent); }
   .results[hidden] { display: none; }
   .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
@@ -286,6 +293,7 @@
 
   <div class="results" id="results" hidden>
     <div class="res-head">Kelly <span class="red">ideal</span></div>
+    <div class="res-tag">Asegura el payout</div>
     <div class="kpis">
       <div class="kpi"><div class="k">Riesgo por trade</div><div class="v gold" id="kKelly">—</div></div>
       <div class="kpi"><div class="k">Prob. de lograr el objetivo</div><div class="v ok" id="kPSucc">—</div></div>
@@ -294,28 +302,41 @@
       <div class="kpi"><div class="k">R de drawdown disponible</div><div class="v" id="kRd">—</div></div>
       <div class="kpi"><div class="k">Expectancy por trade</div><div class="v" id="kExp">—</div></div>
     </div>
+  </div>
 
-    <div class="chart-box">
-      <div class="chart-title">Probabilidad de pasar la evaluación según el riesgo por trade</div>
-      <canvas id="chart" width="800" height="300"></canvas>
+  <div class="results" id="resultsAgg" hidden>
+    <div class="res-head">Kelly <span class="red">agresivo</span></div>
+    <div class="res-tag">Pasa la EVAL en menos tiempo</div>
+    <div class="kpis">
+      <div class="kpi"><div class="k">Riesgo por trade</div><div class="v gold" id="kKellyA">—</div></div>
+      <div class="kpi"><div class="k">Prob. de lograr el objetivo</div><div class="v ok" id="kPSuccA">—</div></div>
+      <div class="kpi"><div class="k">Prob. de fallar</div><div class="v risk" id="kFailA">—</div></div>
+      <div class="kpi"><div class="k">Trades para pasar</div><div class="v" id="kTimeA">—</div></div>
+      <div class="kpi"><div class="k">R de drawdown disponible</div><div class="v" id="kRdA">—</div></div>
+      <div class="kpi"><div class="k">Expectancy por trade</div><div class="v" id="kExpA">—</div></div>
     </div>
-
     <div class="note">
-      <b>Cómo leer esto:</b> en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. Sin límite de trades, cualquier riesgo funciona si esperas lo suficiente (el edge positivo eventualmente llega al objetivo) — por eso el <b>Kelly ideal</b> es el <b>mayor riesgo que conserva ≥95% de probabilidad de pasar</b>: el punto más rápido sin sacrificar seguridad. El <b>Kelly agresivo</b> baja el estándar a ≥80%: más riesgo y más velocidad, asumiendo más probabilidad de fallar. Con <b>trailing drawdown</b> (el estándar: FTMO, Apex, E8), el piso sube con tu balance máximo: cada ganancia nueva eleva el nivel de descalificación, así que una racha mala después de ganar es más peligrosa que al inicio — la simulación lo respeta. Con <b>fijo</b>, el piso es el balance inicial menos el drawdown. La <b>regla de consistencia</b> invalida un pase si un solo trade aportó más de ese % del profit total (con 0 no hay regla). Los "trades para pasar" son la mediana de los caminos exitosos; divídelos entre tus trades por semana.
+      <b>Kelly agresivo:</b> baja el estándar a ≥80% de probabilidad de pasar — más riesgo por trade y menos trades en total. Ideal si quieres cruzar la evaluación rápido; asume más probabilidad de descalificación.
     </div>
   </div>
 
-    <div class="results" id="resultsAgg" hidden>
-      <div class="res-head">Kelly <span class="red">agresivo</span></div>
-      <div class="kpis">
-        <div class="kpi"><div class="k">Riesgo por trade</div><div class="v gold" id="kKellyA">—</div></div>
-        <div class="kpi"><div class="k">Prob. de lograr el objetivo</div><div class="v ok" id="kPSuccA">—</div></div>
-        <div class="kpi"><div class="k">Prob. de fallar</div><div class="v risk" id="kFailA">—</div></div>
-        <div class="kpi"><div class="k">Trades para pasar</div><div class="v" id="kTimeA">—</div></div>
-        <div class="kpi"><div class="k">R de drawdown disponible</div><div class="v" id="kRdA">—</div></div>
-        <div class="kpi"><div class="k">Expectancy por trade</div><div class="v" id="kExpA">—</div></div>
-      </div>
+  <div class="chart-box" id="probBox" hidden>
+    <div class="chart-title">Probabilidad de pasar la evaluación según el riesgo por trade</div>
+    <canvas id="chart" width="800" height="300"></canvas>
+  </div>
+
+  <div class="note" id="probNote" hidden>
+    <b>Cómo leer esto:</b> en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. Sin límite de trades, cualquier riesgo funciona si esperas lo suficiente (el edge positivo eventualmente llega al objetivo) — por eso el <b>Kelly ideal</b> es el <b>mayor riesgo que conserva ≥95% de probabilidad de pasar</b>: el punto más rápido sin sacrificar seguridad. Con <b>trailing drawdown</b> (el estándar: FTMO, Apex, E8), el piso sube con tu balance máximo: cada ganancia nueva eleva el nivel de descalificación, así que una racha mala después de ganar es más peligrosa que al inicio — la simulación lo respeta. Con <b>fijo</b>, el piso es el balance inicial menos el drawdown. La <b>regla de consistencia</b> invalida un pase si un solo trade aportó más de ese % del profit total (con 0 no hay regla). Los "trades para pasar" son la mediana de los caminos exitosos; divídelos entre tus trades por semana.
+  </div>
+
+  <div class="chart-box" id="pathsBox" hidden>
+    <div class="chart-title">Caminos Monte-Carlo hacia el objetivo</div>
+    <div class="pill-row" id="pathToggle" style="margin-bottom:12px">
+      <button class="pill active" data-pathrisk="ideal">Kelly ideal</button>
+      <button class="pill" data-pathrisk="agresivo">Kelly agresivo</button>
     </div>
+    <canvas id="chartPaths" width="800" height="300"></canvas>
+  </div>
 
 </div>
 
@@ -405,6 +426,31 @@ function simulate(p, rr, riskPct, account, dd, target, consistency, ddType, nSim
 
 const fmt = v => v.toLocaleString('en-US', { maximumFractionDigits: 2 });
 const fmtPct = v => (v * 100).toFixed(1) + '%';
+
+// Simula caminos individuales (para el spaghetti): devuelve {pts, result} por camino.
+function simulatePaths(p, rr, riskPct, account, dd, target, consistency, ddType, nPaths, seed, maxT) {
+  const rand = rng(seed);
+  const riskUsd = account * riskPct / 100;
+  const fixedFloor = account - dd;
+  const ceil = account + target;
+  const paths = [];
+  for (let s = 0; s < nPaths; s++) {
+    let bal = account;
+    let peak = account;
+    let result = 'open';
+    const pts = [bal];
+    for (let t = 1; t <= maxT; t++) {
+      bal += (rand() < p ? riskUsd * rr : -riskUsd);
+      if (bal > peak) peak = bal;
+      pts.push(bal);
+      if (bal >= ceil) { result = 'success'; break; }
+      const floor = ddType === 'trailing' ? peak - dd : fixedFloor;
+      if (bal <= floor) { result = 'ruin'; break; }
+    }
+    paths.push({ pts, result });
+  }
+  return paths;
+}
 
 function drawChart(points, kellyHalf, optIdx, agg) {
   const cv = $('chart');
@@ -678,14 +724,91 @@ function calc() {
   drawChart(points, kHalf, optIdx, agg);
   $('results').hidden = false;
   $('resultsAgg').hidden = false;
+  $('probBox').hidden = false;
+  $('probNote').hidden = false;
+  $('pathsBox').hidden = false;
+
+  // caminos para el spaghetti (ideal y agresivo)
+  window.__paths = {
+    ideal: simulatePaths(p, rr, opt.risk, account, dd, target, consistency, ddType, 30, 9001, 90),
+    agresivo: simulatePaths(p, rr, agg.risk, account, dd, target, consistency, ddType, 30, 9002, 90),
+  };
+  window.__pathMeta = {
+    ideal: { risk: opt.risk, p: opt.p },
+    agresivo: { risk: agg.risk, p: agg.p },
+  };
+  drawPaths('ideal');
 }
+
+function drawPaths(key) {
+  const cv = $('chartPaths');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = cv.getBoundingClientRect();
+  const cssW = rect.width || cv.clientWidth || 800;
+  cv.width = cssW * dpr;
+  cv.height = 300 * dpr;
+  const ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = 300;
+  const padL = 44, padR = 14, padT = 16, padB = 26;
+  const iw = W - padL - padR, ih = H - padT - padB;
+
+  const paths = (window.__paths || {})[key] || [];
+  const meta = (window.__pathMeta || {})[key] || { risk: 0, p: 0 };
+  const account = parseFloat($('account').value);
+  const dd = parseFloat($('ddUsd').value);
+  const target = parseFloat($('target').value);
+
+  const maxT = 90;
+  let lo = account - dd * 1.1, hi = account + target * 1.12;
+  paths.forEach(pa => pa.pts.forEach(b => { if (b < lo) lo = b; if (b > hi) hi = b; }));
+  const X = t => padL + (t / maxT) * iw;
+  const Y = b => padT + ih - ((b - lo) / (hi - lo)) * ih;
+
+  ctx.clearRect(0, 0, W, H);
+  // umbrales
+  ctx.setLineDash([4, 4]);
+  ctx.strokeStyle = 'rgba(16,185,129,.55)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(padL, Y(account + target)); ctx.lineTo(padL + iw, Y(account + target)); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,59,92,.55)';
+  ctx.beginPath(); ctx.moveTo(padL, Y(account - dd)); ctx.lineTo(padL + iw, Y(account - dd)); ctx.stroke();
+  ctx.setLineDash([]);
+  // línea del balance inicial
+  ctx.strokeStyle = 'rgba(232,234,246,.25)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(padL, Y(account)); ctx.lineTo(padL + iw, Y(account)); ctx.stroke();
+
+  // caminos
+  paths.forEach(pa => {
+    ctx.strokeStyle = pa.result === 'success' ? 'rgba(16,185,129,.45)' : 'rgba(255,59,92,.4)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    pa.pts.forEach((b, t) => {
+      const x = X(t), y = Y(b);
+      t === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  });
+
+  // etiquetas
+  ctx.fillStyle = '#8a90b3'; ctx.font = '10px JetBrains Mono, monospace';
+  ctx.fillText('objetivo $' + (account + target).toLocaleString('en-US'), 6, Y(account + target) + 3);
+  ctx.fillText('ruina $' + (account - dd).toLocaleString('en-US'), 6, Y(account - dd) + 3);
+  ctx.fillStyle = '#e8eaf6';
+  ctx.fillText('riesgo ' + meta.risk + '% · P(pasar) ' + (meta.p * 100).toFixed(1) + '%', padL + 8, padT + 12);
+  // eje X
+  ctx.fillStyle = '#8a90b3';
+  [0, 15, 30, 45, 60, 75, 90].forEach(t => ctx.fillText(t + 't', X(t) - 6, padT + ih + 16));
+}
+
+// toggle de caminos (ideal/agresivo)
+setPills('pathToggle', 'pathrisk', k => drawPaths(k));
 
 $('calcBtn').addEventListener('click', calc);
 $('resetBtn').addEventListener('click', () => {
   $('winRate').value = 50; $('rr').value = 2;
   $('account').value = 50000; $('ddUsd').value = 2000; $('target').value = 3000; $('tradesPerWeek').value = 5; $('consistency').value = 50;
 
-  $('results').hidden = true; $('resultsAgg').hidden = true; $('err').hidden = true;
+  $('results').hidden = true; $('resultsAgg').hidden = true; $('probBox').hidden = true; $('probNote').hidden = true; $('pathsBox').hidden = true; $('err').hidden = true;
 });
 ['winRate', 'rr', 'account', 'ddUsd', 'target', 'tradesPerWeek', 'consistency'].forEach(id => $(id).addEventListener('input', calc));
 
