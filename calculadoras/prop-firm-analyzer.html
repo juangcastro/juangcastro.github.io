@@ -402,57 +402,107 @@ function drawChart(points, kellyHalf, optIdx) {
   const X = r => padL + (r / maxRisk) * iw;
   const Y = p => padT + ih - (p / maxP) * ih;
 
-  ctx.clearRect(0, 0, W, H);
-  // ejes
-  ctx.strokeStyle = '#232845'; ctx.lineWidth = 1; ctx.beginPath();
-  ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + ih); ctx.lineTo(padL + iw, padT + ih); ctx.stroke();
-  // grid horizontal
-  ctx.fillStyle = '#8a90b3'; ctx.font = '10px JetBrains Mono, monospace';
-  for (let i = 0; i <= 4; i++) {
-    const p = maxP * i / 4;
-    const y = Y(p);
-    ctx.strokeStyle = 'rgba(35,40,69,.5)'; ctx.beginPath();
-    ctx.moveTo(padL, y); ctx.lineTo(padL + iw, y); ctx.stroke();
-    ctx.fillText((p * 100).toFixed(0) + '%', 6, y + 3);
-  }
-  // labels de riesgo
-  [0.25, 0.5, 1, 2, 3, 5].forEach(r => {
-    if (r <= maxRisk) {
-      ctx.fillStyle = '#8a90b3'; ctx.fillText(r + '%', X(r) - 8, padT + ih + 18);
+  function draw(hi) {
+    ctx.clearRect(0, 0, W, H);
+    // ejes
+    ctx.strokeStyle = '#232845'; ctx.lineWidth = 1; ctx.beginPath();
+    ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + ih); ctx.lineTo(padL + iw, padT + ih); ctx.stroke();
+    // grid horizontal
+    ctx.fillStyle = '#8a90b3'; ctx.font = '10px JetBrains Mono, monospace';
+    for (let i = 0; i <= 4; i++) {
+      const p = maxP * i / 4;
+      const y = Y(p);
+      ctx.strokeStyle = 'rgba(35,40,69,.5)'; ctx.beginPath();
+      ctx.moveTo(padL, y); ctx.lineTo(padL + iw, y); ctx.stroke();
+      ctx.fillText((p * 100).toFixed(0) + '%', 6, y + 3);
     }
-  });
-
-  // zona del kelly half
-  if (kellyHalf > 0 && kellyHalf <= maxRisk) {
-    ctx.fillStyle = 'rgba(245,197,24,.12)';
-    ctx.fillRect(X(kellyHalf), padT, Math.max(0, X(Math.min(kellyHalf * 2, maxRisk)) - X(kellyHalf)), ih);
-    ctx.strokeStyle = 'rgba(245,197,24,.5)'; ctx.setLineDash([4, 4]);
-    ctx.beginPath(); ctx.moveTo(X(kellyHalf), padT); ctx.lineTo(X(kellyHalf), padT + ih); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = 'rgba(245,197,24,.9)'; ctx.font = '10px JetBrains Mono, monospace';
-    ctx.fillText('½ Kelly', X(kellyHalf) - 20, padT - 4);
+    // labels de riesgo
+    [0.25, 0.5, 1, 2, 3, 5].forEach(r => {
+      if (r <= maxRisk) {
+        ctx.fillStyle = '#8a90b3'; ctx.fillText(r + '%', X(r) - 8, padT + ih + 18);
+      }
+    });
+    // zona del kelly half (referencia)
+    if (kellyHalf > 0 && kellyHalf <= maxRisk) {
+      ctx.fillStyle = 'rgba(245,197,24,.12)';
+      ctx.fillRect(X(kellyHalf), padT, Math.max(0, X(Math.min(kellyHalf * 2, maxRisk)) - X(kellyHalf)), ih);
+      ctx.strokeStyle = 'rgba(245,197,24,.5)'; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(X(kellyHalf), padT); ctx.lineTo(X(kellyHalf), padT + ih); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(245,197,24,.9)'; ctx.font = '10px JetBrains Mono, monospace';
+      ctx.fillText('½ Kelly', X(kellyHalf) - 20, padT - 4);
+    }
+    // curva de P(éxito)
+    ctx.strokeStyle = '#ff3b5c'; ctx.lineWidth = 2; ctx.shadowColor = 'rgba(255,59,92,.5)'; ctx.shadowBlur = 10;
+    ctx.beginPath();
+    points.forEach((d, i) => {
+      const x = X(d.risk), y = Y(d.p);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    // puntos
+    points.forEach((d, i) => {
+      const x = X(d.risk), y = Y(d.p);
+      ctx.fillStyle = i === optIdx ? '#fff' : '#ff5c78';
+      ctx.beginPath(); ctx.arc(x, y, i === optIdx ? 5 : 3.5, 0, Math.PI * 2); ctx.fill();
+    });
+    // etiqueta del Kelly prop-ajustado
+    const o = points[optIdx];
+    ctx.fillStyle = '#fff'; ctx.font = '11px JetBrains Mono, monospace';
+    ctx.fillText('prop-ajustado ' + o.risk + '% · ' + (o.p * 100).toFixed(1) + '%', Math.min(X(o.risk) + 8, padL + iw - 190), Math.max(Y(o.p) - 8, 12));
+    // highlight del hover
+    if (hi >= 0) {
+      const d = points[hi];
+      const x = X(d.risk), y = Y(d.p);
+      ctx.strokeStyle = 'rgba(232,234,246,.5)'; ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + ih); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#ff3b5c'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.stroke();
+      // tooltip
+      const lines = [
+        'Riesgo ' + d.risk + '%',
+        'P(éxito) ' + (d.p * 100).toFixed(1) + '%',
+        'P(ruina) ' + (d.ruin * 100).toFixed(1) + '%',
+        'P(consistencia) ' + (d.viol * 100).toFixed(1) + '%',
+        d.medianT ? '~' + d.medianT + ' trades' : 'sin éxitos',
+      ];
+      ctx.font = '10px JetBrains Mono, monospace';
+      const tw = Math.max(...lines.map(l => ctx.measureText(l).width)) + 16;
+      const th = lines.length * 14 + 12;
+      let bx = x + 12, by = y - th - 10;
+      if (bx + tw > W - 6) bx = x - tw - 12;
+      if (by < 2) by = y + 14;
+      ctx.fillStyle = 'rgba(13,15,30,.96)';
+      ctx.strokeStyle = '#30365e'; ctx.lineWidth = 1;
+      ctx.beginPath();
+      const r = 6;
+      ctx.moveTo(bx + r, by);
+      ctx.lineTo(bx + tw - r, by); ctx.arcTo(bx + tw, by, bx + tw, by + r, r);
+      ctx.lineTo(bx + tw, by + th - r); ctx.arcTo(bx + tw, by + th, bx + tw - r, by + th, r);
+      ctx.lineTo(bx + r, by + th); ctx.arcTo(bx, by + th, bx, by + th - r, r);
+      ctx.lineTo(bx, by + r); ctx.arcTo(bx, by, bx + r, by, r);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#e8eaf6';
+      lines.forEach((l, li) => ctx.fillText(l, bx + 8, by + 16 + li * 14));
+    }
   }
 
-  // curva de P(éxito)
-  ctx.strokeStyle = '#ff3b5c'; ctx.lineWidth = 2; ctx.shadowColor = 'rgba(255,59,92,.5)'; ctx.shadowBlur = 10;
-  ctx.beginPath();
-  points.forEach((d, i) => {
-    const x = X(d.risk), y = Y(d.p);
-    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-  });
-  ctx.stroke();
-  ctx.shadowBlur = 0;
-
-  // puntos + óptimo
-  points.forEach((d, i) => {
-    const x = X(d.risk), y = Y(d.p);
-    ctx.fillStyle = i === optIdx ? '#fff' : '#ff5c78';
-    ctx.beginPath(); ctx.arc(x, y, i === optIdx ? 5 : 3.5, 0, Math.PI * 2); ctx.fill();
-  });
-  // etiqueta del Kelly prop-ajustado
-  const o = points[optIdx];
-  ctx.fillStyle = '#fff'; ctx.font = '11px JetBrains Mono, monospace';
-  ctx.fillText('prop-ajustado ' + o.risk + '% · ' + (o.p * 100).toFixed(1) + '%', Math.min(X(o.risk) + 8, padL + iw - 170), Math.max(Y(o.p) - 8, 12));
+  draw(optIdx);
+  cv.onmousemove = e => {
+    const r = cv.getBoundingClientRect();
+    const mx = e.clientX - r.left;
+    let best = 0, bd = Infinity;
+    points.forEach((d, i) => {
+      const d2 = Math.abs(X(d.risk) - mx);
+      if (d2 < bd) { bd = d2; best = i; }
+    });
+    draw(best);
+  };
+  cv.onmouseleave = () => draw(optIdx);
 }
 
 function calc() {
@@ -485,22 +535,40 @@ function calc() {
   const expPct = p * rr - (1 - p); // en R por trade
   const kExp = account * 0.01 * expPct;
 
-  // barrido de riesgos (sin límite de trades)
-  const risks = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5];
+  // Barrido Monte-Carlo de riesgos (sin límite de trades, 5,000 caminos por riesgo):
+  // pasada gruesa 0.25%→5%, y luego una pasada fina (paso 0.1%) alrededor del mejor
+  // candidato para afinar el óptimo.
   const N = 5000;
-  const points = risks.map(r => {
+  const coarse = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5];
+  const coarsePts = coarse.map(r => {
     const sim = simulate(p, rr, r, account, dd, target, consistency, N, 1234 + Math.round(r * 100));
     return { risk: r, p: sim.pSucc, ruin: sim.pRuin, viol: sim.pViol, medianT: sim.medianT };
   });
 
-  // Kelly prop-ajustado: el mayor riesgo del barrido que conserva P(éxito) >= 95%
-  // (el punto más rápido sin sacrificar la probabilidad de pasar). Si ninguno llega al
-  // umbral, se usa el de mayor P(éxito).
-  let optIdx = 0;
-  for (let i = points.length - 1; i >= 0; i--) {
-    if (points[i].p >= 0.95) { optIdx = i; break; }
+  // candidato grueso: mayor riesgo con P(éxito) >= 95%
+  let candIdx = 0;
+  for (let i = coarsePts.length - 1; i >= 0; i--) {
+    if (coarsePts[i].p >= 0.95) { candIdx = i; break; }
   }
-  const opt = points[optIdx];
+  const cand = coarsePts[candIdx];
+
+  // pasada fina alrededor del candidato (paso 0.1%)
+  const fine = [];
+  for (let r = Math.max(0.1, cand.risk - 0.4); r <= cand.risk + 0.5 + 1e-9; r += 0.1) {
+    const sim = simulate(p, rr, r, account, dd, target, consistency, N, 4321 + Math.round(r * 100));
+    fine.push({ risk: r, p: sim.pSucc, ruin: sim.pRuin, viol: sim.pViol, medianT: sim.medianT });
+  }
+
+  // puntos de la gráfica = finos + gruesos fuera del rango fino (curva completa)
+  const points = fine.concat(coarsePts.filter(cp => !fine.some(f => Math.abs(f.risk - cp.risk) < 0.05)))
+    .sort((a, b) => a.risk - b.risk);
+
+  // Kelly prop-ajustado: el mayor riesgo (fino) que conserva P(éxito) >= 95%
+  let optIdx = 0;
+  for (let i = fine.length - 1; i >= 0; i--) {
+    if (fine[i].p >= 0.95) { optIdx = i; break; }
+  }
+  const opt = fine[optIdx];
   const optUsd = account * opt.risk / 100;
 
   // R de drawdown con el óptimo
