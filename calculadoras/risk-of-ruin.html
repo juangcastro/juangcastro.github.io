@@ -34,6 +34,11 @@
   .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
   .masthead p { color: var(--muted); max-width: none; font-size: 15px; margin-top: 10px; line-height: 1.65; }
   .masthead p b { color: var(--text); }
+  .mc-grid {
+    display: grid; grid-template-columns: 360px 1fr;
+    gap: 22px; align-items: start; margin-top: 30px;
+  }
+  @media (max-width: 980px) { .mc-grid { grid-template-columns: 1fr; } }
 
   .panel {
     margin-top: 26px;
@@ -185,10 +190,13 @@
 
   <a class="back-btn" href="../calculadoras/" aria-label="Volver a las calculadoras">Volver a las calculadoras</a>
   <header class="masthead">
-    <div class="kicker">Calculadoras</div>
+    <div class="kicker">// Herramientas · Calculadoras</div>
     <h1>Risk of <span class="red">Ruin</span></h1>
     <p>La probabilidad de que tu cuenta <b>toque fondo antes de que tu edge se manifieste</b>. Es el problema clásico de la ruina del jugador aplicado al trading: aunque tu estrategia sea ganadora, la secuencia de trades puede matarte antes de que la estadística trabaje a tu favor.</p>
   </header>
+
+  <div class="mc-grid">
+    <div class="calc-side">
 
   <div class="panel">
     <h2><span class="n">01</span> Tu edge</h2>
@@ -254,6 +262,7 @@
   </div>
 
   <button class="run" id="runBtn">▶ Ejecutar simulación</button>
+    </div>
 
   <div class="results">
     <div id="emptyState" class="placeholder">Define tu estrategia y tu cuenta, luego ejecuta la simulación.</div>
@@ -285,22 +294,15 @@
         <b>Probabilidad de ruina alta.</b> Con estos parámetros la cuenta tiene más probabilidad de quebrar que de crecer. Revisa el riesgo por trade (bájalo), el umbral de ruina o el edge antes de operar.
       </div>
 
-      <footer>
-        <div class="foot-inner">
-          <span>Risk of Ruin · Calculadoras TRQ — data informativa, no constituye asesoría financiera.</span>
-          <a class="back" href="index.html">Volver a las calculadoras</a>
-        </div>
-      </footer>
+      
     </div>
   </div>
 
 </div>
+  </div>
 
 <footer>
-  <div class="foot-inner">
-    <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html" style="color:var(--muted)">Términos</a></span>
-    <a class="back" href="index.html">Volver a las calculadoras</a>
-  </div>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
 </footer>
 
 <script>

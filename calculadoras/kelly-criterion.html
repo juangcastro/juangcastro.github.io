@@ -35,6 +35,11 @@
   .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
   .masthead p { color: var(--muted); max-width: none; font-size: 15px; margin-top: 10px; line-height: 1.65; }
   .masthead p b { color: var(--text); }
+  .mc-grid {
+    display: grid; grid-template-columns: 360px 1fr;
+    gap: 22px; align-items: start; margin-top: 30px;
+  }
+  @media (max-width: 980px) { .mc-grid { grid-template-columns: 1fr; } }
 
   /* ── paneles ──────────────────────── */
   .panel {
@@ -200,10 +205,13 @@
 
   <a class="back-btn" href="../calculadoras/" aria-label="Volver a las calculadoras">Volver a las calculadoras</a>
   <header class="masthead">
-    <div class="kicker">Calculadoras</div>
+    <div class="kicker">// Herramientas · Calculadoras</div>
     <h1>Kelly <span class="red">Criterion</span></h1>
     <p>Qué fracción de tu bankroll arriesgar por trade para que <b>crezca lo más rápido posible sin quebrarte</b>. La fórmula de John L. Kelly (1956) convierte tu edge — win rate, ganancia y pérdida promedio — en un número de apuesta óptimo.</p>
   </header>
+
+  <div class="mc-grid">
+    <div class="calc-side">
 
   <div class="panel">
     <h2><span class="n">01</span> Tu edge</h2>
@@ -247,6 +255,7 @@
   </div>
 
   <button class="run" id="runBtn">▶ Calcular Kelly</button>
+    </div>
 
   <div class="results">
     <div id="emptyState" class="placeholder">Introduce tu edge y pulsa Calcular.</div>
@@ -283,22 +292,15 @@
         <b>Edge negativo.</b> Con estos números el valor esperado es ≤ 0 — no existe fracción positiva de apuesta. La única jugada correcta es no operar con este sistema hasta mejorar el edge.
       </div>
 
-      <footer>
-        <div class="foot-inner">
-          <span>Kelly Criterion · Calculadoras TRQ — data informativa, no constituye asesoría financiera.</span>
-          <a class="back" href="index.html">Volver a las calculadoras</a>
-        </div>
-      </footer>
+      
     </div>
   </div>
 
 </div>
+  </div>
 
 <footer>
-  <div class="foot-inner">
-    <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html" style="color:var(--muted)">Términos</a></span>
-    <a class="back" href="index.html">Volver a las calculadoras</a>
-  </div>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
 </footer>
 
 <script>
