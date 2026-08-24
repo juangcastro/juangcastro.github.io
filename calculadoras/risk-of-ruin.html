@@ -22,7 +22,7 @@
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 24px 40px; }
 
   .masthead { padding: 34px 0 8px; }
   .masthead .kicker {
@@ -35,11 +35,7 @@
   .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
   .masthead p { color: var(--muted); max-width: none; font-size: 15px; margin-top: 10px; line-height: 1.65; }
   .masthead p b { color: var(--text); }
-  .mc-grid {
-    display: grid; grid-template-columns: 360px 1fr;
-    gap: 22px; align-items: start; margin-top: 30px;
-  }
-  @media (max-width: 980px) { .mc-grid { grid-template-columns: 1fr; } }
+
 
   .panel {
     margin-top: 26px;
@@ -200,9 +196,6 @@
     <p>La probabilidad de que tu cuenta <b>toque fondo antes de que tu edge se manifieste</b>. Es el problema clásico de la ruina del jugador aplicado al trading: aunque tu estrategia sea ganadora, la secuencia de trades puede matarte antes de que la estadística trabaje a tu favor.</p>
   </header>
 
-  <div class="mc-grid">
-    <div class="calc-side">
-
   <div class="panel">
     <h2><span class="n">01</span> Tu edge</h2>
     <div class="pill-row" id="presetRow">
@@ -267,7 +260,6 @@
   </div>
 
   <button class="run" id="runBtn">▶ Ejecutar simulación</button>
-    </div>
 
   <div class="results">
     <div id="emptyState" class="placeholder">Define tu estrategia y tu cuenta, luego ejecuta la simulación.</div>
@@ -303,7 +295,6 @@
     </div>
   </div>
 
-</div>
   </div>
 
 <footer>
