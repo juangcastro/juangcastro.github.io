@@ -137,11 +137,67 @@
   .back { color: var(--muted); text-decoration: none; font-size: 13px; font-family: 'JetBrains Mono', monospace; transition: color .15s ease; }
   .back:hover { color: var(--accent); }
   .back::before { content: "← "; }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1240px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 620px) { .nav-links a:not(.back-link) { display: none; } }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-top: 26px;
+    background: rgba(13, 15, 30, .55);
+    transition: border-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .back-btn:hover {
+    border-color: var(--accent); color: var(--accent);
+    box-shadow: 0 0 18px -6px var(--glow-accent);
+    transform: translateY(-1px);
+  }
 </style>
 </head>
 <body>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a class="back-link" href="../calculadoras/">← Calculadoras</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
 <div class="wrap">
 
+  <a class="back-btn" href="../calculadoras/" aria-label="Volver a las calculadoras">Volver a las calculadoras</a>
   <header class="masthead">
     <div class="kicker">Calculadoras</div>
     <h1>Kelly <span class="red">Criterion</span></h1>
