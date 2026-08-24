@@ -467,18 +467,25 @@ function drawChart(points, kellyHalf, optIdx) {
     }
   }
 
-  draw(optIdx);
-  cv.onmousemove = e => {
+  draw(-1); // sin tooltip inicial: solo aparece al interactuar
+  cv.style.cursor = 'crosshair';
+  function onMove(e) {
     const r = cv.getBoundingClientRect();
-    const mx = e.clientX - r.left;
-    let best = 0, bd = Infinity;
+    const mx = (e.clientX || e.touches[0].clientX) - r.left;
+    // punto más cercano, solo si el mouse está razonablemente cerca de un punto
+    let best = -1, bd = Infinity;
     points.forEach((d, i) => {
       const d2 = Math.abs(X(d.risk) - mx);
       if (d2 < bd) { bd = d2; best = i; }
     });
-    draw(best);
-  };
-  cv.onmouseleave = () => draw(optIdx);
+    draw(bd < 30 ? best : -1);
+  }
+  function onLeave() { draw(-1); }
+  cv.addEventListener('mousemove', onMove);
+  cv.addEventListener('mouseleave', onLeave);
+  cv.addEventListener('touchstart', onMove, { passive: true });
+  cv.addEventListener('touchmove', onMove, { passive: true });
+  cv.addEventListener('touchend', onLeave);
 }
 
 function calc() {
