@@ -377,9 +377,9 @@ function calc() {
   const commitPct = posValue / bank * 100;
 
   $('kRisk').textContent = '$' + fmt(riskUsd);
-  $('kUnits').textContent = fmt(units) + ' <span class="sub">unidades</span>';
+  $('kUnits').innerHTML = fmt(units) + ' <span class="sub">unidades</span>';
   $('kValue').textContent = '$' + fmt(posValue);
-  $('kDist').textContent = '$' + fmt(distUsd) + ' <span class="sub">(' + distPct.toFixed(2) + '%)</span>';
+  $('kDist').innerHTML = '$' + fmt(distUsd) + ' <span class="sub">(' + distPct.toFixed(2) + '%)</span>';
   $('kCommit').textContent = commitPct.toFixed(1) + '%';
   $('kCommit').className = 'v' + (commitPct > 35 ? ' risk' : '');
   if (Number.isFinite(tp) && tp > 0) {
@@ -393,7 +393,7 @@ function calc() {
       $('kRR').innerHTML = '1 : ' + rr.toFixed(2) + ' <span class="sub">+$' + fmt(gain) + '</span>';
     }
   } else {
-    $('kRR').textContent = '— <span class="sub">sin TP</span>';
+    $('kRR').innerHTML = '— <span class="sub">sin TP</span>';
   }
 
   // barra de compromiso: 0-50% del bankroll
