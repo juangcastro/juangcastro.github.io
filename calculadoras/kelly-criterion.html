@@ -285,11 +285,6 @@
         </div>
       </div>
 
-      <div class="canvas-box">
-        <div class="cap">Crecimiento esperado por trade g(f) vs fracción apostada</div>
-        <canvas id="chart" width="720" height="300"></canvas>
-      </div>
-
       <div class="note" id="noteOk">
         <b>Half-Kelly</b> reduce la volatilidad a la mitad conservando ~75% del crecimiento. El Kelly completo asume que tus números son exactos: si tu win rate real está inflado, el Kelly completo sobre-apuesta. Fraccionar es el seguro contra el error de estimación.
       </div>
@@ -302,6 +297,12 @@
   </div>
 
 </div>
+
+  <div class="canvas-box" id="chartWrap" hidden>
+    <div class="cap">Crecimiento esperado por trade g(f) vs fracción apostada</div>
+    <canvas id="chart" width="900" height="340"></canvas>
+  </div>
+
   </div>
 
 <footer>
@@ -363,6 +364,7 @@ function calc() {
 
   $('emptyState').hidden = true;
   $('resultsContent').hidden = false;
+  $('chartWrap').hidden = false;
   $('noteOk').hidden = !edgeOk;
   $('noteNeg').hidden = edgeOk;
 
@@ -394,12 +396,13 @@ function drawChart(p, B, C, fStar, f) {
   const cv = $('chart');
   const dpr = window.devicePixelRatio || 1;
   const rect = cv.getBoundingClientRect();
-  const cssW = rect.width || cv.clientWidth || 720;   // fallback si el layout aún no computó
+  const cssW = rect.width || cv.clientWidth || 900;   // fallback si el layout aún no computó
+  const cssH = rect.height || 340;
   cv.width = cssW * dpr;
-  cv.height = 300 * dpr;
+  cv.height = cssH * dpr;
   const ctx = cv.getContext('2d');
   ctx.scale(dpr, dpr);
-  const W = cssW, H = 300;
+  const W = cssW, H = cssH;
   const padL = 44, padR = 16, padT = 18, padB = 30;
   const iw = W - padL - padR, ih = H - padT - padB;
 
