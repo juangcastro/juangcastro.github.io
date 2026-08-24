@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Position Size · Calculadoras TRQ</title>
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f; --surface: #0d0f1e; --card: #101328;
+    --border: #232845; --border-2: #30365e;
+    --text: #e8eaf6; --muted: #8a90b3;
+    --accent: #ff3b5c; --accent-2: #ff5c78; --glow-accent: rgba(255, 59, 92, .5);
+    --green: #10b981;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(1100px 500px at 85% -10%, rgba(255, 59, 92, .07), transparent 60%),
+      radial-gradient(900px 420px at -10% 20%, rgba(99, 102, 241, .06), transparent 60%);
+  }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1240px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 620px) { .nav-links a:not(.back-link) { display: none; } }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-top: 26px;
+    background: rgba(13, 15, 30, .55);
+    transition: border-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .back-btn:hover {
+    border-color: var(--accent); color: var(--accent);
+    box-shadow: 0 0 18px -6px var(--glow-accent);
+    transform: translateY(-1px);
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+  .masthead { padding: 34px 0 8px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--accent);
+  }
+  .masthead h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(30px, 4.6vw, 46px); font-weight: 700;
+    letter-spacing: -.02em; margin-top: 8px;
+  }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 30px var(--glow-accent); }
+  .masthead p {
+    color: var(--muted); max-width: none; font-size: 15px;
+    margin-top: 10px; line-height: 1.65;
+  }
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px; margin-top: 26px;
+  }
+  .panel h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+  }
+  .panel h2 .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 8px;
+    background: var(--accent); color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+  }
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    padding: 7px 14px; border-radius: 999px; cursor: pointer;
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border); transition: all .18s ease;
+  }
+  .pill:hover { border-color: var(--border-2); color: var(--text); }
+  .pill.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 0 18px -4px var(--glow-accent);
+  }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  label {
+    display: block; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  input {
+    width: 100%; padding: 12px 14px;
+    background: var(--card); color: var(--text);
+    border: 1px solid var(--border); border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 15px;
+    outline: none; transition: border-color .18s ease, box-shadow .18s ease;
+  }
+  input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
+  .hint {
+    font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.5;
+  }
+  .cta-row { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+  .btn {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    padding: 13px 26px; border-radius: 10px; cursor: pointer;
+    background: var(--accent); color: #fff; border: none;
+    box-shadow: 0 8px 26px -10px var(--glow-accent);
+    transition: transform .18s ease, background .18s ease;
+  }
+  .btn:hover { background: var(--accent-2); transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border); box-shadow: none;
+  }
+  .btn-ghost:hover { background: transparent; border-color: var(--border-2); color: var(--text); }
+  .results { margin-top: 26px; }
+  .results[hidden] { display: none; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
+  .kpi {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .kpi .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .kpi .v { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; margin-top: 6px; }
+  .kpi .v .sub { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .kpi .v.risk { color: var(--accent); }
+  .kpi .v.ok { color: var(--green); }
+  .bar-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; margin-top: 14px;
+  }
+  .bar-box .bar-label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .bar-box .bar-label b { color: var(--text); font-size: 14px; }
+  .bar { position: relative; height: 14px; border-radius: 999px; background: #181c36; overflow: hidden; }
+  .bar .fill { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: linear-gradient(90deg, #ff3b5c, #ff5c78); }
+  .bar .mark {
+    position: absolute; top: -4px; bottom: -4px; width: 2px;
+    background: #fff; box-shadow: 0 0 10px rgba(255,255,255,.7);
+  }
+  .bar .zone {
+    position: absolute; inset: 0 auto 0 0; border-radius: 999px;
+    background: rgba(255, 59, 92, .10); border: 1px dashed rgba(255, 59, 92, .35);
+  }
+  .bar-legend { display: flex; gap: 18px; margin-top: 10px; font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+  .bar-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+  .note {
+    margin-top: 18px; padding: 14px 16px;
+    border: 1px solid var(--border); border-radius: 12px;
+    background: rgba(13, 15, 30, .6);
+    font-size: 12.5px; line-height: 1.65; color: var(--muted);
+  }
+  .note b { color: var(--text); }
+  .err {
+    margin-top: 14px; padding: 12px 14px;
+    border: 1px solid rgba(255, 59, 92, .4); border-radius: 10px;
+    background: rgba(255, 59, 92, .08);
+    color: var(--accent); font-size: 13px;
+  }
+  .err[hidden] { display: none; }
+  footer { border-top: 1px solid var(--border); margin-top: 40px; }
+  .foot-inner {
+    max-width: 1240px; margin: 0 auto; padding: 22px 24px;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    font-size: 12px; color: var(--muted);
+  }
+  .foot-inner .back { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
+</style>
+</head>
+<body>
+<script>history.scrollRestoration='manual';window.scrollTo(0,0);</script>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a class="back-link" href="../calculadoras/">← Calculadoras</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+<div class="wrap">
+
+  <a class="back-btn" href="../calculadoras/" aria-label="Volver a las calculadoras">Volver a las calculadoras</a>
+  <header class="masthead">
+    <div class="kicker">Calculadoras</div>
+    <h1>Position <span class="red">Size</span></h1>
+    <p>Cuántas unidades comprar para que una operación perdedora te cueste exactamente lo que decides arriesgar. Con tu bankroll, el % de riesgo y la distancia al stop, la calculadora te da el tamaño de posición — y te muestra cuánto de tu capital quedará comprometido en la operación.</p>
+  </header>
+
+  <div class="panel">
+    <h2><span class="n">01</span> Tu cuenta</h2>
+    <div class="pill-row" id="riskPresets">
+      <button class="pill" data-preset="sobrio">Sobrio</button>
+      <button class="pill active" data-preset="balanceado">Balanceado</button>
+      <button class="pill" data-preset="afilado">Afilado</button>
+    </div>
+    <div class="grid">
+      <div>
+        <label for="bankroll">Bankroll ($)</label>
+        <input id="bankroll" type="number" min="0" step="100" value="10000">
+      </div>
+      <div>
+        <label for="riskPct">Riesgo por trade (%)</label>
+        <input id="riskPct" type="number" min="0.05" max="100" step="0.05" value="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2><span class="n">02</span> La operación</h2>
+    <div class="grid">
+      <div>
+        <label for="entry">Precio de entrada ($)</label>
+        <input id="entry" type="number" min="0.0001" step="0.0001" value="100">
+        <div class="hint">Dónde entra la posición (long).</div>
+      </div>
+      <div>
+        <label for="stop">Stop loss ($)</label>
+        <input id="stop" type="number" min="0.0001" step="0.0001" value="95">
+        <div class="hint">Por debajo de la entrada. La distancia define el riesgo por unidad.</div>
+      </div>
+      <div>
+        <label for="tp">Take profit ($) — opcional</label>
+        <input id="tp" type="number" min="0.0001" step="0.0001" value="110">
+        <div class="hint">Objetivo de salida. Si lo pones, verás el R:R de la operación.</div>
+      </div>
+      <div>
+        <label for="side">Dirección</label>
+        <div class="pill-row" id="sideRow" style="margin-bottom:0">
+          <button class="pill active" data-side="long">Long</button>
+          <button class="pill" data-side="short">Short</button>
+        </div>
+        <div class="hint">Long: stop por debajo. Short: stop por encima.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <button class="btn" id="calcBtn">Calcular tamaño</button>
+    <button class="btn btn-ghost" id="resetBtn">Reiniciar</button>
+  </div>
+
+  <div class="err" id="err" hidden></div>
+
+  <div class="results" id="results" hidden>
+    <div class="kpis">
+      <div class="kpi"><div class="k">Riesgo por trade</div><div class="v risk" id="kRisk">—</div></div>
+      <div class="kpi"><div class="k">Tamaño de posición</div><div class="v" id="kUnits">—</div></div>
+      <div class="kpi"><div class="k">Valor de la posición</div><div class="v" id="kValue">—</div></div>
+      <div class="kpi"><div class="k">Distancia al stop</div><div class="v" id="kDist">—</div></div>
+      <div class="kpi"><div class="k">Capital comprometido</div><div class="v" id="kCommit">—</div></div>
+      <div class="kpi"><div class="k">R:R de la operación</div><div class="v ok" id="kRR">—</div></div>
+    </div>
+
+    <div class="bar-box">
+      <div class="bar-label">
+        <span>Capital comprometido en esta operación</span>
+        <b id="barPct">—</b>
+      </div>
+      <div class="bar">
+        <div class="zone" id="zone" style="width:0%"></div>
+        <div class="fill" id="fill" style="width:0%"></div>
+        <div class="mark" id="mark" style="left:0%"></div>
+      </div>
+      <div class="bar-legend">
+        <span><span class="dot" style="background:rgba(255,59,92,.35)"></span>Zona de riesgo típica (1–2% por trade)</span>
+        <span><span class="dot" style="background:#ff3b5c"></span>Tu compromiso</span>
+        <span><span class="dot" style="background:#fff"></span>Tu riesgo como % del capital</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>La lección del position sizing:</b> arriesgar el 1% del bankroll no significa comprometer el 1% — significa que <b>la operación entera</b> (unidades × entrada) puede llegar a ser el 10–30% de tu capital si el stop está lejos. Cuanto más cerca el stop, más unidades entran con el mismo riesgo; cuanto más lejos, menos unidades y más capital comprometido. El tamaño correcto es el que hace que <b>perder el stop cueste exactamente tu riesgo planeado</b>.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html" style="color:var(--muted)">Términos</a></span>
+    <a class="back" href="index.html">Volver a las calculadoras</a>
+  </div>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const RISK_PRESETS = { sobrio: 0.5, balanceado: 1, afilado: 2 };
+
+function setPills(rowId, activeSel, handler) {
+  $(rowId).querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      $(rowId).querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      handler(p.dataset[activeSel]);
+    });
+  });
+}
+
+setPills('riskPresets', 'preset', v => { $('riskPct').value = RISK_PRESETS[v]; calc(); });
+setPills('sideRow', 'side', () => calc());
+
+let side = 'long';
+
+const fmt = v => v.toLocaleString('en-US', { maximumFractionDigits: 2 });
+
+function calc() {
+  const err = $('err');
+  err.hidden = true;
+  const bank = parseFloat($('bankroll').value);
+  const riskPct = parseFloat($('riskPct').value);
+  const entry = parseFloat($('entry').value);
+  const stop = parseFloat($('stop').value);
+  const tp = parseFloat($('tp').value);
+  side = document.querySelector('#sideRow .pill.active').dataset.side;
+
+  if (![bank, riskPct, entry, stop].every(Number.isFinite) || bank <= 0 || riskPct <= 0 || entry <= 0 || stop <= 0) {
+    err.textContent = 'Completa bankroll, % de riesgo, entrada y stop con valores positivos.';
+    err.hidden = false;
+    return;
+  }
+  const badStop = side === 'long' ? stop >= entry : stop <= entry;
+  if (badStop) {
+    err.textContent = side === 'long'
+      ? 'El stop debe estar por debajo de la entrada (long).'
+      : 'El stop debe estar por encima de la entrada (short).';
+    err.hidden = false;
+    return;
+  }
+
+  const riskUsd = bank * riskPct / 100;
+  const distUsd = Math.abs(entry - stop);
+  const distPct = distUsd / entry * 100;
+  const units = riskUsd / distUsd;
+  const posValue = units * entry;
+  const commitPct = posValue / bank * 100;
+
+  $('kRisk').textContent = '$' + fmt(riskUsd);
+  $('kUnits').textContent = fmt(units) + ' <span class="sub">unidades</span>';
+  $('kValue').textContent = '$' + fmt(posValue);
+  $('kDist').textContent = '$' + fmt(distUsd) + ' <span class="sub">(' + distPct.toFixed(2) + '%)</span>';
+  $('kCommit').textContent = commitPct.toFixed(1) + '%';
+  $('kCommit').className = 'v' + (commitPct > 35 ? ' risk' : '');
+  if (Number.isFinite(tp) && tp > 0) {
+    const badTp = side === 'long' ? tp <= entry : tp >= entry;
+    if (badTp) {
+      $('kRR').innerHTML = '— <span class="sub">TP inválido</span>';
+    } else {
+      const reward = Math.abs(tp - entry);
+      const rr = reward / distUsd;
+      const gain = reward * units;
+      $('kRR').innerHTML = '1 : ' + rr.toFixed(2) + ' <span class="sub">+$' + fmt(gain) + '</span>';
+    }
+  } else {
+    $('kRR').textContent = '— <span class="sub">sin TP</span>';
+  }
+
+  // barra de compromiso: 0-50% del bankroll
+  const maxShow = 50;
+  const pct = Math.min(commitPct, maxShow);
+  $('zone').style.width = '4%'; // zona de riesgo típica 1-2% (muy pequeña, se marca al inicio)
+  $('fill').style.width = pct + '%';
+  $('mark').style.left = Math.min(riskPct, maxShow) + '%';
+  $('barPct').textContent = commitPct.toFixed(1) + '% del bankroll';
+  $('fill').style.background = commitPct > 35
+    ? 'linear-gradient(90deg, #ff3b5c, #ff5c78)'
+    : 'linear-gradient(90deg, #ff3b5c, #ff5c78)';
+  $('results').hidden = false;
+}
+
+$('calcBtn').addEventListener('click', calc);
+$('resetBtn').addEventListener('click', () => {
+  $('bankroll').value = 10000; $('riskPct').value = 1;
+  $('entry').value = 100; $('stop').value = 95; $('tp').value = 110;
+  document.querySelector('#riskPresets .pill[data-preset="balanceado"]').classList.add('active');
+  document.querySelector('#riskPresets .pill[data-preset="sobrio"]').classList.remove('active');
+  document.querySelector('#riskPresets .pill[data-preset="afilado"]').classList.remove('active');
+  document.querySelector('#sideRow .pill[data-side="long"]').classList.add('active');
+  document.querySelector('#sideRow .pill[data-side="short"]').classList.remove('active');
+  $('results').hidden = true; $('err').hidden = true;
+});
+['bankroll', 'riskPct', 'entry', 'stop', 'tp'].forEach(id => $(id).addEventListener('input', calc));
+
+calc();
+</script>
+</body>
+</html>
