@@ -215,11 +215,6 @@
 
   <div class="panel">
     <h2><span class="n">01</span> Tu edge</h2>
-    <div class="pill-row" id="edgePresets">
-      <button class="pill" data-preset="sobrio">Sobrio</button>
-      <button class="pill active" data-preset="balanceado">Balanceado</button>
-      <button class="pill" data-preset="afilado">Afilado</button>
-    </div>
     <div class="grid">
       <div>
         <label for="winRate">Win rate (%)</label>
@@ -302,26 +297,7 @@
 <script>
 const $ = id => document.getElementById(id);
 
-const EDGE_PRESETS = {
-  sobrio:     { wr: 55, rr: 1.5 },
-  balanceado: { wr: 50, rr: 2 },
-  afilado:    { wr: 45, rr: 2.5 },
-};
 
-function setPills(rowId, attr, handler) {
-  $(rowId).querySelectorAll('.pill').forEach(p => {
-    p.addEventListener('click', () => {
-      $(rowId).querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
-      p.classList.add('active');
-      handler(p.dataset[attr]);
-    });
-  });
-}
-setPills('edgePresets', 'preset', v => {
-  $('winRate').value = EDGE_PRESETS[v].wr;
-  $('rr').value = EDGE_PRESETS[v].rr;
-  calc();
-});
 
 // RNG reproducible (mulberry32)
 function rng(seed) {
@@ -603,9 +579,7 @@ $('calcBtn').addEventListener('click', calc);
 $('resetBtn').addEventListener('click', () => {
   $('winRate').value = 50; $('rr').value = 2;
   $('account').value = 50000; $('ddUsd').value = 2000; $('target').value = 3000; $('tradesPerWeek').value = 5; $('consistency').value = 50;
-  document.querySelector('#edgePresets .pill[data-preset="balanceado"]').classList.add('active');
-  document.querySelector('#edgePresets .pill[data-preset="sobrio"]').classList.remove('active');
-  document.querySelector('#edgePresets .pill[data-preset="afilado"]').classList.remove('active');
+
   $('results').hidden = true; $('err').hidden = true;
 });
 ['winRate', 'rr', 'account', 'ddUsd', 'target', 'tradesPerWeek', 'consistency'].forEach(id => $(id).addEventListener('input', calc));
