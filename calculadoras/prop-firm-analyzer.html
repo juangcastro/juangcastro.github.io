@@ -10,122 +10,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #06070f; --surface: #0d0f1e; --card: #12142a; --card-2: #171a36;
-    --border: #252b52; --text: #e8ecff; --muted: #8b92b8;
-    --accent: #ff3b5c; --glow-accent: rgba(255, 59, 92, .35);
-    --up: #34d399; --down: #ff5c7a; --amber: #fbbf24;
+    --bg: #06070f; --surface: #0d0f1e; --card: #101328;
+    --border: #232845; --border-2: #30365e;
+    --text: #e8eaf6; --muted: #8a90b3;
+    --accent: #ff3b5c; --accent-2: #ff5c78; --glow-accent: rgba(255, 59, 92, .5);
+    --green: #10b981; --gold: #f5c518;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     background: var(--bg); color: var(--text);
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(1100px 500px at 85% -10%, rgba(255, 59, 92, .07), transparent 60%),
+      radial-gradient(900px 420px at -10% 20%, rgba(245, 197, 24, .05), transparent 60%);
   }
-  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
-
-  .masthead { padding: 34px 0 8px; }
-  .masthead .kicker {
-    font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
-    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
-  }
-  .masthead .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
-  .masthead h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(30px, 4.6vw, 42px); letter-spacing: -.02em; }
-  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
-  .masthead p { color: var(--muted); max-width: none; font-size: 15px; margin-top: 10px; line-height: 1.65; }
-  .masthead p b { color: var(--text); }
-
-  .panel {
-    margin-top: 26px;
-    background: linear-gradient(160deg, var(--card), var(--card-2));
-    border: 1px solid var(--border); border-radius: 16px;
-    padding: 22px 22px 24px;
-  }
-  .panel h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-  .panel h2 .n {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
-    color: var(--accent); border: 1px solid var(--border); border-radius: 6px;
-    padding: 3px 7px; background: rgba(6, 7, 15, .45);
-  }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  @media (max-width: 560px) { .grid, .grid-2 { grid-template-columns: 1fr; } }
-  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: .02em; }
-  label .hint { color: #5b6288; font-size: 11px; }
-  input[type="number"] {
-    width: 100%; padding: 10px 12px;
-    background: rgba(6, 7, 15, .55); border: 1px solid var(--border); border-radius: 10px;
-    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
-    font-variant-numeric: tabular-nums;
-    outline: none; transition: border-color .15s ease, box-shadow .15s ease;
-  }
-  input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
-
-  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-  .pill {
-    padding: 7px 14px; font-size: 12px; font-weight: 600;
-    font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
-    background: rgba(6, 7, 15, .45); color: var(--muted);
-    border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
-    transition: all .15s ease;
-  }
-  .pill:hover { color: var(--text); border-color: #3a4170; }
-  .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 18px rgba(255, 59, 92, .28); }
-
-  .cta-row { display: flex; gap: 12px; margin-top: 22px; }
-  .run {
-    flex: 1; padding: 14px; border: none; border-radius: 12px; cursor: pointer;
-    background: var(--accent); color: #fff;
-    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; letter-spacing: .06em;
-    box-shadow: 0 10px 30px -12px rgba(255, 59, 92, .55);
-    transition: transform .15s ease, box-shadow .15s ease;
-  }
-  .run:hover { box-shadow: 0 14px 36px -12px rgba(255, 59, 92, .7); }
-  .run:active { transform: scale(0.96); }
-  .run.ghost {
-    flex: 0 0 auto; background: transparent; color: var(--muted);
-    border: 1px solid var(--border); box-shadow: none;
-  }
-  .run.ghost:hover { color: var(--text); border-color: #3a4170; box-shadow: none; }
-  .err {
-    margin-top: 14px; padding: 12px 16px; border-radius: 12px;
-    border: 1px solid rgba(255, 92, 122, .5); background: rgba(255, 92, 122, .08);
-    color: #ffb3c2; font-size: 13px; display: none;
-  }
-
-  .results { margin-top: 26px; display: none; }
-  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .kpis .kpi {
-    background: linear-gradient(160deg, var(--card), var(--card-2));
-    border: 1px solid var(--border); border-radius: 14px;
-    padding: 16px 16px 14px;
-  }
-  .kpi .lab { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
-  .kpi .val { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .kpi .val.pos { color: var(--up); }
-  .kpi .val.neg { color: var(--down); }
-  .kpi .val.acc { color: var(--accent); }
-  .kpi .val.amber { color: var(--amber); }
-  .kpi .sub { font-size: 11px; color: #5b6288; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
-  @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
-
-  .note {
-    margin-top: 14px; padding: 14px 16px; border-radius: 12px;
-    border: 1px solid var(--border); background: rgba(6, 7, 15, .4);
-    font-size: 13px; color: var(--muted); line-height: 1.6;
-  }
-  .note.warn { border-color: rgba(255, 92, 122, .5); background: rgba(255, 92, 122, .07); color: #ffb3c2; }
-  .note b { color: var(--text); }
-  .canvas-box { margin-top: 16px; }
-  .canvas-box .cap { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
-  canvas { width: 100%; height: auto; background: rgba(6, 7, 15, .4); border: 1px solid var(--border); border-radius: 14px; }
-
-  footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 40px; }
-  .foot-inner { max-width: 780px; margin: 0 auto; padding: 18px 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
-  footer span { color: var(--muted); font-size: 12px; }
-  .back { color: var(--muted); text-decoration: none; font-size: 13px; font-family: 'JetBrains Mono', monospace; transition: color .15s ease; }
-  .back:hover { color: var(--accent); }
-  .back::before { content: "← "; }
   nav {
     position: sticky; top: 0; z-index: 50;
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
@@ -141,20 +41,152 @@
   .nav-brand .word {
     font-family: 'JetBrains Mono', monospace; font-weight: 700;
     font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
-    color: var(--accent); text-shadow: 0 0 16px var(--glow-accent);
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
   }
-  .nav-links { display: flex; align-items: center; gap: 22px; }
-  .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s ease; }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    transition: color .18s ease;
+  }
   .nav-links a:hover { color: var(--text); }
-  .nav-links .back-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); }
-  @media (max-width: 720px) { .nav-links a:not(.back-link) { display: none; } }
+  @media (max-width: 620px) { .nav-links a:not(.back-link) { display: none; } }
   .back-btn {
-    display: inline-block; margin: 26px 0 0; color: var(--muted);
-    text-decoration: none; font-size: 12px; font-family: 'JetBrains Mono', monospace;
-    transition: color .15s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-top: 26px;
+    background: rgba(13, 15, 30, .55);
+    transition: border-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
   }
-  .back-btn:hover { color: var(--accent); }
-  .back-btn::before { content: "← "; }
+  .back-btn:hover {
+    border-color: var(--accent); color: var(--accent);
+    box-shadow: 0 0 18px -6px var(--glow-accent);
+    transform: translateY(-1px);
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 40px; }
+  .masthead { padding: 34px 0 8px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--accent);
+  }
+  .masthead h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(30px, 4.6vw, 46px); font-weight: 700;
+    letter-spacing: -.02em; margin-top: 8px;
+  }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 30px var(--glow-accent); }
+  .masthead p {
+    color: var(--muted); max-width: none; font-size: 15px;
+    margin-top: 10px; line-height: 1.65;
+  }
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px; margin-top: 26px;
+  }
+  .panel h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+  }
+  .panel h2 .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 8px;
+    background: var(--accent); color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+  }
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    padding: 7px 14px; border-radius: 999px; cursor: pointer;
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border); transition: all .18s ease;
+  }
+  .pill:hover { border-color: var(--border-2); color: var(--text); }
+  .pill.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 0 18px -4px var(--glow-accent);
+  }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  label {
+    display: block; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  input {
+    width: 100%; padding: 12px 14px;
+    background: var(--card); color: var(--text);
+    border: 1px solid var(--border); border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 15px;
+    outline: none; transition: border-color .18s ease, box-shadow .18s ease;
+  }
+  input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
+  .hint { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+  .cta-row { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+  .btn {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    padding: 13px 26px; border-radius: 10px; cursor: pointer;
+    background: var(--accent); color: #fff; border: none;
+    box-shadow: 0 8px 26px -10px var(--glow-accent);
+    transition: transform .18s ease, background .18s ease;
+  }
+  .btn:hover { background: var(--accent-2); transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border); box-shadow: none;
+  }
+  .btn-ghost:hover { background: transparent; border-color: var(--border-2); color: var(--text); }
+  .results { margin-top: 26px; }
+  .results[hidden] { display: none; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
+  .kpi {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .kpi .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .kpi .v { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; margin-top: 6px; }
+  .kpi .v .sub { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .kpi .v.risk { color: var(--accent); }
+  .kpi .v.ok { color: var(--green); }
+  .kpi .v.gold { color: var(--gold); }
+  .chart-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; margin-top: 14px;
+  }
+  .chart-box .chart-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 10px;
+  }
+  canvas { width: 100%; height: auto; display: block; }
+  .note {
+    margin-top: 18px; padding: 14px 16px;
+    border: 1px solid var(--border); border-radius: 12px;
+    background: rgba(13, 15, 30, .6);
+    font-size: 12.5px; line-height: 1.65; color: var(--muted);
+  }
+  .note b { color: var(--text); }
+  .err {
+    margin-top: 14px; padding: 12px 14px;
+    border: 1px solid rgba(255, 59, 92, .4); border-radius: 10px;
+    background: rgba(255, 59, 92, .08);
+    color: var(--accent); font-size: 13px;
+  }
+  .err[hidden] { display: none; }
+  footer { border-top: 1px solid var(--border); margin-top: 40px; }
+  .foot-inner {
+    max-width: 1240px; margin: 0 auto; padding: 22px 24px;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    font-size: 12px; color: var(--muted);
+  }
+  .foot-inner .back { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -178,353 +210,289 @@
   <header class="masthead">
     <div class="kicker">Calculadoras</div>
     <h1>Prop Firm <span class="red">Analyzer</span></h1>
-    <p>En una evaluación de prop firm el riesgo no lo eliges tú: lo impone el drawdown permitido y el objetivo. Esta calculadora barre tamaños de riesgo, simula cada uno con <b>Monte-Carlo</b> y encuentra el que maximiza la probabilidad de llegar al objetivo antes de tocar el drawdown — y lo contrasta con el óptimo teórico de <b>Kelly</b>.</p>
+    <p>Antes de pagar una evaluación: ¿tu estrategia puede pasar el examen? Con win rate, R:R, cuenta, drawdown permitido y objetivo, esta calculadora corre el problema clásico de la ruina del jugador — vía Monte-Carlo y Kelly — para decirte el tamaño de riesgo óptimo y la probabilidad de lograr el objetivo antes de ser descalificado.</p>
   </header>
 
   <div class="panel">
-    <h2><span class="n">01</span> La evaluación</h2>
-    <div class="pill-row" id="presetRow">
-      <button class="pill" data-acct="100000" data-dd="10000" data-tgt="10000">100K · DD 10% / Target 10%</button>
-      <button class="pill active" data-acct="50000" data-dd="5000" data-tgt="5000">50K · DD 10% / Target 10%</button>
-      <button class="pill" data-acct="200000" data-dd="10000" data-tgt="16000">200K · DD 5% / Target 8%</button>
-      <button class="pill" data-acct="25000" data-dd="2000" data-tgt="2000">25K · DD 8% / Target 8%</button>
+    <h2><span class="n">01</span> Tu edge</h2>
+    <div class="pill-row" id="edgePresets">
+      <button class="pill" data-preset="sobrio">Sobrio</button>
+      <button class="pill active" data-preset="balanceado">Balanceado</button>
+      <button class="pill" data-preset="afilado">Afilado</button>
     </div>
     <div class="grid">
       <div>
-        <label for="wr">Win rate (%)</label>
-        <input id="wr" type="number" step="1" min="1" max="99" value="40">
+        <label for="winRate">Win rate (%)</label>
+        <input id="winRate" type="number" min="1" max="99" step="1" value="50">
       </div>
       <div>
-        <label for="rr">R:R (ganancia por cada 1R de riesgo)</label>
-        <input id="rr" type="number" step="0.1" min="0.1" value="2">
-      </div>
-      <div>
-        <label for="acct">Account size ($)</label>
-        <input id="acct" type="number" step="1000" min="1000" value="50000">
-      </div>
-      <div>
-        <label for="dd">Drawdown permitido ($)</label>
-        <input id="dd" type="number" step="500" min="100" value="5000">
-      </div>
-      <div>
-        <label for="tgt">Objetivo ($)</label>
-        <input id="tgt" type="number" step="500" min="100" value="5000">
-      </div>
-      <div>
-        <label for="seed">Seed <span class="hint">— opcional, reproducible</span></label>
-        <input id="seed" type="number" step="1" value="">
+        <label for="rr">R:R (ganancia ÷ pérdida)</label>
+        <input id="rr" type="number" min="0.1" step="0.1" value="2">
+        <div class="hint">Ej: ganas 2R en el TP, pierdes 1R en el stop.</div>
       </div>
     </div>
   </div>
 
   <div class="panel">
-    <h2><span class="n">02</span> Referencia de Kelly</h2>
-    <div class="pill-row" id="fracRow">
-      <button class="pill" data-frac="1">Full</button>
-      <button class="pill active" data-frac="0.5">Half</button>
-      <button class="pill" data-frac="0.25">Quarter</button>
+    <h2><span class="n">02</span> La evaluación</h2>
+    <div class="grid">
+      <div>
+        <label for="account">Account size ($)</label>
+        <input id="account" type="number" min="100" step="100" value="50000">
+      </div>
+      <div>
+        <label for="ddUsd">Drawdown permitido ($)</label>
+        <input id="ddUsd" type="number" min="1" step="50" value="2500">
+        <div class="hint">Lo que la prop firm te deja perder antes de descalificarte. Ej: 5% de 50k = $2,500.</div>
+      </div>
+      <div>
+        <label for="target">Objetivo ($)</label>
+        <input id="target" type="number" min="1" step="50" value="4000">
+        <div class="hint">Lo que necesitas ganar para pasar. Ej: 8% de 50k = $4,000.</div>
+      </div>
+      <div>
+        <label for="nTrades">Trades estimados en la evaluación</label>
+        <input id="nTrades" type="number" min="5" max="500" step="5" value="60">
+        <div class="hint">Cuántos trades esperas ejecutar antes de que cierre el plazo.</div>
+      </div>
     </div>
-    <div class="note" style="margin-top:0">f* = p − (1−p)/R:R — el riesgo que maximiza el crecimiento del balance a largo plazo. En una evaluación de prop firm el Kelly suele superar el riesgo prudente: la evaluación no premia crecer rápido, premia <b>no tocar el drawdown</b>.</div>
   </div>
 
   <div class="cta-row">
-    <button class="run" id="calcBtn">Calcular</button>
-    <button class="run ghost" id="resetBtn">Reiniciar</button>
+    <button class="btn" id="calcBtn">Analizar evaluación</button>
+    <button class="btn btn-ghost" id="resetBtn">Reiniciar</button>
   </div>
-  <div class="err" id="err"></div>
 
-  <div class="results" id="results">
+  <div class="err" id="err" hidden></div>
+
+  <div class="results" id="results" hidden>
     <div class="kpis">
-      <div class="kpi">
-        <div class="lab">Riesgo óptimo (MC)</div>
-        <div class="val acc" id="kOptRisk">—</div>
-        <div class="sub" id="kOptRiskSub">—</div>
-      </div>
-      <div class="kpi">
-        <div class="lab">P(objetivo) al óptimo</div>
-        <div class="val pos" id="kOptP">—</div>
-        <div class="sub">llegar al objetivo antes del drawdown</div>
-      </div>
-      <div class="kpi">
-        <div class="lab">P(drawdown) al óptimo</div>
-        <div class="val neg" id="kOptDD">—</div>
-        <div class="sub" id="kOpen">—</div>
-      </div>
-      <div class="kpi">
-        <div class="lab">Kelly</div>
-        <div class="val amber" id="kKelly">—</div>
-        <div class="sub" id="kKellySub">—</div>
-      </div>
-      <div class="kpi">
-        <div class="lab">P(objetivo) al Kelly</div>
-        <div class="val" id="kKellyP">—</div>
-        <div class="sub">el Kelly suele ser agresivo aquí</div>
-      </div>
-      <div class="kpi">
-        <div class="lab">Trades hasta resolver</div>
-        <div class="val" id="kTrades">—</div>
-        <div class="sub">mediana · al riesgo óptimo</div>
-      </div>
+      <div class="kpi"><div class="k">Kelly óptimo (Half)</div><div class="v gold" id="kKelly">—</div></div>
+      <div class="kpi"><div class="k">Riesgo óptimo Monte-Carlo</div><div class="v" id="kOpt">—</div></div>
+      <div class="kpi"><div class="k">Prob. de lograr el objetivo</div><div class="v ok" id="kPSucc">—</div></div>
+      <div class="kpi"><div class="k">Prob. de descalificación</div><div class="v risk" id="kPRuin">—</div></div>
+      <div class="kpi"><div class="k">R de drawdown disponible</div><div class="v" id="kRd">—</div></div>
+      <div class="kpi"><div class="k">Expectancy por trade</div><div class="v" id="kExp">—</div></div>
     </div>
 
-    <div class="canvas-box">
-      <div class="cap">Probabilidad de lograr el objetivo vs riesgo por trade</div>
-      <canvas id="curve" width="732" height="300"></canvas>
-      <div class="note" style="margin-top:8px">cada punto = P(objetivo) de 2,000 simulaciones · punto lleno = óptimo MC · línea punteada = Kelly (fracción seleccionada)</div>
-    </div>
-
-    <div class="canvas-box">
-      <div class="cap">Caminos del balance al riesgo óptimo</div>
-      <canvas id="spag" width="732" height="300"></canvas>
-      <div class="note" style="margin-top:8px">cada línea = una simulación · gruesa = mediana · punteadas = objetivo y drawdown</div>
+    <div class="chart-box">
+      <div class="chart-title">Probabilidad de pasar la evaluación según el riesgo por trade</div>
+      <canvas id="chart" width="800" height="300"></canvas>
     </div>
 
     <div class="note">
-      Monte-Carlo: 2,000 caminos por riesgo · riesgo compuesto sobre el balance actual · éxito = objetivo antes del drawdown · sin resolver = ni objetivo ni drawdown en 200 trades. Simulación sobre los supuestos que defines tú. No es predicción ni consejo financiero — el resultado depende de tus inputs.
+      <b>Cómo leer esto:</b> el <b>Kelly</b> maximiza el crecimiento, pero en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. El óptimo Monte-Carlo es el riesgo que equilibra crecer rápido contra no ser descalificado: con riesgo muy bajo no llegas al objetivo a tiempo; con riesgo alto, una racha mala te elimina. La línea dorada en la gráfica es el Half-Kelly: suele estar cerca del óptimo real. La probabilidad de éxito se calcula con 5,000 caminos simulados por riesgo.
     </div>
   </div>
 
 </div>
+
 <footer>
   <div class="foot-inner">
-    <span>The Red Queen · Calculadoras de trading</span>
-    <a class="back" href="../calculadoras/">Calculadoras</a>
+    <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html" style="color:var(--muted)">Términos</a></span>
+    <a class="back" href="index.html">Volver a las calculadoras</a>
   </div>
 </footer>
 
 <script>
-(function () {
-  "use strict";
-  var $ = function (id) { return document.getElementById(id); };
-  var resultsEl = $("results"), errEl = $("err");
-  var curveCanvas = $("curve"), spagCanvas = $("spag");
+const $ = id => document.getElementById(id);
 
-  // presets de prop firms
-  $("presetRow").addEventListener("click", function (e) {
-    var b = e.target.closest(".pill");
-    if (!b || !b.dataset.acct) return;
-    $("presetRow").querySelectorAll(".pill").forEach(function (p) { p.classList.remove("active"); });
-    b.classList.add("active");
-    $("acct").value = b.dataset.acct;
-    $("dd").value = b.dataset.dd;
-    $("tgt").value = b.dataset.tgt;
-  });
+const EDGE_PRESETS = {
+  sobrio:     { wr: 55, rr: 1.5 },
+  balanceado: { wr: 50, rr: 2 },
+  afilado:    { wr: 45, rr: 2.5 },
+};
 
-  // fracción de Kelly
-  var frac = 0.5;
-  $("fracRow").addEventListener("click", function (e) {
-    var b = e.target.closest(".pill");
-    if (!b) return;
-    $("fracRow").querySelectorAll(".pill").forEach(function (p) { p.classList.remove("active"); });
-    b.classList.add("active");
-    frac = parseFloat(b.dataset.frac);
-  });
-
-  // PRNG reproducible (mulberry32)
-  function mulberry32(a) {
-    return function () {
-      a |= 0; a = a + 0x6D2B79F5 | 0;
-      var t = Math.imul(a ^ a >>> 15, 1 | a);
-      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    };
-  }
-
-  // simulador: P(objetivo) para un riesgo dado
-  function simulate(p, b, start, dd, tgt, risk, nSims, maxTrades, rng) {
-    var ok = 0, blow = 0, open_ = 0;
-    var med = 0, lastTrades = [];
-    var highs = [];
-    var ddAbs = start - dd, tgtAbs = start + tgt;
-    var wMul = 1 + risk * b, lMul = 1 - risk;
-    for (var s = 0; s < nSims; s++) {
-      var bal = start, trades = 0, done = false;
-      while (trades < maxTrades && !done) {
-        trades++;
-        bal *= (rng() < p) ? wMul : lMul;
-        if (bal >= tgtAbs) { ok++; done = true; }
-        else if (bal <= ddAbs) { blow++; done = true; }
-      }
-      if (!done) open_++;
-      if (s < 20) lastTrades.push(trades);
-    }
-    return { pOk: ok / nSims, pDD: blow / nSims, pOpen: open_ / nSims, lastTrades: lastTrades };
-  }
-
-  $("calcBtn").addEventListener("click", function () {
-    errEl.style.display = "none";
-    var p = parseFloat($("wr").value) / 100;
-    var b = parseFloat($("rr").value);
-    var start = parseFloat($("acct").value);
-    var dd = parseFloat($("dd").value);
-    var tgt = parseFloat($("tgt").value);
-    var seedVal = $("seed").value === "" ? null : parseInt($("seed").value, 10);
-    if (isNaN(p) || p <= 0 || p >= 1) { errEl.textContent = "Win rate debe estar entre 1 y 99%."; errEl.style.display = "block"; return; }
-    if (isNaN(b) || b <= 0) { errEl.textContent = "R:R debe ser mayor que 0."; errEl.style.display = "block"; return; }
-    if (isNaN(start) || start <= 0 || isNaN(dd) || dd <= 0 || isNaN(tgt) || tgt <= 0) { errEl.textContent = "Account size, drawdown y objetivo deben ser mayores que 0."; errEl.style.display = "block"; return; }
-
-    // Kelly
-    var kellyFull = Math.max(p - (1 - p) / b, 0);
-    var kelly = kellyFull * frac;
-
-    // barrido de riesgos (los valores que la UI puede sugerir)
-    var risks = [0.25, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 8];
-    var N_SIMS = 2000, MAX_TRADES = 200;
-    var rng = seedVal !== null ? mulberry32(seedVal) : Math.random;
-    var best = null, curve = [];
-    for (var i = 0; i < risks.length; i++) {
-      var r = risks[i];
-      var res = simulate(p, b, start, dd, tgt, r / 100, N_SIMS, MAX_TRADES, rng);
-      curve.push({ r: r, pOk: res.pOk });
-      if (!best || res.pOk > best.pOk) best = { r: r, res: res };
-    }
-
-    // KPIs
-    var optRiskPct = best.r, optRiskUsd = start * best.r / 100;
-    $("kOptRisk").textContent = optRiskPct.toFixed(2) + "%";
-    $("kOptRiskSub").textContent = "$" + Math.round(optRiskUsd).toLocaleString("en-US");
-    $("kOptP").textContent = (best.res.pOk * 100).toFixed(0) + "%";
-    $("kOptDD").textContent = (best.res.pDD * 100).toFixed(0) + "%";
-    $("kOpen").textContent = "sin resolver " + (best.res.pOpen * 100).toFixed(0) + "%";
-    if (kelly > 0) {
-      $("kKelly").textContent = (kelly * 100).toFixed(2) + "%";
-      $("kKellySub").textContent = "$" + Math.round(start * kelly).toLocaleString("en-US") + " · Full " + (kellyFull * 100).toFixed(2) + "%";
-      var kRes = simulate(p, b, start, dd, tgt, kelly, N_SIMS, MAX_TRADES, rng);
-      $("kKellyP").textContent = (kRes.pOk * 100).toFixed(0) + "%";
-      $("kKellyP").className = "val " + (kRes.pOk >= best.res.pOk ? "pos" : kRes.pOk >= 0.5 ? "acc" : "neg");
-    } else {
-      $("kKelly").textContent = "0%";
-      $("kKellySub").textContent = "sin ventaja (E[R] ≤ 0)";
-      $("kKellyP").textContent = "—";
-      $("kKellyP").className = "val";
-    }
-    var medT = best.res.lastTrades.slice().sort(function (a, b2) { return a - b2; })[Math.floor(best.res.lastTrades.length / 2)];
-    $("kTrades").textContent = medT || "—";
-
-    drawCurve(curve, optRiskPct, kelly * 100, best);
-    drawSpaghetti(p, b, start, dd, tgt, optRiskPct / 100, rng);
-    resultsEl.style.display = "block";
-    resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
-
-  $("resetBtn").addEventListener("click", function () {
-    $("wr").value = 40; $("rr").value = 2; $("acct").value = 50000;
-    $("dd").value = 5000; $("tgt").value = 5000; $("seed").value = "";
-    resultsEl.style.display = "none";
-    errEl.style.display = "none";
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  function setupCanvas(cv) {
-    var dpr = window.devicePixelRatio || 1;
-    var cssW = cv.clientWidth || 732;
-    var cssH = parseInt(cv.getAttribute("height"), 10);
-    cv.width = Math.round(cssW * dpr); cv.height = Math.round(cssH * dpr);
-    var ctx = cv.getContext("2d");
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    return { ctx: ctx, w: cssW, h: cssH };
-  }
-
-  function drawCurve(curve, optR, kellyPct, best) {
-    var c = setupCanvas(curveCanvas), ctx = c.ctx, w = c.w, h = c.h;
-    ctx.clearRect(0, 0, w, h);
-    var padL = 44, padR = 14, padT = 14, padB = 26;
-    var x0 = padL, x1 = w - padR, y0 = padT, y1 = h - padB;
-    var maxR = 8, maxP = 100;
-    function X(r) { return x0 + (r / maxR) * (x1 - x0); }
-    function Y(pp) { return y1 - (pp / maxP) * (y1 - y0); }
-    // grid
-    ctx.strokeStyle = "rgba(37,43,82,.6)"; ctx.lineWidth = 1;
-    for (var g = 0; g <= 4; g++) {
-      var gy = y0 + (g / 4) * (y1 - y0);
-      ctx.beginPath(); ctx.moveTo(x0, gy); ctx.lineTo(x1, gy); ctx.stroke();
-      ctx.fillStyle = "#5b6288"; ctx.font = "10px 'JetBrains Mono', monospace"; ctx.textAlign = "right";
-      ctx.fillText((maxP - g * 25) + "%", x0 - 6, gy + 3);
-    }
-    // Kelly vertical
-    if (kellyPct > 0 && kellyPct <= maxR) {
-      ctx.setLineDash([4, 4]); ctx.strokeStyle = "rgba(251,191,36,.8)"; ctx.lineWidth = 1.4;
-      ctx.beginPath(); ctx.moveTo(X(kellyPct), y0); ctx.lineTo(X(kellyPct), y1); ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = "#fbbf24"; ctx.textAlign = "left";
-      ctx.fillText("Kelly", X(kellyPct) + 4, y0 + 10);
-    }
-    // línea P vs riesgo
-    ctx.strokeStyle = "#34d399"; ctx.lineWidth = 2; ctx.beginPath();
-    curve.forEach(function (pt, i) { var px = X(pt.r), py = Y(pt.pOk * 100); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
-    ctx.stroke();
-    // puntos
-    curve.forEach(function (pt) {
-      ctx.fillStyle = "#34d399";
-      ctx.beginPath(); ctx.arc(X(pt.r), Y(pt.pOk * 100), 3, 0, Math.PI * 2); ctx.fill();
+function setPills(rowId, attr, handler) {
+  $(rowId).querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      $(rowId).querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      handler(p.dataset[attr]);
     });
-    // óptimo
-    ctx.fillStyle = "#ff3b5c";
-    ctx.beginPath(); ctx.arc(X(optR), Y(best.res.pOk * 100), 5.5, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.2; ctx.stroke();
-    // etiqueta del óptimo
-    ctx.fillStyle = "#ff3b5c"; ctx.font = "11px 'JetBrains Mono', monospace"; ctx.textAlign = "left";
-    ctx.fillText(optR.toFixed(2) + "%", X(optR) + 8, Y(best.res.pOk * 100) - 6);
-    // eje X
-    ctx.fillStyle = "#5b6288"; ctx.font = "10px 'JetBrains Mono', monospace"; ctx.textAlign = "center";
-    for (var r = 0; r <= maxR; r += 2) ctx.fillText(r + "%", X(r), y1 + 16);
-    ctx.textAlign = "left"; ctx.fillText("riesgo por trade", x0, y1 + 28);
-  }
-
-  function drawSpaghetti(p, b, start, dd, tgt, risk, rng) {
-    var c = setupCanvas(spagCanvas), ctx = c.ctx, w = c.w, h = c.h;
-    ctx.clearRect(0, 0, w, h);
-    var padL = 52, padR = 14, padT = 14, padB = 26;
-    var x0 = padL, x1 = w - padR, y0 = padT, y1 = h - padB;
-    var ddAbs = start - dd, tgtAbs = start + tgt;
-    var N = 20, MAX = 200;
-    var wMul = 1 + risk * b, lMul = 1 - risk;
-    var min = ddAbs, max = tgtAbs;
-    var paths = [];
-    for (var s = 0; s < N; s++) {
-      var bal = start, path = [bal];
-      for (var t = 0; t < MAX; t++) {
-        bal *= (rng() < p) ? wMul : lMul;
-        path.push(bal);
-        if (bal >= tgtAbs || bal <= ddAbs) break;
-      }
-      paths.push(path);
-    }
-    function X(i) { return x0 + (i / MAX) * (x1 - x0); }
-    function Y(v) { return y1 - ((v - ddAbs) / (tgtAbs - ddAbs)) * (y1 - y0); }
-    // líneas objetivo / DD
-    ctx.setLineDash([4, 4]);
-    ctx.strokeStyle = "rgba(52,211,153,.75)"; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.moveTo(x0, Y(tgtAbs)); ctx.lineTo(x1, Y(tgtAbs)); ctx.stroke();
-    ctx.strokeStyle = "rgba(255,92,122,.75)";
-    ctx.beginPath(); ctx.moveTo(x0, Y(ddAbs)); ctx.lineTo(x1, Y(ddAbs)); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = "#34d399"; ctx.font = "10px 'JetBrains Mono', monospace"; ctx.textAlign = "left";
-    ctx.fillText("objetivo", x1 - 60, Y(tgtAbs) - 4);
-    ctx.fillStyle = "#ff5c7a"; ctx.fillText("drawdown", x1 - 64, Y(ddAbs) + 12);
-    // caminos
-    paths.forEach(function (path, si) {
-      ctx.strokeStyle = "rgba(52,211,153," + Math.max(0.12, 0.5 - si * 0.014) + ")";
-      ctx.lineWidth = 1; ctx.beginPath();
-      path.forEach(function (v, i) { var px = X(i), py = Y(v); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
-      ctx.stroke();
-    });
-    // balance inicial
-    ctx.setLineDash([2, 3]); ctx.strokeStyle = "rgba(139,146,184,.6)";
-    ctx.beginPath(); ctx.moveTo(x0, Y(start)); ctx.lineTo(x1, Y(start)); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = "#8b92b8"; ctx.textAlign = "left";
-    ctx.fillText("$" + Math.round(start).toLocaleString("en-US"), x1 - 78, Y(start) - 4);
-  }
-
-  var rT;
-  window.addEventListener("resize", function () {
-    clearTimeout(rT);
-    rT = setTimeout(function () {
-      if (resultsEl.style.display !== "none") $("calcBtn").click();
-    }, 200);
   });
-})();
+}
+setPills('edgePresets', 'preset', v => {
+  $('winRate').value = EDGE_PRESETS[v].wr;
+  $('rr').value = EDGE_PRESETS[v].rr;
+  calc();
+});
+
+// RNG reproducible (mulberry32)
+function rng(seed) {
+  let a = seed >>> 0;
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function kelly(p, rr) {
+  const q = 1 - p;
+  return Math.max(0, (p * rr - q) / rr);
+}
+
+// Simula la evaluación: P(éxito), P(descalificación)
+function simulate(p, rr, riskPct, account, dd, target, nTrades, nSims, seed) {
+  const rand = rng(seed);
+  const riskUsd = account * riskPct / 100;
+  const floor = account - dd;
+  const ceil = account + target;
+  let success = 0, ruin = 0;
+  for (let s = 0; s < nSims; s++) {
+    let bal = account;
+    let t = 0;
+    while (t < nTrades) {
+      if (rand() < p) bal += riskUsd * rr; else bal -= riskUsd;
+      t++;
+      if (bal >= ceil) { success++; break; }
+      if (bal <= floor) { ruin++; break; }
+    }
+  }
+  return { pSucc: success / nSims, pRuin: ruin / nSims };
+}
+
+const fmt = v => v.toLocaleString('en-US', { maximumFractionDigits: 2 });
+const fmtPct = v => (v * 100).toFixed(1) + '%';
+
+function drawChart(points, kellyHalf, optIdx) {
+  const cv = $('chart');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = cv.getBoundingClientRect();
+  const cssW = rect.width || cv.clientWidth || 800;
+  cv.width = cssW * dpr;
+  cv.height = 300 * dpr;
+  const ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = 300;
+  const padL = 44, padR = 16, padT = 18, padB = 30;
+  const iw = W - padL - padR, ih = H - padT - padB;
+
+  const maxRisk = points[points.length - 1].risk;
+  const maxP = Math.max(...points.map(d => d.p));
+  const X = r => padL + (r / maxRisk) * iw;
+  const Y = p => padT + ih - (p / maxP) * ih;
+
+  ctx.clearRect(0, 0, W, H);
+  // ejes
+  ctx.strokeStyle = '#232845'; ctx.lineWidth = 1; ctx.beginPath();
+  ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + ih); ctx.lineTo(padL + iw, padT + ih); ctx.stroke();
+  // grid horizontal
+  ctx.fillStyle = '#8a90b3'; ctx.font = '10px JetBrains Mono, monospace';
+  for (let i = 0; i <= 4; i++) {
+    const p = maxP * i / 4;
+    const y = Y(p);
+    ctx.strokeStyle = 'rgba(35,40,69,.5)'; ctx.beginPath();
+    ctx.moveTo(padL, y); ctx.lineTo(padL + iw, y); ctx.stroke();
+    ctx.fillText((p * 100).toFixed(0) + '%', 6, y + 3);
+  }
+  // labels de riesgo
+  [0.25, 0.5, 1, 2, 3, 5].forEach(r => {
+    if (r <= maxRisk) {
+      ctx.fillStyle = '#8a90b3'; ctx.fillText(r + '%', X(r) - 8, padT + ih + 18);
+    }
+  });
+
+  // zona del kelly half
+  if (kellyHalf > 0 && kellyHalf <= maxRisk) {
+    ctx.fillStyle = 'rgba(245,197,24,.12)';
+    ctx.fillRect(X(kellyHalf), padT, Math.max(0, X(Math.min(kellyHalf * 2, maxRisk)) - X(kellyHalf)), ih);
+    ctx.strokeStyle = 'rgba(245,197,24,.5)'; ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(X(kellyHalf), padT); ctx.lineTo(X(kellyHalf), padT + ih); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(245,197,24,.9)'; ctx.font = '10px JetBrains Mono, monospace';
+    ctx.fillText('½ Kelly', X(kellyHalf) - 20, padT - 4);
+  }
+
+  // curva de P(éxito)
+  ctx.strokeStyle = '#ff3b5c'; ctx.lineWidth = 2; ctx.shadowColor = 'rgba(255,59,92,.5)'; ctx.shadowBlur = 10;
+  ctx.beginPath();
+  points.forEach((d, i) => {
+    const x = X(d.risk), y = Y(d.p);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // puntos + óptimo
+  points.forEach((d, i) => {
+    const x = X(d.risk), y = Y(d.p);
+    ctx.fillStyle = i === optIdx ? '#fff' : '#ff5c78';
+    ctx.beginPath(); ctx.arc(x, y, i === optIdx ? 5 : 3.5, 0, Math.PI * 2); ctx.fill();
+  });
+  // etiqueta del óptimo
+  const o = points[optIdx];
+  ctx.fillStyle = '#fff'; ctx.font = '11px JetBrains Mono, monospace';
+  ctx.fillText('óptimo ' + o.risk + '% → ' + (o.p * 100).toFixed(1) + '%', Math.min(X(o.risk) + 8, padL + iw - 150), Math.max(Y(o.p) - 8, 12));
+}
+
+function calc() {
+  const err = $('err');
+  err.hidden = true;
+  const p = parseFloat($('winRate').value) / 100;
+  const rr = parseFloat($('rr').value);
+  const account = parseFloat($('account').value);
+  const dd = parseFloat($('ddUsd').value);
+  const target = parseFloat($('target').value);
+  const nTrades = parseInt($('nTrades').value, 10);
+
+  if (![p, rr, account, dd, target, nTrades].every(Number.isFinite) ||
+      p <= 0 || p >= 1 || rr <= 0 || account <= 0 || dd <= 0 || target <= 0 || nTrades < 5) {
+    err.textContent = 'Completa todos los campos con valores válidos (win rate entre 1 y 99%).';
+    err.hidden = false;
+    return;
+  }
+
+  const kFull = kelly(p, rr);
+  const kHalf = kFull / 2;
+  const riskKellyUsd = account * kHalf / 100;
+
+  // expectancy por trade (en $ por 1% de riesgo)
+  const expPct = p * rr - (1 - p); // en R por trade
+  const kExp = account * 0.01 * expPct;
+
+  // barrido de riesgos
+  const risks = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5];
+  const N = 5000;
+  const points = risks.map(r => {
+    const sim = simulate(p, rr, r, account, dd, target, nTrades, N, 1234 + Math.round(r * 100));
+    return { risk: r, p: sim.pSucc, ruin: sim.pRuin };
+  });
+
+  // óptimo: el riesgo con mayor P(éxito)
+  let optIdx = 0;
+  points.forEach((d, i) => { if (d.p > points[optIdx].p) optIdx = i; });
+  const opt = points[optIdx];
+  const optUsd = account * opt.risk / 100;
+
+  // R de drawdown con el óptimo
+  const rd = dd / optUsd;
+
+  $('kKelly').innerHTML = kHalf.toFixed(2) + '% <span class="sub">$' + fmt(riskKellyUsd) + ' por trade</span>';
+  $('kOpt').innerHTML = opt.risk + '% <span class="sub">$' + fmt(optUsd) + ' por trade</span>';
+  $('kPSucc').innerHTML = fmtPct(opt.p) + ' <span class="sub">con el riesgo óptimo</span>';
+  $('kPRuin').innerHTML = fmtPct(opt.ruin) + ' <span class="sub">con el riesgo óptimo</span>';
+  $('kRd').innerHTML = rd.toFixed(1) + ' <span class="sub">pérdidas seguidas que aguantas</span>';
+  $('kExp').innerHTML = '$' + fmt(kExp) + ' <span class="sub">por 1% de riesgo</span>';
+
+  drawChart(points, kHalf, optIdx);
+  $('results').hidden = false;
+}
+
+$('calcBtn').addEventListener('click', calc);
+$('resetBtn').addEventListener('click', () => {
+  $('winRate').value = 50; $('rr').value = 2;
+  $('account').value = 50000; $('ddUsd').value = 2500; $('target').value = 4000; $('nTrades').value = 60;
+  document.querySelector('#edgePresets .pill[data-preset="balanceado"]').classList.add('active');
+  document.querySelector('#edgePresets .pill[data-preset="sobrio"]').classList.remove('active');
+  document.querySelector('#edgePresets .pill[data-preset="afilado"]').classList.remove('active');
+  $('results').hidden = true; $('err').hidden = true;
+});
+['winRate', 'rr', 'account', 'ddUsd', 'target', 'nTrades'].forEach(id => $(id).addEventListener('input', calc));
+
+calc();
 </script>
 </body>
 </html>
