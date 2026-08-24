@@ -48,6 +48,8 @@
 ### 7. Anotaciones / pendientes
 ```
 
+```
+
 ---
 
 ## INSTRUCCIONES DE CADENCIA (recordatorio)
