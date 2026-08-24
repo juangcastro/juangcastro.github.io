@@ -229,10 +229,9 @@
         <input id="winRate" type="number" min="1" max="99" step="1" value="50">
       </div>
       <div>
-        <label for="rr">R:R (ganancia ÷ pérdida)</label>
+        <label for="rr">R:R</label>
         <input id="rr" type="number" min="0.1" step="0.1" value="2">
-        <div class="hint">Ej: ganas 2R en el TP, pierdes 1R en el stop.</div>
-      </div>
+              </div>
     </div>
   </div>
 
@@ -244,7 +243,7 @@
         <input id="account" type="number" min="100" step="100" value="50000">
       </div>
       <div>
-        <label for="ddUsd">Drawdown permitido ($)</label>
+        <label for="ddUsd">Drawdown ($)</label>
         <input id="ddUsd" type="number" min="1" step="50" value="2000">
         <div class="hint">Lo que la prop firm te deja perder antes de descalificarte. Ej: 4% de 50k = $2,000.</div>
       </div>
@@ -254,8 +253,7 @@
           <button class="pill active" data-ddtype="trailing">Trailing (pico)</button>
           <button class="pill" data-ddtype="fixed">Fijo (inicial)</button>
         </div>
-        <div class="hint">Trailing: el nivel sube con tu balance máximo (high-water mark) — el estándar de FTMO/Apex/E8. Fijo: se calcula desde el balance inicial.</div>
-      </div>
+              </div>
       <div>
         <label for="target">Objetivo ($)</label>
         <input id="target" type="number" min="1" step="50" value="3000">
@@ -264,13 +262,11 @@
       <div>
         <label for="tradesPerWeek">Trades por semana — opcional</label>
         <input id="tradesPerWeek" type="number" min="1" max="100" step="1" value="5">
-        <div class="hint">Para estimar cuántas semanas tomaría pasar. Si no lo sabes, déjalo — el análisis no lo necesita.</div>
-      </div>
+              </div>
       <div>
         <label for="consistency">Consistencia — % máx. del profit en un día</label>
         <input id="consistency" type="number" min="0" max="100" step="5" value="50">
-        <div class="hint">La regla de la prop firm (FTMO: 50% en 2-step, 30% en 1-step). Si un trade aporta más de ese % del profit total al pasar, el resultado no cuenta. 0 = sin regla.</div>
-      </div>
+              </div>
     </div>
   </div>
 
