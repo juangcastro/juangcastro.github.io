@@ -241,6 +241,14 @@
         <div class="hint">Lo que la prop firm te deja perder antes de descalificarte. Ej: 4% de 50k = $2,000.</div>
       </div>
       <div>
+        <label>Tipo de drawdown</label>
+        <div class="pill-row" id="ddTypeRow" style="margin-bottom:0">
+          <button class="pill active" data-ddtype="trailing">Trailing (pico)</button>
+          <button class="pill" data-ddtype="fixed">Fijo (inicial)</button>
+        </div>
+        <div class="hint">Trailing: el nivel sube con tu balance máximo (high-water mark) — el estándar de FTMO/Apex/E8. Fijo: se calcula desde el balance inicial.</div>
+      </div>
+      <div>
         <label for="target">Objetivo ($)</label>
         <input id="target" type="number" min="1" step="50" value="3000">
         <div class="hint">Lo que necesitas ganar para pasar. Ej: 6% de 50k = $3,000.</div>
@@ -281,7 +289,7 @@
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. Sin límite de trades, cualquier riesgo funciona si esperas lo suficiente (el edge positivo eventualmente llega al objetivo) — por eso el <b>Kelly prop-ajustado</b> es el <b>mayor riesgo que conserva ≥95% de probabilidad de pasar</b>: el punto más rápido sin sacrificar seguridad. La <b>regla de consistencia</b> se modela así: si un solo trade aporta más de ese % del profit total al cruzar el objetivo, el resultado se invalida (aproximación del máximo diario de la prop firm) — con 0 no hay regla. Los "trades para pasar" son la mediana de los caminos exitosos sin violar consistencia; divídelos entre tus trades por semana.
+      <b>Cómo leer esto:</b> en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. Sin límite de trades, cualquier riesgo funciona si esperas lo suficiente (el edge positivo eventualmente llega al objetivo) — por eso el <b>Kelly prop-ajustado</b> es el <b>mayor riesgo que conserva ≥95% de probabilidad de pasar</b>: el punto más rápido sin sacrificar seguridad. Con <b>trailing drawdown</b> (el estándar: FTMO, Apex, E8), el piso sube con tu balance máximo: cada ganancia nueva eleva el nivel de descalificación, así que una racha mala después de ganar es más peligrosa que al inicio — la simulación lo respeta. Con <b>fijo</b>, el piso es el balance inicial menos el drawdown. La <b>regla de consistencia</b> invalida un pase si un solo trade aportó más de ese % del profit total (con 0 no hay regla). Los "trades para pasar" son la mediana de los caminos exitosos; divídelos entre tus trades por semana.
     </div>
   </div>
 
@@ -310,25 +318,40 @@ function rng(seed) {
   };
 }
 
+function setPills(rowId, attr, handler) {
+  $(rowId).querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      $(rowId).querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      handler(p.dataset[attr]);
+    });
+  });
+}
+setPills('ddTypeRow', 'ddtype', () => calc());
+
 function kelly(p, rr) {
   const q = 1 - p;
   return Math.max(0, (p * rr - q) / rr);
 }
 
 // Simula la evaluación sin límite de trades: cada camino corre hasta el objetivo o la descalificación.
+// El drawdown puede ser:
+//   trailing (ddType = 'trailing'): el piso se calcula desde el balance MÁXIMO alcanzado
+//     (high-water mark) — sube con tus ganancias, el estándar de FTMO/Apex/E8.
+//   fixed    (ddType = 'fixed'):    el piso es fijo desde el balance inicial.
 // La regla de consistencia (consistency > 0) invalida un éxito si un solo trade aportó más de ese
 // % del profit total al llegar al objetivo (aproximación del máximo diario de la prop firm).
-// Devuelve P(éxito limpio), P(ruina), P(violación de consistencia) y la mediana de trades exitosos.
-function simulate(p, rr, riskPct, account, dd, target, consistency, nSims, seed) {
+function simulate(p, rr, riskPct, account, dd, target, consistency, ddType, nSims, seed) {
   const rand = rng(seed);
   const riskUsd = account * riskPct / 100;
-  const floor = account - dd;
+  const fixedFloor = account - dd;
   const ceil = account + target;
   const MAX_T = 5000; // tope de seguridad interno (proceso con drift: resuelve mucho antes)
   let success = 0, ruin = 0, viol = 0;
   const succTrades = [];
   for (let s = 0; s < nSims; s++) {
     let bal = account;
+    let peak = account; // high-water mark: con trailing, el piso sube con el pico
     let maxGain = 0;
     let t = 0;
     while (t < MAX_T) {
@@ -340,12 +363,14 @@ function simulate(p, rr, riskPct, account, dd, target, consistency, nSims, seed)
         bal -= riskUsd;
       }
       t++;
+      if (bal > peak) peak = bal;
       if (bal >= ceil) {
         const profit = bal - account;
         if (consistency > 0 && maxGain > profit * consistency / 100) { viol++; }
         else { success++; succTrades.push(t); }
         break;
       }
+      const floor = ddType === 'trailing' ? peak - dd : fixedFloor;
       if (bal <= floor) { ruin++; break; }
     }
   }
@@ -498,6 +523,7 @@ function calc() {
   const target = parseFloat($('target').value);
   const tradesPerWeek = parseFloat($('tradesPerWeek').value);
   const consistency = parseFloat($('consistency').value) || 0;
+  const ddType = document.querySelector('#ddTypeRow .pill.active').dataset.ddtype;
 
   if (![p, rr, account, dd, target].every(Number.isFinite) ||
       p <= 0 || p >= 1 || rr <= 0 || account <= 0 || dd <= 0 || target <= 0) {
@@ -524,7 +550,7 @@ function calc() {
   const N = 5000;
   const coarse = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5];
   const coarsePts = coarse.map(r => {
-    const sim = simulate(p, rr, r, account, dd, target, consistency, N, 1234 + Math.round(r * 100));
+    const sim = simulate(p, rr, r, account, dd, target, consistency, ddType, N, 1234 + Math.round(r * 100));
     return { risk: r, p: sim.pSucc, ruin: sim.pRuin, viol: sim.pViol, medianT: sim.medianT };
   });
 
@@ -538,7 +564,7 @@ function calc() {
   // pasada fina alrededor del candidato (paso 0.1%)
   const fine = [];
   for (let r = Math.max(0.1, cand.risk - 0.4); r <= cand.risk + 0.5 + 1e-9; r += 0.1) {
-    const sim = simulate(p, rr, r, account, dd, target, consistency, N, 4321 + Math.round(r * 100));
+    const sim = simulate(p, rr, r, account, dd, target, consistency, ddType, N, 4321 + Math.round(r * 100));
     fine.push({ risk: r, p: sim.pSucc, ruin: sim.pRuin, viol: sim.pViol, medianT: sim.medianT });
   }
 
@@ -571,7 +597,7 @@ function calc() {
     timeHtml = '— <span class="sub">sin caminos exitosos</span>';
   }
 
-  $('kKelly').innerHTML = opt.risk + '% <span class="sub">$' + fmt(optUsd) + ' por trade</span>';
+  $('kKelly').innerHTML = opt.risk + '% <span class="sub">$' + fmt(optUsd) + ' por trade · dd ' + (ddType === 'trailing' ? 'trailing' : 'fijo') + '</span>';
   $('kPSucc').innerHTML = fmtPct(opt.p) + ' <span class="sub">sin límite de trades</span>';
   $('kFail').innerHTML = fmtPct(opt.ruin + opt.viol) + ' <span class="sub">descalificación ' + fmtPct(opt.ruin) + (consistency > 0 ? ' · consistencia ' + fmtPct(opt.viol) : '') + '</span>';
   $('kTime').innerHTML = timeHtml;
