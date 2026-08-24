@@ -143,6 +143,17 @@
   }
   .btn-ghost:hover { background: transparent; border-color: var(--border-2); color: var(--text); }
   .results { margin-top: 26px; }
+  .res-head {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--text); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .res-head::before {
+    content: ''; width: 8px; height: 8px; border-radius: 2px;
+    background: var(--accent); box-shadow: 0 0 10px var(--glow-accent);
+  }
+  .res-head .red { color: var(--accent); }
   .results[hidden] { display: none; }
   .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
@@ -241,8 +252,8 @@
       <div>
         <label>Tipo de drawdown</label>
         <div class="pill-row" id="ddTypeRow" style="margin-bottom:0">
-          <button class="pill active" data-ddtype="trailing">Trailing (pico)</button>
-          <button class="pill" data-ddtype="fixed">Fijo (inicial)</button>
+          <button class="pill active" data-ddtype="trailing">Trailing</button>
+          <button class="pill" data-ddtype="fixed">Fijo</button>
         </div>
               </div>
       <div>
@@ -268,8 +279,9 @@
   <div class="err" id="err" hidden></div>
 
   <div class="results" id="results" hidden>
+    <div class="res-head">Kelly <span class="red">ideal</span></div>
     <div class="kpis">
-      <div class="kpi"><div class="k">Kelly prop-ajustado</div><div class="v gold" id="kKelly">—</div></div>
+      <div class="kpi"><div class="k">Riesgo por trade</div><div class="v gold" id="kKelly">—</div></div>
       <div class="kpi"><div class="k">Prob. de lograr el objetivo</div><div class="v ok" id="kPSucc">—</div></div>
       <div class="kpi"><div class="k">Prob. de fallar</div><div class="v risk" id="kFail">—</div></div>
       <div class="kpi"><div class="k">Trades para pasar</div><div class="v" id="kTime">—</div></div>
@@ -283,9 +295,21 @@
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. Sin límite de trades, cualquier riesgo funciona si esperas lo suficiente (el edge positivo eventualmente llega al objetivo) — por eso el <b>Kelly prop-ajustado</b> es el <b>mayor riesgo que conserva ≥95% de probabilidad de pasar</b>: el punto más rápido sin sacrificar seguridad. Con <b>trailing drawdown</b> (el estándar: FTMO, Apex, E8), el piso sube con tu balance máximo: cada ganancia nueva eleva el nivel de descalificación, así que una racha mala después de ganar es más peligrosa que al inicio — la simulación lo respeta. Con <b>fijo</b>, el piso es el balance inicial menos el drawdown. La <b>regla de consistencia</b> invalida un pase si un solo trade aportó más de ese % del profit total (con 0 no hay regla). Los "trades para pasar" son la mediana de los caminos exitosos; divídelos entre tus trades por semana.
+      <b>Cómo leer esto:</b> en una prop firm tu restricción real no es el crecimiento — es el <b>drawdown</b>. Sin límite de trades, cualquier riesgo funciona si esperas lo suficiente (el edge positivo eventualmente llega al objetivo) — por eso el <b>Kelly ideal</b> es el <b>mayor riesgo que conserva ≥95% de probabilidad de pasar</b>: el punto más rápido sin sacrificar seguridad. El <b>Kelly agresivo</b> baja el estándar a ≥80%: más riesgo y más velocidad, asumiendo más probabilidad de fallar. Con <b>trailing drawdown</b> (el estándar: FTMO, Apex, E8), el piso sube con tu balance máximo: cada ganancia nueva eleva el nivel de descalificación, así que una racha mala después de ganar es más peligrosa que al inicio — la simulación lo respeta. Con <b>fijo</b>, el piso es el balance inicial menos el drawdown. La <b>regla de consistencia</b> invalida un pase si un solo trade aportó más de ese % del profit total (con 0 no hay regla). Los "trades para pasar" son la mediana de los caminos exitosos; divídelos entre tus trades por semana.
     </div>
   </div>
+
+    <div class="results" id="resultsAgg" hidden>
+      <div class="res-head">Kelly <span class="red">agresivo</span></div>
+      <div class="kpis">
+        <div class="kpi"><div class="k">Riesgo por trade</div><div class="v gold" id="kKellyA">—</div></div>
+        <div class="kpi"><div class="k">Prob. de lograr el objetivo</div><div class="v ok" id="kPSuccA">—</div></div>
+        <div class="kpi"><div class="k">Prob. de fallar</div><div class="v risk" id="kFailA">—</div></div>
+        <div class="kpi"><div class="k">Trades para pasar</div><div class="v" id="kTimeA">—</div></div>
+        <div class="kpi"><div class="k">R de drawdown disponible</div><div class="v" id="kRdA">—</div></div>
+        <div class="kpi"><div class="k">Expectancy por trade</div><div class="v" id="kExpA">—</div></div>
+      </div>
+    </div>
 
 </div>
 
@@ -376,7 +400,7 @@ function simulate(p, rr, riskPct, account, dd, target, consistency, ddType, nSim
 const fmt = v => v.toLocaleString('en-US', { maximumFractionDigits: 2 });
 const fmtPct = v => (v * 100).toFixed(1) + '%';
 
-function drawChart(points, kellyHalf, optIdx) {
+function drawChart(points, kellyHalf, optIdx, agg) {
   const cv = $('chart');
   const dpr = window.devicePixelRatio || 1;
   const rect = cv.getBoundingClientRect();
@@ -439,10 +463,20 @@ function drawChart(points, kellyHalf, optIdx) {
       ctx.fillStyle = i === optIdx ? '#fff' : '#ff5c78';
       ctx.beginPath(); ctx.arc(x, y, i === optIdx ? 5 : 3.5, 0, Math.PI * 2); ctx.fill();
     });
-    // etiqueta del Kelly prop-ajustado
+    // etiqueta del Kelly ideal
     const o = points[optIdx];
     ctx.fillStyle = '#fff'; ctx.font = '11px JetBrains Mono, monospace';
-    ctx.fillText('prop-ajustado ' + o.risk + '% · ' + (o.p * 100).toFixed(1) + '%', Math.min(X(o.risk) + 8, padL + iw - 190), Math.max(Y(o.p) - 8, 12));
+    ctx.fillText('ideal ' + o.risk + '% · ' + (o.p * 100).toFixed(1) + '%', Math.min(X(o.risk) + 8, padL + iw - 170), Math.max(Y(o.p) - 8, 12));
+    // marcador del Kelly agresivo (oro)
+    if (agg) {
+      const ax = X(agg.risk), ay = Y(agg.p);
+      ctx.strokeStyle = '#f5c518'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(ax, ay, 5, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = 'rgba(245,197,24,.25)';
+      ctx.beginPath(); ctx.arc(ax, ay, 3, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(245,197,24,.95)'; ctx.font = '11px JetBrains Mono, monospace';
+      ctx.fillText('agresivo ' + agg.risk + '% · ' + (agg.p * 100).toFixed(1) + '%', Math.min(ax + 8, padL + iw - 180), Math.max(ay + 16, 12));
+    }
     // highlight del hover
     if (hi >= 0) {
       const d = points[hi];
@@ -571,8 +605,27 @@ function calc() {
   const opt = fine[optIdx];
   const optUsd = account * opt.risk / 100;
 
+  // Kelly agresivo: el mayor riesgo que conserva P(éxito) >= 80%
+  let aggIdxC = 0;
+  for (let i = coarsePts.length - 1; i >= 0; i--) {
+    if (coarsePts[i].p >= 0.80) { aggIdxC = i; break; }
+  }
+  const aggNext = coarsePts[aggIdxC + 1] ? coarsePts[aggIdxC + 1].risk : coarsePts[aggIdxC].risk + 0.5;
+  const aggFine = [];
+  for (let r = Math.max(0.1, coarsePts[aggIdxC].risk - 0.2); r <= aggNext + 0.2 + 1e-9; r += 0.1) {
+    const sim = simulate(p, rr, r, account, dd, target, consistency, ddType, N, 7654 + Math.round(r * 100));
+    aggFine.push({ risk: r, p: sim.pSucc, ruin: sim.pRuin, viol: sim.pViol, medianT: sim.medianT });
+  }
+  let aggIdx = 0;
+  for (let i = aggFine.length - 1; i >= 0; i--) {
+    if (aggFine[i].p >= 0.80) { aggIdx = i; break; }
+  }
+  const agg = aggFine[aggIdx];
+  const aggUsd = account * agg.risk / 100;
+
   // R de drawdown con el óptimo
   const rd = dd / optUsd;
+  const rdA = dd / aggUsd;
 
   // tiempo estimado: mediana de trades de los caminos exitosos → semanas
   const mt = opt.medianT;
@@ -595,8 +648,30 @@ function calc() {
   $('kRd').innerHTML = rd.toFixed(1) + ' <span class="sub">pérdidas seguidas que aguantas</span>';
   $('kExp').innerHTML = '$' + fmt(kExp) + ' <span class="sub">por 1% de riesgo</span>';
 
-  drawChart(points, kHalf, optIdx);
+  // tiempo estimado del agresivo
+  const mtA = agg.medianT;
+  let timeHtmlA;
+  if (mtA) {
+    if (Number.isFinite(tradesPerWeek) && tradesPerWeek > 0) {
+      const weeksA = mtA / tradesPerWeek;
+      timeHtmlA = mtA + ' <span class="sub">≈ ' + (weeksA < 1 ? (weeksA * 7).toFixed(0) + ' días' : weeksA.toFixed(1) + ' semanas') + ' (' + tradesPerWeek + '/sem)</span>';
+    } else {
+      timeHtmlA = mtA + ' <span class="sub">trades con el riesgo agresivo</span>';
+    }
+  } else {
+    timeHtmlA = '— <span class="sub">sin caminos exitosos</span>';
+  }
+
+  $('kKellyA').innerHTML = agg.risk + '% <span class="sub">$' + fmt(aggUsd) + ' por trade · dd ' + (ddType === 'trailing' ? 'trailing' : 'fijo') + '</span>';
+  $('kPSuccA').innerHTML = fmtPct(agg.p) + ' <span class="sub">sin límite de trades</span>';
+  $('kFailA').innerHTML = fmtPct(agg.ruin + agg.viol) + ' <span class="sub">descalificación ' + fmtPct(agg.ruin) + (consistency > 0 ? ' · consistencia ' + fmtPct(agg.viol) : '') + '</span>';
+  $('kTimeA').innerHTML = timeHtmlA;
+  $('kRdA').innerHTML = rdA.toFixed(1) + ' <span class="sub">pérdidas seguidas que aguantas</span>';
+  $('kExpA').innerHTML = '$' + fmt(kExp) + ' <span class="sub">por 1% de riesgo</span>';
+
+  drawChart(points, kHalf, optIdx, agg);
   $('results').hidden = false;
+  $('resultsAgg').hidden = false;
 }
 
 $('calcBtn').addEventListener('click', calc);
@@ -604,7 +679,7 @@ $('resetBtn').addEventListener('click', () => {
   $('winRate').value = 50; $('rr').value = 2;
   $('account').value = 50000; $('ddUsd').value = 2000; $('target').value = 3000; $('tradesPerWeek').value = 5; $('consistency').value = 50;
 
-  $('results').hidden = true; $('err').hidden = true;
+  $('results').hidden = true; $('resultsAgg').hidden = true; $('err').hidden = true;
 });
 ['winRate', 'rr', 'account', 'ddUsd', 'target', 'tradesPerWeek', 'consistency'].forEach(id => $(id).addEventListener('input', calc));
 
