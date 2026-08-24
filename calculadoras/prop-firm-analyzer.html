@@ -84,6 +84,11 @@
     color: var(--muted); max-width: none; font-size: 15px;
     margin-top: 10px; line-height: 1.65;
   }
+  .mc-grid {
+    display: grid; grid-template-columns: 360px 1fr;
+    gap: 22px; align-items: start; margin-top: 30px;
+  }
+  @media (max-width: 980px) { .mc-grid { grid-template-columns: 1fr; } }
   .panel {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 16px; padding: 22px; margin-top: 26px;
@@ -180,13 +185,13 @@
     color: var(--accent); font-size: 13px;
   }
   .err[hidden] { display: none; }
-  footer { border-top: 1px solid var(--border); margin-top: 40px; }
-  .foot-inner {
-    max-width: 1240px; margin: 0 auto; padding: 22px 24px;
-    display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
-    font-size: 12px; color: var(--muted);
+  footer {
+    border-top: 1px solid var(--border); background: var(--surface);
+    padding: 26px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
   }
-  .foot-inner .back { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
+  footer a { color: var(--accent); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -208,10 +213,13 @@
 
   <a class="back-btn" href="../calculadoras/" aria-label="Volver a las calculadoras">Volver a las calculadoras</a>
   <header class="masthead">
-    <div class="kicker">Calculadoras</div>
+    <div class="kicker">// Herramientas · Calculadoras</div>
     <h1>Prop Firm <span class="red">Analyzer</span></h1>
     <p>Antes de pagar una evaluación: ¿tu estrategia puede pasar el examen? Con win rate, R:R, cuenta, drawdown permitido y objetivo, esta calculadora corre el problema clásico de la ruina del jugador — vía Monte-Carlo y Kelly — sin límite de trades: cada camino corre hasta lograr el objetivo o ser descalificado. Te da el Kelly prop-ajustado (el riesgo que maximiza tu probabilidad de pasar), la probabilidad de éxito y cuántos trades (y semanas) tomaría.</p>
   </header>
+
+  <div class="mc-grid">
+    <div class="calc-side">
 
   <div class="panel">
     <h2><span class="n">01</span> Tu edge</h2>
@@ -272,6 +280,7 @@
   </div>
 
   <div class="err" id="err" hidden></div>
+    </div>
 
   <div class="results" id="results" hidden>
     <div class="kpis">
@@ -294,12 +303,10 @@
   </div>
 
 </div>
+  </div>
 
 <footer>
-  <div class="foot-inner">
-    <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html" style="color:var(--muted)">Términos</a></span>
-    <a class="back" href="index.html">Volver a las calculadoras</a>
-  </div>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
 </footer>
 
 <script>
