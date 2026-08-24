@@ -32,7 +32,7 @@
   .masthead .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
   .masthead h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(30px, 4.6vw, 42px); letter-spacing: -.02em; }
   .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
-  .masthead p { color: var(--muted); max-width: 660px; font-size: 15px; margin-top: 10px; line-height: 1.65; }
+  .masthead p { color: var(--muted); max-width: none; font-size: 15px; margin-top: 10px; line-height: 1.65; }
   .masthead p b { color: var(--text); }
 
   .panel {
@@ -167,6 +167,7 @@
 </style>
 </head>
 <body>
+<script>history.scrollRestoration='manual';window.scrollTo(0,0);</script>
 <nav>
   <div class="nav-inner">
     <a class="nav-brand" href="../index.html">
