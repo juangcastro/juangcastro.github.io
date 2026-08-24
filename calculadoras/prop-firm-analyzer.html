@@ -731,8 +731,8 @@ function calc() {
 
   // caminos para el spaghetti (ideal y agresivo)
   window.__paths = {
-    ideal: simulatePaths(p, rr, opt.risk, account, dd, target, consistency, ddType, 30, 9001, 90),
-    agresivo: simulatePaths(p, rr, agg.risk, account, dd, target, consistency, ddType, 30, 9002, 90),
+    ideal: simulatePaths(p, rr, opt.risk, account, dd, target, consistency, ddType, 250, 9001, 90),
+    agresivo: simulatePaths(p, rr, agg.risk, account, dd, target, consistency, ddType, 250, 9002, 90),
   };
   window.__pathMeta = {
     ideal: { risk: opt.risk, p: opt.p },
@@ -778,10 +778,10 @@ function drawPaths(key) {
   ctx.strokeStyle = 'rgba(232,234,246,.25)'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(padL, Y(account)); ctx.lineTo(padL + iw, Y(account)); ctx.stroke();
 
-  // caminos
+  // nube de caminos (densidad, como la Monte-Carlo)
   paths.forEach(pa => {
-    ctx.strokeStyle = pa.result === 'success' ? 'rgba(16,185,129,.45)' : 'rgba(255,59,92,.4)';
-    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = pa.result === 'success' ? 'rgba(16,185,129,.22)' : (pa.result === 'ruin' ? 'rgba(255,59,92,.18)' : 'rgba(138,144,179,.14)');
+    ctx.lineWidth = 0.7;
     ctx.beginPath();
     pa.pts.forEach((b, t) => {
       const x = X(t), y = Y(b);
@@ -794,8 +794,11 @@ function drawPaths(key) {
   ctx.fillStyle = '#8a90b3'; ctx.font = '10px JetBrains Mono, monospace';
   ctx.fillText('objetivo $' + (account + target).toLocaleString('en-US'), 6, Y(account + target) + 3);
   ctx.fillText('ruina $' + (account - dd).toLocaleString('en-US'), 6, Y(account - dd) + 3);
+  // esquina superior derecha (evita montarse sobre la etiqueta del objetivo)
   ctx.fillStyle = '#e8eaf6';
-  ctx.fillText('riesgo ' + fmtRisk(meta.risk) + '% · P(pasar) ' + (meta.p * 100).toFixed(1) + '%', padL + 8, padT + 12);
+  ctx.textAlign = 'right';
+  ctx.fillText('riesgo ' + fmtRisk(meta.risk) + '% · P(pasar) ' + (meta.p * 100).toFixed(1) + '%', padL + iw, padT + 12);
+  ctx.textAlign = 'left';
   // eje X
   ctx.fillStyle = '#8a90b3';
   [0, 15, 30, 45, 60, 75, 90].forEach(t => ctx.fillText(t + 't', X(t) - 6, padT + ih + 16));
