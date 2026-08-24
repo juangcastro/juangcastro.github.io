@@ -149,17 +149,21 @@
     border-bottom: 1px solid var(--border);
   }
   .nav-inner {
-    max-width: 1240px; margin: 0 auto; padding: 14px 24px;
+    max-width: 1160px; margin: 0 auto; padding: 14px 24px;
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
   }
   .nav-brand { display: flex; align-items: center; gap: 12px; }
-  .nav-brand img { width: 34px; height: auto; }
-  .nav-brand .word {
+  .nav-brand img { width: 38px; height: auto; }
+    .nav-brand .word {
     font-family: 'JetBrains Mono', monospace; font-weight: 700;
-    font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
+    font-size: 15px; letter-spacing: .32em; text-transform: uppercase;
     color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
   }
-  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-brand .word small {
+    display: block; font-size: 9px; font-weight: 500;
+    letter-spacing: .3em; color: var(--muted); text-shadow: none;
+  }
+  .nav-links { display: flex; align-items: center; gap: 26px; }
   .nav-links a {
     font-family: 'JetBrains Mono', monospace; font-size: 12px;
     letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
@@ -192,7 +196,7 @@
   <div class="nav-inner">
     <a class="nav-brand" href="../index.html">
       <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
-      <span class="word">The Red Queen</span>
+      <span class="word">The Red Queen<small>CHECKMATE THE SYSTEM</small></span>
     </a>
     <div class="nav-links">
       <a class="back-link" href="../calculadoras/">← Calculadoras</a>
