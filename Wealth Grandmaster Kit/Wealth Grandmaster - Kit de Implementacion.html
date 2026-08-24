@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Wealth Grandmaster — Kit de Implementación · The Red Queen</title>
+<style>
+  :root {
+    --bg: #0a0a0c; --surface: #141418; --card: #1a1a20; --line: #2a2a32;
+    --text: #f2f2f5; --muted: #9a9aa5;
+    --accent: #ff3b5c; --accent-2: #ff6b84; --accent-soft: rgba(255,59,92,.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65; font-size: 13.5px;
+  }
+  .cover {
+    min-height: 95vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 60px 40px; border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,59,92,.10), transparent 70%),
+      var(--bg);
+  }
+  .cover img { width: 150px; height: auto; margin-bottom: 28px; border: none; box-shadow: none; background: transparent; }
+  .cover .kicker { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .3em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+  .cover h1 { font-size: 34px; font-weight: 800; letter-spacing: .01em; line-height: 1.2; max-width: 640px; margin-bottom: 14px; }
+  .cover .sub { color: var(--muted); font-size: 14.5px; max-width: 520px; margin-bottom: 32px; }
+  .cover .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
+  .cover .meta span { color: var(--accent); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 40px 32px 80px; }
+  section.page { margin-bottom: 44px; }
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .22em;
+    color: var(--accent); text-transform: uppercase; margin-bottom: 18px; padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  h2 { font-size: 20px; font-weight: 800; margin: 22px 0 10px; letter-spacing: .01em; }
+  h3 { font-size: 15px; font-weight: 700; margin: 18px 0 8px; color: var(--accent-2); }
+  h4 { font-size: 13.5px; font-weight: 700; margin: 14px 0 6px; }
+  p { margin: 8px 0; color: var(--text); }
+  b { color: #fff; }
+  ul, ol { margin: 8px 0 8px 22px; }
+  li { margin: 4px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12.5px; }
+  th { background: var(--accent-soft); color: #fff; text-align: left; padding: 8px 10px; font-weight: 700; border: 1px solid var(--line); }
+  td { padding: 7px 10px; border: 1px solid var(--line); color: var(--text); vertical-align: top; }
+  blockquote {
+    border-left: 3px solid var(--accent); background: var(--surface);
+    padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0;
+  }
+  blockquote p { color: var(--muted); margin: 4px 0; }
+  .code { background: #0d0d11; border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #c9c9d4; white-space: pre-wrap; margin: 12px 0; }
+  .footer { text-align: center; padding: 40px 20px 60px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); }
+  .footer .brand { font-family: 'JetBrains Mono', monospace; letter-spacing: .3em; color: var(--accent); font-size: 11px; text-transform: uppercase; margin-bottom: 8px; }
+  @media print {
+    body { background: var(--bg) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cover { min-height: 90vh; }
+    section.page, .cover { break-inside: auto; page-break-inside: auto; }
+    .section-tag, h2, h3 { break-after: avoid; }
+    table, blockquote, .code { break-inside: avoid; page-break-inside: avoid; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="cover">
+  <img src="trq-logo.png" alt="The Red Queen">
+  <div class="kicker">The Red Queen · Wealth</div>
+  <h1>WEALTH GRANDMASTER<br>KIT DE IMPLEMENTACIÓN</h1>
+  <div class="sub">El método de los 7 pasos para diseñar y hacer crecer tu patrimonio —
+  del "tengo dinero" al "tengo claridad financiera". Plan escrito, sistema y legado.</div>
+  <div class="meta"><span>MÉTODO</span> · 7 PASOS &nbsp;|&nbsp; <span>PLAN ESCRITO</span> · SISTEMA · LEGADO &nbsp;|&nbsp; <span>2026</span></div>
+</div>
+
+<div class="wrap">
+<section class="page"><div class="section-tag">GUÍA RÁPIDA</div><h2>WEALTH GRANDMASTER — KIT DE IMPLEMENTACIÓN</h2>
+
+<blockquote>
+<p>Método de los 7 pasos para diseñar y hacer crecer tu patrimonio.</p>
+<p>Material propio de The Red Queen: método → plan escrito, en 3 días de trabajo profundo.</p>
+</blockquote>
+
+<h3>CÓMO USAR ESTE KIT</h3>
+
+<ol>
+<li><b>Día 1 — ENTIENDE + DISEÑA</b>: Pasa 1-2 (educación patrimonial + propósito y objetivos).</li>
+<li><b>Día 1-2 — DISEÑA</b>: Pasa 3-4 (política de inversión + estructuras legales/fiscales).</li>
+<li><b>Día 2-3 — IMPLEMENTA</b>: Pasa 5-6 (equipo + operación y sistemas).</li>
+<li><b>Día 3 — LEGADO</b>: Paso 7 (gobernanza familiar).</li>
+<li><b>Semana 1-12 — EJECUTA</b>: calendario de seguimiento (Anexo F).</li>
+</ul>
+
+<p>Cada paso tiene: objetivo → marco (framework) → ejercicio → entregable verificable.</p>
+
+<h3>ÍNDICE DEL KIT</h3>
+
+<table>
+<tr><th>#</th><th>Archivo</th><th>Contenido</th></tr>
+<tr><td>00</td><td>`00-guia-rapida.md`</td><td>Este archivo — cómo usar el kit</td></tr>
+<tr><td>01</td><td>`01-educacion-patrimonial.md`</td><td>Paso 1: el juego real, lenguaje y criterios</td></tr>
+<tr><td>02</td><td>`02-proposito-objetivos.md`</td><td>Paso 2: metas, horizonte, ritmo</td></tr>
+<tr><td>03</td><td>`03-politica-inversion.md`</td><td>Paso 3: 3 estrategias + política de inversión (plantilla)</td></tr>
+<tr><td>04</td><td>`04-estructuras-legales-fiscales.md`</td><td>Paso 4: blindaje patrimonial</td></tr>
+<tr><td>05</td><td>`05-equipo-asesores.md`</td><td>Paso 5: el equipo correcto</td></tr>
+<tr><td>06</td><td>`06-operacion-sistemas.md`</td><td>Paso 6: seguimiento como empresa</td></tr>
+<tr><td>07</td><td>`07-gobernanza-familiar.md`</td><td>Paso 7: legado y cohesión</td></tr>
+<tr><td>08</td><td>`08-mapa-patrimonial.md`</td><td>Anexo A: plantilla de mapa patrimonial</td></tr>
+<tr><td>09</td><td>`09-tablero-seguimiento.md`</td><td>Anexo B: tablero de seguimiento mensual</td></tr>
+</table>
+
+<h3>LOS 7 PASOS EN UNA LÍNEA</h3>
+
+<ol>
+<li><b>Entiende</b> el juego → 2. <b>Define</b> a dónde va tu patrimonio → 3. <b>Escribe</b> tu</li>
+</ul>
+<p>política (Crecimiento/Ingresos/Preservación) → 4. <b>Blinda</b> lo que tienes →</p>
+<ol>
+<li><b>Rodéate</b> del equipo correcto → 6. <b>Sistematiza</b> el seguimiento →</li>
+<li><b>Trasciende</b> con gobernanza familiar.</li>
+</ul>
+
+<h3>REGLA DE ORO DEL MÉTODO</h3>
+
+<blockquote>
+<p><b>&quot;Tu problema no es cuánto ganas. Es que tu dinero no tiene una estrategia.&quot;</b></p>
+<p>No es falta de disciplina: es falta de método. El entregable final es un PLAN</p>
+<p>ESCRITO, no apuntes ni teoría suelta.</p>
+</blockquote>
+</section>
+<section class="page"><div class="section-tag">PASO 1 · EDUCACIÓN PATRIMONIAL</div><h2>PASO 1 — EDUCACIÓN PATRIMONIAL</h2>
+
+<blockquote>
+<p><i>&quot;El lenguaje y los criterios con los que se toman las grandes decisiones financieras.&quot;</i></p>
+<p>Objetivo: dejar de improvisar. No se puede diseñar un plan en un idioma que no se habla.</p>
+</blockquote>
+
+<h3>MARCO: EL JUEGO REAL DE LA RIQUEZA</h3>
+
+<p>La riqueza no se construye &quot;ahorrando&quot; ni &quot;invirtiendo en lo que todos invierten&quot;.</p>
+<p>Se construye entendiendo 4 piezas que forman un sistema:</p>
+
+<div class='code'>
+<p>┌─────────────────────────────────────────────────────┐</p>
+<p>│                 EL JUEGO REAL                       │</p>
+<p>│                                                     │</p>
+<p>│  1. ACTIVOS  →  generan  →  2. FLUJOS  →  financian │</p>
+<p>│                                                     │</p>
+<p>│  3. PASIVOS ←  consumen ←  esos flujos              │</p>
+<p>│                                                     │</p>
+<p>│  4. ESTRUCTURA (legal/fiscal) decide cuánto de lo   │</p>
+<p>│     que generas se queda contigo                    │</p>
+<p>└─────────────────────────────────────────────────────┘</p>
+</div>
+
+<p><b>Los 3 errores del principiante (y su corrección):</b></p>
+
+<table>
+<tr><th>Error</th><th>Corrección</th></tr>
+<tr><td>Confundir ingresos con riqueza</td><td>La riqueza = lo que queda y trabaja, no lo que entra</td></tr>
+<tr><td>Confundir activos con &quot;cosas que suben&quot;</td><td>Activo = lo que genera flujo. Tu casa no paga tu vida</td></tr>
+<tr><td>Confundir diversificación con dispersión</td><td>20 posiciones sin tesis = 20 apuestas, no un sistema</td></tr>
+</table>
+
+<h3>EJERCICIO 1.1 — AUDITORÍA DE VOCABULARIO</h3>
+
+<p>Marca con honestidad cuáles puedes definir en 1 frase:</p>
+
+<ul>
+<li>[ ] Rentabilidad vs rendimiento</li>
+<li>[ ] Liquidez vs solvencia</li>
+<li>[ ] Activo vs pasivo</li>
+<li>[ ] Riesgo vs volatilidad</li>
+<li>[ ] Diversificación vs concentración</li>
+<li>[ ] Valor vs precio</li>
+<li>[ ] Tasa real vs tasa nominal</li>
+<li>[ ] Fideicomiso vs testamento</li>
+</ul>
+
+<blockquote>
+<p><b>Entregable 1:</b> escribe en una línea la definición de los 4 que menos domines.</p>
+<p>Son tu plan de estudio de las próximas 2 semanas.</p>
+</blockquote>
+
+<h3>EJERCICIO 1.2 — TU MODELO MENTAL ACTUAL</h3>
+
+<p>Responde en 5 minutos, sin editar:</p>
+
+<ol>
+<li>¿Qué es para ti &quot;invertir&quot;? (¿comprar cosas que suben? ¿generar flujo? ¿proteger?)</li>
+<li>¿De dónde sacaste esa definición? (padres, moda, experiencia propia, un curso)</li>
+<li>¿Qué decisión financiera de tu pasado cambiarías con lo que sabes hoy?</li>
+</ul>
+
+<blockquote>
+<p><b>Entregable 2:</b> 3 frases. Este ejercicio revela el &quot;sistema operativo&quot; con el</p>
+<p>que has decidido hasta ahora.</p>
+</blockquote>
+
+<h3>FRAMEWORK: LOS CRITERIOS DE DECISIÓN</h3>
+
+<p>Toda decisión patrimonial se evalúa con 5 criterios (el &quot;pentágono&quot;):</p>
+
+<ol>
+<li><b>Rentabilidad esperada</b> — ¿cuánto espero ganar (neto, no bruto)?</li>
+<li><b>Riesgo asumido</b> — ¿cuánto puedo perder y en qué escenario?</li>
+<li><b>Liquidez</b> — ¿cuándo puedo sacar el dinero y a qué costo?</li>
+<li><b>Horizonte</b> — ¿en cuánto tiempo necesito este dinero?</li>
+<li><b>Fiscalidad</b> — ¿cuánto se queda el fisco de lo que gano?</li>
+</ul>
+
+<blockquote>
+<p>Regla: NUNCA evalúes una oportunidad con menos de 3 de estos criterios.</p>
+<p>&quot;Es buen negocio&quot; sin estos 5 números no es una decisión, es una corazonada.</p>
+</blockquote>
+
+<h3>ENTREGABLE FINAL DEL PASO 1</h3>
+
+<p>Escribe 5 frases: &quot;Yo invierto para ______. Mi definición de activo es ______.</p>
+<p>Mi mayor error pasado fue ______. A partir de hoy evalúo con: rentabilidad,</p>
+<p>riesgo, liquidez, horizonte y fiscalidad. Mi brecha de conocimiento principal es ______.&quot;</p>
+
+<p>→ Pasa al Paso 2 solo cuando las 5 frases estén escritas.</p>
+</section>
+<section class="page"><div class="section-tag">PASO 2 · PROPÓSITO Y OBJETIVOS</div><h2>PASO 2 — PROPÓSITO Y OBJETIVOS</h2>
+
+<blockquote>
+<p><i>&quot;A dónde va tu patrimonio.&quot;</i></p>
+<p>Objetivo: definir metas, horizonte y ritmo. Un plan sin destino es un ejercicio de papel.</p>
+</blockquote>
+
+<h3>MARCO: LAS 3 PREGUNTAS DEL DESTINO</h3>
+
+<div class='code'>
+<p>¿PARA QUÉ? → ¿CUÁNDO? → ¿CUÁNTO?</p>
+<p>(propósito)  (horizonte)  (número)</p>
+</div>
+
+<p>Todo objetivo patrimonial se escribe como: **&quot;Necesito [CUÁNTO] para [PARA QUÉ]</p>
+<p>en [CUÁNDO].&quot;**</p>
+
+<h3>EJERCICIO 2.1 — INVENTARIO DE METAS</h3>
+
+<p>Llena la tabla (mínimo 5 filas — sé específico, no &quot;ser rico&quot;):</p>
+
+<table>
+<tr><th>Meta</th><th>Para qué (propósito)</th><th>Cuándo (año)</th><th>Cuánto (USD)</th><th>Prioridad (1-5)</th></tr>
+<tr><td>Ej: Educación hijos</td><td>Universidad de Mateo</td><td>2039</td><td>$150,000</td><td>1</td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<p><b>Reglas del ejercicio:</b></p>
+<ul>
+<li>Cuánto = número real con cifra, no &quot;lo que sea&quot;.</li>
+<li>Cuándo = año exacto. El horizonte define el vehículo (ver Paso 3).</li>
+<li>Prioridad: no puedes tener 5 prioridades #1. Ordena.</li>
+</ul>
+
+<h3>EJERCICIO 2.2 — HORIZONTES (LA ESTRUCTURA DEL PLAN)</h3>
+
+<p>Clasifica tus metas por horizonte — ESTO determina la estrategia de inversión:</p>
+
+<table>
+<tr><th>Horizonte</th><th>Ventana</th><th>Estrategia dominante (Paso 3)</th></tr>
+<tr><td>Corto</td><td>0-3 años</td><td><b>Preservación</b> (no juegas el dinero que necesitas pronto)</td></tr>
+<tr><td>Medio</td><td>3-10 años</td><td><b>Ingresos / Balanceado</b></td></tr>
+<tr><td>Largo</td><td>10+ años</td><td><b>Crecimiento</b> (el tiempo es tu aliado; la volatilidad, tu amiga)</td></tr>
+</table>
+
+<blockquote>
+<p><b>Regla de oro:</b> el horizonte manda sobre la oportunidad. Una gran oportunidad</p>
+<p>a 1 año NO es para dinero que necesitas a 6 meses. Si no respetas esto, el plan</p>
+<p>se rompe en la primera corrección del mercado.</p>
+</blockquote>
+
+<h3>EJERCICIO 2.3 — RITMO (CUÁNTO AL AÑO)</h3>
+
+<p>Define tu capacidad real de aportación (no la ideal):</p>
+
+<ol>
+<li>Ingresos anuales netos: $______</li>
+<li>Gastos anuales (todo): $______</li>
+<li><b>Capacidad de aportación anual</b>: $______ (= 1 − 2)</li>
+<li>¿Cuánto de eso estás dispuesto a comprometer al plan? $______ (80-100% recomendado)</li>
+</ul>
+
+<blockquote>
+<p>Si la respuesta 3 es negativa o cercana a cero, tu PRIORIDAD es el ingreso</p>
+<p>(Paso 5: equipo y carrera), no la inversión. El método no ignora esto.</p>
+</blockquote>
+
+<h3>EJERCICIO 2.4 — DECLARACIÓN DE PROPÓSITO (1 PÁRRAFO)</h3>
+
+<p>Escribe tu declaración: *&quot;Mi patrimonio existe para ______. Lo hago crecer a un</p>
+<p>ritmo de $______/año. Protejo ______. En ______ años quiero ______.&quot;*</p>
+
+<blockquote>
+<p><b>Entregable del Paso 2:</b> la tabla de metas completa + tu declaración de 1 párrafo.</p>
+<p>Esto es lo que se convierte en la &quot;sección de objetivos&quot; de tu política de inversión.</p>
+</blockquote>
+</section>
+<section class="page"><div class="section-tag">PASO 3 · ESTRATEGIA Y POLÍTICA DE INVERSIÓN</div><h2>PASO 3 — ESTRATEGIA Y POLÍTICA DE INVERSIÓN</h2>
+
+<blockquote>
+<p><i>&quot;El corazón del plan.&quot;</i></p>
+<p>Objetivo: diseñar tus 3 estrategias — <b>Crecimiento · Ingresos · Preservación</b> —</p>
+<p>y dejarlas por escrito en tu política de inversión. Este es el entregable central del curso.</p>
+</blockquote>
+
+<h3>MARCO: LAS 3 ESTRATEGIAS</h3>
+
+<table>
+<tr><th>Estrategia</th><th>Objetivo</th><th>Horizonte</th><th>Perfil de activos</th><th>Métrica de éxito</th></tr>
+<tr><td><b>Crecimiento</b></td><td>Multiplicar capital</td><td>10+ años</td><td>Acciones, ETFs de crecimiento, venture, alternativas</td><td>CAGR a 10 años</td></tr>
+<tr><td><b>Ingresos</b></td><td>Vivir del capital</td><td>3-10 años</td><td>Dividendos, bonos, rentas, preferentes</td><td>Flujo anual $</td></tr>
+<tr><td><b>Preservación</b></td><td>No perder</td><td>0-3 años</td><td>Caja, deuda corta, oro, inflación-hedge</td><td>Pérdida máx. &lt; 2%</td></tr>
+</table>
+
+<p><b>Asignación estratégica objetivo</b> (ejemplo — AJUSTA a tus metas del Paso 2):</p>
+
+<table>
+<tr><th>Estrategia</th><th>% del patrimonio</th><th>Vehículos típicos</th></tr>
+<tr><td>Preservación</td><td>20%</td><td>Deuda corta, money market, inflación-hedge</td></tr>
+<tr><td>Ingresos</td><td>30%</td><td>Dividendos, bonos corporativos, REITs, rentas</td></tr>
+<tr><td>Crecimiento</td><td>50%</td><td>Acciones globales, ETFs, private equity, venture</td></tr>
+</table>
+
+<h3>PLANTILLA — POLÍTICA DE INVERSIÓN (IPS)</h3>
+
+<blockquote>
+<p>Un IPS (Investment Policy Statement) es el documento que gobierna TODAS tus</p>
+<p>decisiones. Si una inversión no cabe en la política, no se hace — sin excepciones.</p>
+</blockquote>
+
+<div class='code'>
+<h2>POLÍTICA DE INVERSIÓN — [NOMBRE]</h2>
+
+<h3>1. Propósito</h3>
+<p>[Declaración del Paso 2]</p>
+
+<h3>2. Objetivos (medibles)</h3>
+<ul>
+<li>Crecimiento real objetivo: ____% anual sobre el patrimonio total</li>
+<li>Flujo de ingresos anual objetivo: $____</li>
+<li>Preservación: el dinero de horizonte &lt; 3 años NO se invierte en renta variable</li>
+</ul>
+
+<h3>3. Asignación estratégica objetivo</h3>
+<table>
+<tr><th>Estrategia</th><th>% objetivo</th><th>Rango permitido</th></tr>
+<tr><td>Preservación</td><td>__%</td><td>__–__%</td></tr>
+<tr><td>Ingresos</td><td>__%</td><td>__–__%</td></tr>
+<tr><td>Crecimiento</td><td>__%</td><td>__–__%</td></tr>
+</table>
+
+<h3>4. Política de rebalanceo</h3>
+<ul>
+<li>Rebalancear cuando una clase se desvíe ___% del objetivo (sugerido: 5%)</li>
+<li>Frecuencia mínima: trimestral</li>
+</ul>
+
+<h3>5. Política de compras y ventas</h3>
+<ul>
+<li>Compras: solo vehículos de la lista aprobada (Anexo)</li>
+<li>Ventas: motivo permitido = rebalanceo, cambio de tesis, necesidad de liquidez</li>
+<li>PROHIBIDO: ventas por pánico, timing de mercado, &quot;tips&quot;</li>
+</ul>
+
+<h3>6. Criterios de decisión (el pentágono)</h3>
+<p>Toda posición nueva se evalúa con: rentabilidad neta esperada, riesgo, liquidez,</p>
+<p>horizonte, fiscalidad. Mínimo 3 criterios documentados por escrito.</p>
+
+<h3>7. Qué cambia la política</h3>
+<ul>
+<li>Cambio de etapa de vida (matrimonio, hijos, retiro)</li>
+<li>Cambio material de ingresos</li>
+<li>Revisión anual obligatoria cada [MES]</li>
+</ul>
+
+<h3>8. Firmas</h3>
+<p>[Firmante] · [Fecha] · [Próxima revisión]</p>
+</div>
+
+<h3>EJERCICIO 3.1 — TU IPS EN 45 MINUTOS</h3>
+
+<ol>
+<li>Copia la plantilla a `mi-politica-de-inversion.md`.</li>
+<li>Llena secciones 1-3 con tus números del Paso 2.</li>
+<li>Define tu lista aprobada inicial (5-10 vehículos que ya entiendes).</li>
+<li>Fírmala. Imprímela o ponla en el vault. Es un CONTRATO contigo mismo.</li>
+</ul>
+
+<h3>EJERCICIO 3.2 — LA PRUEBA DE FUEGO (ANTES/DEspués)</h3>
+
+<p>Toma 3 decisiones financieras de los últimos 12 meses y evalúalas contra tu IPS:</p>
+
+<table>
+<tr><th>Decisión</th><th>¿Cabía en la política?</th><th>¿Qué dice el pentágono?</th><th>Veredicto</th></tr>
+<tr><td>Ej: compré BTC en pico</td><td>No (sin tesis escrita)</td><td>Riesgo no medido</td><td>❌ fuera de política</td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<blockquote>
+<p><b>Entregable del Paso 3:</b> tu IPS firmada + la prueba de fuego con 3 veredictos.</p>
+<p>El IPS es lo que hace que el método sobreviva a la primera corrección del mercado.</p>
+</blockquote>
+</section>
+<section class="page"><div class="section-tag">PASO 4 · ESTRUCTURAS LEGALES Y FISCALES</div><h2>PASO 4 — ESTRUCTURAS LEGALES Y FISCALES</h2>
+
+<blockquote>
+<p><i>&quot;Blindas lo que ya tienes.&quot;</i></p>
+<p>Objetivo: proteger y ordenar el patrimonio de forma eficiente — antes de crecer más.</p>
+</blockquote>
+
+<h3>MARCO: LAS 4 CAPAS DE PROTECCIÓN</h3>
+
+<div class='code'>
+<p>CAPA 1 · PERSONA      → titularidad directa (la más expuesta)</p>
+<p>CAPA 2 · SOCIEDAD     → vehículo operativo (SLU/SAS/LLC — separa negocio de persona)</p>
+<p>CAPA 3 · PATRIMONIO   → vehículo de inversión (holding, fondo, trust)</p>
+<p>CAPA 4 · LEGADO       → fideicomiso / testamento / seguros (protege a los tuyos)</p>
+</div>
+
+<p><b>Principio rector:</b> cada capa separa un riesgo. El objetivo NO es pagar menos</p>
+<p>impuestos (eso es optimización agresiva); es **no pagar impuestos de más ni</p>
+<p>exponer todo a un solo riesgo legal**. Estructura ≠ evasión: es orden.</p>
+
+<h3>EJERCICIO 4.1 — INVENTARIO DE EXPOSICIÓN</h3>
+
+<table>
+<tr><th>Activo</th><th>¿A nombre de quién?</th><th>Riesgo legal actual (1-5)</th><th>Riesgo fiscal actual (1-5)</th><th>Capa deseada</th></tr>
+<tr><td>Casa</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Cuentas de inversión</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Negocio</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Vehículos</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Cripto</td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<blockquote>
+<p>Riesgo 5 = un juicio contra ti lo alcanza todo. Riesgo 1 = separado y blindado.</p>
+</blockquote>
+
+<h3>EJERCICIO 4.2 — LAS 3 PREGUNTAS FISCALES</h3>
+
+<ol>
+<li>¿Cuánto estoy pagando HOY en impuestos sobre mis inversiones?</li>
+<li>¿Cuánto pagaría con la estructura correcta?</li>
+<li>¿Qué estructura me da la misma protección por menos costo?</li>
+</ul>
+
+<blockquote>
+<p>Si no sabes responder la #1 con un número, tu primera inversión es una consulta</p>
+<p>con un contador/fiscalista especializado en patrimonio (Paso 5: equipo).</p>
+</blockquote>
+
+<h3>EJERCICIO 4.3 — PLAN DE BLINDAJE (30 DÍAS)</h3>
+
+<table>
+<tr><th>Acción</th><th>¿Quién la ejecuta?</th><th>Fecha límite</th><th>Costo estimado</th></tr>
+<tr><td>Separar cuenta operativa de cuenta de inversión</td><td></td><td></td><td>$0</td></tr>
+<tr><td>Revisar titularidad de activos grandes</td><td></td><td></td><td></td></tr>
+<tr><td>Testamento / beneficiarios actualizados</td><td></td><td></td><td></td></tr>
+<tr><td>Consulta fiscal anual programada</td><td></td><td></td><td></td></tr>
+<tr><td>Seguro adecuado a la etapa (vida, salud, propiedad)</td><td></td><td></td><td></td></tr>
+</table>
+
+<blockquote>
+<p><b>Entregable del Paso 4:</b> inventario de exposición completo + plan de blindaje</p>
+<p>con 5 acciones y fechas. NO hace falta ejecutarlo hoy — hace falta que exista.</p>
+</blockquote>
+</section>
+<section class="page"><div class="section-tag">PASO 5 · EQUIPO Y ASESORES</div><h2>PASO 5 — EQUIPO Y ASESORES</h2>
+
+<blockquote>
+<p><i>&quot;Con quién te rodeas. El equipo correcto trabajando para ti, no al revés.&quot;</i></p>
+<p>Objetivo: rodearte de expertos alineados a TU política, no de vendedores con la suya.</p>
+</blockquote>
+
+<h3>MARCO: EL EQUIPO MÍNIMO VIABLE (EMV)</h3>
+
+<div class='code'>
+<p>┌───────────────────────────────────────────────┐</p>
+<p>│              TU EQUIPO PATRIMONIAL            │</p>
+<p>│                                               │</p>
+<p>│  1. CONTADOR / FISCALISTA  → estructuras      │</p>
+<p>│  2. ASESOR DE INVERSIONES  → ejecuta la IPS   │</p>
+<p>│  3. ABOGADO PATRIMONIAL    → protección legal │</p>
+<p>│  4. SEGUROS                → riesgo puro      │</p>
+<p>│  (5. SUCESIÓN/FIDEICOMISO → legado, paso 7)   │</p>
+<p>└───────────────────────────────────────────────┘</p>
+</div>
+
+<p><b>La regla del capitán:</b> tú defines la política (Paso 3); el equipo la ejecuta.</p>
+<p>Un asesor que discute tu IPS es un asesor. Un asesor que te vende lo suyo es un vendedor.</p>
+
+<h3>EJERCICIO 5.1 — AUDITORÍA DE TU EQUIPO ACTUAL</h3>
+
+<table>
+<tr><th>Rol</th><th>¿Tienes a alguien?</th><th>¿Trabaja según TU plan o el suyo?</th><th>Conflicto de interés visible?</th><th>¿Lo cambiarías?</th></tr>
+<tr><td>Contador/fiscalista</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Asesor de inversiones</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Abogado</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Seguros</td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<p><b>Señales de conflicto de interés (huir):</b></p>
+<ul>
+<li>Cobra comisión por producto (no honorario fijo) → incentivo a venderte lo que comisiona</li>
+<li>No conoce tu IPS (no existe o no le importa)</li>
+<li>&quot;Este producto es único y solo para clientes especiales&quot;</li>
+<li>Cambia su recomendación según la casa de bolsa que lo patrocina</li>
+</ul>
+
+<h3>EJERCICIO 5.2 — CHECKLIST DE CONTRATACIÓN</h3>
+
+<p>Antes de contratar a cualquier asesor, exige respuestas por escrito:</p>
+
+<ol>
+<li>¿Cómo te compensan exactamente? (honorario fijo / % de activos / comisión / todo)</li>
+<li>¿Estás sujeto a estándar fiduciario o solo a idoneidad? (fiduciario = debe anteponer TU interés)</li>
+<li>¿Puedo ver tu historial de desempeño NETO de 5 años?</li>
+<li>¿Trabajarás bajo mi política de inversión, o la tuya?</li>
+<li>¿A quién reportas? (¿a mí, o a tu casa de bolsa?)</li>
+</ul>
+
+<blockquote>
+<p><b>Regla de oro:</b> si no responde la #1 con claridad total, no es tu equipo.</p>
+<p>La compensación es el primer dato, no el último.</p>
+</blockquote>
+
+<h3>EJERCICIO 5.3 — PLAN DE EQUIPO (60 DÍAS)</h3>
+
+<table>
+<tr><th>Rol</th><th>¿Necesito contratar/mejorar?</th><th>Candidatos a entrevistar</th><th>Fecha</th></tr>
+<tr><td>Fiscalista</td><td></td><td></td><td></td></tr>
+<tr><td>Asesor de inversiones</td><td></td><td></td><td></td></tr>
+<tr><td>Abogado patrimonial</td><td></td><td></td><td></td></tr>
+<tr><td>Seguros</td><td></td><td></td><td></td></tr>
+</table>
+
+<blockquote>
+<p><b>Entregable del Paso 5:</b> auditoría completa + checklist respondida por tu</p>
+<p>asesor actual (o plan de contratación con 3 candidatos por rol).</p>
+</blockquote>
+</section>
+<section class="page"><div class="section-tag">PASO 6 · OPERACIÓN Y SISTEMAS</div><h2>PASO 6 — OPERACIÓN Y SISTEMAS</h2>
+
+<blockquote>
+<p><i>&quot;Orden y control. Cómo darle seguimiento a tu patrimonio como se le da a una empresa.&quot;</i></p>
+<p>Objetivo: que tu patrimonio tenga un tablero, métricas y cadencia — no &quot;ver cómo va&quot;.</p>
+</blockquote>
+
+<h3>MARCO: EL PATRIMONIO COMO EMPRESA (3 SISTEMAS)</h3>
+
+<div class='code'>
+<p>SISTEMA 1 · REGISTRO   → ¿qué tengo? (mapa patrimonial, Anexo A)</p>
+<p>SISTEMA 2 · MÉTRICAS   → ¿cómo va? (tablero mensual, Anexo B)</p>
+<p>SISTEMA 3 · CADENCIA   → ¿qué decido y cuándo? (reunión mensual + anual)</p>
+</div>
+
+<h3>EJERCICIO 6.1 — REGISTRO ÚNICO</h3>
+
+<p>Crea tu mapa patrimonial (plantilla en `08-mapa-patrimonial.md`):</p>
+<ul>
+<li>Todos los activos, pasivos, cuentas, vehículos, documentos</li>
+<li>Un solo lugar de verdad (vault, hoja de cálculo, o ambos)</li>
+<li>Actualizado cada mes en la reunión de patrimonio</li>
+</ul>
+
+<p><b>Regla de oro:</b> si no está en el registro, no existe. El dinero &quot;que está por ahí&quot;</p>
+<p>es el que se pierde, se olvida o se duplica en riesgo.</p>
+
+<h3>EJERCICIO 6.2 — TABLERO DE MÉTRICAS (MENSUAL)</h3>
+
+<p>Cada mes (mismo día, 30 minutos) actualiza:</p>
+
+<table>
+<tr><th>Métrica</th><th>Valor</th><th>vs mes anterior</th><th>Señal</th></tr>
+<tr><td>Patrimonio neto total</td><td>$</td><td>↑/↓</td><td>¿Por qué?</td></tr>
+<tr><td>Capacidad de aportación ejecutada</td><td>$</td><td></td><td>¿Aportaste lo planeado?</td></tr>
+<tr><td>Asignación real vs objetivo (Paso 3)</td><td>%</td><td></td><td>¿Desviado &gt;5%? → rebalancear</td></tr>
+<tr><td>Flujo de ingresos del patrimonio</td><td>$</td><td></td><td>¿Crece la máquina?</td></tr>
+<tr><td>Costos totales (fees, impuestos, asesores)</td><td>$</td><td></td><td>¿&lt; 1.5% del patrimonio?</td></tr>
+</table>
+
+<h3>EJERCICIO 6.3 — CADENCIA DE DECISIONES</h3>
+
+<table>
+<tr><th>Cadencia</th><th>Qué se decide</th><th>Quién</th></tr>
+<tr><td><b>Mensual</b></td><td>Rebalanceo si desvío &gt;5% · aportación del mes · pago de impuestos</td><td>Tú + asesor</td></tr>
+<tr><td><b>Trimestral</b></td><td>Revisión de vehículos · nuevas oportunidades contra la IPS</td><td>Tú</td></tr>
+<tr><td><b>Anual</b></td><td>Revisión completa de la IPS · estructuras · equipo · metas</td><td>Tú + equipo</td></tr>
+</table>
+
+<p><b>Calendario concreto:</b></p>
+<ul>
+<li>Día 1 de cada mes → tablero (30 min)</li>
+<li>Última semana de cada trimestre → revisión de cartera (1-2 h)</li>
+<li>Mes de tu cumpleaños → revisión anual completa (medio día)</li>
+</ul>
+
+<h3>EJERCICIO 6.4 — AUTOMATIZACIÓN (QUITAR LA FRICCIÓN)</h3>
+
+<ol>
+<li>Aportación automática el día 1 de cada mes (transferencia programada)</li>
+<li>Documentos en un solo lugar (nube/vault con estructura fija)</li>
+<li>Alertas de desviación si usas un agregador</li>
+<li>Reunión mensual en el calendario (recurrente, no negociable)</li>
+</ul>
+
+<blockquote>
+<p><b>Entregable del Paso 6:</b> mapa patrimonial creado + tablero del mes en curso +</p>
+<p>las 4 automatizaciones configuradas. El plan empieza a vivir solo.</p>
+</blockquote>
+</section>
+<section class="page"><div class="section-tag">PASO 7 · GOBERNANZA FAMILIAR</div><h2>PASO 7 — GOBERNANZA FAMILIAR</h2>
+
+<blockquote>
+<p><i>&quot;Que trascienda. Acuerdos y reglas para que tu patrimonio y tu familia crezcan juntos.&quot;</i></p>
+<p>Objetivo: que el patrimonio sobreviva a su creador y no destruya a la familia.</p>
+</blockquote>
+
+<h3>MARCO: LA GOBERNANZA EN 4 PIEZAS</h3>
+
+<div class='code'>
+<ol>
+<li>VISIÓN FAMILIAR   → ¿para qué existe el patrimonio familiar?</li>
+<li>REGLAS            → ¿quién decide, cómo y con qué límites?</li>
+<li>EDUCACIÓN         → ¿los herederos saben administrar o solo gastar?</li>
+<li>ESTRUCTURA LEGAL  → fideicomisos, testamentos, acuerdos (Paso 4)</li>
+</div>
+</ul>
+
+<h3>EJERCICIO 7.1 — LA CONVERSACIÓN QUE FALTA</h3>
+
+<p>Responde primero tú (15 min), luego con tu pareja/familia:</p>
+
+<ol>
+<li>¿Qué sabe tu familia sobre el patrimonio? (nada / algo / todo)</li>
+<li>¿Qué pasaría con tus finanzas si tú no estás mañana? (¿hay plan o caos?)</li>
+<li>¿Tu familia entiende POR QUÉ inviertes como inviertes? (¿o solo ve los números?)</li>
+</ul>
+
+<blockquote>
+<p>La mayoría de los patrimonios no se pierden por malas inversiones: se pierden</p>
+<p>por falta de acuerdos. La conversación es el primer activo.</p>
+</blockquote>
+
+<h3>EJERCICIO 7.2 — REGLAS DE DECISIÓN FAMILIAR</h3>
+
+<p>Define (mínimo 4 reglas escritas):</p>
+
+<table>
+<tr><th>Regla</th><th>Contenido</th></tr>
+<tr><td>¿Quién decide las inversiones?</td><td></td></tr>
+<tr><td>¿Qué se necesita para una decisión grande (&gt;X% del patrimonio)?</td><td></td></tr>
+<tr><td>¿Cómo se reparten los flujos (dividendos, rentas)?</td><td></td></tr>
+<tr><td>¿Qué pasa con las deudas familiares?</td><td></td></tr>
+<tr><td>¿Cómo se educa a la siguiente generación?</td><td></td></tr>
+</table>
+
+<h3>EJERCICIO 7.3 — PLAN DE CONTINUIDAD (30 DÍAS)</h3>
+
+<table>
+<tr><th>Acción</th><th>Fecha</th><th>Hecho</th></tr>
+<tr><td>Beneficiarios actualizados en TODAS las cuentas</td><td></td><td>☐</td></tr>
+<tr><td>Testamento revisado por abogado</td><td></td><td>☐</td></tr>
+<tr><td>Documento &quot;si yo no estoy&quot;: ubicación de todo (cuentas, seguros, deudas, claves)</td><td></td><td>☐</td></tr>
+<tr><td>Conversación familiar de 1 hora programada</td><td></td><td>☐</td></tr>
+<tr><td>Fideicomiso evaluado (si patrimonio &gt; umbral)</td><td></td><td>☐</td></tr>
+</table>
+
+<h3>EJERCICIO 7.4 — LA EDUCACIÓN DE LOS HEREDEROS</h3>
+
+<p>Programa 1 hora al mes con la familia para hablar de dinero:</p>
+<ul>
+<li>Cómo funciona el patrimonio (sin abrumar: un concepto por sesión)</li>
+<li>El origen del dinero (el &quot;para qué&quot; — paso 2)</li>
+<li>Práctica: presupuesto propio con su asignación</li>
+</ul>
+
+<blockquote>
+<p><b>Entregable del Paso 7:</b> las 4 reglas escritas + plan de continuidad con</p>
+<p>5 acciones completadas en 30 días.</p>
+</blockquote>
+
+<p>---</p>
+
+<h3>CIERRE DEL MÉTODO</h3>
+
+<blockquote>
+<p><b>&quot;Casi nunca es el dinero. Es la decisión.&quot;</b></p>
+<p>El plan completo = IPS firmada + mapa patrimonial + equipo + tablero + gobernanza.</p>
+<p>La diferencia entre quien ordena sus finanzas este año y quien lo pospone</p>
+<p>casi nunca es el dinero — es la decisión de hacer el trabajo de los 7 pasos.</p>
+</blockquote>
+
+<p><b>Checklist final (debes poder decir SÍ a todo):</b></p>
+<ul>
+<li>[ ] Paso 1: entiendo el juego y tengo mis 5 frases</li>
+<li>[ ] Paso 2: metas con número, fecha y prioridad</li>
+<li>[ ] Paso 3: IPS firmada con 3 estrategias</li>
+<li>[ ] Paso 4: inventario de exposición + plan de blindaje</li>
+<li>[ ] Paso 5: equipo auditado (o plan de contratación)</li>
+<li>[ ] Paso 6: mapa + tablero + automatizaciones</li>
+<li>[ ] Paso 7: reglas familiares + plan de continuidad</li>
+</ul>
+
+<p>→ Cuando todo esté en ☐, tu patrimonio tiene estrategia. No &quot;tienes dinero&quot;: tienes un sistema.</p>
+</section>
+<section class="page"><div class="section-tag">ANEXO A · MAPA PATRIMONIAL</div><h2>ANEXO A — MAPA PATRIMONIAL (PLANTILLA)</h2>
+
+<blockquote>
+<p>Registro único de todo tu patrimonio. Si no está aquí, no existe.</p>
+<p>Actualizar mensualmente (Paso 6).</p>
+</blockquote>
+
+<h3>1. ACTIVOS</h3>
+
+<h4>Liquidez (horizonte &lt; 1 año)</h4>
+<table>
+<tr><th>Cuenta / vehículo</th><th>Institución</th><th>Monto</th><th>Tasa</th><th>Notas</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h4>Preservación (1-3 años)</h4>
+<table>
+<tr><th>Vehículo</th><th>Institución</th><th>Monto</th><th>Vencimiento</th><th>Notas</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h4>Ingresos (3-10 años)</h4>
+<table>
+<tr><th>Vehículo</th><th>Monto</th><th>Flujo anual</th><th>Yield</th><th>Notas</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h4>Crecimiento (10+ años)</h4>
+<table>
+<tr><th>Vehículo</th><th>Monto</th><th>Rentab. esperada</th><th>Riesgo (1-5)</th><th>Notas</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h4>Bienes raíces</h4>
+<table>
+<tr><th>Propiedad</th><th>Valor estimado</th><th>Renta / uso</th><th>Deuda asociada</th><th>Notas</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h4>Otros (crypto, coleccionables, préstamos a terceros)</h4>
+<table>
+<tr><th>Activo</th><th>Monto</th><th>Liquidez</th><th>Notas</th></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h3>2. PASIVOS</h3>
+<table>
+<tr><th>Deuda</th><th>Acreedor</th><th>Saldo</th><th>Tasa</th><th>Plazo</th><th>Notas</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h3>3. PATRIMONIO NETO</h3>
+<div class='code'>
+<p>Total activos:    $______</p>
+<p>Total pasivos:    $______</p>
+<p>PATRIMONIO NETO:  $______  (fecha: ____)</p>
+</div>
+
+<h3>4. CONCENTRACIÓN (el riesgo silencioso)</h3>
+<table>
+<tr><th>Clase</th><th>% del patrimonio</th><th>¿&gt;25%? (alerta)</th></tr>
+<tr><td>Bienes raíces</td><td></td><td>☐</td></tr>
+<tr><td>Una sola acción/cripto</td><td></td><td>☐</td></tr>
+<tr><td>Un solo sector</td><td></td><td>☐</td></tr>
+<tr><td>Un solo país/divisa</td><td></td><td>☐</td></tr>
+</table>
+
+<blockquote>
+<p>Si alguna casilla está marcada: tu política (Paso 3) debe tener un plan de</p>
+<p>diversificación explícito para esa clase. La concentración no es un error —</p>
+<p>es un riesgo NO gestionado.</p>
+</blockquote>
+
+<h3>5. DOCUMENTOS CRÍTICOS (ubicación)</h3>
+<table>
+<tr><th>Documento</th><th>Dónde está</th><th>Acceso de emergencia</th></tr>
+<tr><td>Testamento</td><td></td><td></td></tr>
+<tr><td>Seguros (pólizas)</td><td></td><td></td></tr>
+<tr><td>Escrituras / títulos</td><td></td><td></td></tr>
+<tr><td>Cuentas (lista completa)</td><td></td><td></td></tr>
+<tr><td>Claves / acceso digital</td><td></td><td></td></tr>
+</table>
+</section>
+<section class="page"><div class="section-tag">ANEXO B · TABLERO DE SEGUIMIENTO</div><h2>ANEXO B — TABLERO DE SEGUIMIENTO MENSUAL</h2>
+
+<blockquote>
+<p>30 minutos, día 1 de cada mes (Paso 6). Copia esta tabla cada mes nuevo.</p>
+</blockquote>
+
+<h3>MES: ______ / AÑO: ______</h3>
+
+<h4>1. Patrimonio neto</h4>
+<table>
+<tr><th></th><th>Mes pasado</th><th>Este mes</th><th>Δ</th><th>Señal</th></tr>
+<tr><td>Activos</td><td>$</td><td>$</td><td>$</td><td></td></tr>
+<tr><td>Pasivos</td><td>$</td><td>$</td><td>$</td><td></td></tr>
+<tr><td><b>Patrimonio neto</b></td><td>$</td><td>$</td><td>$</td><td>¿↑ por aporte o por mercado?</td></tr>
+</table>
+
+<h4>2. Aportación</h4>
+<table>
+<tr><th>Planeado</th><th>Ejecutado</th><th>Cumplimiento</th><th>Acción si &lt;80%</th></tr>
+<tr><td>$</td><td>$</td><td>%</td><td></td></tr>
+</table>
+
+<h4>3. Asignación real vs objetivo (IPS)</h4>
+<table>
+<tr><th>Estrategia</th><th>Objetivo</th><th>Real</th><th>Desvío</th><th>¿Rebalancear? (&gt;5%)</th></tr>
+<tr><td>Preservación</td><td>%</td><td>%</td><td></td><td>☐</td></tr>
+<tr><td>Ingresos</td><td>%</td><td>%</td><td></td><td>☐</td></tr>
+<tr><td>Crecimiento</td><td>%</td><td>%</td><td></td><td>☐</td></tr>
+</table>
+
+<h4>4. Flujo del patrimonio (la máquina)</h4>
+<table>
+<tr><th>Fuente</th><th>Monto del mes</th><th>Anualizado</th></tr>
+<tr><td>Dividendos/rentas</td><td>$</td><td>$</td></tr>
+<tr><td>Intereses</td><td>$</td><td>$</td></tr>
+<tr><td>Otros</td><td>$</td><td>$</td></tr>
+<tr><td><b>Total flujo</b></td><td>$</td><td>$</td></tr>
+</table>
+
+<h4>5. Costos</h4>
+<table>
+<tr><th>Concepto</th><th>Monto</th><th>% del patrimonio</th></tr>
+<tr><td>Comisiones / fees</td><td>$</td><td></td></tr>
+<tr><td>Impuestos</td><td>$</td><td></td></tr>
+<tr><td>Asesores</td><td>$</td><td></td></tr>
+<tr><td><b>Total</b></td><td>$</td><td>(meta: &lt;1.5%)</td></tr>
+</table>
+
+<h4>6. Decisiones de este mes</h4>
+<ul>
+<li>[ ] Rebalanceo ejecutado (si aplica): ______</li>
+<li>[ ] Aportación del mes realizada: ______</li>
+<li>[ ] Nueva posición evaluada contra IPS: ______ (¿cabe? ☐ sí ☐ no)</li>
+<li>[ ] Impuestos del período cubiertos: ______</li>
+</ul>
+
+<h4>7. Anotaciones / pendientes</h4>
+<div class='code'>
+
+<p>---</p>
+
+<h3>INSTRUCCIONES DE CADENCIA (recordatorio)</h3>
+
+<ul>
+<li><b>Día 1 de cada mes</b>: este tablero (30 min) + aportación automática</li>
+<li><b>Última semana del trimestre</b>: revisión de cartera (1-2 h) con asesor</li>
+<li><b>Mes del cumpleaños</b>: revisión anual completa (IPS, equipo, estructuras, metas)</li>
+</ul>
+
+<blockquote>
+<p>Regla: el tablero NO decide por ti — te muestra. Las decisiones las tomas tú</p>
+<p>contra tu política escrita. Si el tablero muestra algo que tu política no cubre,</p>
+<p>actualiza la política (sección 7 del IPS), no el tablero.</p>
+</blockquote>
+</section>
+  <div class="footer">
+    <div class="brand">The Red Queen — Checkmate the System</div>
+    <div>Wealth Grandmaster · Kit de implementación</div>
+    <div style="margin-top:6px; font-size:11px; opacity:.7;">Material de trabajo personal · No constituye asesoría financiera</div>
+  </div>
+</div>
+
+</body>
+</html>
