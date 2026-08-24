@@ -84,11 +84,6 @@
     color: var(--muted); max-width: none; font-size: 15px;
     margin-top: 10px; line-height: 1.65;
   }
-  .mc-grid {
-    display: grid; grid-template-columns: 360px 1fr;
-    gap: 22px; align-items: start; margin-top: 30px;
-  }
-  @media (max-width: 980px) { .mc-grid { grid-template-columns: 1fr; } }
   .panel {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 16px; padding: 22px; margin-top: 26px;
@@ -218,9 +213,6 @@
     <p>Antes de pagar una evaluación: ¿tu estrategia puede pasar el examen? Con win rate, R:R, cuenta, drawdown permitido y objetivo, esta calculadora corre el problema clásico de la ruina del jugador — vía Monte-Carlo y Kelly — sin límite de trades: cada camino corre hasta lograr el objetivo o ser descalificado. Te da el Kelly prop-ajustado (el riesgo que maximiza tu probabilidad de pasar), la probabilidad de éxito y cuántos trades (y semanas) tomaría.</p>
   </header>
 
-  <div class="mc-grid">
-    <div class="calc-side">
-
   <div class="panel">
     <h2><span class="n">01</span> Tu edge</h2>
     <div class="grid">
@@ -245,8 +237,7 @@
       <div>
         <label for="ddUsd">Drawdown ($)</label>
         <input id="ddUsd" type="number" min="1" step="50" value="2000">
-        <div class="hint">Lo que la prop firm te deja perder antes de descalificarte. Ej: 4% de 50k = $2,000.</div>
-      </div>
+              </div>
       <div>
         <label>Tipo de drawdown</label>
         <div class="pill-row" id="ddTypeRow" style="margin-bottom:0">
@@ -257,8 +248,7 @@
       <div>
         <label for="target">Objetivo ($)</label>
         <input id="target" type="number" min="1" step="50" value="3000">
-        <div class="hint">Lo que necesitas ganar para pasar. Ej: 6% de 50k = $3,000.</div>
-      </div>
+              </div>
       <div>
         <label for="tradesPerWeek">Trades por semana — opcional</label>
         <input id="tradesPerWeek" type="number" min="1" max="100" step="1" value="5">
@@ -276,7 +266,6 @@
   </div>
 
   <div class="err" id="err" hidden></div>
-    </div>
 
   <div class="results" id="results" hidden>
     <div class="kpis">
@@ -299,7 +288,6 @@
   </div>
 
 </div>
-  </div>
 
 <footer>
   <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
