@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expectancy &amp; R-Multiples · Calculadoras TRQ</title>
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f; --surface: #0d0f1e; --card: #12142a; --card-2: #171a36;
+    --border: #252b52; --text: #e8ecff; --muted: #8b92b8;
+    --accent: #ff3b5c; --glow-accent: rgba(255, 59, 92, .35);
+    --up: #34d399; --down: #ff5c7a; --amber: #fbbf24;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+
+  /* ── masthead ─────────────────────── */
+  .masthead { padding: 34px 0 8px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .masthead .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
+  .masthead h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(30px, 4.6vw, 42px); letter-spacing: -.02em; }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
+  .masthead p { color: var(--muted); max-width: none; font-size: 15px; margin-top: 10px; line-height: 1.65; }
+  .masthead p b { color: var(--text); }
+
+  /* ── paneles ──────────────────────── */
+  .panel {
+    margin-top: 26px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px 22px 24px;
+  }
+  .panel h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .panel h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    color: var(--accent); border: 1px solid var(--border); border-radius: 6px;
+    padding: 3px 7px; background: rgba(6, 7, 15, .45);
+  }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media (max-width: 560px) { .grid, .grid-2 { grid-template-columns: 1fr; } }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: .02em; }
+  label .hint { color: #5b6288; font-size: 11px; }
+  input[type="number"] {
+    width: 100%; padding: 10px 12px;
+    background: rgba(6, 7, 15, .55); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    outline: none; transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
+
+  /* ── pills (presets + modo) ───────── */
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pill {
+    padding: 7px 14px; font-size: 12px; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+    background: rgba(6, 7, 15, .45); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .pill:hover { color: var(--text); border-color: #3a4170; }
+  .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 18px rgba(255, 59, 92, .28); }
+
+  /* ── tabla de operaciones ─────────── */
+  .trades-head, .trade-row {
+    display: grid; grid-template-columns: 1fr 96px 88px 30px; gap: 10px; align-items: center;
+  }
+  .trades-head { font-size: 11px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 8px; }
+  .trade-row { margin-bottom: 8px; }
+  .trade-row .r-val {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .trade-row .r-val.pos { color: var(--up); }
+  .trade-row .r-val.neg { color: var(--down); }
+  .trade-row .r-val.zero { color: var(--muted); }
+  .trade-row .del {
+    background: rgba(255, 92, 122, .1); border: 1px solid rgba(255, 92, 122, .4);
+    color: var(--down); border-radius: 8px; width: 30px; height: 30px;
+    font-size: 14px; cursor: pointer; transition: all .15s ease; line-height: 1;
+  }
+  .trade-row .del:hover { background: rgba(255, 92, 122, .22); }
+  .add-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .btn-ghost {
+    padding: 8px 16px; font-size: 12px; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+    background: rgba(6, 7, 15, .45); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all .15s ease;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: #3a4170; }
+  .btn-ghost.blue { border-color: rgba(52, 211, 153, .4); color: var(--up); }
+  .btn-ghost.blue:hover { background: rgba(52, 211, 153, .1); }
+
+  /* ── botones ──────────────────────── */
+  .cta-row { display: flex; gap: 12px; margin-top: 22px; }
+  .run {
+    flex: 1; padding: 14px; border: none; border-radius: 12px; cursor: pointer;
+    background: var(--accent); color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; letter-spacing: .06em;
+    box-shadow: 0 10px 30px -12px rgba(255, 59, 92, .55);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .run:hover { box-shadow: 0 14px 36px -12px rgba(255, 59, 92, .7); }
+  .run:active { transform: scale(0.96); }
+  .run.ghost {
+    flex: 0 0 auto; background: transparent; color: var(--muted);
+    border: 1px solid var(--border); box-shadow: none;
+  }
+  .run.ghost:hover { color: var(--text); border-color: #3a4170; box-shadow: none; }
+  .err {
+    margin-top: 14px; padding: 12px 16px; border-radius: 12px;
+    border: 1px solid rgba(255, 92, 122, .5); background: rgba(255, 92, 122, .08);
+    color: #ffb3c2; font-size: 13px; display: none;
+  }
+
+  /* ── resultados ───────────────────── */
+  .results { margin-top: 26px; display: none; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .kpis .kpi {
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 16px 14px;
+  }
+  .kpi .lab { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+  .kpi .val { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi .val.pos { color: var(--up); }
+  .kpi .val.neg { color: var(--down); }
+  .kpi .val.acc { color: var(--accent); }
+  .kpi .sub { font-size: 11px; color: #5b6288; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+  @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
+
+  /* ── nota + descargo ──────────────── */
+  .note {
+    margin-top: 14px; padding: 14px 16px; border-radius: 12px;
+    border: 1px solid var(--border); background: rgba(6, 7, 15, .4);
+    font-size: 13px; color: var(--muted); line-height: 1.6;
+  }
+  .note.warn { border-color: rgba(255, 92, 122, .5); background: rgba(255, 92, 122, .07); color: #ffb3c2; }
+  .note b { color: var(--text); }
+  .canvas-box { margin-top: 16px; }
+  .canvas-box .cap { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+  canvas { width: 100%; height: auto; background: rgba(6, 7, 15, .4); border: 1px solid var(--border); border-radius: 14px; }
+
+  footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 40px; }
+  .foot-inner { max-width: 780px; margin: 0 auto; padding: 18px 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+  footer span { color: var(--muted); font-size: 12px; }
+  .back { color: var(--muted); text-decoration: none; font-size: 13px; font-family: 'JetBrains Mono', monospace; transition: color .15s ease; }
+  .back:hover { color: var(--accent); }
+  .back::before { content: "← "; }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1240px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 16px var(--glow-accent);
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s ease; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links .back-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); }
+  @media (max-width: 720px) { .nav-links a:not(.back-link) { display: none; } }
+  .back-btn {
+    display: inline-block; margin: 26px 0 0; color: var(--muted);
+    text-decoration: none; font-size: 12px; font-family: 'JetBrains Mono', monospace;
+    transition: color .15s ease;
+  }
+  .back-btn:hover { color: var(--accent); }
+  .back-btn::before { content: "← "; }
+</style>
+</head>
+<body>
+<script>history.scrollRestoration='manual';window.scrollTo(0,0);</script>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a class="back-link" href="../calculadoras/">← Calculadoras</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+<div class="wrap">
+
+  <a class="back-btn" href="../calculadoras/" aria-label="Volver a las calculadoras">Volver a las calculadoras</a>
+  <header class="masthead">
+    <div class="kicker">Calculadoras</div>
+    <h1>Expectancy &amp; <span class="red">R-Multiples</span></h1>
+    <p>Cada operación se expresa como múltiplo del riesgo que asumes (R): si arriesgas $100 y ganas $250, fueron <b>+2.5R</b>. La expectancy dice cuántas R ganas en promedio por operación — el número que separa un sistema con ventaja de uno que solo parece tenerla.</p>
+  </header>
+
+  <div class="panel">
+    <h2><span class="n">01</span> Entrada</h2>
+    <div class="grid">
+      <div>
+        <label for="risk">Riesgo inicial por operación (R, $)</label>
+        <input id="risk" type="number" step="10" min="1" value="100">
+      </div>
+    </div>
+    <div class="pill-row" id="modeRow" style="margin-top:16px">
+      <button class="pill active" data-mode="hist">Por historial</button>
+      <button class="pill" data-mode="sum">Por resumen</button>
+    </div>
+
+    <div id="modeHist">
+      <div class="trades-head">
+        <span>Resultado ($)</span><span style="text-align:right">R-multiple</span><span></span><span></span>
+      </div>
+      <div id="trades"></div>
+      <div class="add-row">
+        <button class="btn-ghost" id="addTrade">+ Añadir operación</button>
+        <button class="btn-ghost blue" id="loadExample">Cargar ejemplo</button>
+      </div>
+    </div>
+
+    <div id="modeSum" style="display:none">
+      <div class="grid">
+        <div>
+          <label for="wr">Win rate (%)</label>
+          <input id="wr" type="number" step="1" min="1" max="99" value="40">
+        </div>
+        <div>
+          <label for="avgWin">Avg Win (R)</label>
+          <input id="avgWin" type="number" step="0.1" min="0.1" value="2">
+        </div>
+        <div>
+          <label for="avgLoss">Avg Loss (R)</label>
+          <input id="avgLoss" type="number" step="0.1" min="0.1" value="1">
+        </div>
+        <div>
+          <label for="nTrades">Operaciones (N)</label>
+          <input id="nTrades" type="number" step="1" min="2" value="50">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <button class="run" id="calcBtn">Calcular</button>
+    <button class="run ghost" id="resetBtn">Reiniciar</button>
+  </div>
+  <div class="err" id="err"></div>
+
+  <div class="results" id="results">
+    <div class="kpis">
+      <div class="kpi">
+        <div class="lab">Expectancy · E[R]</div>
+        <div class="val" id="kExpectancy">—</div>
+        <div class="sub" id="kN">—</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">SQN (calidad)</div>
+        <div class="val" id="kSqn">—</div>
+        <div class="sub" id="kSqnNote">requiere historial</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">Profit factor</div>
+        <div class="val" id="kPf">—</div>
+        <div class="sub">ganancia bruta / pérdida bruta</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">Win rate</div>
+        <div class="val" id="kWr">—</div>
+        <div class="sub">operaciones positivas</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">Avg Win (R)</div>
+        <div class="val pos" id="kAvgWin">—</div>
+        <div class="sub">media de las ganadoras</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">Avg Loss (R)</div>
+        <div class="val neg" id="kAvgLoss">—</div>
+        <div class="sub">media de las perdedoras</div>
+      </div>
+    </div>
+
+    <div class="canvas-box">
+      <div class="cap">Curva de R acumulada</div>
+      <canvas id="curve" width="732" height="280"></canvas>
+      <div class="note" style="margin-top:8px">cada punto = R acumulado tras la operación N · línea punteada = breakeven (0R)</div>
+    </div>
+
+    <div class="canvas-box">
+      <div class="cap">Distribución de R-multiples</div>
+      <canvas id="hist" width="732" height="220"></canvas>
+      <div class="note" style="margin-top:8px">verde = ganancia · rojo = pérdida · línea = expectancy</div>
+    </div>
+
+    <div class="note" id="sqnNote">
+      <b>SQN</b> (Van Tharp): &lt; 1.0 = ventaja frágil · 1.0–1.6 = pobre · 1.6–2.0 = regular · 2.0–2.5 = buena · &gt; 2.5 = excelente. Con menos de ~30 operaciones, el SQN es ruidoso.
+    </div>
+    <div class="note">
+      Cálculo sobre los datos que ingresas. No es predicción ni consejo financiero — la expectancy histórica no garantiza resultados futuros.
+    </div>
+  </div>
+
+</div>
+<footer>
+  <div class="foot-inner">
+    <span>The Red Queen · Calculadoras de trading</span>
+    <a class="back" href="../calculadoras/">Calculadoras</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var riskIn = $("risk"), tradesEl = $("trades"), resultsEl = $("results"), errEl = $("err");
+  var curveCanvas = $("curve"), histCanvas = $("hist");
+  var mode = "hist";
+
+  // ── modo (historial / resumen) ──
+  var modeRow = $("modeRow");
+  modeRow.addEventListener("click", function (e) {
+    var b = e.target.closest(".pill");
+    if (!b) return;
+    modeRow.querySelectorAll(".pill").forEach(function (p) { p.classList.remove("active"); });
+    b.classList.add("active");
+    mode = b.dataset.mode;
+    $("modeHist").style.display = mode === "hist" ? "" : "none";
+    $("modeSum").style.display = mode === "sum" ? "" : "none";
+  });
+
+  // ── filas de operaciones ──
+  function makeRow(result) {
+    var div = document.createElement("div");
+    div.className = "trade-row";
+    var input = document.createElement("input");
+    input.type = "number"; input.step = "1"; input.placeholder = "0";
+    if (result !== undefined) input.value = result;
+    input.addEventListener("input", function () { renderR(div, input); });
+    var rv = document.createElement("span");
+    rv.className = "r-val zero"; rv.textContent = "—";
+    var spacer = document.createElement("span");
+    var del = document.createElement("button");
+    del.className = "del"; del.textContent = "✕"; del.setAttribute("aria-label", "Eliminar operación");
+    del.addEventListener("click", function () { div.remove(); });
+    div.appendChild(input); div.appendChild(rv); div.appendChild(spacer); div.appendChild(del);
+    tradesEl.appendChild(div);
+    input.focus();
+  }
+  function renderR(div, input) {
+    var rv = div.querySelector(".r-val");
+    var risk = parseFloat(riskIn.value);
+    var v = parseFloat(input.value);
+    if (!risk || risk <= 0 || isNaN(v)) { rv.textContent = "—"; rv.className = "r-val zero"; return; }
+    var r = v / risk;
+    rv.textContent = (r > 0 ? "+" : "") + r.toFixed(2) + "R";
+    rv.className = "r-val " + (r > 0 ? "pos" : r < 0 ? "neg" : "zero");
+  }
+  $("addTrade").addEventListener("click", function () { makeRow(); });
+  $("loadExample").addEventListener("click", function () {
+    // sistema 40% WR · avg win ~+2R · avg loss ~−1R (20 operaciones deterministas)
+    var r = [200, 250, 180, 220, -100, -120, -100, -95, 210, 190,
+             -100, -110, -100, 240, -100, -90, -105, 200, 180, -100];
+    tradesEl.innerHTML = "";
+    r.forEach(function (v) { makeRow(v); });
+    riskIn.value = 100;
+  });
+
+  // ── cálculo ──
+  function readHist() {
+    var risk = parseFloat(riskIn.value);
+    if (!risk || risk <= 0) { errEl.textContent = "El riesgo inicial (R) debe ser mayor que 0."; errEl.style.display = "block"; return null; }
+    var rows = tradesEl.querySelectorAll(".trade-row input");
+    var out = [];
+    rows.forEach(function (inp) {
+      var v = parseFloat(inp.value);
+      if (!isNaN(v)) out.push(v / risk);
+    });
+    if (out.length === 0) { errEl.textContent = "Ingresa al menos una operación (o usa el modo resumen)."; errEl.style.display = "block"; return null; }
+    return out;
+  }
+  function readSum() {
+    var wr = parseFloat($("wr").value), aw = parseFloat($("avgWin").value), al = parseFloat($("avgLoss").value), n = parseInt($("nTrades").value, 10);
+    if (isNaN(wr) || wr <= 0 || wr >= 100) { errEl.textContent = "Win rate debe estar entre 1 y 99%."; errEl.style.display = "block"; return null; }
+    if (isNaN(aw) || aw <= 0 || isNaN(al) || al <= 0) { errEl.textContent = "Avg Win y Avg Loss deben ser mayores que 0."; errEl.style.display = "block"; return null; }
+    if (isNaN(n) || n < 2) { errEl.textContent = "Las operaciones (N) deben ser al menos 2."; errEl.style.display = "block"; return null; }
+    return { wr: wr / 100, aw: aw, al: al, n: n };
+  }
+  function mean(a) { return a.reduce(function (x, y) { return x + y; }, 0) / a.length; }
+  function stdS(a) {
+    if (a.length < 2) return 0;
+    var m = mean(a);
+    return Math.sqrt(a.reduce(function (s, x) { return s + (x - m) * (x - m); }, 0) / (a.length - 1));
+  }
+  function fmt(v, d) { return (v > 0 ? "+" : "") + v.toFixed(d === undefined ? 2 : d); }
+
+  $("calcBtn").addEventListener("click", function () {
+    errEl.style.display = "none";
+    if (mode === "hist") {
+      var Rs = readHist();
+      if (!Rs) return;
+      var N = Rs.length;
+      var wins = Rs.filter(function (r) { return r > 0; });
+      var losses = Rs.filter(function (r) { return r < 0; });
+      var wr = wins.length / N * 100;
+      var avgWin = wins.length ? mean(wins) : 0;
+      var avgLoss = losses.length ? Math.abs(mean(losses)) : 0;
+      var exp = mean(Rs);
+      var grossW = wins.reduce(function (a, b) { return a + b; }, 0);
+      var grossL = Math.abs(losses.reduce(function (a, b) { return a + b; }, 0));
+      var pf = grossL > 0 ? grossW / grossL : (grossW > 0 ? Infinity : 0);
+      var sqn = stdS(Rs) > 0 ? Math.sqrt(N) * exp / stdS(Rs) : 0;
+
+      setKpis(exp, sqn, pf, wr, avgWin, avgLoss, N, true);
+      drawCurve(Rs);
+      drawHist(Rs, exp);
+    } else {
+      var s = readSum();
+      if (!s) return;
+      var exp = s.wr * s.aw - (1 - s.wr) * s.al;
+      var pf = (s.wr * s.aw) / ((1 - s.wr) * s.al);
+      setKpis(exp, null, pf, s.wr * 100, s.aw, s.al, s.n, false);
+      drawCurve(null);
+      drawHist(null, exp);
+    }
+    resultsEl.style.display = "block";
+    resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  function setKpis(exp, sqn, pf, wr, avgWin, avgLoss, n, hasHist) {
+    var e = $("kExpectancy");
+    e.textContent = fmt(exp) + "R";
+    e.className = "val " + (exp > 0 ? "pos" : exp < 0 ? "neg" : "acc");
+    $("kN").textContent = "sobre " + n + " operaciones";
+    var s = $("kSqn");
+    if (hasHist && sqn !== null) {
+      s.textContent = sqn.toFixed(2);
+      s.className = "val " + (sqn >= 2 ? "pos" : sqn >= 1 ? "acc" : "neg");
+      $("kSqnNote").textContent = sqn >= 2 ? "buena a excelente" : sqn >= 1 ? "regular" : "ventaja frágil";
+    } else {
+      s.textContent = "—";
+      s.className = "val";
+      $("kSqnNote").textContent = "requiere historial";
+    }
+    $("kPf").textContent = pf === Infinity ? "∞" : pf.toFixed(2);
+    $("kWr").textContent = wr.toFixed(0) + "%";
+    $("kAvgWin").textContent = "+" + avgWin.toFixed(2) + "R";
+    $("kAvgLoss").textContent = "−" + avgLoss.toFixed(2) + "R";
+  }
+
+  // ── canvas (DPR-aware) ──
+  function setupCanvas(cv) {
+    var dpr = window.devicePixelRatio || 1;
+    var cssW = cv.clientWidth || 732;
+    var cssH = parseInt(cv.getAttribute("height"), 10);
+    cv.width = Math.round(cssW * dpr); cv.height = Math.round(cssH * dpr);
+    var ctx = cv.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx: ctx, w: cssW, h: cssH };
+  }
+  function clearCv(ctx, w, h) {
+    ctx.clearRect(0, 0, w, h);
+  }
+  function drawCurve(Rs) {
+    var c = setupCanvas(curveCanvas), ctx = c.ctx, w = c.w, h = c.h;
+    clearCv(ctx, w, h);
+    if (!Rs || Rs.length < 1) return;
+    var cum = []; var acc = 0;
+    Rs.forEach(function (r) { acc += r; cum.push(acc); });
+    var min = Math.min(0, Math.min.apply(null, cum)), max = Math.max(0, Math.max.apply(null, cum));
+    var padL = 46, padR = 14, padT = 14, padB = 26;
+    var x0 = padL, x1 = w - padR, y0 = padT, y1 = h - padB;
+    function X(i) { return x0 + (i / (Rs.length - 1)) * (x1 - x0); }
+    function Y(v) { return y1 - ((v - min) / (max - min || 1)) * (y1 - y0); }
+    // grid + breakeven
+    ctx.strokeStyle = "rgba(37,43,82,.6)"; ctx.lineWidth = 1;
+    var steps = 4;
+    for (var g = 0; g <= steps; g++) {
+      var gy = y0 + (g / steps) * (y1 - y0);
+      ctx.beginPath(); ctx.moveTo(x0, gy); ctx.lineTo(x1, gy); ctx.stroke();
+    }
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = "rgba(139,146,184,.7)";
+    ctx.beginPath(); ctx.moveTo(x0, Y(0)); ctx.lineTo(x1, Y(0)); ctx.stroke();
+    ctx.setLineDash([]);
+    // área bajo la curva
+    ctx.beginPath(); ctx.moveTo(X(0), Y(0));
+    cum.forEach(function (v, i) { ctx.lineTo(X(i), Y(v)); });
+    ctx.lineTo(X(Rs.length - 1), Y(0)); ctx.closePath();
+    var grad = ctx.createLinearGradient(0, y0, 0, y1);
+    grad.addColorStop(0, "rgba(52,211,153,.22)"); grad.addColorStop(1, "rgba(52,211,153,.02)");
+    ctx.fillStyle = grad; ctx.fill();
+    // línea
+    ctx.strokeStyle = "#34d399"; ctx.lineWidth = 2;
+    ctx.beginPath();
+    cum.forEach(function (v, i) { var px = X(i), py = Y(v); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+    ctx.stroke();
+    // puntos
+    ctx.fillStyle = "#34d399";
+    cum.forEach(function (v, i) {
+      ctx.beginPath(); ctx.arc(X(i), Y(v), 2.2, 0, Math.PI * 2); ctx.fill();
+    });
+    // etiquetas de eje
+    ctx.fillStyle = "#5b6288"; ctx.font = "10px 'JetBrains Mono', monospace"; ctx.textAlign = "left";
+    ctx.fillText("0", 4, y1 + 4);
+    ctx.textAlign = "right"; ctx.fillText(Rs.length + " ops", x1, y1 + 4);
+    ctx.textAlign = "right";
+    ctx.fillText(fmt(max, 1) + "R", x1, y0 + 10);
+    ctx.fillText(fmt(min, 1) + "R", x1, y1 - 4);
+  }
+  function drawHist(Rs, exp) {
+    var c = setupCanvas(histCanvas), ctx = c.ctx, w = c.w, h = c.h;
+    clearCv(ctx, w, h);
+    if (!Rs || Rs.length < 1) return;
+    var bins = 24;
+    var lo = Math.min.apply(null, Rs), hi = Math.max.apply(null, Rs);
+    var span = hi - lo || 1;
+    var padL = 8, padR = 8, padT = 8, padB = 20;
+    var x0 = padL, x1 = w - padR, y0 = padT, y1 = h - padB;
+    var counts = new Array(bins).fill(0);
+    Rs.forEach(function (r) {
+      var b = Math.min(bins - 1, Math.max(0, Math.floor((r - lo) / span * bins)));
+      counts[b]++;
+    });
+    var maxC = Math.max.apply(null, counts);
+    var bw = (x1 - x0) / bins;
+    counts.forEach(function (cnt, b) {
+      var cval = lo + (b + 0.5) / bins * span;
+      var bh = (cnt / maxC) * (y1 - y0);
+      ctx.fillStyle = cval >= 0 ? "rgba(52,211,153,.85)" : "rgba(255,92,122,.85)";
+      ctx.fillRect(x0 + b * bw + 1, y1 - bh, bw - 2, bh);
+    });
+    // línea de expectancy
+    var ex = x0 + ((exp - lo) / span) * (x1 - x0);
+    if (ex >= x0 && ex <= x1) {
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = "#fbbf24"; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(ex, y0); ctx.lineTo(ex, y1); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = "#fbbf24"; ctx.font = "10px 'JetBrains Mono', monospace"; ctx.textAlign = "left";
+      ctx.fillText("E " + fmt(exp, 1) + "R", ex + 5, y0 + 10);
+    }
+    ctx.fillStyle = "#5b6288"; ctx.font = "10px 'JetBrains Mono', monospace"; ctx.textAlign = "left";
+    ctx.fillText(fmt(lo, 1) + "R", x0, y1 + 4);
+    ctx.textAlign = "right"; ctx.fillText("+" + hi.toFixed(1) + "R", x1, y1 + 4);
+  }
+
+  var rT;
+  window.addEventListener("resize", function () {
+    clearTimeout(rT);
+    rT = setTimeout(function () {
+      if (resultsEl.style.display !== "none") {
+        if (mode === "hist") {
+          var Rs = readHist(); if (!Rs) return;
+          drawCurve(Rs); drawHist(Rs, parseFloat($("kExpectancy").textContent));
+        }
+      }
+    }, 160);
+  });
+
+  // estado inicial: 5 filas vacías para empezar
+  for (var i = 0; i < 5; i++) makeRow();
+})();
+</script>
+</body>
+</html>
