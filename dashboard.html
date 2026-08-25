@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v32 — Juan Castro</title>
+<title>Odyssey Dashboard v33 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -120,7 +120,7 @@
 <div class="header">
   <div>
     <h1>⚔️ <span>ODYSSEY</span> DASHBOARD</h1>
-    <div class="date">Actualizado: 22 Ago 2026 · Garmin + Fitdays (LePulse)</div>
+    <div class="date">Actualizado: 24 Ago 2026 · Garmin + Fitdays (LePulse)</div>
   </div>
   <div style="text-align:right;font-size:11px;color:var(--muted);">
     Juan Castro · V3 Elite · Semana 17 Ago → 23 Ago
@@ -191,17 +191,17 @@
   </div>
   <div class="kpi-card">
     <div class="label">Sueño anoche</div>
-    <div class="value" style="color:var(--green);">8.0</div>
-    <div class="sub">h · Score 82</div>
-    <div class="target">REM 1.6h · profundo 1.4h ✅</div>
-    <div class="diff positive" style="color:var(--green);">● GOOD — recuperación tras el ensayo</div>
+    <div class="value" style="color:var(--green);">7.6</div>
+    <div class="sub">h · Score 89</div>
+    <div class="target">REM 1.6h · dom 8.9h/91 🏆</div>
+    <div class="diff positive" style="color:var(--green);">● GOOD — base excelente para la semana</div>
   </div>
   <div class="kpi-card">
     <div class="label">HRV anoche</div>
-    <div class="value" style="color:var(--accent);">43</div>
-    <div class="sub">ms <span style="color:var(--accent);">▼ -10 · post-ensayo</span></div>
-    <div class="target">🔬 37 → 43 · recuperando</div>
-    <div class="progress-bar"><div class="fill fill-yellow" style="width:55%"></div></div>
+    <div class="value" style="color:var(--green);">59</div>
+    <div class="sub">ms <span style="color:var(--green);">▲ +16 · pico</span></div>
+    <div class="target">🔬 43 → 59 · recuperación completa</div>
+    <div class="progress-bar"><div class="fill fill-green" style="width:79%"></div></div>
   </div>
 </div>
 
@@ -233,7 +233,9 @@
       <tr><td>Mar 19</td><td class="value-good">8.5h</td><td>1.1h</td><td>1.9h</td><td>89</td><td>49</td><td class="value-good">🏆 EXCELLENT</td></tr>
       <tr><td>Mié 20</td><td>4.4h</td><td class="value-good">1.9h</td><td>0.7h</td><td>66</td><td>53</td><td class="value-warn">● FAIR</td></tr>
       <tr><td>Vie 21</td><td>7.4h</td><td>1.7h</td><td>1.5h</td><td>82</td><td class="value-warn">37 ▼ mín</td><td class="value-warn">● post-ensayo</td></tr>
-      <tr><td><strong>Sáb 22</strong></td><td><strong>8.0h</strong></td><td><strong>1.4h</strong></td><td><strong>1.6h</strong></td><td><strong>82</strong></td><td><strong>43</strong></td><td><strong class="value-good">✅ recuperando</strong></td></tr>
+      <tr><td>Sáb 22</td><td>8.0h</td><td>1.4h</td><td>1.6h</td><td>82</td><td>43</td><td class="value-warn">● recuperando</td></tr>
+      <tr><td>Dom 23</td><td class="value-good">8.9h</td><td>1.4h</td><td class="value-good">2.2h</td><td>91</td><td>51</td><td class="value-good">🏆 EXCELLENT</td></tr>
+      <tr><td><strong>Lun 24</strong></td><td><strong>7.6h</strong></td><td><strong>1.1h</strong></td><td><strong>1.6h</strong></td><td><strong>89</strong></td><td><strong class="value-good">59 📈</strong></td><td><strong class="value-good">🏆 pico HRV</strong></td></tr>
     </table>
     <div style="margin-top:8px;display:flex;gap:8px;font-size:10px;color:var(--muted);flex-wrap:wrap;">
       <span>📊 Promedio: 7.0h/noche</span>
@@ -523,7 +525,85 @@
 </div>
 
 <div class="section" style="margin-bottom:16px;">
-  <h2><span class="emoji">🩸</span>Salud — Biomarcadores <span class="badge">4 exámenes · Feb 2025 → Jun 2026</span></h2>
+  
+<section class="card-section" style="margin-top:28px;">
+  <h2><span class="emoji">🏅</span>ODYSSEY PROTOCOL v2 — FASE AGRESIVA <span class="badge">Matt Damon · The Odyssey</span></h2>
+  <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Objetivo: <strong style="color:var(--green);">77-78 kg · 14-15% grasa · músculo ≥62 kg</strong> en ~12 semanas (16 Nov). Plan agresivo validado con tus datos: el descanso dominical (8.9h/91, HRV 59 pico) demuestra que la recuperación responde al estímulo. Cambios clave vs v1: natación los MARTES (horarios laborales + apertura de piscina), ayuno intermitente 16:8, meta de calorías por sesión, y déficit agresivo -750 kcal.</p>
+
+  <div class="rec-card" style="border-left-color:var(--cyan);">
+    <div class="title">📈 PROYECCIÓN 12 SEMANAS — GRASA ▼ · MÚSCULO ▲ (basado en tu respuesta real al entrenamiento)</div>
+    <div class="body">
+      <svg viewBox="0 0 720 300" style="width:100%;height:auto;background:var(--surface);border-radius:10px;">
+        <line x1="50" y1="244" x2="700" y2="244" stroke="#ffd166" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <text x="40" y="248" text-anchor="end" font-size="9" fill="#ffd166">PESO 77.0 →</text>
+        <line x1="50" y1="225.7" x2="700" y2="225.7" stroke="#4ade80" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <text x="40" y="230" text-anchor="end" font-size="9" fill="#4ade80">GRASA 14.5% →</text>
+        <line x1="50" y1="110" x2="700" y2="110" stroke="#f472b6" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <text x="40" y="114" text-anchor="end" font-size="9" fill="#f472b6">MÚSCULO 63.0 →</text>
+        <polyline points="50.0,45.6 104.2,68.0 158.3,90.4 212.5,112.8 266.7,135.2 320.8,154.4 375.0,173.6 429.2,192.8 483.3,208.8 537.5,221.6 591.7,231.2 645.8,234.4 700.0,237.6" fill="none" stroke="#ffd166" stroke-width="2.2"/>
+        <polyline points="50.0,50.9 104.2,71.4 158.3,92.0 212.5,112.6 266.7,133.1 320.8,150.3 375.0,167.4 429.2,181.1 483.3,194.9 537.5,205.1 591.7,215.4 645.8,222.3 700.0,225.7" fill="none" stroke="#4ade80" stroke-width="2.2"/>
+        <polyline points="50.0,146.0 104.2,158.0 158.3,170.0 212.5,164.0 266.7,152.0 320.8,140.0 375.0,134.0 429.2,128.0 483.3,122.0 537.5,116.0 591.7,110.0 645.8,104.0 700.0,98.0" fill="none" stroke="#f472b6" stroke-width="2.2"/>
+        <text x="50" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">24 Ago</text><text x="158" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">7 Sep</text><text x="267" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">21 Sep</text><text x="375" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">5 Oct</text><text x="483" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">19 Oct</text><text x="592" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">2 Nov</text><text x="700" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">16 Nov</text>
+        <circle cx="50" cy="45.6" r="3.5" fill="#ffd166"/><circle cx="700" cy="237.6" r="3.5" fill="#ffd166"/>
+        <circle cx="50" cy="50.9" r="3.5" fill="#4ade80"/><circle cx="700" cy="225.7" r="3.5" fill="#4ade80"/>
+        <circle cx="50" cy="146.0" r="3.5" fill="#f472b6"/><circle cx="700" cy="98.0" r="3.5" fill="#f472b6"/>
+        <text x="355" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#ffd166">PESO: 83.2 → 77.2 kg (−6.0)</text>
+        <text x="355" y="300" text-anchor="middle" font-size="10" font-weight="700" fill="#4ade80">GRASA: 19.6% → 14.5% (−5.1 kg de grasa)</text>
+        <text x="355" y="92" text-anchor="middle" font-size="10" font-weight="700" fill="#f472b6">MÚSCULO: 62.4 → 63.2 kg (preservar + ganar)</text>
+      </svg>
+      <div style="margin-top:8px;font-size:10.5px;color:var(--muted);">
+        💡 Ritmo proyectado: −0.5 kg grasa/semana con déficit −750 kcal + ayuno 16:8. Tu serie real (18.6→19.6% en 12 días con déficit moderado) valida que el cuerpo responde; con intensidad agresiva la pendiente se acelera. Revisión semanal: si la pérdida de grasa &lt;0.3 kg/semana, −100 kcal más o +1 sesión HIIT.
+      </div>
+    </div>
+  </div>
+
+  <div class="rec-card" style="border-left-color:var(--green);">
+    <div class="title">🥦 NUTRICIÓN AGRESIVA — AYUNO 16:8 + PROTEÍNA ALTA</div>
+    <div class="body">
+      <strong>Déficit agresivo:</strong> 1,850-1,950 kcal/día (−750 kcal vs gasto ~2,650). <strong>Proteína 175-190g</strong> (2.2-2.4g/kg LBM) para blindar el músculo en déficit agresivo.
+      <br><br>
+      <strong>Ayuno intermitente 16:8:</strong> ventana 12:00-20:00. 🧐 Desayuno: solo café negro + agua (el ayuno matutino + entreno en ayunas de fin de semana acelera la oxidación de grasa). Primera comida 12:00 con 45g proteína. 💡 Tu patrón real ya es casi 16:8 natural (entrenas 17:00-20:00, cena temprana) — el cambio es formalizar la ventana y eliminar el picoteo nocturno.
+      <br><br>
+      <strong>💧 Agua adaptada a ti (3L te cuesta):</strong> meta realista <strong>2.5L</strong> + electrolitos (una pizca de sal + limón en el 1er litro) + 1 café + té verde. El déficit agresivo + ayuno sube el riesgo de retención si el agua baja de 2L — 2.5L es el piso, no la meta.
+      <br><br>
+      <strong>Regla Damon (sin gluten):</strong> cero gluten, cero azúcar refinado, cero alcohol, cero lácteos procesados. Carbohidratos 130-160g alrededor del entreno (arroz, papa, avena GF, quinoa). Grasas 50-60g (aguacate, aceite de oliva, nueces, yemas).
+      <br><br>
+      <strong>Jueves (día de ensayo):</strong> comida completa antes de las 17:00 — la noche del ensayo no es para comer, es para tocar. El HRV del viernes bajará por defecto; no lo pelees con comida de más.
+    </div>
+  </div>
+
+  <div class="rec-card" style="border-left-color:var(--accent);">
+    <div class="title">🏋️ PLAN SEMANAL AGRESIVO — con meta de calorías por sesión (equipo: X3 Bar + rings + KBs + Bowflex + paralletas + remo + piscina)</div>
+    <div class="body">
+      <table style="font-size:11px;">
+        <tr><th>Día</th><th>Sesión</th><th>Meta kcal</th><th>Detalle clave</th></tr>
+        <tr><td><strong>Lun</strong></td><td>Upper X3 + Rings</td><td class="value-good">400-450</td><td>Ring pull-ups 4×6-10 · X3 chest press 4×10-12 (burnout) · Ring dips 4×8-12 · lateral raises 4×12-15 · 🔥 series finales a fallo</td></tr>
+        <tr><td><strong>Mar</strong></td><td>🚣 NATACIÓN + Legs</td><td class="value-good">500-550</td><td><strong>Natación 30-40 min (600-900m)</strong> como calentamiento metabólico — tu día fijo de piscina (apertura + horario laboral) · X3 deadlift 4×10-12 · X3 squats 4×10-12 · KB swings 4×20</td></tr>
+        <tr><td><strong>Mié</strong></td><td>Rower HIIT + Core</td><td class="value-good">350-400</td><td>5×500m sprint 85-90% (60s rest) · plank rings 3×60s · 10 min rower steady al final</td></tr>
+        <tr><td><strong>Jue</strong></td><td>Shoulder &lt;17:00 SÍ O SÍ</td><td class="value-good">350-400</td><td>X3 overhead press 4×8-10 · ring push-ups 4×12-15 · X3 curls 3×10-12 · ⚠️ ENSAYO: terminar antes de las 17:00 — la regla que ya costó 2 HRV mínimos</td></tr>
+        <tr><td><strong>Vie</strong></td><td>Posterior + Unilateral</td><td class="value-good">400-450</td><td>X3 squats 4×10-12 · KB RDL single-leg 3×10 · incline DB rows 4×10 · KB clean &amp; press 3×8</td></tr>
+        <tr><td><strong>Sáb</strong></td><td>Sprint / Rower pyramid</td><td class="value-good">350-400</td><td>Pool 8×50m sprint (60s rest) o rower pyramid 250/500/750/500/250 · mañana temprano (ayunas = oxidación de grasa)</td></tr>
+        <tr><td><strong>Dom</strong></td><td>Recovery + 🏀</td><td class="value-good">150-250</td><td>🏀 Basketball (validado: recuperación activa espalda + HRV) · caminata 8-10k pasos · natación suave 15-20 min si la piscina abre</td></tr>
+      </table>
+      <div style="margin-top:8px;font-size:10.5px;color:var(--muted);">
+        💡 Meta semanal de quema: <strong>2,500-3,000 kcal de ejercicio</strong> (5-6 sesiones). Las metas por sesión son el piso — si te sobra gas, añade 5 min de rower o 2 series extra, no bajes la intensidad.
+      </div>
+    </div>
+  </div>
+
+  <div class="rec-card" style="border-left-color:var(--purple);">
+    <div class="title">🧬 DÍA 1 — ARRANQUE (hoy Lun 24)</div>
+    <div class="body">
+      1. 📅 Inicia ayuno 16:8: última comida ayer 20:00, primera hoy 12:00<br>
+      2. 💧 2.5L de agua con electrolitos (sal + limón en el 1er litro)<br>
+      3. 💪 Upper X3 + Rings con meta <strong>400-450 kcal</strong> (hoy es el día: Upper Body — sesión completa, no corta)<br>
+      4. 🧠 Sueño ≥7h — base excelente esta noche (HRV 59 pico, dom 8.9h)
+    </div>
+  </div>
+</section>
+
+
+<h2><span class="emoji">🩸</span>Salud — Biomarcadores <span class="badge">4 exámenes · Feb 2025 → Jun 2026</span></h2>
 
   <div class="swim-kpis">
     <div class="kpi-card">
@@ -655,7 +735,7 @@
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v32 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 22 Ago 2026
+  Odyssey Dashboard v33 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 24 Ago 2026
 </div>
 
 </div>
