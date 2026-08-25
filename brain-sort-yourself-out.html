@@ -233,7 +233,23 @@
     h1 { font-size: 24px; }
     .q { font-size: 15px; }
   }
-</style>
+
+/* ── artículos relacionados ── */
+  .related { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .related-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .related-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .related-list li { font-size: 14px; color: #222; margin: 0; }
+  .related-list a { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--line); transition: text-decoration-color .15s ease; }
+  .related-list a:hover { text-decoration-color: var(--ink); }
+  .rel-why { color: var(--muted); font-size: 13px; }
+/* ── apoya BrAIn ── */
+  .support { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); text-align: center; }
+  .support-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .support-text { font-size: 14px; color: #444; max-width: 480px; margin: 0 auto 14px; line-height: 1.6; }
+  .support-amounts { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+  .sup-btn { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px 22px; background: #fff; text-decoration: none; transition: border-color .15s ease, background .15s ease, color .15s ease; }
+  .sup-btn:hover { border-color: var(--ink); background: var(--ink); color: #fff; }
+  .support-note { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--muted); margin: 0; }</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -473,6 +489,7 @@
   .sup-btn { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px 22px; background: #fff; text-decoration: none; transition: border-color .15s ease, background .15s ease, color .15s ease; }
   .sup-btn:hover { border-color: var(--ink); background: var(--ink); color: #fff; }
   .support-note { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--muted); margin: 0; }
+
 </style></head><body>' +
       '<h1>SIETE PREGUNTAS Y UN PAPEL</h1>' +
       '<div class="f">Mis respuestas · ' + new Date().toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' }) + ' · BrAIn — The Red Queen</div>' +
