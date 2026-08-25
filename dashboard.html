@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v33 — Juan Castro</title>
+<title>Odyssey Dashboard v34 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -112,6 +112,36 @@
   .chart-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 10px; color: var(--muted); margin-top: 8px; }
   .chart-legend span { display: inline-flex; align-items: center; gap: 5px; }
   .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  html { scroll-behavior: smooth; }
+  /* ── Nav sticky ── */
+  .site-nav { position: sticky; top: 0; z-index: 100; display: flex; gap: 6px; align-items: center;
+    background: rgba(10,10,15,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; margin-bottom: 18px;
+    overflow-x: auto; scrollbar-width: thin; }
+  .site-nav::-webkit-scrollbar { height: 4px; }
+  .site-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .nav-chip { flex: 0 0 auto; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.5px;
+    text-transform: uppercase; color: var(--muted); background: var(--surface); border: 1px solid var(--border);
+    border-radius: 999px; padding: 6px 12px; cursor: pointer; transition: all 0.15s ease-out;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+  .nav-chip:hover { color: var(--text); border-color: var(--accent); transform: translateY(-1px); }
+  .nav-chip:active { transform: scale(0.96); }
+  .nav-chip.active { color: var(--bg); background: var(--accent); border-color: var(--accent); font-weight: 700; }
+  .section { scroll-margin-top: 70px; }
+  /* card-section unificado a .section */
+  .card-section { scroll-margin-top: 70px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .card-section h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); text-wrap: balance; }
+  .card-section h2 .badge { font-size: 9px; background: var(--surface); padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-weight: 400; color: var(--muted); }
+  .card-section .rec-card { background: var(--surface); }
+  @media (max-width: 600px) { .site-nav { padding: 6px 8px; } .nav-chip { font-size: 9px; padding: 5px 9px; } }
+  /* ── top button ── */
+  .to-top { position: fixed; bottom: 20px; right: 20px; z-index: 90; width: 42px; height: 42px;
+    border-radius: 50%; background: var(--card); border: 1px solid var(--accent); color: var(--accent);
+    font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s ease-out, transform 0.15s ease-out; }
+  .to-top.visible { opacity: 1; pointer-events: auto; }
+  .to-top:active { transform: scale(0.96); }
+  .to-top:hover { background: var(--accent); color: var(--bg); }
 </style>
 </head>
 <body>
@@ -126,6 +156,21 @@
     Juan Castro · V3 Elite · Semana 17 Ago → 23 Ago
   </div>
 </div>
+
+
+<nav class="site-nav" aria-label="Secciones del dashboard">
+  <a class="nav-chip" href="#top">⚔️ Inicio</a>
+  <a class="nav-chip" href="#composicion">🧬 Composición</a>
+  <a class="nav-chip" href="#sueno">📊 Sueño</a>
+  <a class="nav-chip" href="#visual">📈 Visual</a>
+  <a class="nav-chip" href="#semana-ant">💪 Semana Ant.</a>
+  <a class="nav-chip" href="#semana-act">📅 Semana Act.</a>
+  <a class="nav-chip" href="#tracker">🔄 Tracker</a>
+  <a class="nav-chip" href="#analisis">🧠 Análisis</a>
+  <a class="nav-chip" href="#natacion">🏊 Natación</a>
+  <a class="nav-chip" href="#odyssey">🏅 Odyssey</a>
+  <a class="nav-chip" href="#salud">🩸 Salud</a>
+</nav>
 
 <div class="athlete-row">
   <div class="athlete-card">
@@ -206,7 +251,7 @@
 </div>
 
 <div class="grid two-col" style="margin-bottom:16px;">
-  <div class="section">
+  <div class="section" id="composicion">
     <h2><span class="emoji">🧬</span>Composición y Sueño <span class="badge">últimos 3 días</span></h2>
     <table>
       <tr><th>Métrica</th><th>20 Ago</th><th>21 Ago</th><th>Hoy 22</th></tr>
@@ -223,7 +268,7 @@
     <div style="margin-top:8px;font-size:10px;color:var(--muted);">🔬 Regla confirmada: jueves nocturno + ensayo → HRV viernes 37 (mínimo) · músculo recupera (62.4) · natación interrumpida hoy (cerraron la piscina).</div>
     <div style="margin-top:8px;font-size:10px;color:var(--muted);">✅ Pesos 18-20 capturados (token Gmail renovado) · los nocturnos Mar-Mié no rompieron el HRV (47→49→53).</div>
   </div>
-  <div class="section">
+  <div class="section" id="sueno">
     <h2><span class="emoji">📊</span>Histórico de Sueño (7 días)</h2>
     <table>
       <tr><th>Día</th><th>Total</th><th>Profundo</th><th>REM</th><th>Score</th><th>HRV</th><th>Status</th></tr>
@@ -252,7 +297,7 @@
   </div>
 </div>
 
-<div class="section" style="margin-bottom:16px;">
+<div class="section" id="visual" style="margin-bottom:16px;">
   <h2><span class="emoji">📈</span>Análisis Visual — Composición + Recuperación <span class="badge">11 Ago → 17 Ago · gráfica de apoyo</span></h2>
 
   <div class="chart-grid">
@@ -321,8 +366,8 @@
 </div>
 
 <div class="grid three-col" style="margin-bottom:16px;">
-  <div class="section">
-    <h2><span class="emoji">💪</span>Semana Anterior <span class="badge">10 Ago → 16 Ago · cierre</span></h2>
+  <div class="section" id="semana-ant">
+    <h2><span class="emoji">💪</span>Semana Anterior <span class="badge">17 Ago → 23 Ago · cierre</span></h2>
     <div class="cal-grid">
       <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
@@ -337,8 +382,8 @@
     </div>
     <div class="week-summary"><span>🟡 4/7 · ✗ 1 (vie) · ⏳ 2</span><span>🚣 Sáb: natación corta 11m (cerraron la piscina)</span></div>
   </div>
-  <div class="section">
-    <h2><span class="emoji">📅</span>Semana Actual <span class="badge">17 Ago → 23 Ago</span></h2>
+  <div class="section" id="semana-act">
+    <h2><span class="emoji">📅</span>Semana Actual <span class="badge">24 Ago → 30 Ago</span></h2>
     <div class="cal-grid">
       <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
@@ -355,7 +400,7 @@
     </div>
     <div class="week-summary"><span>🟢 4/7 · ⏳ 3</span><span>🟢 Jue 20: Shoulder hecho 19:43 (nocturno recuperado)</span></div>
   </div>
-  <div class="section">
+  <div class="section" id="tracker">
     <h2><span class="emoji">🔄</span>Tracker Diario</h2>
     <table>
       <tr><th>Día</th><th>Entreno</th><th>Peso</th><th>Grasa</th><th>Sueño</th><th>HRV</th><th>Pasos</th></tr>
@@ -374,8 +419,8 @@
   </div>
 </div>
 
-<div class="section" style="margin-bottom:16px;">
-  <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 17 Ago</h2>
+<div class="section" id="analisis" style="margin-bottom:16px;">
+  <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 24 Ago</h2>
 
   <div class="rec-card info" style="border-left-color:var(--purple);">
     <div class="title">🧭 Contexto: tu rutina semanal explica el sueño y el HRV mejor que el entreno</div>
@@ -466,7 +511,7 @@
   </div>
 </div>
 
-<div class="section" style="margin-bottom:16px;">
+<div class="section" id="natacion" style="margin-bottom:16px;">
   <h2><span class="emoji">🏊</span>Rendimiento en Natación <span class="badge">4 sesiones · 20 días</span></h2>
 
   <div class="swim-kpis">
@@ -524,9 +569,9 @@
   </div>
 </div>
 
-<div class="section" style="margin-bottom:16px;">
+<div class="section" id="salud" style="margin-bottom:16px;">
   
-<section class="card-section" style="margin-top:28px;">
+<section class="card-section" id="odyssey" style="margin-top:28px;">
   <h2><span class="emoji">🏅</span>ODYSSEY PROTOCOL v2 — FASE AGRESIVA <span class="badge">Matt Damon · The Odyssey</span></h2>
   <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Objetivo: <strong style="color:var(--green);">77-78 kg · 14-15% grasa · músculo ≥62 kg</strong> en ~12 semanas (16 Nov). Plan agresivo validado con tus datos: el descanso dominical (8.9h/91, HRV 59 pico) demuestra que la recuperación responde al estímulo. Cambios clave vs v1: natación los MARTES (horarios laborales + apertura de piscina), ayuno intermitente 16:8, meta de calorías por sesión, y déficit agresivo -750 kcal.</p>
 
@@ -751,9 +796,36 @@
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v33 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 24 Ago 2026
+  Odyssey Dashboard v34 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 24 Ago 2026
 </div>
 
 </div>
+
+<script>
+(function () {
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.nav-chip'));
+  var sections = chips.map(function (c) { return document.querySelector(c.getAttribute('href')); });
+  var toTop = document.createElement('button');
+  toTop.className = 'to-top'; toTop.innerHTML = '↑'; toTop.setAttribute('aria-label', 'Volver arriba');
+  document.body.appendChild(toTop);
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () {
+      var y = window.scrollY || document.documentElement.scrollTop;
+      toTop.classList.toggle('visible', y > 600);
+      var current = 0;
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i] && sections[i].offsetTop - 90 <= y) current = i;
+      }
+      chips.forEach(function (c, i) { c.classList.toggle('active', i === current); });
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+})();
+</script>
 </body>
 </html>
