@@ -8,18 +8,7 @@
 La riqueza no se construye "ahorrando" ni "invirtiendo en lo que todos invierten".
 Se construye entendiendo 4 piezas que forman un sistema:
 
-```
-┌─────────────────────────────────────────────────────┐
-│                 EL JUEGO REAL                       │
-│                                                     │
-│  1. ACTIVOS  →  generan  →  2. FLUJOS  →  financian │
-│                                                     │
-│  3. PASIVOS ←  consumen ←  esos flujos              │
-│                                                     │
-│  4. ESTRUCTURA (legal/fiscal) decide cuánto de lo   │
-│     que generas se queda contigo                    │
-└─────────────────────────────────────────────────────┘
-```
+![El Juego Real de la Riqueza — diagrama](juego-real-riqueza.png)
 
 **Los 3 errores del principiante (y su corrección):**
 

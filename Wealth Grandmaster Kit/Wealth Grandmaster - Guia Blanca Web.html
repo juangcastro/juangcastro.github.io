@@ -63,7 +63,10 @@
     table, blockquote, .code { break-inside: avoid; page-break-inside: avoid; }
   }
 
-  /* ── nav TRQ estándar ── */
+  .diagram { margin: 16px 0; text-align: center; }
+  .diagram img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+
+
   nav {
     position: sticky; top: 0; z-index: 100;
     background: rgba(255, 255, 255, .94);
@@ -86,8 +89,6 @@
   .nav-links a:hover { color: var(--text); }
   .nav-links .active { color: var(--text); font-weight: 600; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
   @media (max-width: 560px) { .nav-links a:not(.active) { display: none; } }
-
-  /* ── layout con TOC lateral ── */
   .layout { max-width: 1080px; margin: 0 auto; display: flex; gap: 32px; padding: 32px 24px; }
   .toc {
     position: sticky; top: 76px; align-self: flex-start;
@@ -224,18 +225,7 @@
 <p>La riqueza no se construye &quot;ahorrando&quot; ni &quot;invirtiendo en lo que todos invierten&quot;.</p>
 <p>Se construye entendiendo 4 piezas que forman un sistema:</p>
 
-<div class='code'>
-<p>┌─────────────────────────────────────────────────────┐</p>
-<p>│                 EL JUEGO REAL                       │</p>
-<p>│                                                     │</p>
-<p>│  1. ACTIVOS  →  generan  →  2. FLUJOS  →  financian │</p>
-<p>│                                                     │</p>
-<p>│  3. PASIVOS ←  consumen ←  esos flujos              │</p>
-<p>│                                                     │</p>
-<p>│  4. ESTRUCTURA (legal/fiscal) decide cuánto de lo   │</p>
-<p>│     que generas se queda contigo                    │</p>
-<p>└─────────────────────────────────────────────────────┘</p>
-</div>
+<div class="diagram"><img src="juego-real-riqueza.png" alt="El Juego Real de la Riqueza — diagrama"></div>
 
 <p><b>Los 3 errores del principiante (y su corrección):</b></p>
 
@@ -967,7 +957,6 @@
 
 
 <script>
-  // scrollspy + smooth scroll
   const tocLinks = document.querySelectorAll('.toc a[href^="#"]');
   const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
   window.addEventListener('scroll', () => {

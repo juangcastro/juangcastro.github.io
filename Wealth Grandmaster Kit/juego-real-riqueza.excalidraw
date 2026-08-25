@@ -1,0 +1,361 @@
+{
+ "type": "excalidraw",
+ "version": 2,
+ "source": "hermes-agent",
+ "elements": [
+  {
+   "type": "rectangle",
+   "id": "activos",
+   "x": 80,
+   "y": 100,
+   "width": 240,
+   "height": 90,
+   "roundness": {
+    "type": 3
+   },
+   "backgroundColor": "#a5d8ff",
+   "fillStyle": "solid",
+   "strokeColor": "#1e1e1e",
+   "strokeWidth": 2,
+   "roughness": 1,
+   "boundElements": [
+    {
+     "id": "t_activos",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "type": "text",
+   "id": "t_activos",
+   "x": 85,
+   "y": 133.0,
+   "width": 230,
+   "height": 25,
+   "text": "ACTIVOS\nlo que genera flujo",
+   "fontSize": 20,
+   "fontFamily": 1,
+   "strokeColor": "#1e1e1e",
+   "textAlign": "center",
+   "verticalAlign": "middle",
+   "containerId": "activos",
+   "originalText": "ACTIVOS\nlo que genera flujo",
+   "autoResize": true
+  },
+  {
+   "type": "rectangle",
+   "id": "flujos",
+   "x": 520,
+   "y": 100,
+   "width": 240,
+   "height": 90,
+   "roundness": {
+    "type": 3
+   },
+   "backgroundColor": "#b2f2bb",
+   "fillStyle": "solid",
+   "strokeColor": "#1e1e1e",
+   "strokeWidth": 2,
+   "roughness": 1,
+   "boundElements": [
+    {
+     "id": "t_flujos",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "type": "text",
+   "id": "t_flujos",
+   "x": 525,
+   "y": 133.0,
+   "width": 230,
+   "height": 25,
+   "text": "FLUJOS\nrentas · dividendos · intereses",
+   "fontSize": 20,
+   "fontFamily": 1,
+   "strokeColor": "#1e1e1e",
+   "textAlign": "center",
+   "verticalAlign": "middle",
+   "containerId": "flujos",
+   "originalText": "FLUJOS\nrentas · dividendos · intereses",
+   "autoResize": true
+  },
+  {
+   "type": "rectangle",
+   "id": "pasivos",
+   "x": 300,
+   "y": 320,
+   "width": 240,
+   "height": 90,
+   "roundness": {
+    "type": 3
+   },
+   "backgroundColor": "#ffc9c9",
+   "fillStyle": "solid",
+   "strokeColor": "#1e1e1e",
+   "strokeWidth": 2,
+   "roughness": 1,
+   "boundElements": [
+    {
+     "id": "t_pasivos",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "type": "text",
+   "id": "t_pasivos",
+   "x": 305,
+   "y": 353.0,
+   "width": 230,
+   "height": 25,
+   "text": "PASIVOS\nlo que consume flujo",
+   "fontSize": 20,
+   "fontFamily": 1,
+   "strokeColor": "#1e1e1e",
+   "textAlign": "center",
+   "verticalAlign": "middle",
+   "containerId": "pasivos",
+   "originalText": "PASIVOS\nlo que consume flujo",
+   "autoResize": true
+  },
+  {
+   "type": "rectangle",
+   "id": "estructura",
+   "x": 300,
+   "y": 520,
+   "width": 280,
+   "height": 110,
+   "roundness": {
+    "type": 3
+   },
+   "backgroundColor": "#d0bfff",
+   "fillStyle": "solid",
+   "strokeColor": "#1e1e1e",
+   "strokeWidth": 2,
+   "roughness": 1,
+   "boundElements": [
+    {
+     "id": "t_estructura",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "type": "text",
+   "id": "t_estructura",
+   "x": 305,
+   "y": 563.0,
+   "width": 270,
+   "height": 25,
+   "text": "ESTRUCTURA\nlegal y fiscal\n(cuánto se queda contigo)",
+   "fontSize": 20,
+   "fontFamily": 1,
+   "strokeColor": "#1e1e1e",
+   "textAlign": "center",
+   "verticalAlign": "middle",
+   "containerId": "estructura",
+   "originalText": "ESTRUCTURA\nlegal y fiscal\n(cuánto se queda contigo)",
+   "autoResize": true
+  },
+  {
+   "type": "arrow",
+   "id": "a1",
+   "x": 320,
+   "y": 145,
+   "width": 200,
+   "height": 0,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     200,
+     0
+    ]
+   ],
+   "endArrowhead": "arrow",
+   "strokeColor": "#1e1e1e",
+   "strokeWidth": 2,
+   "roughness": 1,
+   "boundElements": [
+    {
+     "id": "t_a1",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "type": "text",
+   "id": "t_a1",
+   "x": 380.0,
+   "y": 123,
+   "width": 80,
+   "height": 18,
+   "text": "generan",
+   "fontSize": 16,
+   "fontFamily": 1,
+   "strokeColor": "#495057",
+   "textAlign": "center",
+   "verticalAlign": "middle",
+   "containerId": "a1",
+   "originalText": "generan",
+   "autoResize": true
+  },
+  {
+   "type": "arrow",
+   "id": "a2",
+   "x": 640,
+   "y": 190,
+   "width": 0,
+   "height": 130,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     130
+    ]
+   ],
+   "endArrowhead": "arrow",
+   "strokeColor": "#1e1e1e",
+   "strokeWidth": 2,
+   "roughness": 1,
+   "boundElements": [
+    {
+     "id": "t_a2",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "type": "text",
+   "id": "t_a2",
+   "x": 600.0,
+   "y": 168,
+   "width": 80,
+   "height": 18,
+   "text": "financian",
+   "fontSize": 16,
+   "fontFamily": 1,
+   "strokeColor": "#495057",
+   "textAlign": "center",
+   "verticalAlign": "middle",
+   "containerId": "a2",
+   "originalText": "financian",
+   "autoResize": true
+  },
+  {
+   "type": "arrow",
+   "id": "a3",
+   "x": 540,
+   "y": 320,
+   "width": 0,
+   "height": -130,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     -130
+    ]
+   ],
+   "endArrowhead": "arrow",
+   "strokeColor": "#1e1e1e",
+   "strokeWidth": 2,
+   "roughness": 1,
+   "strokeStyle": "dashed",
+   "boundElements": [
+    {
+     "id": "t_a3",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "type": "text",
+   "id": "t_a3",
+   "x": 500.0,
+   "y": 298,
+   "width": 80,
+   "height": 18,
+   "text": "consumen",
+   "fontSize": 16,
+   "fontFamily": 1,
+   "strokeColor": "#495057",
+   "textAlign": "center",
+   "verticalAlign": "middle",
+   "containerId": "a3",
+   "originalText": "consumen",
+   "autoResize": true
+  },
+  {
+   "type": "arrow",
+   "id": "a4",
+   "x": 440,
+   "y": 520,
+   "width": 0,
+   "height": -300,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     -300
+    ]
+   ],
+   "endArrowhead": "arrow",
+   "strokeColor": "#1e1e1e",
+   "strokeWidth": 2,
+   "roughness": 1,
+   "boundElements": [
+    {
+     "id": "t_a4",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "type": "text",
+   "id": "t_a4",
+   "x": 400.0,
+   "y": 498,
+   "width": 80,
+   "height": 18,
+   "text": "decide cuánto\nse queda contigo",
+   "fontSize": 16,
+   "fontFamily": 1,
+   "strokeColor": "#495057",
+   "textAlign": "center",
+   "verticalAlign": "middle",
+   "containerId": "a4",
+   "originalText": "decide cuánto\nse queda contigo",
+   "autoResize": true
+  },
+  {
+   "type": "text",
+   "id": "nota",
+   "x": 80,
+   "y": 680,
+   "width": 500,
+   "height": 60,
+   "text": "Los 3 errores: confundir ingresos con riqueza · confundir activos con \"cosas que suben\" · confundir diversificar con dispersar.",
+   "fontSize": 16,
+   "fontFamily": 1,
+   "strokeColor": "#495057",
+   "originalText": "",
+   "autoResize": true
+  }
+ ],
+ "appState": {
+  "viewBackgroundColor": "#ffffff"
+ }
+}
