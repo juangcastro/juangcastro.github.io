@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Guía de estilos GUI</title>
+<style>
+  @page { margin: 0; size: Letter; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body {
+    background: #0d0e14;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #e8ecff;
+    font-size: 13.5px; line-height: 1.5;
+  }
+  .page { min-height: 100vh; padding: 34px 38px; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+
+  .cover { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; overflow:hidden; }
+  .cover::before {
+    content:""; position:absolute; inset:0;
+    background:
+      radial-gradient(700px 420px at 18% 8%, rgba(139,92,246,.28), transparent 60%),
+      radial-gradient(700px 420px at 82% 92%, rgba(0,229,255,.22), transparent 60%),
+      radial-gradient(520px 320px at 55% 45%, rgba(255,178,43,.14), transparent 60%);
+  }
+  .cover > * { position:relative; }
+  .cover .ck { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.4em; color:#8b92b8; text-transform:uppercase; margin-bottom:20px; }
+  .cover h1 {
+    font-size: clamp(42px, 6.5vw, 68px); font-weight:800; letter-spacing:-.02em; margin-bottom:16px;
+    background: linear-gradient(90deg,#00e5ff,#8b5cf6,#ff2e97,#ffb22b);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .cover .csub { font-size:16.5px; color:#c6cbe8; max-width:600px; margin-bottom:36px; }
+  .cover .cchips { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:20px; }
+  .chip { font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.14em; padding:9px 18px; border-radius:999px; border:1px solid; text-transform:uppercase; }
+  .chip.c1 { color:#00e5ff; border-color:#00e5ff; }
+  .chip.c2 { color:#f4eee0; border-color:#f4eee0; }
+  .chip.c3 { color:#ffb22b; border-color:#ffb22b; }
+  .cover .cmeta { font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5d638a; letter-spacing:.22em; text-transform:uppercase; }
+  .cover .cbar { width:64px; height:3px; background:linear-gradient(90deg,#00e5ff,#ff2e97,#ffb22b); border-radius:2px; margin:22px auto 0; }
+
+  .phead { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; padding-bottom:10px; border-bottom:1px solid #252b52; }
+  .pnum { font-family:'JetBrains Mono',monospace; font-size:12px; color:#00e5ff; font-weight:700; }
+  .pref { font-family:'JetBrains Mono',monospace; font-size:10px; color:#8b92b8; letter-spacing:.14em; text-transform:uppercase; }
+
+  .tag-row { display:flex; gap:10px; align-items:center; margin-bottom:12px; }
+  .tag { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700; letter-spacing:.16em; padding:4px 12px; border-radius:6px; border:1px solid var(--ac); color:var(--ac); text-transform:uppercase; }
+  .tag2 { font-family:'JetBrains Mono',monospace; font-size:10px; color:#8b92b8; letter-spacing:.1em; text-transform:uppercase; }
+  .ah { font-size:30px; font-weight:800; letter-spacing:-.01em; margin-bottom:8px; color:var(--ac); }
+  .adesc { color:#c6cbe8; font-size:14px; max-width:660px; margin-bottom:20px; }
+  .tokens { display:flex; align-items:center; gap:14px; margin-top:16px; padding:10px 14px; background:#12142a; border:1px solid #252b52; border-radius:12px; font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#c6cbe8; }
+  .tl { font-size:9px; letter-spacing:.2em; color:#8b92b8; }
+
+  /* catálogo con mockups */
+  .mgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .mcard { break-inside:avoid; page-break-inside:avoid; }
+  .mcard > div { box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+
+  @media print {
+    body { background:#0d0e14 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .page { min-height:100vh; }
+    .mcard { break-inside:avoid; page-break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="page cover">
+    <div class="ck">Red Queen · Design System</div>
+    <h1>Guía de estilos GUI</h1>
+    <p class="csub">91 estilos de interfaz documentados: los 6 aprobados por Juan con interfaces de ejemplo completas, y 84 estilos de referencia con mockup visual de cada uno.</p>
+    <div class="cchips">
+      <span class="chip c1">Cyberpunk / Neuromancer</span>
+      <span class="chip c2">Ivory Terminal</span>
+      <span class="chip c3">Golden Noir</span>
+      <span class="chip" style="color:#e8ecff;border-color:#e8ecff">Arcade Ivory</span>
+      <span class="chip" style="color:#5E6B88;border-color:#5E6B88">Slate Manual</span>
+      <span class="chip" style="color:#ff3b5c;border-color:#ff3b5c">The Red Queen</span>
+      <span class="chip" style="color:#FA8072;border-color:#FA8072">StatMap</span>
+    </div>
+    <div class="cbar"></div>
+    <div class="cmeta">Agosto 2026 · theredqueen.co · 91 estilos</div>
+  </div>
+
+  <div class="page">
+  <div class="phead"><span class="pnum">01</span><span class="pref">Aprobado · Neuromancer Council · theredqueen.co</span></div>
+  <div class="tag-row"><span class="tag" style="--ac:#00e5ff">Cyberpunk</span><span class="tag2">dashboard · trading · informes</span></div>
+  <h2 class="ah" style="--ac:#00e5ff">Cyberpunk / Neuromancer</h2>
+  <p class="adesc">Neón sobre casi-negro. Cyan, magenta, violeta eléctrico, verde matrix y ámbar. JetBrains Mono. El estilo por defecto de Juan para todo lo técnico: dashboards, informes del Consejo de inversión y material de trading.</p>
+  
+<div class="mock" style="background:#06070f;border:1px solid #252b52;border-radius:14px;padding:0;font-family:'JetBrains Mono',monospace;overflow:hidden">
+  <!-- nav -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid #252b52;background:rgba(13,15,30,.8)">
+    <span style="color:#00e5ff;font-weight:700;letter-spacing:.2em;text-shadow:0 0 12px rgba(0,229,255,.5)">NEUROMANCER<span style="color:#ff2e97">_</span></span>
+    <span style="display:flex;gap:16px;font-size:9px;color:#8b92b8;letter-spacing:.1em"><span style="color:#e8ecff">CONSEJO</span><span>PORTAFOLIO</span><span>SCREENING</span><span>REPORTES</span></span>
+    <span style="background:linear-gradient(90deg,#00ff9d,#00e5ff);color:#06070f;font-size:9px;font-weight:700;padding:6px 12px;border-radius:8px;letter-spacing:.1em">NUEVO ANÁLISIS</span>
+  </div>
+  <!-- KPI row -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#252b52;border-bottom:1px solid #252b52">
+    <div style="background:#0d0f1e;padding:12px 16px">
+      <div style="font-size:8px;color:#8b92b8;letter-spacing:.18em">NQ FUTURES</div>
+      <div style="font-size:16px;color:#00ff9d;font-weight:700;text-shadow:0 0 10px rgba(0,255,157,.5)">▲ 24,815</div>
+    </div>
+    <div style="background:#0d0f1e;padding:12px 16px">
+      <div style="font-size:8px;color:#8b92b8;letter-spacing:.18em">DÍA</div>
+      <div style="font-size:16px;color:#ff2e97;font-weight:700;text-shadow:0 0 10px rgba(255,46,151,.5)">▼ -0.42%</div>
+    </div>
+    <div style="background:#0d0f1e;padding:12px 16px">
+      <div style="font-size:8px;color:#8b92b8;letter-spacing:.18em">CONSEJO</div>
+      <div style="font-size:16px;color:#e8ecff;font-weight:700">HOLD 6/10</div>
+    </div>
+    <div style="background:#0d0f1e;padding:12px 16px">
+      <div style="font-size:8px;color:#8b92b8;letter-spacing:.18em">RARE EARTH</div>
+      <div style="font-size:16px;color:#8b5cf6;font-weight:700;text-shadow:0 0 10px rgba(139,92,246,.5)">NEO BUY 7</div>
+    </div>
+  </div>
+  <!-- tabla de tickers -->
+  <div style="padding:14px 20px">
+    <div style="font-size:9px;color:#00e5ff;letter-spacing:.2em;margin-bottom:8px">SCREENING · TIERRAS RARAS</div>
+    <table style="width:100%;border-collapse:collapse;font-size:10px">
+      <tr style="color:#8b92b8;font-size:8px;letter-spacing:.14em;border-bottom:1px solid #252b52">
+        <td style="padding:5px 4px">TICKER</td><td>PRECIO</td><td>POSTURA</td><td>CONV</td><td style="text-align:right">SENSIBILIDAD</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(37,43,82,.5)">
+        <td style="padding:6px 4px;color:#00e5ff;font-weight:700">NEO</td><td style="color:#e8ecff">C$41.93</td>
+        <td><span style="background:rgba(0,255,157,.1);border:1px solid #00ff9d;color:#00ff9d;font-size:8px;font-weight:700;padding:2px 8px;border-radius:6px;letter-spacing:.1em">BUY</span></td>
+        <td style="color:#e8ecff">7/10</td><td style="text-align:right;color:#8b92b8">NdPr +$10 → +EPS</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(37,43,82,.5)">
+        <td style="padding:6px 4px;color:#00e5ff;font-weight:700">UUUU</td><td style="color:#e8ecff">$14.14</td>
+        <td><span style="background:rgba(0,255,157,.1);border:1px solid #00ff9d;color:#00ff9d;font-size:8px;font-weight:700;padding:2px 8px;border-radius:6px;letter-spacing:.1em">BUY</span></td>
+        <td style="color:#e8ecff">6/10</td><td style="text-align:right;color:#8b92b8">uranio + REE</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 4px;color:#00e5ff;font-weight:700">MP</td><td style="color:#e8ecff">$51.11</td>
+        <td><span style="background:rgba(255,176,32,.1);border:1px solid #ffb020;color:#ffb020;font-size:8px;font-weight:700;padding:2px 8px;border-radius:6px;letter-spacing:.1em">HOLD</span></td>
+        <td style="color:#e8ecff">7/10</td><td style="text-align:right;color:#8b92b8">fwd P/E 99</td>
+      </tr>
+    </table>
+  </div>
+  <!-- footer bar -->
+  <div style="display:flex;gap:10px;align-items:center;padding:10px 20px;border-top:1px solid #252b52;background:rgba(13,15,30,.8)">
+    <span style="background:linear-gradient(90deg,#00ff9d,#00e5ff);color:#06070f;font-size:9px;font-weight:700;padding:7px 14px;border-radius:8px">VER INFORME →</span>
+    <span style="background:rgba(255,46,151,.12);border:1px solid #ff2e97;color:#ff2e97;font-size:9px;font-weight:700;padding:7px 14px;border-radius:8px">ALERTA DILUCIÓN</span>
+    <span style="font-size:8.5px;color:#5d638a;margin-left:auto">SYNC 08-AGO-2026 · β 1.65</span>
+  </div>
+</div>
+  <div class="tokens"><span class="tl">TOKENS</span><span>bg #06070f · cyan #00e5ff · magenta #ff2e97 · violeta #8b5cf6 · verde #00ff9d · ámbar #ffb020 · rojo #ff4d6d</span></div>
+</div>
+  <div class="page">
+  <div class="phead"><span class="pnum">02</span><span class="pref">Aprobado · withengine.ai · inflación Colombia</span></div>
+  <div class="tag-row"><span class="tag" style="--ac:#f4eee0">Ivory</span><span class="tag2">editorial · datos · newsletter</span></div>
+  <h2 class="ah" style="--ac:#f4eee0">Ivory Terminal</h2>
+  <p class="adesc">Negro cálido + serif editorial con itálicas + crema. Mono para datos financieros. Institucional premium cálido: análisis macro, reportes de datos, artículos de newsletter.</p>
+  
+<div class="mock" style="background:#120f0d;border:1px solid #322b24;border-radius:14px;padding:0;font-family:'Source Serif 4',Georgia,serif;overflow:hidden">
+  <!-- nav editorial -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid #322b24">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.28em;color:#f4eee0">RED QUEEN <span style="color:#6f675c">·</span> DATA</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#a89f92;letter-spacing:.1em">DANE · BANCO MUNDIAL · AGO 2026</span>
+  </div>
+  <!-- headline + meta -->
+  <div style="padding:18px 20px 10px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:#a89f92;letter-spacing:.24em;margin-bottom:8px">ECONOMÍA COLOMBIANA · SERIE HISTÓRICA</div>
+    <div style="font-size:21px;font-weight:300;color:#f4eee0;line-height:1.25">La inflación en Colombia, <em style="font-style:italic">de la hiperinflación a la meta</em></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#a89f92;margin-top:6px;font-variant-numeric:tabular-nums">Variación anual del IPC · dic-dic · base dic-2018=100</div>
+  </div>
+  <!-- KPIs -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#322b24;margin:12px 20px 0;border:1px solid #322b24">
+    <div style="background:#1a1613;padding:10px 14px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#a89f92;letter-spacing:.16em">ÚLTIMO DATO</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#ff7a6b;font-weight:500">6.14%</div>
+    </div>
+    <div style="background:#1a1613;padding:10px 14px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#a89f92;letter-spacing:.16em">PICO 2022</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#ff7a6b;font-weight:500">13.12%</div>
+    </div>
+    <div style="background:#1a1613;padding:10px 14px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#a89f92;letter-spacing:.16em">MÍNIMO 2020</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#7dd3a8;font-weight:500">1.62%</div>
+    </div>
+    <div style="background:#1a1613;padding:10px 14px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;color:#a89f92;letter-spacing:.16em">META BANREP</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#7dd3a8;font-weight:500">3.0%</div>
+    </div>
+  </div>
+  <!-- mini line chart SVG -->
+  <div style="padding:12px 20px 4px">
+    <svg viewBox="0 0 600 120" style="width:100%;height:auto;display:block">
+      <line x1="20" y1="100" x2="580" y2="100" stroke="rgba(244,238,224,.15)" stroke-width="1"/>
+      <rect x="20" y="40" width="560" height="35" fill="rgba(125,211,168,.05)" stroke="rgba(125,211,168,.2)" stroke-dasharray="4 4"/>
+      <line x1="20" y1="52" x2="580" y2="52" stroke="#7dd3a8" stroke-width="1" stroke-dasharray="2 3"/>
+      <polyline fill="none" stroke="#7dd3a8" stroke-width="2" points="20,88 82,78 144,70 206,74 268,96 330,76 392,22 454,48 516,70 580,74"/>
+      <circle cx="392" cy="22" r="4" fill="#120f0d" stroke="#7dd3a8" stroke-width="2"/>
+      <text x="392" y="12" text-anchor="middle" fill="#f4eee0" font-family="JetBrains Mono" font-size="9">13.1%</text>
+      <text x="20" y="114" fill="#6f675c" font-family="JetBrains Mono" font-size="8">2016</text>
+      <text x="580" y="114" fill="#6f675c" font-family="JetBrains Mono" font-size="8" text-anchor="end">jun-26</text>
+    </svg>
+  </div>
+  <!-- tabla -->
+  <div style="padding:6px 20px 14px">
+    <table style="width:100%;border-collapse:collapse;font-size:9.5px">
+      <tr style="font-family:'JetBrains Mono',monospace;color:#a89f92;font-size:7.5px;letter-spacing:.14em;border-bottom:1px solid #322b24">
+        <td style="padding:4px 4px">AÑO</td><td>INFLACIÓN</td><td>NOTA</td><td style="text-align:right">vs META</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(50,43,36,.7)">
+        <td style="padding:4px;color:#f4eee0">2020</td><td style="font-family:'JetBrains Mono',monospace;color:#7dd3a8">1.62%</td><td style="color:#a89f92">Pandemia</td><td style="text-align:right;font-family:'JetBrains Mono',monospace;color:#7dd3a8">debajo ✓</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(50,43,36,.7)">
+        <td style="padding:4px;color:#f4eee0">2022</td><td style="font-family:'JetBrains Mono',monospace;color:#ff7a6b">13.12%</td><td style="color:#a89f92">Máximo 23 años</td><td style="text-align:right;font-family:'JetBrains Mono',monospace;color:#ff7a6b">×4 meta</td>
+      </tr>
+      <tr>
+        <td style="padding:4px;color:#f4eee0">2025</td><td style="font-family:'JetBrains Mono',monospace;color:#e8b46a">5.10%</td><td style="color:#a89f92">Estabilización</td><td style="text-align:right;font-family:'JetBrains Mono',monospace;color:#e8b46a">+2.1pp</td>
+      </tr>
+    </table>
+  </div>
+  <!-- CTA -->
+  <div style="display:flex;gap:10px;align-items:center;padding:10px 20px;border-top:1px solid #322b24">
+    <span style="background:#f4eee0;color:#120f0d;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.1em;padding:8px 16px;border-radius:6px">VER REPORTE →</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:#6f675c">Fuentes oficiales · verificado</span>
+  </div>
+</div>
+  <div class="tokens"><span class="tl">TOKENS</span><span>bg #120f0d · crema #f4eee0 · menta #7dd3a8 · coral #ff7a6b · ámbar #e8b46a · serif Source Serif 4</span></div>
+</div>
+  <div class="page">
+  <div class="phead"><span class="pnum">03</span><span class="pref">Aprobado · revoluciondelariqueza.com/wealthmastery</span></div>
+  <div class="tag-row"><span class="tag" style="--ac:#ffb22b">Noir</span><span class="tag2">premium · lujo · urgencia</span></div>
+  <h2 class="ah" style="--ac:#ffb22b">Golden Noir</h2>
+  <p class="adesc">Negro puro + serif display Feature Display con palabra clave en itálica + CTA oro con texto negro + verde WhatsApp. Lujo, exclusividad y escasez: landing de eventos premium, educación de alto nivel.</p>
+  
+<div class="mock" style="background:#0A0A0A;border:1px solid rgba(245,244,240,.16);border-radius:14px;padding:0;font-family:'Feature Display',Georgia,serif;overflow:hidden">
+  <!-- nav -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid rgba(245,244,240,.09)">
+    <span style="font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.2em;color:#F5F4F0;font-weight:600">WEALTH<span style="color:#FFB22B"> MASTERY</span></span>
+    <span style="display:flex;gap:14px;font-family:'Geist',sans-serif;font-size:9px;color:#C4C8D2;letter-spacing:.12em;text-transform:uppercase"><span style="color:#F5F4F0">La experiencia</span><span>El método</span><span>FAQ</span></span>
+    <span style="background:linear-gradient(90deg,#FFC04D,#F8C169);color:#0A0A0A;font-family:'Geist',sans-serif;font-size:9px;font-weight:700;padding:7px 14px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase">Aplicar →</span>
+  </div>
+  <!-- hero -->
+  <div style="padding:20px 20px 14px;position:relative">
+    <div style="position:absolute;top:-30px;right:-20px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,178,43,.15),transparent 70%)"></div>
+    <div style="font-family:'Geist Mono',monospace;font-size:8.5px;letter-spacing:.22em;color:#a89f92;text-transform:uppercase;margin-bottom:10px">CUERNAVACA, MORELOS · 02-04 OCTUBRE 2026</div>
+    <div style="font-size:24px;font-weight:400;color:#F5F4F0;line-height:1.25">Sal con tu estrategia para <em style="font-style:italic;color:#FFB22B">diseñar</em> y hacer crecer tu patrimonio</div>
+    <div style="font-family:'Geist',sans-serif;font-size:11px;color:#C4C8D2;margin-top:8px">Diseñemos juntos tu patrimonio para crecer y proteger · Retiro exclusivo de 3 días</div>
+  </div>
+  <!-- countdown -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(245,244,240,.16);margin:0 20px;border:1px solid rgba(245,244,240,.16)">
+    <div style="background:#0A0A0A;padding:8px 10px;text-align:center">
+      <div style="font-family:'Geist Mono',monospace;font-size:16px;color:#F5F4F0;font-weight:600">00</div>
+      <div style="font-family:'Geist Mono',monospace;font-size:7px;color:#868C99;letter-spacing:.18em">DÍAS</div>
+    </div>
+    <div style="background:#0A0A0A;padding:8px 10px;text-align:center">
+      <div style="font-family:'Geist Mono',monospace;font-size:16px;color:#F5F4F0;font-weight:600">12</div>
+      <div style="font-family:'Geist Mono',monospace;font-size:7px;color:#868C99;letter-spacing:.18em">HORAS</div>
+    </div>
+    <div style="background:#0A0A0A;padding:8px 10px;text-align:center">
+      <div style="font-family:'Geist Mono',monospace;font-size:16px;color:#F5F4F0;font-weight:600">34</div>
+      <div style="font-family:'Geist Mono',monospace;font-size:7px;color:#868C99;letter-spacing:.18em">MIN</div>
+    </div>
+    <div style="background:#0A0A0A;padding:8px 10px;text-align:center">
+      <div style="font-family:'Geist Mono',monospace;font-size:16px;color:#FFB22B;font-weight:600">56</div>
+      <div style="font-family:'Geist Mono',monospace;font-size:7px;color:#868C99;letter-spacing:.18em">SEG</div>
+    </div>
+  </div>
+  <!-- CTAs -->
+  <div style="display:flex;gap:10px;align-items:center;padding:14px 20px">
+    <span style="background:linear-gradient(90deg,#FFC04D,#F8C169);color:#0A0A0A;font-family:'Geist',sans-serif;font-weight:700;font-size:10px;letter-spacing:.13em;padding:11px 20px;border-radius:4px;text-transform:uppercase">Aplica a tu entrevista →</span>
+    <span style="background:#25D366;color:#fff;font-family:'Geist',sans-serif;font-weight:600;font-size:10px;padding:11px 16px;border-radius:4px">¿Tienes dudas? Contáctanos</span>
+  </div>
+  <!-- beneficios -->
+  <div style="padding:0 20px 14px;border-top:1px solid rgba(245,244,240,.09)">
+    <div style="font-family:'Geist Mono',monospace;font-size:8px;color:#868C99;letter-spacing:.18em;padding:10px 0 6px">LA EXPERIENCIA · 3 DÍAS · RIQUEZA 360</div>
+    <table style="width:100%;border-collapse:collapse;font-size:9px">
+      <tr style="border-bottom:1px solid rgba(245,244,240,.09)">
+        <td style="padding:5px 4px;font-family:'Geist Mono',monospace;font-size:8px;color:#FFB22B;letter-spacing:.14em">ACCESO</td>
+        <td style="color:#F5F4F0">Expertos y mentores</td><td style="color:#868C99;text-align:right">Conversaciones directas</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(245,244,240,.09)">
+        <td style="padding:5px 4px;font-family:'Geist Mono',monospace;font-size:8px;color:#FFB22B;letter-spacing:.14em">CUERPO</td>
+        <td style="color:#F5F4F0">Experiencias inmersivas</td><td style="color:#868C99;text-align:right">Wim Hof · breathwork</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 4px;font-family:'Geist Mono',monospace;font-size:8px;color:#FFB22B;letter-spacing:.14em">ENTORNO</td>
+        <td style="color:#F5F4F0">Naturaleza excepcional</td><td style="color:#868C99;text-align:right">Cuernavaca, Morelos</td>
+      </tr>
+    </table>
+  </div>
+  <!-- sticky bar -->
+  <div style="display:flex;gap:10px;align-items:center;padding:9px 20px;border-top:1px solid rgba(245,244,240,.16);background:rgba(10,10,10,.95)">
+    <span style="font-family:'Geist Mono',monospace;font-size:8px;color:#868C99;letter-spacing:.16em">CUPO LIMITADO · FASE 1 · ACCESO POR APLICACIÓN</span>
+    <span style="margin-left:auto;background:#FFB22B;color:#0A0A0A;font-family:'Geist',sans-serif;font-weight:700;font-size:8.5px;padding:7px 14px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase">Aplicar</span>
+  </div>
+</div>
+  <div class="tokens"><span class="tl">TOKENS</span><span>bg #0A0A0A · oro #FFB22B · verde #25D366 · hueso #F5F4F0 · bordes rgba(245,244,240,.32) · radios 2-4px</span></div>
+</div>
+  <div class="page">
+    <div class="phead"><span class="pnum">04</span><span class="pref">Aprobado · mcpmarket.com</span></div>
+    <div class="tag-row"><span class="tag" style="--ac:#10B981">Arcade Ivory</span><span class="tag2">pixel · directorio técnico · blanco</span></div>
+    <h2 class="ah" style="--ac:#0A0A0A">Arcade Ivory</h2>
+    <p class="adesc">Blanco puro + titulares en fuente pixel GeistPixelSquare con glitch sutil + cuerpo Inter + datos GeistMono + dot-grid tenue en el hero + bordes #E5E5E5 + cards flat sin sombra + badges pill + verde esmeralda SOLO para estado.</p>
+    <div class="mock" style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:14px;padding:0;font-family:'Inter',sans-serif;color:#0A0A0A;overflow:hidden">
+      <!-- topbar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid #E5E5E5">
+        <span style="font-family:'GeistMono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em">MCP MARKET</span>
+        <span style="display:flex;gap:10px;align-items:center">
+          <span style="font-size:8.5px;color:#666">Servers</span><span style="font-size:8.5px;color:#666">Skills</span>
+          <span style="background:#0A0A0A;color:#FFF;font-size:8px;font-weight:600;padding:6px 12px;border-radius:4px;letter-spacing:.06em">Power Your Agents</span>
+        </span>
+      </div>
+      <!-- hero -->
+      <div style="padding:22px 18px 12px;position:relative;background-image:radial-gradient(rgba(229,229,229,.45) 1px, transparent 1px);background-size:14px 14px">
+        <span style="display:inline-flex;align-items:center;gap:5px;font-family:'GeistMono',monospace;font-size:8px;color:#666;letter-spacing:.14em;text-transform:uppercase;background:#FFF;border:1px solid #E5E5E5;padding:4px 10px;border-radius:999px">
+          <span style="width:6px;height:6px;background:#10B981;border-radius:1px"></span> 42,538 Servers · Updated 2 hours ago
+        </span>
+        <div style="font-family:'GeistPixelSquare',monospace;font-size:26px;font-weight:500;line-height:1.15;margin-top:12px">Find The Best <span style="text-decoration:underline;text-decoration-style:solid;text-decoration-color:#0A0A0A">Agent Tools</span></div>
+        <div style="font-size:10px;color:#666;margin-top:8px">Directory of awesome MCP servers and clients to connect AI agents with your favorite tools.</div>
+        <!-- search -->
+        <div style="display:flex;align-items:center;gap:8px;margin-top:12px;border:1px solid #E5E5E5;border-radius:8px;padding:8px 12px;background:#FFF;max-width:420px">
+          <span style="font-size:10px">&#128269;</span><span style="font-size:9.5px;color:#999">Search for MCP servers...</span>
+        </div>
+        <!-- filters -->
+        <div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">
+          <span style="background:#0A0A0A;color:#FFF;font-size:8px;padding:5px 12px;border-radius:999px">All</span>
+          <span style="border:1px solid #E5E5E5;font-size:8px;color:#444;padding:5px 12px;border-radius:999px">Developer Tools</span>
+          <span style="border:1px solid #E5E5E5;font-size:8px;color:#444;padding:5px 12px;border-radius:999px">Data Science &amp; ML</span>
+          <span style="border:1px solid #E5E5E5;font-size:8px;color:#444;padding:5px 12px;border-radius:999px">E-commerce</span>
+        </div>
+      </div>
+      <!-- cards -->
+      <div style="padding:12px 18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;border-top:1px solid #E5E5E5">
+        <div style="border:1px solid #E5E5E5;border-radius:8px;padding:10px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="width:18px;height:18px;background:#0A0A0A;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;color:#FFF;font-size:9px">F</span>
+            <span style="font-size:9.5px;font-weight:600">Firecrawl</span>
+          </div>
+          <div style="font-size:8px;color:#666;margin-top:6px;line-height:1.4">Web scraping for LLMs — crawl, extract, search.</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+            <span style="font-size:7px;color:#444;border:1px solid #E5E5E5;border-radius:999px;padding:2px 8px;letter-spacing:.08em">WEB SCRAPING</span>
+            <span style="font-family:'GeistMono',monospace;font-size:8px;color:#666;margin-left:auto">&#9733; 4.2k</span>
+          </div>
+        </div>
+        <div style="border:1px solid #E5E5E5;border-radius:8px;padding:10px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="width:18px;height:18px;background:#0A0A0A;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;color:#FFF;font-size:9px">E</span>
+            <span style="font-size:9.5px;font-weight:600">ElevenLabs</span>
+          </div>
+          <div style="font-size:8px;color:#666;margin-top:6px;line-height:1.4">Text to speech &amp; audio processing for agents.</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+            <span style="font-size:7px;color:#444;border:1px solid #E5E5E5;border-radius:999px;padding:2px 8px;letter-spacing:.08em">API DEV</span>
+            <span style="font-family:'GeistMono',monospace;font-size:8px;color:#666;margin-left:auto">&#9733; 1.5k</span>
+          </div>
+        </div>
+        <div style="border:1px solid #E5E5E5;border-radius:8px;padding:10px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="width:18px;height:18px;background:#0A0A0A;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;color:#FFF;font-size:9px">M</span>
+            <span style="font-size:9.5px;font-weight:600">Magic</span>
+          </div>
+          <div style="font-size:8px;color:#666;margin-top:6px;line-height:1.4">Generate modern UI components from language.</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+            <span style="font-size:7px;color:#444;border:1px solid #E5E5E5;border-radius:999px;padding:2px 8px;letter-spacing:.08em">UI GEN</span>
+            <span style="font-family:'GeistMono',monospace;font-size:8px;color:#666;margin-left:auto">&#9733; 3.8k</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tokens"><span class="tl">TOKENS</span><span>bg #FFFFFF · ink #0A0A0A · muted #666666 · line #E5E5E5 · emerald #10B981 (solo status) · GeistPixelSquare display · GeistMono datos · Inter cuerpo · dot-grid rgba(229,229,229,.4) · radios 8px · flat sin sombra</span></div>
+  </div>
+
+  <div class="page">
+    <div class="phead"><span class="pnum">05</span><span class="pref">Aprobado · stat-map.com</span></div>
+    <div class="tag-row"><span class="tag" style="--ac:#5E6B88">Slate Manual</span><span class="tag2">documentación · knowledge base · guías</span></div>
+    <h2 class="ah" style="--ac:#5E6B88">Slate Manual</h2>
+    <p class="adesc">Blanco puro + texto tinta + acento slate azul para links y nav activo + Inter en todo (jerarquía por peso) + sidebar de árbol con badges de conteo + pasos numerados con negrita + superficies #F8FAFC + radios 16px.</p>
+    <div class="mock" style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:14px;padding:0;font-family:'Inter',sans-serif;color:#1A1A1A;overflow:hidden">
+      <!-- header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid #E5E7EB">
+        <span style="display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700">
+          <span style="width:16px;height:16px;background:linear-gradient(135deg,#5E6B88,#93A5C4);border-radius:4px;display:inline-block"></span>
+          Statistical Mapping
+        </span>
+        <span style="display:flex;gap:14px;align-items:center;font-size:9px;color:#1A1A1A">
+          <span>Features</span><span>Pricing</span>
+          <span style="color:#5E6B88;text-decoration:underline;text-underline-offset:4px">Resources</span>
+        </span>
+      </div>
+      <!-- layout 2 col -->
+      <div style="display:grid;grid-template-columns:220px 1fr;min-height:280px">
+        <!-- sidebar -->
+        <div style="border-right:1px solid #E5E7EB;background:#F8FAFC;padding:14px 14px">
+          <div style="font-size:8px;font-weight:700;letter-spacing:.16em;color:#939393;text-transform:uppercase">Library</div>
+          <div style="margin-top:10px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:#1A1A1A;padding:5px 8px;border-radius:8px;background:#FFFFFF;border:1px solid #E5E7EB">
+              <span style="font-weight:600">Browse</span><span style="margin-left:auto;background:#F8FAFC;border:1px solid #E5E7EB;color:#939393;border-radius:999px;padding:1px 7px;font-size:7.5px">9</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:#939393;padding:5px 8px;margin-top:3px">
+              Statistical Mapping <span style="margin-left:auto;background:#F8FAFC;border:1px solid #E5E7EB;border-radius:999px;padding:1px 7px;font-size:7.5px">9</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:#939393;padding:5px 8px;margin-top:3px">
+              Updates <span style="margin-left:auto;background:#F8FAFC;border:1px solid #E5E7EB;border-radius:999px;padding:1px 7px;font-size:7.5px">5</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:#1A1A1A;padding:5px 8px;margin-top:3px;background:#5E6B88;border-radius:8px;color:#FFFFFF">
+              <span style="font-weight:600">TradingView</span><span style="margin-left:auto;background:rgba(255,255,255,.2);border-radius:999px;padding:1px 7px;font-size:7.5px">4</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:#939393;padding:5px 8px;margin-top:3px;padding-left:20px">
+              › How to Claim Access...
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:9px;color:#939393;padding:5px 8px;padding-left:20px">
+              › Copying TradingView Layouts
+            </div>
+          </div>
+        </div>
+        <!-- article -->
+        <div style="padding:16px 20px">
+          <div style="font-size:8px;color:#939393">&#8592; Back to Resources</div>
+          <div style="font-size:14px;font-weight:800;margin-top:8px">How to Claim Access to TradingView Indicators on Whop</div>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+            <span style="font-size:7.5px;color:#939393;border:1px solid #E5E7EB;border-radius:999px;padding:2px 9px;letter-spacing:.08em;text-transform:uppercase">TradingView</span>
+            <span style="font-size:7.5px;color:#939393">1/21/2025</span>
+          </div>
+          <div style="font-size:9.5px;color:#4B5563;margin-top:12px;line-height:1.6">Accessing your TradingView indicators via Whop is straightforward. Follow these steps to set up your indicators and start using them.</div>
+          <!-- numbered steps -->
+          <div style="display:flex;gap:10px;margin-top:12px;align-items:flex-start">
+            <span style="width:20px;height:20px;background:#5E6B88;color:#FFF;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">1</span>
+            <div>
+              <div style="font-size:9.5px;font-weight:700">Visit the Whop access page</div>
+              <div style="font-size:8.5px;color:#4B5563;margin-top:2px">Open the link and log in with your TradingView account to claim the invite-only script.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start">
+            <span style="width:20px;height:20px;background:#5E6B88;color:#FFF;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">2</span>
+            <div>
+              <div style="font-size:9.5px;font-weight:700">Open the Indicators tab</div>
+              <div style="font-size:8.5px;color:#4B5563;margin-top:2px">Navigate to Invite-only Scripts in TradingView and your indicator will appear.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start">
+            <span style="width:20px;height:20px;background:#5E6B88;color:#FFF;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">3</span>
+            <div>
+              <div style="font-size:9.5px;font-weight:700">Add it to your chart</div>
+              <div style="font-size:8.5px;color:#4B5563;margin-top:2px">Click the indicator name and it loads with the full OHLC Statistical Mapping setup.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tokens"><span class="tl">TOKENS</span><span>bg #FFFFFF · ink #1A1A1A · accent #5E6B88 · surface #F8FAFC · line #E5E7EB · muted #939393 · Inter todo · sidebar árbol + badges conteo · pasos numerados negrita · radios 16px · CTA pill slate</span></div>
+  </div>
+
+  <div class="page">
+    <div class="phead"><span class="pnum">06</span><span class="pref">Aprobado · theredqueen.co</span></div>
+    <div class="tag-row"><span class="tag" style="--ac:#ff3b5c">The Red Queen</span><span class="tag2">landing · producto · marca</span></div>
+    <h2 class="ah" style="--ac:#ff3b5c">The Red Queen</h2>
+    <p class="adesc">Casi-negro azulado + un único acento rojo coral con glow. Space Grotesk para display, Inter para cuerpo, JetBrains Mono para etiquetas y datos. La identidad del sitio theredqueen.co: sobria, de alta gama, con el rojo como única firma de color.</p>
+    <div class="mock" style="background:#06070f;border:1px solid #252b52;border-radius:14px;padding:0;font-family:'Inter',sans-serif;color:#e8ecff;overflow:hidden">
+      <!-- nav -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid #252b52;background:rgba(6,7,15,.85)">
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:.14em;color:#e8ecff">THE RED QUEEN<span style="color:#ff3b5c">.</span></span>
+        <span style="display:flex;gap:16px;font-size:9px;color:#8b92b8;letter-spacing:.1em"><span style="color:#e8ecff">PROGRAMA</span><span>ENGINE</span><span>BLOG</span><span>CONTACTO</span></span>
+        <span style="background:#ff3b5c;color:#06070f;font-size:9px;font-weight:700;padding:6px 12px;border-radius:8px;letter-spacing:.1em;box-shadow:0 0 18px rgba(255,59,92,.45)">ENTRAR AL ENGINE</span>
+      </div>
+      <!-- hero -->
+      <div style="padding:34px 20px 22px;position:relative;background:radial-gradient(520px 240px at 78% 0%, rgba(255,59,92,.16), transparent 65%)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:#ff7a92;letter-spacing:.24em;margin-bottom:12px">DESIGN SYSTEM · 2026 · EVOLUCIÓN CONSTANTE</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;letter-spacing:-.01em;line-height:1.1;max-width:520px">La reina roja corre para mantenerse en el mismo lugar.</div>
+        <div style="font-size:11px;color:#8b92b8;margin-top:10px;max-width:460px;line-height:1.6">Educación y tecnología para traders e inversores. Un solo acento, una sola firma, una identidad inconfundible.</div>
+        <div style="display:flex;gap:10px;margin-top:16px">
+          <span style="background:#ff3b5c;color:#06070f;font-size:10px;font-weight:700;padding:9px 16px;border-radius:9px;box-shadow:0 0 20px rgba(255,59,92,.45)">EXPLORAR EL ENGINE</span>
+          <span style="border:1px solid #252b52;color:#e8ecff;font-size:10px;font-weight:600;padding:9px 16px;border-radius:9px">VER EL PROGRAMA</span>
+        </div>
+      </div>
+      <!-- KPI strip -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#252b52;border-top:1px solid #252b52">
+        <div style="background:#0d0f1e;padding:12px 16px">
+          <div style="font-size:8px;color:#8b92b8;letter-spacing:.18em;font-family:'JetBrains Mono',monospace">PORTFOLIOS</div>
+          <div style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#e8ecff">7 <span style="font-size:10px;color:#8b92b8">stacked</span></div>
+        </div>
+        <div style="background:#0d0f1e;padding:12px 16px">
+          <div style="font-size:8px;color:#8b92b8;letter-spacing:.18em;font-family:'JetBrains Mono',monospace">TICKERS EVALUADOS</div>
+          <div style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#e8ecff">65 <span style="font-size:10px;color:#8b92b8">tickers</span></div>
+        </div>
+        <div style="background:#0d0f1e;padding:12px 16px">
+          <div style="font-size:8px;color:#8b92b8;letter-spacing:.18em;font-family:'JetBrains Mono',monospace">LENTES</div>
+          <div style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:#ff7a92;text-shadow:0 0 12px rgba(255,59,92,.45)">5 <span style="font-size:10px;color:#8b92b8">posturas</span></div>
+        </div>
+      </div>
+      <!-- cards -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 20px">
+        <div style="background:#12142a;border:1px solid #252b52;border-radius:12px;padding:12px">
+          <div style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:700">Neuromancer Engine</div>
+          <div style="font-size:8.5px;color:#8b92b8;margin-top:5px;line-height:1.5">Consejo sintético de 5 posturas sobre mercados.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:#ff3b5c;margin-top:9px;letter-spacing:.12em">SUSCRIPCIÓN →</div>
+        </div>
+        <div style="background:#12142a;border:1px solid #252b52;border-radius:12px;padding:12px">
+          <div style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:700">Programa de Trading</div>
+          <div style="font-size:8.5px;color:#8b92b8;margin-top:5px;line-height:1.5">Mentoría estructurada con estándares altos.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:#ff3b5c;margin-top:9px;letter-spacing:.12em">PROGRAMA →</div>
+        </div>
+        <div style="background:#12142a;border:1px solid #252b52;border-radius:12px;padding:12px">
+          <div style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:700">Blog y newsletter</div>
+          <div style="font-size:8.5px;color:#8b92b8;margin-top:5px;line-height:1.5">Ideas y frameworks sobre mercados y psicología.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:#ff3b5c;margin-top:9px;letter-spacing:.12em">LEER →</div>
+        </div>
+      </div>
+      <!-- footer -->
+      <div style="border-top:1px solid #252b52;padding:10px 20px;display:flex;justify-content:space-between;font-size:8px;color:#5d638a;font-family:'JetBrains Mono',monospace;letter-spacing:.14em;background:#0d0f1e">
+        <span>THEREDQUEEN.CO</span><span>COPYLEFT · EVOLUCIÓN</span>
+      </div>
+    </div>
+    <div class="tokens"><span class="tl">TOKENS</span><span>bg #06070f · surface #0d0f1e · card #12142a · line #252b52 · text #e8ecff · muted #8b92b8 · accent #ff3b5c (único) · accent-2 #ff7a92 · glow rgba(255,59,92,.45) · display Space Grotesk · body Inter · data JetBrains Mono · radios 8–12px · CTA rojo texto oscuro</span></div>
+  </div>
+
+  <div class="page">
+  <div class="phead"><span class="pnum">4</span><span class="pref">Catálogo · Estilos 1–6</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Minimalism &amp; Swiss Style</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#1</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#000000"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Minimalism &amp; Swiss Style</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Clean, simple, spacious, functional, white space, high contrast, geometric, sans</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#000000"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5F1E8"></span>
+            <span style="margin-left:auto;background:#000000;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Neumorphism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#2</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#C8E0F4"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Neumorphism</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Soft UI, embossed, debossed, convex, concave, light source, subtle depth, rounde</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#C8E0F4"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5E0E8"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#E8E8E8"></span>
+            <span style="margin-left:auto;background:#C8E0F4;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Glassmorphism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#3</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#0080FF"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Glassmorphism</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Frosted glass, transparent, blurred background, layered, vibrant background, lig</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#0080FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#8B00FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF1493"></span>
+            <span style="margin-left:auto;background:#0080FF;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Brutalism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#4</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FF0000"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Brutalism</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Raw, unpolished, stark, high contrast, plain text, default fonts, visible border</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF0000"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#0000FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFF00"></span>
+            <span style="margin-left:auto;background:#FF0000;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">3D &amp; Hyperrealism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#5</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#001F3F"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">3D &amp; Hyperrealism</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Depth, realistic textures, 3D models, spatial navigation, tactile, skeuomorphic </div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#001F3F"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#228B22"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#800020"></span>
+            <span style="margin-left:auto;background:#001F3F;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Vibrant &amp; Block-based</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#6</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#39FF14"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Vibrant &amp; Block-based</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Bold, energetic, playful, block layout, geometric shapes, high color contrast, d</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#39FF14"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#BF00FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF1493"></span>
+            <span style="margin-left:auto;background:#39FF14;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">5</span><span class="pref">Catálogo · Estilos 7–12</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#121212;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Dark Mode (OLED)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#7</span>
+      </div>
+      
+        <div style="padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#000000"></div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5">Dark Mode (OLED)</div>
+          </div>
+          <div style="font-size:8px;color:rgba(255,255,255,.55);margin-bottom:10px;line-height:1.5">Dark theme, low light, high contrast, deep black, midnight blue, eye-friendly, O</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#000000"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#121212"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#0A0E27"></span>
+            <span style="margin-left:auto;background:#000000;color:#000;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Accessible &amp; Ethical</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#8</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#2563EB"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Accessible &amp; Ethical</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">High contrast, large text (16px+), keyboard navigation, screen reader friendly, </div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#2563EB"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F8FAFC"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#0F172A"></span>
+            <span style="margin-left:auto;background:#2563EB;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Claymorphism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#9</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FDBCB4"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Claymorphism</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Soft 3D, chunky, playful, toy-like, bubbly, thick borders (3-4px), double shadow</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FDBCB4"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#ADD8E6"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#98FF98"></span>
+            <span style="margin-left:auto;background:#FDBCB4;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Aurora UI</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#10</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#0080FF"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Aurora UI</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Vibrant gradients, smooth blend, Northern Lights effect, mesh gradient, luminous</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#0080FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF1493"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FFFF"></span>
+            <span style="margin-left:auto;background:#0080FF;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#FF006E;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Retro-Futurism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#11</span>
+      </div>
+      
+        <div style="padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#0080FF"></div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5">Retro-Futurism</div>
+          </div>
+          <div style="font-size:8px;color:rgba(255,255,255,.55);margin-bottom:10px;line-height:1.5">Vintage sci-fi, 80s aesthetic, neon glow, geometric patterns, CRT scanlines, pix</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#0080FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF006E"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FFFF"></span>
+            <span style="margin-left:auto;background:#0080FF;color:#000;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Flat Design</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#12</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#EF4444"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Flat Design</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">2D, minimalist, bold colors, no shadows, clean lines, simple shapes, typography-</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#EF4444"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#3B82F6"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#22C55E"></span>
+            <span style="margin-left:auto;background:#EF4444;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">6</span><span class="pref">Catálogo · Estilos 13–18</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Skeuomorphism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#13</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#8B5A2B"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Skeuomorphism</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Realistic, texture, depth, 3D appearance, real-world metaphors, shadows, gradien</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#8B5A2B"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#D2A679"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#3E2723"></span>
+            <span style="margin-left:auto;background:#8B5A2B;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Liquid Glass</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#14</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#7DD3FC"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Liquid Glass</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Flowing glass, morphing, smooth transitions, fluid effects, translucent, animate</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#7DD3FC"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#C4B5FD"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F0ABFC"></span>
+            <span style="margin-left:auto;background:#7DD3FC;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Motion-Driven</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#15</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#22C55E"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Motion-Driven</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Animation-heavy, microinteractions, smooth transitions, scroll effects, parallax</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#22C55E"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#EF4444"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#888888"></span>
+            <span style="margin-left:auto;background:#22C55E;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Micro-interactions</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#16</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#22C55E"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Micro-interactions</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Small animations, gesture-based, tactile feedback, subtle animations, contextual</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#22C55E"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#EF4444"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F59E0B"></span>
+            <span style="margin-left:auto;background:#22C55E;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Inclusive Design</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#17</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#0EA5E9"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Inclusive Design</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Accessible, color-blind friendly, high contrast, haptic feedback, voice interact</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#0EA5E9"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FACC15"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#10B981"></span>
+            <span style="margin-left:auto;background:#0EA5E9;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Zero Interface</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#18</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FAFAFA"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Zero Interface</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Minimal visible UI, voice-first, gesture-based, AI-driven, invisible controls, p</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FAFAFA"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F0F0F0"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5F1E8"></span>
+            <span style="margin-left:auto;background:#FAFAFA;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">7</span><span class="pref">Catálogo · Estilos 19–24</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Soft UI Evolution</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#19</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#87CEEB"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Soft UI Evolution</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Evolved soft UI, better contrast, modern aesthetics, subtle depth, accessibility</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#87CEEB"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFB6C1"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#90EE90"></span>
+            <span style="margin-left:auto;background:#87CEEB;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Hero-Centric Design</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#20</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:6px">HERO · CTA</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px">Landing Hero-Centric Design</div>
+          <div style="font-size:8.5px;color:#6b7280;margin-bottom:10px">Headline + conversión</div>
+          <div style="display:flex;gap:6px">
+            <span style="background:#6366F1;color:#fff;font-size:8px;font-weight:700;padding:5px 10px;border-radius:6px">CTA →</span>
+            <span style="border:1px solid #e5e7eb;color:#1a1a1a;font-size:8px;padding:5px 10px;border-radius:6px">Secundario</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Conversion-Optimized</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#21</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:6px">HERO · CTA</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px">Landing Conversion-Optimized</div>
+          <div style="font-size:8.5px;color:#6b7280;margin-bottom:10px">Headline + conversión</div>
+          <div style="display:flex;gap:6px">
+            <span style="background:#16A34A;color:#fff;font-size:8px;font-weight:700;padding:5px 10px;border-radius:6px">CTA →</span>
+            <span style="border:1px solid #e5e7eb;color:#1a1a1a;font-size:8px;padding:5px 10px;border-radius:6px">Secundario</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Feature-Rich Showcase</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#22</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:6px">HERO · CTA</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px">Landing Feature-Rich Showcase</div>
+          <div style="font-size:8.5px;color:#6b7280;margin-bottom:10px">Headline + conversión</div>
+          <div style="display:flex;gap:6px">
+            <span style="background:#4F46E5;color:#fff;font-size:8px;font-weight:700;padding:5px 10px;border-radius:6px">CTA →</span>
+            <span style="border:1px solid #e5e7eb;color:#1a1a1a;font-size:8px;padding:5px 10px;border-radius:6px">Secundario</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Minimal &amp; Direct</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#23</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:6px">HERO · CTA</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px">Landing Minimal &amp; Direct</div>
+          <div style="font-size:8.5px;color:#6b7280;margin-bottom:10px">Headline + conversión</div>
+          <div style="display:flex;gap:6px">
+            <span style="background:#111827;color:#fff;font-size:8px;font-weight:700;padding:5px 10px;border-radius:6px">CTA →</span>
+            <span style="border:1px solid #e5e7eb;color:#1a1a1a;font-size:8px;padding:5px 10px;border-radius:6px">Secundario</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Social Proof-Focused</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#24</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:6px">HERO · CTA</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px">Landing Social Proof-Focused</div>
+          <div style="font-size:8.5px;color:#6b7280;margin-bottom:10px">Headline + conversión</div>
+          <div style="display:flex;gap:6px">
+            <span style="background:#2563EB;color:#fff;font-size:8px;font-weight:700;padding:5px 10px;border-radius:6px">CTA →</span>
+            <span style="border:1px solid #e5e7eb;color:#1a1a1a;font-size:8px;padding:5px 10px;border-radius:6px">Secundario</span>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">8</span><span class="pref">Catálogo · Estilos 25–30</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Interactive Product Demo</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#25</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:6px">HERO · CTA</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px">Landing Interactive Product Demo</div>
+          <div style="font-size:8.5px;color:#6b7280;margin-bottom:10px">Headline + conversión</div>
+          <div style="display:flex;gap:6px">
+            <span style="background:#7C3AED;color:#fff;font-size:8px;font-weight:700;padding:5px 10px;border-radius:6px">CTA →</span>
+            <span style="border:1px solid #e5e7eb;color:#1a1a1a;font-size:8px;padding:5px 10px;border-radius:6px">Secundario</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Trust &amp; Authority</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#26</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:6px">HERO · CTA</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px">Landing Trust &amp; Authority</div>
+          <div style="font-size:8.5px;color:#6b7280;margin-bottom:10px">Headline + conversión</div>
+          <div style="display:flex;gap:6px">
+            <span style="background:#1D4ED8;color:#fff;font-size:8px;font-weight:700;padding:5px 10px;border-radius:6px">CTA →</span>
+            <span style="border:1px solid #e5e7eb;color:#1a1a1a;font-size:8px;padding:5px 10px;border-radius:6px">Secundario</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Storytelling-Driven</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#27</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:6px">HERO · CTA</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px">Landing Storytelling-Driven</div>
+          <div style="font-size:8.5px;color:#6b7280;margin-bottom:10px">Headline + conversión</div>
+          <div style="display:flex;gap:6px">
+            <span style="background:#EA580C;color:#fff;font-size:8px;font-weight:700;padding:5px 10px;border-radius:6px">CTA →</span>
+            <span style="border:1px solid #e5e7eb;color:#1a1a1a;font-size:8px;padding:5px 10px;border-radius:6px">Secundario</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Data-Dense Dashboard</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#28</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#F5F5F522;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#F5F5F5">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#22C55E22;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#22C55E">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#F5F5F5" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#22C55E" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Heat Map &amp; Heatmap Style</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#29</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#2563EB22;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#2563EB">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#FDE04722;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#FDE047">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#2563EB" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#FDE047" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Executive Dashboard</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#30</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#0F172A22;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#0F172A">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#10B98122;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#10B981">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#0F172A" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">9</span><span class="pref">Catálogo · Estilos 31–36</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Real-Time Monitoring</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#31</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#FF000022;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#FF0000">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#22C55E22;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#22C55E">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#FF0000" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#22C55E" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Drill-Down Analytics</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#32</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#6366F122;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#6366F1">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#0F172A22;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#0F172A">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#6366F1" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#0F172A" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Comparative Analysis Dashboard</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#33</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#3B82F622;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#3B82F6">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#10B98122;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#10B981">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#3B82F6" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Predictive Analytics</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#34</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#8B5CF622;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#8B5CF6">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#0F172A22;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#0F172A">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#8B5CF6" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#0F172A" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">User Behavior Analytics</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#35</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#10B98122;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#10B981">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#F59E0B22;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#F59E0B">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#10B981" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Financial Dashboard</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#36</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#22C55E22;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#22C55E">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#00336622;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#003366">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#22C55E" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#003366" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">10</span><span class="pref">Catálogo · Estilos 37–42</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Sales Intelligence Dashboard</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#37</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="font-size:8px;letter-spacing:.14em;color:#6b7280;text-transform:uppercase;margin-bottom:8px">KPI · CHARTS</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <div style="flex:1;background:#3B82F622;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">REVENUE</div>
+              <div style="font-size:11px;font-weight:700;color:#3B82F6">$2.1M</div>
+            </div>
+            <div style="flex:1;background:#10B98122;border:1px solid #e5e7eb;border-radius:6px;padding:6px">
+              <div style="font-size:6.5px;color:#6b7280">GROWTH</div>
+              <div style="font-size:11px;font-weight:700;color:#10B981">+18%</div>
+            </div>
+          </div>
+          <svg viewBox="0 0 200 50" style="width:100%;height:auto">
+            <polyline fill="none" stroke="#3B82F6" stroke-width="2" points="0,40 30,35 60,28 90,30 120,18 150,22 200,8"/>
+            <polyline fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="3 3" points="0,20 40,22 80,18 120,14 160,16 200,12"/>
+          </svg>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#FF5252;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Neubrutalism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#38</span>
+      </div>
+      
+        <div style="padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FFEB3B"></div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5">Neubrutalism</div>
+          </div>
+          <div style="font-size:8px;color:rgba(255,255,255,.55);margin-bottom:10px;line-height:1.5">Bold borders, black outlines, primary colors, thick shadows, no gradients, flat </div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFEB3B"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF5252"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#2196F3"></span>
+            <span style="margin-left:auto;background:#FFEB3B;color:#000;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Bento Box Grid</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#39</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FFFFFF"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Bento Box Grid</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Modular cards, asymmetric grid, varied sizes, Apple-style, dashboard tiles, nega</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5F5F5"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#888888"></span>
+            <span style="margin-left:auto;background:#FFFFFF;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#00FFFF;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Y2K Aesthetic</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#40</span>
+      </div>
+      
+        <div style="padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FF69B4"></div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5">Y2K Aesthetic</div>
+          </div>
+          <div style="font-size:8px;color:rgba(255,255,255,.55);margin-bottom:10px;line-height:1.5">Neon pink, chrome, metallic, bubblegum, iridescent, glossy, retro-futurism, 2000</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF69B4"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#C0C0C0"></span>
+            <span style="margin-left:auto;background:#FF69B4;color:#000;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#FF00FF;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Cyberpunk UI</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#41</span>
+      </div>
+      
+        <div style="padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#00FF00"></div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5">Cyberpunk UI</div>
+          </div>
+          <div style="font-size:8px;color:rgba(255,255,255,.55);margin-bottom:10px;line-height:1.5">Neon, dark mode, terminal, HUD, sci-fi, glitch, dystopian, futuristic, matrix, t</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FF00"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF00FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FFFF"></span>
+            <span style="margin-left:auto;background:#00FF00;color:#000;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Organic Biophilic</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#42</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#228B22"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Organic Biophilic</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Nature, organic shapes, green, sustainable, rounded, flowing, wellness, earthy, </div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#228B22"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#8B4513"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#87CEEB"></span>
+            <span style="margin-left:auto;background:#228B22;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">11</span><span class="pref">Catálogo · Estilos 43–48</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">AI-Native UI</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#43</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#6366F1"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">AI-Native UI</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Chatbot, conversational, voice, assistant, agentic, ambient, minimal chrome, str</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#6366F1"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#10B981"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5F5F5"></span>
+            <span style="margin-left:auto;background:#6366F1;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#FFCE5C;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Memphis Design</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#44</span>
+      </div>
+      
+        <div style="padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FF71CE"></div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5">Memphis Design</div>
+          </div>
+          <div style="font-size:8px;color:rgba(255,255,255,.55);margin-bottom:10px;line-height:1.5">80s, geometric, playful, postmodern, shapes, patterns, squiggles, triangles, neo</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF71CE"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFCE5C"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#86CCCA"></span>
+            <span style="margin-left:auto;background:#FF71CE;color:#000;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#01CDFE;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Vaporwave</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#45</span>
+      </div>
+      
+        <div style="padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FF71CE"></div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5">Vaporwave</div>
+          </div>
+          <div style="font-size:8px;color:rgba(255,255,255,.55);margin-bottom:10px;line-height:1.5">Synthwave, retro-futuristic, 80s-90s, neon, glitch, nostalgic, sunset gradient, </div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF71CE"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#01CDFE"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#05FFA1"></span>
+            <span style="margin-left:auto;background:#FF71CE;color:#000;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Dimensional Layering</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#46</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FFFFFF"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Dimensional Layering</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Depth, overlapping, z-index, layers, 3D, shadows, elevation, floating, cards, sp</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5F5F5"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#E0E0E0"></span>
+            <span style="margin-left:auto;background:#FFFFFF;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Exaggerated Minimalism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#47</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#000000"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Exaggerated Minimalism</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Bold minimalism, oversized typography, high contrast, negative space, loud minim</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#000000"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#888888"></span>
+            <span style="margin-left:auto;background:#000000;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Kinetic Typography</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#48</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#6B7280"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Kinetic Typography</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Motion text, animated type, moving letters, dynamic, typing effect, morphing, sc</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#6B7280"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#111827"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F8FAFC"></span>
+            <span style="margin-left:auto;background:#6B7280;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">12</span><span class="pref">Catálogo · Estilos 49–55</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Parallax Storytelling</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#49</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#6B7280"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Parallax Storytelling</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Scroll-driven, narrative, layered scrolling, immersive, progressive disclosure, </div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#6B7280"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#111827"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F8FAFC"></span>
+            <span style="margin-left:auto;background:#6B7280;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Swiss Modernism 2.0</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#50</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#000000"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Swiss Modernism 2.0</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Grid system, Helvetica, modular, asymmetric, international style, rational, clea</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#000000"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5F5F5"></span>
+            <span style="margin-left:auto;background:#000000;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#0080FF;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">HUD / Sci-Fi FUI</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#51</span>
+      </div>
+      
+        <div style="padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#00FFFF"></div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5">HUD / Sci-Fi FUI</div>
+          </div>
+          <div style="font-size:8px;color:rgba(255,255,255,.55);margin-bottom:10px;line-height:1.5">Futuristic, technical, wireframe, neon, data, transparency, iron man, sci-fi, in</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#0080FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF0000"></span>
+            <span style="margin-left:auto;background:#00FFFF;color:#000;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Pixel Art</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#52</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#6B7280"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Pixel Art</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Retro, 8-bit, 16-bit, gaming, blocky, nostalgic, pixelated, arcade</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#6B7280"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#111827"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F8FAFC"></span>
+            <span style="margin-left:auto;background:#6B7280;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Bento Grids</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#53</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#F5F5F7"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Bento Grids</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Apple-style, modular, cards, organized, clean, hierarchy, grid, rounded, soft</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5F5F7"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#1D1D1F"></span>
+            <span style="margin-left:auto;background:#F5F5F7;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Spatial UI (VisionOS)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#55</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#6B7280"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Spatial UI (VisionOS)</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Glass, depth, immersion, spatial, translucent, gaze, gesture, apple, vision-pro</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#6B7280"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#111827"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F8FAFC"></span>
+            <span style="margin-left:auto;background:#6B7280;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">13</span><span class="pref">Catálogo · Estilos 56–61</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">E-Ink / Paper</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#56</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FDFBF7"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">E-Ink / Paper</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Paper-like, matte, high contrast, texture, reading, calm, slow tech, monochrome</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FDFBF7"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5F5F5"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#1A1A1A"></span>
+            <span style="margin-left:auto;background:#FDFBF7;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Gen Z Chaos / Maximalism</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#57</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FF00FF"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Gen Z Chaos / Maximalism</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Chaos, clutter, stickers, raw, collage, mixed media, loud, internet culture, iro</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF00FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FF00"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFF00"></span>
+            <span style="margin-left:auto;background:#FF00FF;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Biomimetic / Organic 2.0</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#58</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FF9999"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Biomimetic / Organic 2.0</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Nature-inspired, cellular, fluid, breathing, generative, algorithms, life-like</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF9999"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FF41"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#001E3C"></span>
+            <span style="margin-left:auto;background:#FF9999;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Anti-Polish / Raw Aesthetic</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#59</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FAFAF8"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Anti-Polish / Raw Aesthetic</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Hand-drawn, collage, scanned textures, unfinished, imperfect, authentic, human, </div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FAFAF8"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#4A4A4A"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#1A1A1A"></span>
+            <span style="margin-left:auto;background:#FAFAF8;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Tactile Digital / Deformable UI</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#60</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#C0C0C0"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Tactile Digital / Deformable UI</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Jelly buttons, chrome, clay, squishy, deformable, bouncy, physical, tactile feed</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#C0C0C0"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF9ECD"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#87CEEB"></span>
+            <span style="margin-left:auto;background:#C0C0C0;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Nature Distilled</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#61</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#C67B5C"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Nature Distilled</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Muted earthy, skin tones, wood, soil, sand, terracotta, warmth, organic material</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#C67B5C"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#D4C4A8"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#B5651D"></span>
+            <span style="margin-left:auto;background:#C67B5C;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">14</span><span class="pref">Catálogo · Estilos 62–67</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Interactive Cursor Design</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#62</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#6B7280"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Interactive Cursor Design</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Custom cursor, cursor as tool, hover effects, cursor feedback, pointer transform</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#6B7280"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#111827"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#F8FAFC"></span>
+            <span style="margin-left:auto;background:#6B7280;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Voice-First Multimodal</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#63</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FAFAFA"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Voice-First Multimodal</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Voice UI, multimodal, audio feedback, conversational, hands-free, ambient, conte</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FAFAFA"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#6B8FAF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#9B8FBB"></span>
+            <span style="margin-left:auto;background:#FAFAFA;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">3D Product Preview</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#64</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#E8E8E8"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">3D Product Preview</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">360 product view, rotatable, zoomable, touch-to-spin, AR preview, product config</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#E8E8E8"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#888888"></span>
+            <span style="margin-left:auto;background:#E8E8E8;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Gradient Mesh / Aurora Evolved</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#65</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#00FFFF"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Gradient Mesh / Aurora Evolved</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Complex gradients, mesh gradients, multi-color blend, aurora effect, flowing col</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF00FF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFF00"></span>
+            <span style="margin-left:auto;background:#00FFFF;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Editorial Grid / Magazine</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#66</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#000000"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Editorial Grid / Magazine</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Magazine layout, asymmetric grid, editorial typography, pull quotes, drop caps, </div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#000000"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#FFFFFF"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#888888"></span>
+            <span style="margin-left:auto;background:#000000;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#00FF00;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Chromatic Aberration / RGB Split</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#67</span>
+      </div>
+      
+        <div style="padding:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#FF0000"></div>
+            <div style="font-size:11px;font-weight:700;color:#f4f4f5">Chromatic Aberration / RGB Split</div>
+          </div>
+          <div style="font-size:8px;color:rgba(255,255,255,.55);margin-bottom:10px;line-height:1.5">RGB split, color fringing, glitch, retro tech, VHS, analog error, distortion, le</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#FF0000"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#00FF00"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#0000FF"></span>
+            <span style="margin-left:auto;background:#FF0000;color:#000;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">15</span><span class="pref">Catálogo · Estilos 68–73</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Vintage Analog / Retro Film</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#68</span>
+      </div>
+      
+        <div style="padding:14px;background:#f4f4f5;border:1px solid #e5e7eb;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#F5E6C8"></div>
+            <div style="font-size:11px;font-weight:700;color:#1a1a1a">Vintage Analog / Retro Film</div>
+          </div>
+          <div style="font-size:8px;color:#6b7280;margin-bottom:10px;line-height:1.5">Film grain, VHS, cassette tape, polaroid, analog warmth, faded colors, light lea</div>
+          <div style="display:flex;gap:5px">
+            <span style="width:14px;height:14px;border-radius:4px;background:#F5E6C8"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#D4A574"></span>
+            <span style="width:14px;height:14px;border-radius:4px;background:#4A7B7C"></span>
+            <span style="margin-left:auto;background:#F5E6C8;color:#fff;font-size:7.5px;font-weight:700;padding:4px 9px;border-radius:6px">BUTTON</span>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Bauhaus (包豪斯)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#69</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Bauhaus (包豪斯)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#D02020;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#F0C02033;border-radius:4px;height:12px"></div>
+              <div style="background:#F0C02022;border-radius:4px;height:12px"></div>
+              <div style="background:#F0C02033;border-radius:4px;height:12px"></div>
+              <div style="background:#F0C02022;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#FFFFFF;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Minimalist Monochrome</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#70</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#FFFFFF;border:2px solid rgba(255,255,255,.14);border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:rgba(255,255,255,.14);border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#f4f4f5;margin-bottom:2px">App Minimalist Monochrome</div>
+            <div style="font-size:7px;color:rgba(255,255,255,.55);margin-bottom:8px">Mobile UI</div>
+            <div style="background:#000000;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#000">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#F5F5F533;border-radius:4px;height:12px"></div>
+              <div style="background:#F5F5F522;border-radius:4px;height:12px"></div>
+              <div style="background:#F5F5F533;border-radius:4px;height:12px"></div>
+              <div style="background:#F5F5F522;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#050506;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Modern Dark (Cinema Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#71</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#050506;border:2px solid rgba(255,255,255,.14);border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:rgba(255,255,255,.14);border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#f4f4f5;margin-bottom:2px">App Modern Dark (Cinema Mobile)</div>
+            <div style="font-size:7px;color:rgba(255,255,255,.55);margin-bottom:8px">Mobile UI</div>
+            <div style="background:#020203;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#000">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#0a0a0c33;border-radius:4px;height:12px"></div>
+              <div style="background:#0a0a0c22;border-radius:4px;height:12px"></div>
+              <div style="background:#0a0a0c33;border-radius:4px;height:12px"></div>
+              <div style="background:#0a0a0c22;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">SaaS Mobile (High-Tech Boutique)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#72</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App SaaS Mobile (High-Tech Boutique)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#0052FF;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#FAFAFA33;border-radius:4px;height:12px"></div>
+              <div style="background:#FAFAFA22;border-radius:4px;height:12px"></div>
+              <div style="background:#FAFAFA33;border-radius:4px;height:12px"></div>
+              <div style="background:#FAFAFA22;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#050505;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Terminal CLI (Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#73</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#050505;border:2px solid rgba(255,255,255,.14);border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:rgba(255,255,255,.14);border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#f4f4f5;margin-bottom:2px">App Terminal CLI (Mobile)</div>
+            <div style="font-size:7px;color:rgba(255,255,255,.55);margin-bottom:8px">Mobile UI</div>
+            <div style="background:#33FF00;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#000">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#FFB00033;border-radius:4px;height:12px"></div>
+              <div style="background:#FFB00022;border-radius:4px;height:12px"></div>
+              <div style="background:#FFB00033;border-radius:4px;height:12px"></div>
+              <div style="background:#FFB00022;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">16</span><span class="pref">Catálogo · Estilos 74–79</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Kinetic Brutalism (Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#74</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Kinetic Brutalism (Mobile)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#DFE104;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#FAFAFA33;border-radius:4px;height:12px"></div>
+              <div style="background:#FAFAFA22;border-radius:4px;height:12px"></div>
+              <div style="background:#FAFAFA33;border-radius:4px;height:12px"></div>
+              <div style="background:#FAFAFA22;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Flat Design Mobile (Touch-First)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#75</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Flat Design Mobile (Touch-First)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#3B82F6;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#FFFFFF33;border-radius:4px;height:12px"></div>
+              <div style="background:#FFFFFF22;border-radius:4px;height:12px"></div>
+              <div style="background:#FFFFFF33;border-radius:4px;height:12px"></div>
+              <div style="background:#FFFFFF22;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Material You (MD3 Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#76</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Material You (MD3 Mobile)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#6750A4;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#7D526033;border-radius:4px;height:12px"></div>
+              <div style="background:#7D526022;border-radius:4px;height:12px"></div>
+              <div style="background:#7D526033;border-radius:4px;height:12px"></div>
+              <div style="background:#7D526022;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Neo Brutalism (Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#77</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Neo Brutalism (Mobile)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#FFFDF5;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#FFD93D33;border-radius:4px;height:12px"></div>
+              <div style="background:#FFD93D22;border-radius:4px;height:12px"></div>
+              <div style="background:#FFD93D33;border-radius:4px;height:12px"></div>
+              <div style="background:#FFD93D22;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#FAFAFA;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Bold Typography (Mobile Poster)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#78</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#FAFAFA;border:2px solid rgba(255,255,255,.14);border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:rgba(255,255,255,.14);border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#f4f4f5;margin-bottom:2px">App Bold Typography (Mobile Poster)</div>
+            <div style="font-size:7px;color:rgba(255,255,255,.55);margin-bottom:8px">Mobile UI</div>
+            <div style="background:#0A0A0A;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#000">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#1A1A1A33;border-radius:4px;height:12px"></div>
+              <div style="background:#1A1A1A22;border-radius:4px;height:12px"></div>
+              <div style="background:#1A1A1A33;border-radius:4px;height:12px"></div>
+              <div style="background:#1A1A1A22;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Academia (Scholarly Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#79</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Academia (Scholarly Mobile)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#1C1714;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#E8DFD433;border-radius:4px;height:12px"></div>
+              <div style="background:#E8DFD422;border-radius:4px;height:12px"></div>
+              <div style="background:#E8DFD433;border-radius:4px;height:12px"></div>
+              <div style="background:#E8DFD422;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div></div>
+</div><div class="page">
+  <div class="phead"><span class="pnum">17</span><span class="pref">Catálogo · Estilos 80–85</span></div>
+  <div class="mgrid"><div class="mcard">
+    <div style="background:#12121A;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#f4f4f5">Cyberpunk Mobile HUD</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">#80</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#12121A;border:2px solid rgba(255,255,255,.14);border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:rgba(255,255,255,.14);border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#f4f4f5;margin-bottom:2px">App Cyberpunk Mobile HUD</div>
+            <div style="font-size:7px;color:rgba(255,255,255,.55);margin-bottom:8px">Mobile UI</div>
+            <div style="background:#0A0A0F;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#000">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#00FF8833;border-radius:4px;height:12px"></div>
+              <div style="background:#00FF8822;border-radius:4px;height:12px"></div>
+              <div style="background:#00FF8833;border-radius:4px;height:12px"></div>
+              <div style="background:#00FF8822;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Bitcoin DeFi (Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#81</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Bitcoin DeFi (Mobile)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#F7931A;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#FFD60033;border-radius:4px;height:12px"></div>
+              <div style="background:#FFD60022;border-radius:4px;height:12px"></div>
+              <div style="background:#FFD60033;border-radius:4px;height:12px"></div>
+              <div style="background:#FFD60022;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Claymorphism (Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#82</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Claymorphism (Mobile)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#7C3AED;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#F4F1FA33;border-radius:4px;height:12px"></div>
+              <div style="background:#F4F1FA22;border-radius:4px;height:12px"></div>
+              <div style="background:#F4F1FA33;border-radius:4px;height:12px"></div>
+              <div style="background:#F4F1FA22;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Enterprise SaaS (Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#83</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Enterprise SaaS (Mobile)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#4F46E5;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#F8FAFC33;border-radius:4px;height:12px"></div>
+              <div style="background:#F8FAFC22;border-radius:4px;height:12px"></div>
+              <div style="background:#F8FAFC33;border-radius:4px;height:12px"></div>
+              <div style="background:#F8FAFC22;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Sketch Hand-Drawn (Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#84</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Sketch Hand-Drawn (Mobile)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#FF4D4D;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#FDFBF733;border-radius:4px;height:12px"></div>
+              <div style="background:#FDFBF722;border-radius:4px;height:12px"></div>
+              <div style="background:#FDFBF733;border-radius:4px;height:12px"></div>
+              <div style="background:#FDFBF722;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div><div class="mcard">
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;min-height:150px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11.5px;font-weight:700;color:#1a1a1a">Neumorphism (Mobile)</span>
+        <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:#6b7280">#85</span>
+      </div>
+      
+        <div style="display:flex;justify-content:center;padding:6px 0">
+          <div style="width:110px;background:#ffffff;border:2px solid #e5e7eb;border-radius:16px;padding:10px 8px">
+            <div style="width:30px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 8px"></div>
+            <div style="font-size:9px;font-weight:700;color:#1a1a1a;margin-bottom:2px">App Neumorphism (Mobile)</div>
+            <div style="font-size:7px;color:#6b7280;margin-bottom:8px">Mobile UI</div>
+            <div style="background:#6C63FF;border-radius:6px;padding:5px;margin-bottom:6px">
+              <div style="font-size:6.5px;color:#fff">PRIMARY</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="background:#3D485233;border-radius:4px;height:12px"></div>
+              <div style="background:#3D485222;border-radius:4px;height:12px"></div>
+              <div style="background:#3D485233;border-radius:4px;height:12px"></div>
+              <div style="background:#3D485222;border-radius:4px;height:12px"></div>
+            </div>
+          </div>
+        </div>
+    </div></div></div>
+</div>
+
+
+  <div class="page">
+    <div class="phead"><span class="pnum">07</span><span class="pref">Referencia · stat-map.com · SPA React + Tailwind</span></div>
+    <div class="tag-row"><span class="tag" style="--ac:#FA8072">StatMap</span><span class="tag2">recursos · docs · blog técnico · guías SaaS</span></div>
+    <h2 class="ah" style="--ac:#FA8072">StatMap (recursos / artículos)</h2>
+    <p class="adesc">Tailwind CSS sobre React (SPA, Vite). Paleta sobria de 5 colores de marca: coral salmón como único acento, slate blue para secundario, gris cálido para texto, negro y blanco. Inter 300-800 como única fuente. Soporta modo claro/oscuro con la misma paleta. Ideal para páginas de documentación, guías y recursos de producto.</p>
+
+    <div class="mock" style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:14px;padding:0;font-family:'Inter',sans-serif;color:#1A1A1A;overflow:hidden">
+      <!-- nav -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid #EFEFEF">
+        <span style="font-weight:700;font-size:13px;letter-spacing:.02em">Statistical Mapping<span style="color:#FA8072">.</span></span>
+        <span style="display:flex;gap:20px;font-size:11px;color:#939393;font-weight:500"><span style="color:#1A1A1A">Features</span><span>Pricing</span><span style="display:flex;align-items:center;gap:4px">Resources <span style="font-size:8px">▾</span></span></span>
+        <span style="background:#FA8072;color:#FFFFFF;font-size:10px;font-weight:700;padding:7px 14px;border-radius:8px">Get Started</span>
+      </div>
+      <!-- breadcrumb -->
+      <div style="padding:18px 24px 0;display:flex;align-items:center;gap:6px;font-size:11px;color:#939393">
+        <span style="display:flex;align-items:center;gap:4px">← Back to Resources</span>
+        <span style="color:#D1D5DB">/</span>
+        <span style="color:#939393">TradingView</span>
+        <span style="color:#D1D5DB">/</span>
+        <span style="color:#5E6B88;font-weight:600">How to Claim Access to TradingView Indicators on Whop</span>
+      </div>
+      <!-- título -->
+      <div style="padding:24px 24px 8px">
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <span style="background:#5E6B881A;color:#5E6B88;font-size:9px;font-weight:600;padding:4px 10px;border-radius:99px;letter-spacing:.04em">TRADINGVIEW</span>
+          <span style="background:#9393931A;color:#939393;font-size:9px;font-weight:600;padding:4px 10px;border-radius:99px">GUÍA</span>
+        </div>
+        <div style="font-size:22px;font-weight:800;letter-spacing:-.01em;line-height:1.25;max-width:560px">How to Claim Access to TradingView Indicators on Whop</div>
+        <div style="font-size:10.5px;color:#939393;margin-top:10px;display:flex;align-items:center;gap:8px">
+          <span style="background:#5E6B88;color:#fff;border-radius:99px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">JS</span>
+          <span style="font-weight:600;color:#1A1A1A">Joshuuu</span>
+          <span>·</span>
+          <span>TradingView · 1/22/2025</span>
+        </div>
+      </div>
+      <!-- cuerpo del artículo -->
+      <div style="padding:16px 24px 24px;display:flex;gap:28px">
+        <div style="flex:1;max-width:560px">
+          <div style="font-size:12.5px;line-height:1.7;color:#939393"><b style="color:#1A1A1A">Accessing your TradingView indicators via Whop is straightforward.</b> Follow these simple steps to set up your indicators and start using them in TradingView.</div>
+          <div style="margin-top:14px;background:#FA80721A;border:1px solid #FA807233;border-radius:10px;padding:12px 14px">
+            <div style="font-size:11px;font-weight:700;color:#1A1A1A;display:flex;align-items:center;gap:6px"><span style="color:#FA8072">●</span> Claim Access to Indicators on Whop</div>
+            <div style="font-size:11px;color:#939393;margin-top:6px;line-height:1.6">Visit the Whop access page, enter your TradingView username, click Set, then Claim Indicators.</div>
+          </div>
+          <div style="margin-top:12px;font-size:12px;color:#1A1A1A;font-weight:700">Add Indicators in TradingView</div>
+          <ol style="margin:8px 0 0 18px;font-size:11.5px;color:#939393;line-height:1.7">
+            <li style="margin-bottom:4px">Open the <b style="color:#1A1A1A">Indicators</b> tab in the top menu bar</li>
+            <li style="margin-bottom:4px">Navigate to <b style="color:#1A1A1A">Invite-only Scripts</b> under Community</li>
+            <li style="margin-bottom:4px">Select any listed indicator to add it to your chart</li>
+          </ol>
+        </div>
+        <!-- sidebar -->
+        <div style="width:190px;flex-shrink:0">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;color:#939393;text-transform:uppercase;margin-bottom:10px">Related Articles</div>
+          <div style="border:1px solid #EFEFEF;border-radius:10px;padding:10px 12px;margin-bottom:8px">
+            <div style="font-size:9px;color:#939393;margin-bottom:4px">TRADINGVIEW</div>
+            <div style="font-size:11px;font-weight:600;line-height:1.4;color:#1A1A1A">Copying TradingView Layouts</div>
+          </div>
+          <div style="border:1px solid #EFEFEF;border-radius:10px;padding:10px 12px;margin-bottom:8px">
+            <div style="font-size:9px;color:#939393;margin-bottom:4px">TRADINGVIEW</div>
+            <div style="font-size:11px;font-weight:600;line-height:1.4;color:#1A1A1A">Custom Timeframes in TradingView</div>
+          </div>
+        </div>
+      </div>
+      <!-- footer -->
+      <div style="border-top:1px solid #EFEFEF;padding:16px 24px;display:flex;justify-content:space-between;font-size:10px;color:#939393">
+        <span>© 2025 StatMap Analytics UG</span>
+        <span style="display:flex;gap:12px">Product · Resources · Community · Support · Legal</span>
+      </div>
+    </div>
+
+    <h3 class="ah" style="--ac:#FA8072;font-size:15px;margin-top:26px">Especificación</h3>
+    <div style="font-size:12px;color:#6b7280;line-height:1.7">
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Stack:</b> React SPA + Vite, Tailwind CSS (toda la UI es utilidades tailwind con extend de marca). Iconos: Lucide (stroke 2, 24×24).</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Fuentes:</b> Inter (300/400/500/600/700/800) — única familia. Sin fuente mono ni display.</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Tipos de objeto:</b> nav sticky (logo + 3 links + dropdown Resources + CTA pill coral) · breadcrumb con flecha "← Back to Resources" · pills de categoría (chips 99px radius, bg color 10-20%) · avatar circular con iniciales · callout (caja coral al 10%, borde 20%, título con bullet coral) · cards de "Related Articles" (borde #EFEFEF, radius 10px) · listas ol numeradas con texto gris y <b> negro · footer 2 columnas.</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Estados:</b> hover text→negro, hover bg→gris 5-10%, focus ring slateBlue/20-40%, selection slateBlue/20 con texto negro. Botón primario coral con shadow coral/10-20%.</p>
+    </div>
+
+    <h3 class="ah" style="--ac:#FA8072;font-size:15px;margin-top:26px">Paleta</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <div style="background:#FA8072;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">coral<br>#FA8072</div>
+      <div style="background:#5E6B88;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">slateBlue<br>#5E6B88</div>
+      <div style="background:#939393;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">gray<br>#939393</div>
+      <div style="background:#1A1A1A;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">black<br>#1A1A1A</div>
+      <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">white<br>#FFFFFF</div>
+    </div>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px">Todas con variantes de opacidad /5 /10 /20 /30 /40 /50 /60 /70 /80 /90. Texto de artículo: gris #939393, negritas #1A1A1A, h2/h3 #1A1A1A. Dark mode: bg negro, texto blanco, mismos acentos.</p>
+
+    <h3 class="ah" style="--ac:#FA8072;font-size:15px;margin-top:26px">Métrica · uso en TRQ</h3>
+    <p style="font-size:12px;color:#6b7280;margin-top:6px">Referencia para: páginas de recursos/guías del sitio (docs de Whop, FAQ, guías de TradingView), landing de producto SaaS. No es un estilo de dashboard (para eso está Cyberpunk/Neuromancer). Acento coral #FA8072 ≠ rojo TRQ #ff3b5c — si se adopta, decidir si se mantiene coral o se mapea al rojo de marca.</p>
+  </div>
+
+</body>
+</html>
