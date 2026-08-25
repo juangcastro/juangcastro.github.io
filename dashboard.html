@@ -534,25 +534,41 @@
     <div class="title">📈 PROYECCIÓN 12 SEMANAS — GRASA ▼ · MÚSCULO ▲ (basado en tu respuesta real al entrenamiento)</div>
     <div class="body">
       <svg viewBox="0 0 720 300" style="width:100%;height:auto;background:var(--surface);border-radius:10px;">
-        <line x1="50" y1="244" x2="700" y2="244" stroke="#ffd166" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <!-- Leyenda -->
+        <g font-size="9.5" font-weight="600">
+          <line x1="530" y1="14" x2="556" y2="14" stroke="#8a94b0" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="562" y="18" fill="#8a94b0">PROYECCIÓN</text>
+          <line x1="636" y1="14" x2="662" y2="14" stroke="#e8eaf6" stroke-width="2.5" stroke-linecap="round"/>
+          <text x="668" y="18" fill="#e8eaf6">REAL</text>
+        </g>
+        <!-- Targets -->
+        <line x1="50" y1="244" x2="700" y2="244" stroke="#ffd166" stroke-width="0.8" stroke-dasharray="5,4"/>
         <text x="40" y="248" text-anchor="end" font-size="9" fill="#ffd166">PESO 77.0 →</text>
-        <line x1="50" y1="225.7" x2="700" y2="225.7" stroke="#4ade80" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <line x1="50" y1="225.7" x2="700" y2="225.7" stroke="#4ade80" stroke-width="0.8" stroke-dasharray="5,4"/>
         <text x="40" y="230" text-anchor="end" font-size="9" fill="#4ade80">GRASA 14.5% →</text>
-        <line x1="50" y1="110" x2="700" y2="110" stroke="#f472b6" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <line x1="50" y1="110" x2="700" y2="110" stroke="#f472b6" stroke-width="0.8" stroke-dasharray="5,4"/>
         <text x="40" y="114" text-anchor="end" font-size="9" fill="#f472b6">MÚSCULO 63.0 →</text>
-        <polyline points="50.0,45.6 104.2,68.0 158.3,90.4 212.5,112.8 266.7,135.2 320.8,154.4 375.0,173.6 429.2,192.8 483.3,208.8 537.5,221.6 591.7,231.2 645.8,234.4 700.0,237.6" fill="none" stroke="#ffd166" stroke-width="2.2"/>
-        <polyline points="50.0,50.9 104.2,71.4 158.3,92.0 212.5,112.6 266.7,133.1 320.8,150.3 375.0,167.4 429.2,181.1 483.3,194.9 537.5,205.1 591.7,215.4 645.8,222.3 700.0,225.7" fill="none" stroke="#4ade80" stroke-width="2.2"/>
-        <polyline points="50.0,146.0 104.2,158.0 158.3,170.0 212.5,164.0 266.7,152.0 320.8,140.0 375.0,134.0 429.2,128.0 483.3,122.0 537.5,116.0 591.7,110.0 645.8,104.0 700.0,98.0" fill="none" stroke="#f472b6" stroke-width="2.2"/>
+        <!-- PROYECCIÓN (fina, punteada) -->
+        <polyline points="50.0,45.6 104.2,68.0 158.3,90.4 212.5,112.8 266.7,135.2 320.8,154.4 375.0,173.6 429.2,192.8 483.3,208.8 537.5,221.6 591.7,231.2 645.8,234.4 700.0,237.6" fill="none" stroke="#ffd166" stroke-width="1" stroke-dasharray="3,3" opacity="0.85"/>
+        <polyline points="50.0,50.9 104.2,71.4 158.3,92.0 212.5,112.6 266.7,133.1 320.8,150.3 375.0,167.4 429.2,181.1 483.3,194.9 537.5,205.1 591.7,215.4 645.8,222.3 700.0,225.7" fill="none" stroke="#4ade80" stroke-width="1" stroke-dasharray="3,3" opacity="0.85"/>
+        <polyline points="50.0,146.0 104.2,158.0 158.3,170.0 212.5,164.0 266.7,152.0 320.8,140.0 375.0,134.0 429.2,128.0 483.3,122.0 537.5,116.0 591.7,110.0 645.8,104.0 700.0,98.0" fill="none" stroke="#f472b6" stroke-width="1" stroke-dasharray="3,3" opacity="0.85"/>
+        <!-- REAL (gruesa, sólida) — se actualiza cada semana con datos de báscula/Garmin -->
+        <!-- Semana 0 (24 Ago): 83.2 / 19.6 / 62.4 — punto de partida -->
+        <polyline points="50.0,45.6" fill="none" stroke="#ffd166" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="50.0,50.9" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="50.0,146.0" fill="none" stroke="#f472b6" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="50" cy="45.6" r="4" fill="#ffd166" stroke="#0b0e17" stroke-width="1.5"/>
+        <circle cx="50" cy="50.9" r="4" fill="#4ade80" stroke="#0b0e17" stroke-width="1.5"/>
+        <circle cx="50" cy="146.0" r="4" fill="#f472b6" stroke="#0b0e17" stroke-width="1.5"/>
+        <!-- Ejes de fecha -->
         <text x="50" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">24 Ago</text><text x="158" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">7 Sep</text><text x="267" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">21 Sep</text><text x="375" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">5 Oct</text><text x="483" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">19 Oct</text><text x="592" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">2 Nov</text><text x="700" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">16 Nov</text>
-        <circle cx="50" cy="45.6" r="3.5" fill="#ffd166"/><circle cx="700" cy="237.6" r="3.5" fill="#ffd166"/>
-        <circle cx="50" cy="50.9" r="3.5" fill="#4ade80"/><circle cx="700" cy="225.7" r="3.5" fill="#4ade80"/>
-        <circle cx="50" cy="146.0" r="3.5" fill="#f472b6"/><circle cx="700" cy="98.0" r="3.5" fill="#f472b6"/>
+        <!-- Títulos -->
         <text x="355" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#ffd166">PESO: 83.2 → 77.2 kg (−6.0)</text>
         <text x="355" y="300" text-anchor="middle" font-size="10" font-weight="700" fill="#4ade80">GRASA: 19.6% → 14.5% (−5.1 kg de grasa)</text>
         <text x="355" y="92" text-anchor="middle" font-size="10" font-weight="700" fill="#f472b6">MÚSCULO: 62.4 → 63.2 kg (preservar + ganar)</text>
       </svg>
       <div style="margin-top:8px;font-size:10.5px;color:var(--muted);">
-        💡 Ritmo proyectado: −0.5 kg grasa/semana con déficit −750 kcal + ayuno 16:8. Tu serie real (18.6→19.6% en 12 días con déficit moderado) valida que el cuerpo responde; con intensidad agresiva la pendiente se acelera. Revisión semanal: si la pérdida de grasa &lt;0.3 kg/semana, −100 kcal más o +1 sesión HIIT.
+        💡 Ritmo proyectado: −0.5 kg grasa/semana con déficit −750 kcal + ayuno 16:8. <strong style="color:var(--green);">La línea REAL se actualiza cada lunes</strong> con los datos de la báscula — si la real queda por encima de la proyección 2 semanas seguidas, se ajusta el plan (−100 kcal o +1 HIIT). Tu serie real (18.6→19.6% en 12 días con déficit moderado) valida que el cuerpo responde; con intensidad agresiva la pendiente se acelera. Revisión semanal: si la pérdida de grasa &lt;0.3 kg/semana, −100 kcal más o +1 sesión HIIT.
       </div>
     </div>
   </div>
