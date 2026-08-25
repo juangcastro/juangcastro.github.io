@@ -335,6 +335,11 @@
     background-color: var(--bg);
     filter: brightness(.9) saturate(1.1);
   }
+  .band.band-engine::after {
+    background:
+      radial-gradient(720px 300px at 50% 55%, rgba(6, 7, 15, .78), transparent 70%),
+      linear-gradient(90deg, rgba(6, 7, 15, .9), rgba(6, 7, 15, .55) 50%, rgba(6, 7, 15, .9));
+  }
   .engine-inner {
     position: relative; z-index: 1;
     display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -347,8 +352,9 @@
     letter-spacing: -.01em; text-wrap: balance;
   }
   .engine-inner p {
-    color: var(--muted); max-width: 620px;
+    color: #c6cbe8; max-width: 620px;
     font-size: 14px; line-height: 1.7;
+    text-shadow: 0 1px 10px rgba(6, 7, 15, .95), 0 0 24px rgba(6, 7, 15, .8);
   }
   .engine-btn {
     margin-top: 14px;
@@ -363,8 +369,8 @@
   .engine-btn:hover { background: var(--accent-2); transform: translateY(-2px); }
   .engine-note {
     font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
-    opacity: .75;
+    letter-spacing: .18em; text-transform: uppercase; color: #aab0d0;
+    opacity: 1; text-shadow: 0 1px 8px rgba(6, 7, 15, .9);
   }
   .band blockquote.espejo {
     max-width: 820px; padding: 88px 28px;
