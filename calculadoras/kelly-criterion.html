@@ -336,7 +336,7 @@ setPills('presetRow', 'balanceado', key => {
   $('avgWin').value = pr.win;
   $('avgLoss').value = pr.loss;
 });
-setPills('fracRow', '0.5', key => { frac = parseFloat(key); if (!$('resultsContent').hidden) calc(); });
+setPills('fracRow', '0.5', key => { frac = parseFloat(key); });
 
 $('runBtn').addEventListener('click', calc);
 ['winRate', 'avgWin', 'avgLoss', 'bankroll'].forEach(id =>

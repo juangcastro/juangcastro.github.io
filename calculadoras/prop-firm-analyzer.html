@@ -369,7 +369,7 @@ function setPills(rowId, attr, handler) {
     });
   });
 }
-setPills('ddTypeRow', 'ddtype', () => calc());
+setPills('ddTypeRow', 'ddtype', () => {});
 
 function kelly(p, rr) {
   const q = 1 - p;
@@ -814,7 +814,7 @@ $('resetBtn').addEventListener('click', () => {
 
   $('results').hidden = true; $('resultsAgg').hidden = true; $('probBox').hidden = true; $('probNote').hidden = true; $('pathsBox').hidden = true; $('err').hidden = true;
 });
-['winRate', 'rr', 'account', 'ddUsd', 'target', 'tradesPerWeek', 'consistency'].forEach(id => $(id).addEventListener('input', calc));
+
 
 calc();
 </script>

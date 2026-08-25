@@ -361,7 +361,7 @@ function setPills(rowId, activeSel, handler) {
 }
 
 setPills('riskPresets', 'preset', v => { $('riskPct').value = RISK_PRESETS[v]; calc(); });
-setPills('sideRow', 'side', () => calc());
+setPills('sideRow', 'side', () => {});
 setPills('levPresets', 'lev', v => { $('leverage').value = v; calc(); });
 
 let side = 'long';
@@ -451,7 +451,7 @@ $('resetBtn').addEventListener('click', () => {
   document.querySelectorAll('#levPresets .pill').forEach(p => p.classList.toggle('active', p.dataset.lev === '10'));
   $('results').hidden = true; $('err').hidden = true;
 });
-['bankroll', 'riskPct', 'leverage', 'entry', 'stop', 'tp'].forEach(id => $(id).addEventListener('input', calc));
+
 
 calc();
 </script>
