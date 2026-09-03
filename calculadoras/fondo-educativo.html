@@ -243,6 +243,7 @@
     margin-bottom: 10px;
   }
   .kpi .val.gold { color: #f5b64c; }
+  .val.out { color: #ff1744; }
   .solver-box {
     margin-top: 18px;
     border: 1px solid rgba(34,211,238,.4); border-radius: 14px;
@@ -451,7 +452,7 @@
       <div class="kpi"><div class="lab wide">Saldo final del fondo (media)</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios simulados</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (P95)</div><div class="val" id="kP95">—</div><div class="sub">solo 5% de los escenarios terminan con más</div></div>
       <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">sin agotar el fondo en ningún año</div></div>
-      <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val" id="kCosto50">—</div><div class="sub">todo lo desembolsado, inflado año a año</div></div>
+      <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val out" id="kCosto50">—</div><div class="sub">salidas del fondo · rojo como los retiros de la gráfica</div></div>
     </div>
 
     <div class="solver-box" id="solverBox" hidden>
