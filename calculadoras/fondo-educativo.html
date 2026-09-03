@@ -455,15 +455,16 @@
       <div class="cap">Proyección del fondo vs. costos de estudio</div>
       <canvas id="chart" width="900" height="380"></canvas>
       <div class="legend-row">
-        <span><i class="lg" style="background:#e8eaf6"></i> Saldo esperado (media)</span>
-        <span><i class="lg" style="background:#ff3b5c"></i> Costo anual de estudio</span>
+        <span><i class="lg" style="background:#34d399"></i> Camino que cubre el plan</span>
+        <span><i class="lg" style="background:#ff3b5c"></i> Camino que se queda corto</span>
+        <span><i class="lg" style="background:#ff3b5c;height:4px;border-radius:0"></i> Costo anual</span>
         <span><i class="lg" style="background:#22d3ee"></i> Aporte anual</span>
-        <span><i class="lg" style="background:linear-gradient(90deg,rgba(167,139,250,.3),rgba(167,139,250,.65))"></i> Banda P5–P95 (Monte-Carlo)</span>
+        <span><i class="lg" style="background:repeating-linear-gradient(90deg,#a78bfa 0 4px,transparent 4px 8px)"></i> Límites P5 · P95</span>
       </div>
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> la <b>línea blanca</b> es el saldo esperado del fondo y la <b>banda violeta</b> el rango donde cae el 90% de los escenarios Monte-Carlo (P5–P95): mientras más ancha se vuelve, más incierto es el plan. Las barras <b>rojas</b> son el costo anual de estudio ya inflado y las <b>celestes</b> lo que aportas cada año. El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan. Si es negativo, sube los aportes mensuales o el monto inicial hasta que el P5 cierre en positivo.
+      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b> completo (uno de los miles simulados): <b>verde</b> si el fondo cubre el plan hasta el final, <b>roja</b> si se queda corto en algún punto. La <b>línea blanca</b> es el saldo promedio y las <b>punteadas violeta</b> marcan el P5 y el P95 de cada año. El abanico que se abre con el tiempo es la incertidumbre: cuanto más se abre, menos seguro es el plan. Las barras <b>rojas</b> son el costo anual de estudio inflado y las <b>celestes</b> tus aportes. El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan. Si es negativo, sube los aportes mensuales o el monto inicial hasta que el P5 cierre en positivo.
     </div>
   </div>
 
@@ -711,12 +712,12 @@ function runMC(p) {
   }
   var lp = lognormParams(p.inflacion, p.inflVol);
   var n = p.nSims;
-  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0;
+  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0, caminos = [];
   for (var a = 0; a < horizonte; a++) porAnio.push([]);
   for (var s = 0; s < n; s++) {
     var mu = p.rentabilidad + p.errorRent * randNormal(); // media de esta simulación
     var saldo = p.montoInicial;
-    var acumInfl = 1, totalCosto = 0, ok = true;
+    var acumInfl = 1, totalCosto = 0, ok = true, caminoSim = [];
     for (var per = 1; per <= horizonte; per++) {
       var anio = p.anioInicio + per - 1;
       var edad = p.edad + per - 1;
@@ -739,12 +740,23 @@ function runMC(p) {
       saldo -= costo;
       totalCosto += costo;
       porAnio[per - 1].push(saldo);
+      caminoSim.push(saldo);
       if (saldo < 0) ok = false;
       acumInfl *= (1 + inflAnual);
     }
+    caminos.push(caminoSim);
     saldosFin.push(saldo);
     costosFin.push(totalCosto);
     if (ok) exitos++;
+  }
+  // muestra estratificada de caminos (ordenados por saldo final → cubren toda la mariposa)
+  var idxSorted = saldosFin.map(function (v, i) { return i; }).sort(function (a, b) { return saldosFin[a] - saldosFin[b]; });
+  var nPaths = Math.min(120, n);
+  var stepP = Math.max(1, Math.floor(n / nPaths));
+  var paths = [];
+  for (var k = 0; k < n; k += stepP) {
+    var si = idxSorted[k];
+    paths.push({ pts: caminos[si], final: saldosFin[si] });
   }
   var mean = 0;
   saldosFin.forEach(function (v) { mean += v; });
@@ -752,7 +764,7 @@ function runMC(p) {
   return {
     p5: quantile(saldosFin, .05), p50: quantile(saldosFin, .50), p95: quantile(saldosFin, .95),
     mean: mean, pSucc: exitos / n, costo50: quantile(costosFin, .50),
-    horizonte: horizonte,
+    paths: paths, horizonte: horizonte,
     fan: porAnio.map(function (arr) {
       return { p5: quantile(arr, .05), p50: quantile(arr, .50), p95: quantile(arr, .95), mean: arr.reduce(function (x, y) { return x + y; }, 0) / arr.length };
     })
@@ -856,28 +868,55 @@ function drawChart(res, p, mc) {
     ctx.setLineDash([]);
   }
 
-  // banda: fan chart MC (P5-P95) o banda pesimista–optimista determinista
-  var bandLo = function (i) { return mc ? mc.fan[i].p5 : filas[i].worst; };
-  var bandHi = function (i) { return mc ? mc.fan[i].p95 : filas[i].best; };
-  ctx.beginPath();
-  ctx.moveTo(X(0), Y(bandLo(0)));
-  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(bandLo(i)));
-  for (i = n - 1; i >= 0; i--) ctx.lineTo(X(i), Y(bandHi(i)));
-  ctx.closePath();
-  ctx.fillStyle = mc ? 'rgba(139,92,246,.30)' : 'rgba(139,92,246,.20)';
-  ctx.fill();
-  ctx.strokeStyle = mc ? 'rgba(167,139,250,.6)' : 'rgba(167,139,250,.5)';
-  ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(X(0), Y(bandLo(0)));
-  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(bandLo(i)));
-  ctx.stroke();
-  ctx.strokeStyle = mc ? 'rgba(167,139,250,.45)' : 'rgba(167,139,250,.35)';
-  ctx.beginPath();
-  ctx.moveTo(X(0), Y(bandHi(0)));
-  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(bandHi(i)));
-  ctx.stroke();
-  ctx.setLineDash([]);
+  if (mc && mc.paths && mc.paths.length) {
+    // ── mariposa: caminos individuales del Monte-Carlo ──
+    // verde = el camino cubre el plan completo; rojo = se queda corto
+    mc.paths.forEach(function (pa) {
+      var col = pa.final >= 0 ? 'rgba(52,211,153,.30)' : 'rgba(255,59,92,.26)';
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 0.9;
+      ctx.beginPath();
+      pa.pts.forEach(function (v, t) {
+        var px = X(t), py = Y(v);
+        t === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+    });
+    // bordes P5 y P95 punteados (referencia de la confianza 95%)
+    ctx.setLineDash([4, 4]); ctx.lineWidth = 1.1;
+    ctx.strokeStyle = 'rgba(167,139,250,.55)';
+    ctx.beginPath();
+    ctx.moveTo(X(0), Y(mc.fan[0].p5));
+    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(mc.fan[i].p5));
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(167,139,250,.35)';
+    ctx.beginPath();
+    ctx.moveTo(X(0), Y(mc.fan[0].p95));
+    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(mc.fan[i].p95));
+    ctx.stroke();
+    ctx.setLineDash([]);
+  } else {
+    // banda pesimista–optimista determinista
+    ctx.beginPath();
+    ctx.moveTo(X(0), Y(filas[0].worst));
+    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].worst));
+    for (i = n - 1; i >= 0; i--) ctx.lineTo(X(i), Y(filas[i].best));
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(139,92,246,.20)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(167,139,250,.5)';
+    ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(X(0), Y(filas[0].worst));
+    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].worst));
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(167,139,250,.35)';
+    ctx.beginPath();
+    ctx.moveTo(X(0), Y(filas[0].best));
+    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].best));
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
 
   // barras: aporte (cian) y costo (rojo) — en eje derecho
   var bw = Math.max(3, Math.min(9, iw / n * 0.28));
