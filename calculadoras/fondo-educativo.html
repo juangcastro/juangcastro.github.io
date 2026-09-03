@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fondo Educativo — The Red Queen</title>
+<style>
+
+  :root {
+    --bg: #06070f; --surface: #0d0f1e; --card: #12142a; --card-2: #171a36;
+    --border: #252b52; --text: #e8ecff; --muted: #8b92b8;
+    --accent: #ff3b5c; --glow-accent: rgba(255, 59, 92, .35);
+    --up: #34d399; --down: #ff5c7a; --amber: #fbbf24;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  a { color: inherit; text-decoration: none; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 24px 40px; }
+
+  .masthead { padding: 34px 0 8px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .masthead .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
+  .masthead h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(30px, 4.6vw, 42px); letter-spacing: -.02em; }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
+  .masthead p { color: var(--muted); max-width: none; font-size: 15px; margin-top: 10px; line-height: 1.65; }
+  .masthead p b { color: var(--text); }
+
+
+  .panel {
+    margin-top: 26px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px 22px 24px;
+  }
+  .panel h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .panel h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    color: var(--accent); border: 1px solid var(--border); border-radius: 6px;
+    padding: 3px 7px; background: rgba(6, 7, 15, .45);
+  }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 640px) { .grid, .grid-2, .grid-4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 420px) { .grid, .grid-2, .grid-4 { grid-template-columns: 1fr; } }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: .02em; }
+  label .hint { color: #5b6288; font-size: 11px; }
+  input[type="number"] {
+    width: 100%; padding: 10px 12px;
+    background: rgba(6, 7, 15, .55); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    outline: none; transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
+
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pill {
+    padding: 7px 14px; font-size: 12px; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+    background: rgba(6, 7, 15, .45); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .pill:hover { color: var(--text); border-color: #3a4170; }
+  .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 18px rgba(255, 59, 92, .28); }
+
+  .run {
+    margin-top: 22px; width: 100%;
+    padding: 14px; border: none; border-radius: 12px; cursor: pointer;
+    background: var(--accent); color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; letter-spacing: .06em;
+    box-shadow: 0 10px 30px -12px rgba(255, 59, 92, .55);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .run:hover { box-shadow: 0 14px 36px -12px rgba(255, 59, 92, .7); }
+  .run:active { transform: scale(0.96); }
+
+  .results { margin-top: 26px; }
+  .placeholder {
+    border: 1px dashed var(--border); border-radius: 16px;
+    padding: 44px 20px; text-align: center; color: var(--muted); font-size: 14px;
+  }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .kpis .kpi {
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 16px 14px;
+  }
+  .kpi .lab { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+  .kpi .val { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi .val.pos { color: var(--up); }
+  .kpi .val.neg { color: var(--down); }
+  .kpi .val.acc { color: var(--accent); }
+  .kpi .val.amber { color: var(--amber); }
+  .kpi .sub { font-size: 11px; color: #5b6288; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+  @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
+
+  .note {
+    margin-top: 14px; padding: 14px 16px; border-radius: 12px;
+    border: 1px solid var(--border); background: rgba(6, 7, 15, .4);
+    font-size: 13px; color: var(--muted); line-height: 1.6;
+  }
+  .note.warn { border-color: rgba(255, 92, 122, .5); background: rgba(255, 92, 122, .07); color: #ffb3c2; }
+  .note b { color: var(--text); }
+  .canvas-box { margin-top: 14px; }
+  .canvas-box .cap { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+  canvas { width: 100%; height: auto; background: rgba(6, 7, 15, .4); border: 1px solid var(--border); border-radius: 14px; }
+
+  footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 40px; }
+  .foot-inner { max-width: 780px; margin: 0 auto; padding: 18px 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+  footer span { color: var(--muted); font-size: 12px; }
+  .back { color: var(--muted); text-decoration: none; font-size: 13px; font-family: 'JetBrains Mono', monospace; transition: color .15s ease; }
+  .back:hover { color: var(--accent); }
+  .back::before { content: "← "; }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1160px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 46px; height: auto; }
+    .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 15px; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 18px var(--glow-accent);
+  }
+  .nav-brand .word small {
+    display: block; font-size: 9px; font-weight: 500;
+    letter-spacing: .3em; color: var(--muted); text-shadow: none;
+  }
+  .nav-links { display: flex; align-items: center; gap: 26px; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 620px) { .nav-links a:not(.back-link) { display: none; } }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-top: 26px;
+    background: rgba(13, 15, 30, .55);
+    transition: border-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .back-btn:hover {
+    border-color: var(--accent); color: var(--accent);
+    box-shadow: 0 0 18px -6px var(--glow-accent);
+    transform: translateY(-1px);
+  }
+
+  /* ── extras fondo educativo ─────────────────── */
+  .panel h3.sub {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--accent);
+    margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .panel h3.sub::before { content: '▸'; font-size: 9px; }
+  .inc-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .inc-row .inc-label { font-size: 13px; color: var(--text); }
+  .ap-row {
+    display: grid; grid-template-columns: 1fr 110px 120px 34px;
+    gap: 8px; margin-bottom: 8px; align-items: center;
+  }
+  .ap-row .rm {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 8px; height: 34px; cursor: pointer; font-size: 14px;
+    transition: border-color .15s, color .15s;
+  }
+  .ap-row .rm:hover { border-color: var(--accent); color: var(--accent); }
+  .add-ap {
+    margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
+    background: none; border: 1px dashed rgba(255,59,92,.4); border-radius: 8px;
+    padding: 8px 12px; cursor: pointer; transition: border-color .15s;
+  }
+  .add-ap:hover { border-color: var(--accent); }
+  .ap-hint { font-size: 11px; color: var(--muted); margin: 4px 0 12px; line-height: 1.5; }
+  .verdict {
+    border: 1px solid rgba(255,59,92,.35); border-radius: 14px;
+    background: linear-gradient(160deg, rgba(255,59,92,.08), rgba(13,15,30,.4));
+    padding: 14px 18px; margin-bottom: 18px; font-size: 14px; line-height: 1.65;
+    color: var(--text);
+  }
+  .verdict b { color: var(--accent); }
+  .verdict .ok { color: #34d399; }
+  .legend-row {
+    display: flex; gap: 16px; flex-wrap: wrap; margin: 10px 2px 0;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .06em; color: var(--muted); text-transform: uppercase;
+  }
+  .legend-row span { display: inline-flex; align-items: center; gap: 6px; }
+  .lg { width: 14px; height: 3px; display: inline-block; border-radius: 2px; }
+  .field-row { display: grid; gap: 12px 14px; margin-bottom: 8px; }
+  .field .hint { margin-top: 5px; }
+  .panel h2 .num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: .2em; color: var(--accent);
+  }
+  .cta-row { margin-top: 22px; }
+  .cta-row .run { margin-top: 0; }
+  .err {
+    margin-top: 14px; border: 1px solid rgba(255,59,92,.5); border-radius: 10px;
+    padding: 12px 14px; color: #ff8fa3; font-size: 13px; line-height: 1.5;
+    background: rgba(255,59,92,.06);
+  }
+  .res-head {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .res-head .red { color: var(--accent); }
+  .chart-box { margin-top: 16px; }
+  .chart-box .cap {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .kpi .val.gold { color: #f5b64c; }
+  canvas { width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<script>
+  history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+</script>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen<small>CHECKMATE THE SYSTEM</small></span>
+    </a>
+    <div class="nav-links">
+      <a class="back-link" href="../calculadoras/">← Calculadoras</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <a class="back-btn" href="../calculadoras/" aria-label="Volver a las calculadoras">Volver a las calculadoras</a>
+  <header class="masthead">
+    <div class="kicker">// Herramientas · Fondo educativo</div>
+    <h1>Fondo <span class="red">Educativo</span></h1>
+    <p>Proyecta cuánto necesitas aportar para tener <b>cubierta la universidad</b> (y el colegio, si lo incluyes) con un fondo que crece a una rentabilidad esperada, corregido por <b>inflación</b>. El modelo corre año a año: aportes + intereses contra costos de estudio inflados, con un escenario pesimista y uno optimista según el margen de error de tu rentabilidad.</p>
+  </header>
+
+  <div class="panel">
+    <h2><span class="num">01</span> El plan de estudio</h2>
+    <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+      <div class="field">
+        <label for="nombre">Nombre del hijo</label>
+        <input type="text" id="nombre" value="Tomás">
+      </div>
+      <div class="field">
+        <label for="edad">Edad actual (años)</label>
+        <input type="number" id="edad" value="7" min="0" max="16">
+      </div>
+      <div class="field">
+        <label for="anioInicio">Año de inicio del análisis</label>
+        <input type="number" id="anioInicio" value="2026" min="2000" max="2040">
+      </div>
+      <div class="field">
+        <label for="edadInicioUniv">Edad de ingreso a la universidad</label>
+        <input type="number" id="edadInicioUniv" value="17" min="15" max="22">
+      </div>
+    </div>
+
+    <h3 class="sub">Universidad</h3>
+    <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+      <div class="field">
+        <label for="univCosto">Costo de un semestre hoy ($)</label>
+        <input type="number" id="univCosto" value="15000000" min="0" step="100000">
+      </div>
+      <div class="field">
+        <label for="univPeriodos">Semestres al año</label>
+        <input type="number" id="univPeriodos" value="2" min="1" max="4">
+      </div>
+      <div class="field">
+        <label for="univAnios">Años de carrera</label>
+        <input type="number" id="univAnios" value="5" min="1" max="8">
+      </div>
+    </div>
+
+    <h3 class="sub">Colegio <span style="color:var(--muted);letter-spacing:.1em;text-transform:none">(opcional)</span></h3>
+    <div class="inc-row" style="margin-bottom:10px">
+      <span class="inc-label">¿Incluir colegio en la proyección?</span>
+      <span class="pill-row" id="colRow" style="margin:0">
+        <button class="pill" data-col="1">Incluir</button>
+        <button class="pill active" data-col="0">Omitir</button>
+      </span>
+    </div>
+    <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+      <div class="field">
+        <label for="colMensual">Mensualidad hoy ($)</label>
+        <input type="number" id="colMensual" value="0" min="0" step="10000">
+      </div>
+      <div class="field">
+        <label for="colMeses">Meses al año</label>
+        <input type="number" id="colMeses" value="10" min="1" max="12">
+      </div>
+      <div class="field">
+        <label for="colAnios">Años de colegio</label>
+        <input type="number" id="colAnios" value="0" min="0" max="13">
+      </div>
+    </div>
+
+    <h3 class="sub">Kínder <span style="color:var(--muted);letter-spacing:.1em;text-transform:none">(opcional)</span></h3>
+    <div class="inc-row" style="margin-bottom:10px">
+      <span class="inc-label">¿Incluir kínder en la proyección?</span>
+      <span class="pill-row" id="kinRow" style="margin:0">
+        <button class="pill" data-kin="1">Incluir</button>
+        <button class="pill active" data-kin="0">Omitir</button>
+      </span>
+    </div>
+    <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+      <div class="field">
+        <label for="kinMensual">Mensualidad hoy ($)</label>
+        <input type="number" id="kinMensual" value="0" min="0" step="10000">
+      </div>
+      <div class="field">
+        <label for="kinMeses">Meses al año</label>
+        <input type="number" id="kinMeses" value="10" min="1" max="12">
+      </div>
+      <div class="field">
+        <label for="kinAnios">Años de kínder</label>
+        <input type="number" id="kinAnios" value="0" min="0" max="13">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2><span class="num">02</span> Financieros</h2>
+    <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+      <div class="field">
+        <label for="montoInicial">Monto inicial del fondo ($)</label>
+        <input type="number" id="montoInicial" value="41793062" min="0" step="100000">
+        <div class="hint">Lo que ya tienes ahorrado hoy.</div>
+      </div>
+      <div class="field">
+        <label for="inflacion">Inflación (% EA)</label>
+        <input type="number" id="inflacion" value="4" min="0" max="30" step="0.1">
+        <div class="hint">Encarece los costos de estudio cada año.</div>
+      </div>
+      <div class="field">
+        <label for="rentabilidad">Rentabilidad esperada (% EA)</label>
+        <input type="number" id="rentabilidad" value="7" min="0" max="30" step="0.1">
+        <div class="hint">Rendimiento promedio anual del fondo.</div>
+      </div>
+      <div class="field">
+        <label for="errorRent">Margen de error (% EA)</label>
+        <input type="number" id="errorRent" value="1" min="0" max="10" step="0.1">
+        <div class="hint">Volatilidad: define los escenarios pesimista y optimista.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2><span class="num">03</span> Aportes programados</h2>
+    <div class="ap-hint">Cada aporte es un monto <b>mensual</b> que entra al fondo durante una duración en <b>meses</b>, desde un año de inicio. Suma todos los aportes que planeas (o mueve los montos hasta que la proyección cierre).</div>
+    <div id="apList"></div>
+    <button class="add-ap" id="addAp" type="button">+ Añadir aporte</button>
+  </div>
+
+  <div class="cta-row">
+    <button class="run" id="runBtn">▶ Calcular proyección</button>
+  </div>
+  <div class="err" id="err" hidden></div>
+
+  <div class="results" id="results" hidden>
+    <div class="res-head">Proyección del <span class="red">fondo educativo</span></div>
+    <div class="verdict" id="verdict"></div>
+    <div class="kpis">
+      <div class="kpi"><div class="lab">Total aportado</div><div class="val gold" id="kAportado">—</div><div class="sub">aportes programados</div></div>
+      <div class="kpi"><div class="lab">Total estudio (inflado)</div><div class="val acc" id="kEstudio">—</div><div class="sub">costo proyectado al pagarlo</div></div>
+      <div class="kpi"><div class="lab">Intereses ganados</div><div class="val pos" id="kIntereses">—</div><div class="sub">durante el horizonte analizado</div></div>
+      <div class="kpi"><div class="lab">Saldo al terminar</div><div class="val" id="kRemanente">—</div><div class="sub">después del último año de estudio</div></div>
+      <div class="kpi"><div class="lab">Escenario pesimista</div><div class="val neg" id="kMin">—</div><div class="sub">rentabilidad − margen de error</div></div>
+      <div class="kpi"><div class="lab">Escenario optimista</div><div class="val pos" id="kMax">—</div><div class="sub">rentabilidad + margen de error</div></div>
+    </div>
+
+    <div class="chart-box">
+      <div class="cap">Proyección del fondo vs. costos de estudio</div>
+      <canvas id="chart" width="900" height="380"></canvas>
+      <div class="legend-row">
+        <span><i class="lg" style="background:#e8eaf6"></i> Saldo del fondo</span>
+        <span><i class="lg" style="background:#ff3b5c"></i> Costo anual de estudio</span>
+        <span><i class="lg" style="background:#f5b64c"></i> Aporte anual</span>
+        <span><i class="lg" style="background:linear-gradient(90deg,rgba(16,185,129,.25),rgba(16,185,129,.5))"></i> Banda pesimista–optimista</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Cómo leer esto:</b> el <b>saldo del fondo</b> (línea blanca) crece con tus aportes e intereses y cae cuando empiezan los desembolsos de estudio. La <b>banda verde</b> muestra el rango entre el escenario pesimista (rentabilidad − margen de error) y el optimista (+ margen): mientras más ancha se vuelve, más sensible es tu plan a la volatilidad del fondo. Las barras <b>rojas</b> son el costo anual de estudio ya inflado y las <b>doradas</b> lo que aportas cada año. Si el saldo cruza a negativo antes de terminar, el plan no alcanza: sube los aportes, baja el costo objetivo o aumenta el monto inicial.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html" style="color:var(--muted)">Términos</a></span>
+</footer>
+
+<script>
+function $(id) { return document.getElementById(id); }
+function fmt(v) {
+  var n = Math.round(v);
+  return n.toLocaleString('en-US');
+}
+function money(v) {
+  var s = Math.round(v).toLocaleString('en-US');
+  return v < 0 ? '-$' + s.slice(1) : '$' + s;
+}
+function setPills(rowId, attr, handler) {
+  $(rowId).querySelectorAll('.pill').forEach(function (p) {
+    p.addEventListener('click', function () {
+      $(rowId).querySelectorAll('.pill').forEach(function (q) { q.classList.remove('active'); });
+      p.classList.add('active');
+      handler(p.getAttribute(attr));
+    });
+  });
+}
+var colIncl = 0, kinIncl = 0;
+setPills('colRow', 'col', function (v) { colIncl = +v; });
+setPills('kinRow', 'kin', function (v) { kinIncl = +v; });
+
+// ── filas de aportes ──
+function apRow(monto, desde, meses) {
+  var d = document.createElement('div');
+  d.className = 'ap-row';
+  d.innerHTML =
+    '<input type="number" class="ap-monto" placeholder="Monto mensual $" value="' + monto + '" min="0" step="10000">' +
+    '<input type="number" class="ap-desde" placeholder="Desde año" value="' + desde + '" min="2000" max="2050">' +
+    '<input type="number" class="ap-meses" placeholder="Meses" value="' + meses + '" min="1" max="480">' +
+    '<button type="button" class="rm" title="Quitar">✕</button>';
+  d.querySelector('.rm').addEventListener('click', function () { d.remove(); });
+  return d;
+}
+function addAp(monto, desde, meses) {
+  $('apList').appendChild(apRow(monto || 4695078, desde || +$('anioInicio').value || 2026, meses || 12));
+}
+$('addAp').addEventListener('click', function () { addAp(); });
+// fila default
+addAp(4695078, 2026, 12);
+
+// ── modelo ──
+function readParams() {
+  var errs = [];
+  var p = {
+    nombre: $('nombre').value.trim() || 'el estudiante',
+    edad: +$('edad').value,
+    anioInicio: +$('anioInicio').value,
+    edadInicioUniv: +$('edadInicioUniv').value,
+    univCosto: +$('univCosto').value,
+    univPeriodos: +$('univPeriodos').value,
+    univAnios: +$('univAnios').value,
+    colMensual: colIncl ? +$('colMensual').value : 0,
+    colMeses: +$('colMeses').value,
+    colAnios: colIncl ? +$('colAnios').value : 0,
+    kinMensual: kinIncl ? +$('kinMensual').value : 0,
+    kinMeses: +$('kinMeses').value,
+    kinAnios: kinIncl ? +$('kinAnios').value : 0,
+    montoInicial: +$('montoInicial').value,
+    inflacion: +$('inflacion').value / 100,
+    rentabilidad: +$('rentabilidad').value / 100,
+    errorRent: +$('errorRent').value / 100
+  };
+  if (!(p.edad >= 0)) errs.push('Edad actual inválida.');
+  if (!(p.edadInicioUniv > p.edad)) errs.push('La edad de ingreso a la universidad debe ser mayor que la edad actual.');
+  if (!(p.univCosto > 0 && p.univAnios > 0)) errs.push('Define el costo de la universidad.');
+  if (!(p.rentabilidad > 0)) errs.push('La rentabilidad esperada debe ser mayor a 0.');
+  if (!(p.errorRent >= 0)) errs.push('Margen de error inválido.');
+  // aportes
+  p.aportes = [];
+  $('apList').querySelectorAll('.ap-row').forEach(function (r) {
+    var m = +r.querySelector('.ap-monto').value || 0;
+    var d = +r.querySelector('.ap-desde').value || p.anioInicio;
+    var mes = +r.querySelector('.ap-meses').value || 12;
+    if (m > 0) p.aportes.push({ monto: m, desde: d, meses: mes });
+  });
+  return { p: p, errs: errs };
+}
+
+function costoAnualCat(costoAnualHoy, anio, anioInicio, infl) {
+  return costoAnualHoy * Math.pow(1 + infl, anio - anioInicio);
+}
+
+function runModel(p) {
+  // categorías ordenadas: kínder → colegio → universidad, desde edadInicioUniv
+  var cats = [];
+  if (p.kinAnios > 0 && p.kinMensual > 0) cats.push({ key: 'kin', años: p.kinAnios, costoAnual: p.kinMensual * p.kinMeses });
+  if (p.colAnios > 0 && p.colMensual > 0) cats.push({ key: 'col', años: p.colAnios, costoAnual: p.colMensual * p.colMeses });
+  cats.push({ key: 'univ', años: p.univAnios, costoAnual: p.univCosto * p.univPeriodos });
+
+  var totalAños = 0;
+  cats.forEach(function (c) { totalAños += c.años; });
+  var horizonte = p.edadInicioUniv + totalAños - p.edad;
+  if (horizonte < 1) horizonte = 1;
+
+  // categoría del año de desembolso n (1..)
+  function catDe(anioDes) {
+    var acc = 0;
+    for (var i = 0; i < cats.length; i++) {
+      if (anioDes <= acc + cats[i].años) return cats[i];
+      acc += cats[i].años;
+    }
+    return null;
+  }
+
+  var filas = [];
+  var saldo = p.montoInicial, saldoW = p.montoInicial, saldoB = p.montoInicial;
+  var totAportado = 0, totCosto = 0, totInteres = 0, totInteresW = 0, totInteresB = 0;
+  var ultimoCosto = 0;
+
+  for (var per = 1; per <= horizonte; per++) {
+    var anio = p.anioInicio + per - 1;
+    var edad = p.edad + per - 1;
+    // aporte anual del período (prorrateo por meses activos del año)
+    var aporte = 0;
+    p.aportes.forEach(function (a) {
+      var fin = a.desde + a.meses / 12; // año final (exclusivo)
+      if (a.desde <= anio && anio < fin) {
+        // meses activos del aporte dentro de este año calendario
+        var iniMes = Math.max(0, (a.desde - anio) * 12);
+        var finMes = Math.min(12, (fin - anio) * 12);
+        var mesesAct = Math.max(0, finMes - iniMes);
+        aporte += a.monto * mesesAct;
+      }
+    });
+    var interes = saldo * p.rentabilidad;
+    var acum = saldo + interes + aporte;
+    // costo del año
+    var anioDes = edad - p.edadInicioUniv + 1;
+    var cat = anioDes >= 1 ? catDe(anioDes) : null;
+    var costo = cat ? costoAnualCat(cat.costoAnual, anio, p.anioInicio, p.inflacion) : 0;
+    if (costo > 0) ultimoCosto = costo;
+    saldo = acum - costo;
+
+    var intW = saldoW * (p.rentabilidad - p.errorRent);
+    var intB = saldoB * (p.rentabilidad + p.errorRent);
+    saldoW = saldoW + intW + aporte - costo;
+    saldoB = saldoB + intB + aporte - costo;
+
+    totAportado += aporte;
+    totCosto += costo;
+    totInteres += interes;
+    totInteresW += intW;
+    totInteresB += intB;
+
+    filas.push({ per: per, anio: anio, edad: edad, aporte: aporte, interes: interes,
+                 costo: costo, saldo: saldo, worst: saldoW, best: saldoB });
+  }
+
+  var ult = filas[filas.length - 1];
+  var deficit = Math.min(0, ult.saldo, ult.worst);
+  return {
+    filas: filas,
+    nombre: p.nombre,
+    totalAportado: totAportado,
+    totalCosto: totCosto,
+    totalInteres: totInteres,
+    remanente: ult.saldo,
+    min: ult.worst,
+    max: ult.best,
+    deficit: deficit,
+    ok: ult.saldo >= 0,
+    ultimoCosto: ultimoCosto,
+    edadFinal: ult.edad,
+    anioFinal: ult.anio,
+    horizonte: horizonte
+  };
+}
+
+// ── gráfica (ejes dinámicos) ──
+function drawChart(res, p) {
+  var cv = $('chart');
+  var dpr = window.devicePixelRatio || 1;
+  var rect = cv.getBoundingClientRect();
+  var W = rect.width || cv.clientWidth || 900;
+  var H = 380;
+  cv.width = W * dpr; cv.height = H * dpr;
+  var ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  var filas = res.filas;
+  var padL = 62, padR = 58, padT = 18, padB = 30;
+  var iw = W - padL - padR, ih = H - padT - padB;
+  var n = filas.length;
+  var anios = filas.map(function (f) { return f.anio; });
+
+  // rangos dinámicos
+  var lo = Infinity, hi = -Infinity;
+  filas.forEach(function (f) {
+    lo = Math.min(lo, f.saldo, f.worst, 0);
+    hi = Math.max(hi, f.saldo, f.best);
+  });
+  var pad = (hi - lo) * 0.08 || 1;
+  lo -= pad; hi += pad;
+
+  var loF = 0, hiF = -Infinity;
+  filas.forEach(function (f) {
+    hiF = Math.max(hiF, f.aporte, f.costo);
+  });
+  if (hiF <= 0) hiF = 1;
+  hiF *= 1.08;
+
+  var X = function (i) { return padL + (i / (n - 1 || 1)) * iw; };
+  var Y = function (v) { return padT + ih - ((v - lo) / (hi - lo)) * ih; };
+  var YF = function (v) { return padT + ih - (v / hiF) * ih; };
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.font = '10px "JetBrains Mono", monospace';
+
+  // grid Y izquierdo (saldo)
+  var ticksY = 5;
+  for (var g = 0; g <= ticksY; g++) {
+    var v = lo + (hi - lo) * g / ticksY;
+    var gy = Y(v);
+    ctx.strokeStyle = 'rgba(35,40,69,.45)';
+    ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(padL + iw, gy); ctx.stroke();
+    ctx.fillStyle = '#8a90b3'; ctx.textAlign = 'right';
+    ctx.fillText(money(v), padL - 6, gy + 3);
+  }
+  // grid Y derecho (flujo anual)
+  for (var g2 = 0; g2 <= 4; g2++) {
+    var vf = hiF * g2 / 4;
+    var gy2 = YF(vf);
+    ctx.fillStyle = '#5b6288'; ctx.textAlign = 'left';
+    ctx.fillText(vf >= 1000 ? '$' + (vf / 1000).toFixed(vf % 1000 === 0 ? 0 : 1).replace('.0', '') + 'k' : '$' + Math.round(vf), padL + iw + 6, gy2 + 3);
+  }
+  // eje X: años (ticks dinámicos: cada ~1-3 años según densidad)
+  ctx.fillStyle = '#8a90b3'; ctx.textAlign = 'center';
+  var stepX = Math.ceil(n / 12);
+  for (var i = 0; i < n; i += stepX) {
+    ctx.fillText(anios[i], X(i), padT + ih + 16);
+  }
+  ctx.fillText(anios[n - 1], X(n - 1), padT + ih + 16);
+  // marco
+  ctx.strokeStyle = '#232845';
+  ctx.beginPath();
+  ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + ih); ctx.lineTo(padL + iw, padT + ih);
+  ctx.stroke();
+  // cero (si está dentro)
+  if (lo < 0 && hi > 0) {
+    ctx.strokeStyle = 'rgba(255,59,92,.5)';
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath(); ctx.moveTo(padL, Y(0)); ctx.lineTo(padL + iw, Y(0)); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // banda pesimista–optimista
+  ctx.beginPath();
+  ctx.moveTo(X(0), Y(filas[0].worst));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].worst));
+  for (i = n - 1; i >= 0; i--) ctx.lineTo(X(i), Y(filas[i].best));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(16,185,129,.14)';
+  ctx.fill();
+  // bordes de la banda (pesimista y optimista punteados finos)
+  ctx.strokeStyle = 'rgba(16,185,129,.45)';
+  ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(X(0), Y(filas[0].worst));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].worst));
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(16,185,129,.3)';
+  ctx.beginPath();
+  ctx.moveTo(X(0), Y(filas[0].best));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].best));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // barras: aporte (oro) y costo (rojo) — en eje derecho
+  var bw = Math.max(3, Math.min(9, iw / n * 0.28));
+  filas.forEach(function (f, idx) {
+    var xc = X(idx);
+    if (f.aporte > 0) {
+      ctx.fillStyle = 'rgba(245,182,76,.55)';
+      ctx.fillRect(xc - bw - 1, YF(f.aporte), bw, padT + ih - YF(f.aporte));
+    }
+    if (f.costo > 0) {
+      ctx.fillStyle = 'rgba(255,59,92,.6)';
+      ctx.fillRect(xc + 1, YF(f.costo), bw, padT + ih - YF(f.costo));
+    }
+  });
+
+  // línea del saldo (principal)
+  ctx.strokeStyle = '#e8eaf6';
+  ctx.lineWidth = 2.2;
+  ctx.beginPath();
+  ctx.moveTo(X(0), Y(filas[0].saldo));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].saldo));
+  ctx.stroke();
+
+  // etiqueta de ejes
+  ctx.fillStyle = '#5b6288';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.fillText('SALDO', padL - 6, padT - 6);
+  ctx.textAlign = 'left';
+  ctx.fillText('APORTE/COSTO ANUAL', padL + iw + 6, padT - 6);
+}
+
+// ── disparador ──
+$('runBtn').addEventListener('click', function () {
+  var r = readParams();
+  if (r.errs.length) {
+    $('err').textContent = r.errs.join(' ');
+    $('err').hidden = false;
+    $('results').hidden = true;
+    return;
+  }
+  $('err').hidden = true;
+  var res = runModel(r.p);
+
+  // KPIs
+  $('kAportado').innerHTML = money(res.totalAportado);
+  $('kEstudio').innerHTML = money(res.totalCosto);
+  $('kIntereses').innerHTML = money(res.totalInteres);
+  $('kRemanente').innerHTML = money(res.remanente);
+  $('kMin').innerHTML = money(res.min);
+  $('kMax').innerHTML = money(res.max);
+
+  // veredicto
+  var v = '';
+  if (res.ok) {
+    v = '<b>El fondo cubre el plan completo.</b> Con los aportes programados, el fondo de ' + res.nombre +
+        ' termina la universidad (año ' + res.anioFinal + ', edad ' + res.edadFinal + ') con un saldo de <span class="ok">' +
+        money(res.remanente) + '</span> — entre ' + money(res.min) + ' (pesimista) y ' + money(res.max) + ' (optimista).';
+  } else {
+    v = '<b>El fondo no alcanza.</b> En el escenario central termina con <span style="color:var(--accent)">' +
+        money(res.remanente) + '</span> al final del plan: faltan aportes por ~<span style="color:var(--accent)">' +
+        money(-Math.min(res.remanente, 0)) + '</span> para cubrir el último año de estudio. Sube los aportes mensuales o el monto inicial.';
+  }
+  $('verdict').innerHTML = v;
+
+  drawChart(res, r.p);
+  $('results').hidden = false;
+  window.scrollTo({ top: $('results').offsetTop - 90, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>
