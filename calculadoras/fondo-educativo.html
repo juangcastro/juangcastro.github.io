@@ -53,14 +53,14 @@
   @media (max-width: 420px) { .grid, .grid-2, .grid-4 { grid-template-columns: 1fr; } }
   label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: .02em; }
   label .hint { color: #5b6288; font-size: 11px; }
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     width: 100%; padding: 10px 12px;
     background: rgba(6, 7, 15, .55); border: 1px solid var(--border); border-radius: 10px;
     color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
     font-variant-numeric: tabular-nums;
     outline: none; transition: border-color .15s ease, box-shadow .15s ease;
   }
-  input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
+  input[type="number"]:focus, input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
 
   .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
   .pill {
