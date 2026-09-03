@@ -243,6 +243,20 @@
     margin-bottom: 10px;
   }
   .kpi .val.gold { color: #f5b64c; }
+  .solver-box {
+    margin-top: 18px;
+    border: 1px solid rgba(34,211,238,.4); border-radius: 14px;
+    background: linear-gradient(160deg, rgba(34,211,238,.07), rgba(13,15,30,.45));
+    padding: 16px 18px; font-size: 13.5px; line-height: 1.65; color: var(--text);
+  }
+  .solver-box .solver-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .22em; text-transform: uppercase; color: #22d3ee;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .solver-box .solver-title::before { content: '◈'; font-size: 11px; }
+  .solver-box b { color: #22d3ee; }
+  .solver-box .neg { color: var(--accent); }
   .kpi .lab.wide {
     font-size: 10.5px; letter-spacing: .02em; line-height: 1.45;
     text-transform: none; margin-bottom: 5px;
@@ -406,14 +420,7 @@
   </div>
 
   <div class="panel">
-    <h2><span class="num">04</span> Monte-Carlo <span style="color:var(--muted);font-size:11px;letter-spacing:.1em;text-transform:none">(probabilístico)</span></h2>
-    <div class="inc-row" style="margin-bottom:12px">
-      <span class="inc-label">¿Modelar inflación y retorno con Monte-Carlo?</span>
-      <span class="pill-row" id="mcRow" style="margin:0">
-        <button class="pill active" data-mc="1">Sí — probabilístico</button>
-        <button class="pill" data-mc="0">No — determinista</button>
-      </span>
-    </div>
+    <h2><span class="num">04</span> Monte-Carlo <span style="color:var(--muted);font-size:11px;letter-spacing:.1em;text-transform:none">(el análisis es 100% probabilístico)</span></h2>
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
       <div class="field">
         <label for="nSims">Simulaciones</label>
@@ -432,23 +439,19 @@
   <div class="results" id="results" hidden>
     <div class="res-head">Proyección del <span class="red">fondo educativo</span></div>
     <div class="verdict" id="verdict"></div>
-    <div class="kpis">
-      <div class="kpi"><div class="lab">Total aportado</div><div class="val gold" id="kAportado">—</div><div class="sub">aportes programados</div></div>
-      <div class="kpi"><div class="lab">Total estudio (inflado)</div><div class="val acc" id="kEstudio">—</div><div class="sub">costo proyectado al pagarlo</div></div>
-      <div class="kpi"><div class="lab">Intereses ganados</div><div class="val pos" id="kIntereses">—</div><div class="sub">durante el horizonte analizado</div></div>
-      <div class="kpi"><div class="lab">Saldo al terminar</div><div class="val" id="kRemanente">—</div><div class="sub">después del último año de estudio</div></div>
-      <div class="kpi"><div class="lab">Escenario pesimista</div><div class="val neg" id="kMin">—</div><div class="sub">rentabilidad − margen de error</div></div>
-      <div class="kpi"><div class="lab">Escenario optimista</div><div class="val pos" id="kMax">—</div><div class="sub">rentabilidad + margen de error</div></div>
-    </div>
-
-    <div class="res-head" id="mcHead" style="margin-top:22px">Monte-Carlo · <span class="red">percentiles del saldo final</span></div>
-    <div class="kpis" id="mcKpis" hidden>
+    <div class="res-head">Monte-Carlo · <span class="red">resultados probabilísticos</span></div>
+    <div class="kpis" id="mcKpis">
       <div class="kpi"><div class="lab wide">Saldo final del fondo (P5 · 95% confianza)</div><div class="val" id="kP5">—</div><div class="sub">solo 1 de cada 20 escenarios termina con menos</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (mediana · P50)</div><div class="val" id="kP50">—</div><div class="sub">la mitad termina con más, la mitad con menos</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (media)</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios simulados</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (P95)</div><div class="val pos" id="kP95">—</div><div class="sub">solo 5% de los escenarios terminan con más</div></div>
       <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">sin agotar el fondo en ningún año</div></div>
       <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val acc" id="kCosto50">—</div><div class="sub">todo lo desembolsado, inflado año a año</div></div>
+    </div>
+
+    <div class="solver-box" id="solverBox" hidden>
+      <div class="solver-title">Solver — cobertura total (100% de los escenarios)</div>
+      <div id="solverText"></div>
     </div>
 
     <div class="chart-box">
@@ -526,8 +529,7 @@ function quantile(arr, q) {
   var lo = Math.floor(idx), hi = Math.ceil(idx);
   return a[lo] + (a[hi] - a[lo]) * (idx - lo);
 }
-var mcOn = 1;
-setPills('mcRow', 'mc', function (v) { mcOn = +v; });
+
 function setPills(rowId, attr, handler) {
   $(rowId).querySelectorAll('.pill').forEach(function (p) {
     p.addEventListener('click', function () {
@@ -602,95 +604,6 @@ function readParams() {
   return { p: p, errs: errs };
 }
 
-function costoAnualCat(costoAnualHoy, anio, anioInicio, infl) {
-  return costoAnualHoy * Math.pow(1 + infl, anio - anioInicio);
-}
-
-function runModel(p) {
-  // categorías ordenadas: kínder → colegio → universidad, desde edadInicioUniv
-  var cats = [];
-  if (p.kinAnios > 0 && p.kinMensual > 0) cats.push({ key: 'kin', años: p.kinAnios, costoAnual: p.kinMensual * p.kinMeses });
-  if (p.colAnios > 0 && p.colMensual > 0) cats.push({ key: 'col', años: p.colAnios, costoAnual: p.colMensual * p.colMeses });
-  cats.push({ key: 'univ', años: p.univAnios, costoAnual: p.univCosto * p.univPeriodos });
-
-  var totalAños = 0;
-  cats.forEach(function (c) { totalAños += c.años; });
-  var horizonte = p.edadInicioUniv + totalAños - p.edad;
-  if (horizonte < 1) horizonte = 1;
-
-  // categoría del año de desembolso n (1..)
-  function catDe(anioDes) {
-    var acc = 0;
-    for (var i = 0; i < cats.length; i++) {
-      if (anioDes <= acc + cats[i].años) return cats[i];
-      acc += cats[i].años;
-    }
-    return null;
-  }
-
-  var filas = [];
-  var saldo = p.montoInicial, saldoW = p.montoInicial, saldoB = p.montoInicial;
-  var totAportado = 0, totCosto = 0, totInteres = 0, totInteresW = 0, totInteresB = 0;
-  var ultimoCosto = 0;
-
-  for (var per = 1; per <= horizonte; per++) {
-    var anio = p.anioInicio + per - 1;
-    var edad = p.edad + per - 1;
-    // aporte anual del período (prorrateo por meses activos del año)
-    var aporte = 0;
-    p.aportes.forEach(function (a) {
-      var fin = a.desde + a.meses / 12; // año final (exclusivo)
-      if (a.desde <= anio && anio < fin) {
-        // meses activos del aporte dentro de este año calendario
-        var iniMes = Math.max(0, (a.desde - anio) * 12);
-        var finMes = Math.min(12, (fin - anio) * 12);
-        var mesesAct = Math.max(0, finMes - iniMes);
-        aporte += a.monto * mesesAct;
-      }
-    });
-    var interes = saldo * p.rentabilidad;
-    var acum = saldo + interes + aporte;
-    // costo del año
-    var anioDes = edad - p.edadInicioUniv + 1;
-    var cat = anioDes >= 1 ? catDe(anioDes) : null;
-    var costo = cat ? costoAnualCat(cat.costoAnual, anio, p.anioInicio, p.inflacion) : 0;
-    if (costo > 0) ultimoCosto = costo;
-    saldo = acum - costo;
-
-    var intW = saldoW * (p.rentabilidad - p.errorRent);
-    var intB = saldoB * (p.rentabilidad + p.errorRent);
-    saldoW = saldoW + intW + aporte - costo;
-    saldoB = saldoB + intB + aporte - costo;
-
-    totAportado += aporte;
-    totCosto += costo;
-    totInteres += interes;
-    totInteresW += intW;
-    totInteresB += intB;
-
-    filas.push({ per: per, anio: anio, edad: edad, aporte: aporte, interes: interes,
-                 costo: costo, saldo: saldo, worst: saldoW, best: saldoB });
-  }
-
-  var ult = filas[filas.length - 1];
-  var deficit = Math.min(0, ult.saldo, ult.worst);
-  return {
-    filas: filas,
-    nombre: p.nombre,
-    totalAportado: totAportado,
-    totalCosto: totCosto,
-    totalInteres: totInteres,
-    remanente: ult.saldo,
-    min: ult.worst,
-    max: ult.best,
-    deficit: deficit,
-    ok: ult.saldo >= 0,
-    ultimoCosto: ultimoCosto,
-    edadFinal: ult.edad,
-    anioFinal: ult.anio,
-    horizonte: horizonte
-  };
-}
 
 // ── Monte-Carlo: N caminos con inflación y retorno aleatorios por año ──
 function runMC(p) {
@@ -712,17 +625,35 @@ function runMC(p) {
   }
   var lp = lognormParams(p.inflacion, p.inflVol);
   var n = p.nSims;
-  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0, caminos = [];
+  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0, caminos = [], retsTodos = [];
   for (var a = 0; a < horizonte; a++) porAnio.push([]);
+  // aportes anuales (fijos: idénticos en todas las simulaciones)
+  var aporteAnual = [];
+  for (var pp = 1; pp <= horizonte; pp++) {
+    var anioP = p.anioInicio + pp - 1;
+    var apAnio = 0;
+    p.aportes.forEach(function (ap) {
+      var fin = ap.desde + ap.meses / 12;
+      if (ap.desde <= anioP && anioP < fin) {
+        var iniMes = Math.max(0, (ap.desde - anioP) * 12);
+        var finMes = Math.min(12, (fin - anioP) * 12);
+        apAnio += ap.monto * Math.max(0, finMes - iniMes);
+      }
+    });
+    aporteAnual.push(apAnio);
+  }
+  var costoSum = [];
+  for (var cc = 0; cc < horizonte; cc++) costoSum.push(0);
   for (var s = 0; s < n; s++) {
     var mu = p.rentabilidad + p.errorRent * randNormal(); // media de esta simulación
     var saldo = p.montoInicial;
-    var acumInfl = 1, totalCosto = 0, ok = true, caminoSim = [];
+    var acumInfl = 1, totalCosto = 0, ok = true, caminoSim = [], retsSim = [];
     for (var per = 1; per <= horizonte; per++) {
       var anio = p.anioInicio + per - 1;
       var edad = p.edad + per - 1;
       var inflAnual = Math.exp(lp.mx + lp.sx * randNormal()) - 1;
       var ret = mu + p.volFondo * randNormal();
+      retsSim.push(ret);
       // aporte del año
       var aporte = 0;
       p.aportes.forEach(function (ap) {
@@ -739,15 +670,33 @@ function runMC(p) {
       var costo = cat ? cat.costoAnual * acumInfl : 0; // inflación realizada de los años previos
       saldo -= costo;
       totalCosto += costo;
+      costoSum[per - 1] += costo;
       porAnio[per - 1].push(saldo);
       caminoSim.push(saldo);
       if (saldo < 0) ok = false;
       acumInfl *= (1 + inflAnual);
     }
     caminos.push(caminoSim);
+    retsTodos.push(retsSim);
     saldosFin.push(saldo);
     costosFin.push(totalCosto);
     if (ok) exitos++;
+  }
+  // ── solver: capital extra al inicio de la universidad para cubrir el 100% ──
+  // el peor camino (saldo final mínimo) define el caso extremo; el modelo es lineal en
+  // el saldo, así que añadir A al inicio del año de ingreso lo multiplica por el factor
+  // de crecimiento de ese camino: A = -min / factor
+  var perIngreso = p.edadInicioUniv - p.edad + 1; // período (1-based) del ingreso a la univ
+  var idxPeor = 0;
+  for (var w = 1; w < n; w++) if (saldosFin[w] < saldosFin[idxPeor]) idxPeor = w;
+  var extraInicio = 0;
+  var minFinal = saldosFin[idxPeor];
+  if (minFinal < 0) {
+    var factor = 1;
+    for (var j = perIngreso - 1; j <= horizonte - 1; j++) {
+      factor *= (1 + retsTodos[idxPeor][j]);
+    }
+    extraInicio = -minFinal / factor;
   }
   // muestra estratificada de caminos (ordenados por saldo final → cubren toda la mariposa)
   var idxSorted = saldosFin.map(function (v, i) { return i; }).sort(function (a, b) { return saldosFin[a] - saldosFin[b]; });
@@ -765,6 +714,10 @@ function runMC(p) {
     p5: quantile(saldosFin, .05), p50: quantile(saldosFin, .50), p95: quantile(saldosFin, .95),
     mean: mean, pSucc: exitos / n, costo50: quantile(costosFin, .50),
     paths: paths, horizonte: horizonte,
+    extraInicio: extraInicio, minFinal: minFinal, anioIngreso: p.anioInicio + perIngreso - 1,
+    anioFinal: p.anioInicio + horizonte - 1,
+    aporteAnual: aporteAnual,
+    costoAnual: costoSum.map(function (x) { return x / n; }),
     fan: porAnio.map(function (arr) {
       return { p5: quantile(arr, .05), p50: quantile(arr, .50), p95: quantile(arr, .95), mean: arr.reduce(function (x, y) { return x + y; }, 0) / arr.length };
     })
@@ -772,7 +725,7 @@ function runMC(p) {
 }
 
 // ── gráfica (ejes dinámicos) ──
-function drawChart(res, p, mc) {
+function drawChart(mc, p) {
   var cv = $('chart');
   var dpr = window.devicePixelRatio || 1;
   var rect = cv.getBoundingClientRect();
@@ -782,34 +735,29 @@ function drawChart(res, p, mc) {
   var ctx = cv.getContext('2d');
   ctx.scale(dpr, dpr);
 
-  var filas = res.filas;
-  var padT = 18, padB = 30;
-  var n = filas.length;
-  var anios = filas.map(function (f) { return f.anio; });
+  var padT = 36, padB = 30;
+  var n = mc.horizonte;
+  var anios = [];
+  for (var an = 0; an < n; an++) anios.push(p.anioInicio + an);
 
-  // rangos dinámicos (incluye los percentiles MC si están)
+  // rangos dinámicos (percentiles MC + media + cero)
   var lo = Infinity, hi = -Infinity;
-  filas.forEach(function (f) {
-    lo = Math.min(lo, f.saldo, f.worst, 0);
-    hi = Math.max(hi, f.saldo, f.best);
+  mc.fan.forEach(function (pnt) {
+    lo = Math.min(lo, pnt.p5, 0);
+    hi = Math.max(hi, pnt.p95, pnt.mean);
   });
-  if (mc) {
-    mc.fan.forEach(function (pnt) {
-      lo = Math.min(lo, pnt.p5, 0);
-      hi = Math.max(hi, pnt.p95);
-    });
-  }
-  var pad = (hi - lo) * 0.08 || 1;
-  lo -= pad; hi += pad;
+  var padRng = (hi - lo) * 0.08 || 1;
+  lo -= padRng; hi += padRng;
 
-  var loF = 0, hiF = -Infinity;
-  filas.forEach(function (f) {
-    hiF = Math.max(hiF, f.aporte, f.costo);
-  });
-  if (hiF <= 0) hiF = 1;
+  // rango del flujo anual (aportes y costos)
+  var hiF = -Infinity;
+  for (var fi = 0; fi < n; fi++) {
+    hiF = Math.max(hiF, mc.aporteAnual[fi], mc.costoAnual[fi]);
+  }
+  if (!(hiF > 0)) hiF = 1;
   hiF *= 1.08;
 
-  // ── padding dinámico: medir las etiquetas para que ningún eje toque el borde ──
+  // ── padding dinámico: medir etiquetas para que ningún eje toque el borde ──
   ctx.font = '10px "JetBrains Mono", monospace';
   var maxWL = 0;
   var ticksY = 5;
@@ -832,27 +780,27 @@ function drawChart(res, p, mc) {
 
   ctx.clearRect(0, 0, W, H);
 
-  // grid Y izquierdo (saldo)
+  // grid + ticks del eje Y izquierdo (saldo)
   for (g = 0; g <= ticksY; g++) {
     var v = lo + (hi - lo) * g / ticksY;
     var gy = Y(v);
     ctx.strokeStyle = 'rgba(35,40,69,.45)';
     ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(padL + iw, gy); ctx.stroke();
     ctx.fillStyle = '#8a90b3'; ctx.textAlign = 'right';
-    ctx.fillText(money(v), padL - 6, gy + 3);
+    ctx.fillText(money(v), padL - 8, gy + 3);
   }
-  // grid Y derecho (flujo anual)
-  for (var g2 = 0; g2 <= 4; g2++) {
+  // ticks del eje Y derecho (flujo anual)
+  for (g2 = 0; g2 <= 4; g2++) {
     var vf = hiF * g2 / 4;
     var gy2 = YF(vf);
     ctx.fillStyle = '#5b6288'; ctx.textAlign = 'left';
-    ctx.fillText(vf >= 1000 ? '$' + (vf / 1000).toFixed(vf % 1000 === 0 ? 0 : 1).replace('.0', '') + 'k' : '$' + Math.round(vf), padL + iw + 6, gy2 + 3);
+    ctx.fillText(vf >= 1000 ? '$' + (vf / 1000).toFixed(vf % 1000 === 0 ? 0 : 1).replace('.0', '') + 'k' : '$' + Math.round(vf), padL + iw + 8, gy2 + 3);
   }
-  // eje X: años (ticks dinámicos: cada ~1-3 años según densidad)
+  // eje X: años (ticks dinámicos)
   ctx.fillStyle = '#8a90b3'; ctx.textAlign = 'center';
   var stepX = Math.ceil(n / 12);
-  for (var i = 0; i < n; i += stepX) {
-    ctx.fillText(anios[i], X(i), padT + ih + 16);
+  for (var ix = 0; ix < n; ix += stepX) {
+    ctx.fillText(anios[ix], X(ix), padT + ih + 16);
   }
   ctx.fillText(anios[n - 1], X(n - 1), padT + ih + 16);
   // marco
@@ -868,86 +816,61 @@ function drawChart(res, p, mc) {
     ctx.setLineDash([]);
   }
 
-  if (mc && mc.paths && mc.paths.length) {
-    // ── mariposa: caminos individuales del Monte-Carlo ──
-    // verde = el camino cubre el plan completo; rojo = se queda corto
-    mc.paths.forEach(function (pa) {
-      var col = pa.final >= 0 ? 'rgba(52,211,153,.30)' : 'rgba(255,59,92,.26)';
-      ctx.strokeStyle = col;
-      ctx.lineWidth = 0.9;
-      ctx.beginPath();
-      pa.pts.forEach(function (v, t) {
-        var px = X(t), py = Y(v);
-        t === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-      });
-      ctx.stroke();
+  // ── mariposa: caminos individuales del Monte-Carlo ──
+  // verde = el camino cubre el plan completo; rojo = se queda corto
+  mc.paths.forEach(function (pa) {
+    ctx.strokeStyle = pa.final >= 0 ? 'rgba(52,211,153,.30)' : 'rgba(255,59,92,.26)';
+    ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    pa.pts.forEach(function (vv, t) {
+      var pxx = X(t), pyy = Y(vv);
+      t === 0 ? ctx.moveTo(pxx, pyy) : ctx.lineTo(pxx, pyy);
     });
-    // bordes P5 y P95 punteados (referencia de la confianza 95%)
-    ctx.setLineDash([4, 4]); ctx.lineWidth = 1.1;
-    ctx.strokeStyle = 'rgba(167,139,250,.55)';
-    ctx.beginPath();
-    ctx.moveTo(X(0), Y(mc.fan[0].p5));
-    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(mc.fan[i].p5));
     ctx.stroke();
-    ctx.strokeStyle = 'rgba(167,139,250,.35)';
-    ctx.beginPath();
-    ctx.moveTo(X(0), Y(mc.fan[0].p95));
-    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(mc.fan[i].p95));
-    ctx.stroke();
-    ctx.setLineDash([]);
-  } else {
-    // banda pesimista–optimista determinista
-    ctx.beginPath();
-    ctx.moveTo(X(0), Y(filas[0].worst));
-    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].worst));
-    for (i = n - 1; i >= 0; i--) ctx.lineTo(X(i), Y(filas[i].best));
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(139,92,246,.20)';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(167,139,250,.5)';
-    ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(X(0), Y(filas[0].worst));
-    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].worst));
-    ctx.stroke();
-    ctx.strokeStyle = 'rgba(167,139,250,.35)';
-    ctx.beginPath();
-    ctx.moveTo(X(0), Y(filas[0].best));
-    for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].best));
-    ctx.stroke();
-    ctx.setLineDash([]);
+  });
+  // bordes P5 y P95 punteados (referencia de la confianza 95%)
+  ctx.setLineDash([4, 4]); ctx.lineWidth = 1.1;
+  ctx.strokeStyle = 'rgba(167,139,250,.55)';
+  ctx.beginPath();
+  ctx.moveTo(X(0), Y(mc.fan[0].p5));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(mc.fan[i].p5));
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(167,139,250,.35)';
+  ctx.beginPath();
+  ctx.moveTo(X(0), Y(mc.fan[0].p95));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(mc.fan[i].p95));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // barras: aporte (cian) y costo (rojo) — eje derecho
+  var bw = Math.max(3, Math.min(9, iw / n * 0.28));
+  for (var bi = 0; bi < n; bi++) {
+    var xc = X(bi);
+    if (mc.aporteAnual[bi] > 0) {
+      ctx.fillStyle = 'rgba(34,211,238,.62)';
+      ctx.fillRect(xc - bw - 1, YF(mc.aporteAnual[bi]), bw, padT + ih - YF(mc.aporteAnual[bi]));
+    }
+    if (mc.costoAnual[bi] > 0) {
+      ctx.fillStyle = 'rgba(255,59,92,.65)';
+      ctx.fillRect(xc + 1, YF(mc.costoAnual[bi]), bw, padT + ih - YF(mc.costoAnual[bi]));
+    }
   }
 
-  // barras: aporte (cian) y costo (rojo) — en eje derecho
-  var bw = Math.max(3, Math.min(9, iw / n * 0.28));
-  filas.forEach(function (f, idx) {
-    var xc = X(idx);
-    if (f.aporte > 0) {
-      ctx.fillStyle = 'rgba(34,211,238,.62)';
-      ctx.fillRect(xc - bw - 1, YF(f.aporte), bw, padT + ih - YF(f.aporte));
-    }
-    if (f.costo > 0) {
-      ctx.fillStyle = 'rgba(255,59,92,.65)';
-      ctx.fillRect(xc + 1, YF(f.costo), bw, padT + ih - YF(f.costo));
-    }
-  });
-
-  // línea central: media MC (gruesa blanca) o saldo determinista
-  var cen = function (i) { return mc ? mc.fan[i].mean : filas[i].saldo; };
+  // línea central: media MC
   ctx.strokeStyle = '#e8eaf6';
-  ctx.lineWidth = mc ? 2.4 : 2.2;
+  ctx.lineWidth = 2.4;
   ctx.beginPath();
-  ctx.moveTo(X(0), Y(cen(0)));
-  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(cen(i)));
+  ctx.moveTo(X(0), Y(mc.fan[0].mean));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(mc.fan[i].mean));
   ctx.stroke();
 
-  // etiqueta de ejes
+  // etiquetas de ejes (en el espacio superior reservado, sin tocar los ticks)
   ctx.fillStyle = '#5b6288';
   ctx.font = '9px "JetBrains Mono", monospace';
   ctx.textAlign = 'right';
-  ctx.fillText('SALDO', padL - 6, padT - 6);
+  ctx.fillText('SALDO DEL FONDO', padL - 8, 14);
   ctx.textAlign = 'left';
-  ctx.fillText('APORTE/COSTO ANUAL', padL + iw + 6, padT - 6);
+  ctx.fillText('APORTE / COSTO ANUAL', padL + iw + 8, 14);
 }
 
 // ── disparador ──
@@ -960,60 +883,48 @@ $('runBtn').addEventListener('click', function () {
     return;
   }
   $('err').hidden = true;
-  var res = runModel(r.p);
-  var mc = null;
-  if (mcOn) {
-    mc = runMC(r.p);
-    $('mcHead').style.display = '';
-    $('mcKpis').hidden = false;
-    $('kP5').innerHTML = money(mc.p5);
-    $('kP50').innerHTML = money(mc.p50);
-    $('kMean').innerHTML = money(mc.mean);
-    $('kP95').innerHTML = money(mc.p95);
-    var succ = $('kPSucc');
-    succ.innerHTML = (mc.pSucc * 100).toFixed(1) + '%';
-    succ.className = 'val ' + (mc.pSucc >= 0.8 ? 'pos' : (mc.pSucc >= 0.5 ? 'amber' : 'neg'));
-    $('kCosto50').innerHTML = money(mc.costo50);
-  } else {
-    $('mcKpis').hidden = true;
-    $('mcHead').style.display = 'none';
-  }
 
-  // KPIs deterministas (referencia)
-  $('kAportado').innerHTML = money(res.totalAportado);
-  $('kEstudio').innerHTML = money(res.totalCosto);
-  $('kIntereses').innerHTML = money(res.totalInteres);
-  $('kRemanente').innerHTML = money(res.remanente);
-  $('kMin').innerHTML = money(res.min);
-  $('kMax').innerHTML = money(res.max);
+  var t0 = performance.now();
+  var mc = runMC(r.p);
+  var ms = Math.round(performance.now() - t0);
 
-  // veredicto
+  // KPIs probabilísticos
+  $('kP5').innerHTML = money(mc.p5);
+  $('kP50').innerHTML = money(mc.p50);
+  $('kMean').innerHTML = money(mc.mean);
+  $('kP95').innerHTML = money(mc.p95);
+  var succ = $('kPSucc');
+  succ.innerHTML = (mc.pSucc * 100).toFixed(1) + '%';
+  succ.className = 'val ' + (mc.pSucc >= 0.8 ? 'pos' : (mc.pSucc >= 0.5 ? 'amber' : 'neg'));
+  $('kCosto50').innerHTML = money(mc.costo50);
+
+  // veredicto (MC)
   var v = '';
-  if (mcOn && mc) {
-    if (mc.p5 >= 0) {
-      v = '<b>Con 95% de confianza el fondo cubre el plan.</b> El saldo al terminar la universidad (año ' +
-          res.anioFinal + ', edad ' + res.edadFinal + ') será ≥ <span class="ok">' + money(mc.p5) + '</span> (P5), con una media de <b>' +
-          money(mc.mean) + '</b> y mediana de ' + money(mc.p50) + '. El fondo nunca se agota en el <b>' +
-          (mc.pSucc * 100).toFixed(1) + '%</b> de los ' + r.p.nSims.toLocaleString('en-US') + ' escenarios simulados.';
-    } else {
-      v = '<b>El plan no es seguro.</b> En el peor 5% de escenarios el fondo se agota (P5 = <span style="color:var(--accent)">' +
-          money(mc.p5) + '</span>); en promedio termina con <b>' + money(mc.mean) + '</b> y solo cubre el plan en el <b>' +
-          (mc.pSucc * 100).toFixed(1) + '%</b> de los escenarios. Para una confianza del 95%, sube los aportes mensuales o el monto inicial hasta que el P5 sea ≥ $0.';
-    }
+  if (mc.p5 >= 0) {
+    v = '<b>Con 95% de confianza el fondo cubre el plan.</b> El saldo al terminar la universidad (año ' +
+        mc.anioFinal + ', edad ' + r.p.edadInicioUniv + ' + ' + (r.p.univAnios - 1) + ') será ≥ <span class="ok">' +
+        money(mc.p5) + '</span> (P5), con una media de <b>' + money(mc.mean) + '</b> y mediana de ' + money(mc.p50) +
+        '. El fondo nunca se agota en el <b>' + (mc.pSucc * 100).toFixed(1) + '%</b> de los ' +
+        r.p.nSims.toLocaleString('en-US') + ' escenarios simulados.';
   } else {
-    if (res.ok) {
-      v = '<b>El fondo cubre el plan completo.</b> Con los aportes programados, el fondo de ' + res.nombre +
-          ' termina la universidad (año ' + res.anioFinal + ', edad ' + res.edadFinal + ') con un saldo de <span class="ok">' +
-          money(res.remanente) + '</span> — entre ' + money(res.min) + ' (pesimista) y ' + money(res.max) + ' (optimista).';
-    } else {
-      v = '<b>El fondo no alcanza.</b> En el escenario central termina con <span style="color:var(--accent)">' +
-          money(res.remanente) + '</span> al final del plan: faltan aportes por ~<span style="color:var(--accent)">' +
-          money(-Math.min(res.remanente, 0)) + '</span> para cubrir el último año de estudio. Sube los aportes mensuales o el monto inicial.';
-    }
+    v = '<b>El plan no es seguro.</b> En el peor 5% de escenarios el fondo se agota (P5 = <span style="color:var(--accent)">' +
+        money(mc.p5) + '</span>); en promedio termina con <b>' + money(mc.mean) + '</b> y solo cubre el plan en el <b>' +
+        (mc.pSucc * 100).toFixed(1) + '%</b> de los escenarios. Para una confianza del 95%, sube los aportes mensuales o el monto inicial hasta que el P5 sea ≥ $0.';
   }
   $('verdict').innerHTML = v;
 
-  drawChart(res, r.p, mc);
+  // solver: cobertura al 100%
+  var sol = $('solverText');
+  $('solverBox').hidden = false;
+  if (mc.minFinal >= 0) {
+    sol.innerHTML = 'Incluso en el peor de los ' + r.p.nSims.toLocaleString('en-US') + ' escenarios, el fondo cubre el plan completo — no se requiere capital adicional.';
+  } else {
+    sol.innerHTML = 'Con este plan, en el <b>peor caso</b> podrías llegar a requerir <b>' + money(mc.extraInicio) +
+        '</b> adicionales al comienzo de la universidad (año <b>' + mc.anioIngreso + '</b>, edad ' + r.p.edadInicioUniv +
+        ') para cubrir el 100% de los escenarios. Esa es la cifra que tendrías que asegurar (hoy o antes del ingreso) si quieres eliminar el riesgo de faltante por completo.';
+  }
+
+  drawChart(mc, r.p);
   $('results').hidden = false;
   window.scrollTo({ top: $('results').offsetTop - 90, behavior: 'smooth' });
 });
