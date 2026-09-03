@@ -243,6 +243,10 @@
     margin-bottom: 10px;
   }
   .kpi .val.gold { color: #f5b64c; }
+  .kpi .lab.wide {
+    font-size: 10.5px; letter-spacing: .02em; line-height: 1.45;
+    text-transform: none; margin-bottom: 5px;
+  }
   canvas { width: 100%; height: auto; }
 </style>
 </head>
@@ -439,12 +443,12 @@
 
     <div class="res-head" id="mcHead" style="margin-top:22px">Monte-Carlo · <span class="red">percentiles del saldo final</span></div>
     <div class="kpis" id="mcKpis" hidden>
-      <div class="kpi"><div class="lab">P5 — confianza 95%</div><div class="val" id="kP5">—</div><div class="sub">95% de los escenarios terminan por encima</div></div>
-      <div class="kpi"><div class="lab">Mediana (P50)</div><div class="val" id="kP50">—</div><div class="sub">la mitad de los escenarios la superan</div></div>
-      <div class="kpi"><div class="lab">Media esperada</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios</div></div>
-      <div class="kpi"><div class="lab">P95 — escenario alto</div><div class="val pos" id="kP95">—</div><div class="sub">solo 5% de los escenarios lo superan</div></div>
-      <div class="kpi"><div class="lab">P(cubre el plan)</div><div class="val" id="kPSucc">—</div><div class="sub">sin agotar el fondo en ningún año</div></div>
-      <div class="kpi"><div class="lab">Costo estudio (P50)</div><div class="val acc" id="kCosto50">—</div><div class="sub">mediana del total desembolsado inflado</div></div>
+      <div class="kpi"><div class="lab wide">Saldo final del fondo (P5 · 95% confianza)</div><div class="val" id="kP5">—</div><div class="sub">solo 1 de cada 20 escenarios termina con menos</div></div>
+      <div class="kpi"><div class="lab wide">Saldo final del fondo (mediana · P50)</div><div class="val" id="kP50">—</div><div class="sub">la mitad termina con más, la mitad con menos</div></div>
+      <div class="kpi"><div class="lab wide">Saldo final del fondo (media)</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios simulados</div></div>
+      <div class="kpi"><div class="lab wide">Saldo final del fondo (P95)</div><div class="val pos" id="kP95">—</div><div class="sub">solo 5% de los escenarios terminan con más</div></div>
+      <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">sin agotar el fondo en ningún año</div></div>
+      <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val acc" id="kCosto50">—</div><div class="sub">todo lo desembolsado, inflado año a año</div></div>
     </div>
 
     <div class="chart-box">
