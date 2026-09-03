@@ -367,19 +367,29 @@
         <div class="hint">Lo que ya tienes ahorrado hoy.</div>
       </div>
       <div class="field">
-        <label for="inflacion">Inflación (% EA)</label>
+        <label for="inflacion">Inflación semilla (% EA)</label>
         <input type="number" id="inflacion" value="4" min="0" max="30" step="0.1">
-        <div class="hint">Encarece los costos de estudio cada año.</div>
+        <div class="hint">Arranque del modelo. Colombia 1999-2025: media 5.6% · expectativas BanRep ~3.5-4%.</div>
+      </div>
+      <div class="field">
+        <label for="inflVol">Dispersión de la inflación (pp)</label>
+        <input type="number" id="inflVol" value="2.6" min="0.1" max="8" step="0.1">
+        <div class="hint">Desviación histórica de Colombia en la era de metas (1999-2025: σ ≈ 2.7pp).</div>
       </div>
       <div class="field">
         <label for="rentabilidad">Rentabilidad esperada (% EA)</label>
         <input type="number" id="rentabilidad" value="7" min="0" max="30" step="0.1">
-        <div class="hint">Rendimiento promedio anual del fondo.</div>
+        <div class="hint">Media del rendimiento anual del fondo.</div>
       </div>
       <div class="field">
-        <label for="errorRent">Margen de error (% EA)</label>
-        <input type="number" id="errorRent" value="1" min="0" max="10" step="0.1">
-        <div class="hint">Volatilidad: define los escenarios pesimista y optimista.</div>
+        <label for="errorRent">Incertidumbre de la media (pp)</label>
+        <input type="number" id="errorRent" value="1" min="0" max="8" step="0.1">
+        <div class="hint">Cuánto puede desviarse la media real del 7% (antes "margen de error").</div>
+      </div>
+      <div class="field">
+        <label for="volFondo">Volatilidad anual del fondo (% EA)</label>
+        <input type="number" id="volFondo" value="8" min="0" max="40" step="0.5">
+        <div class="hint">Renta fija COP ≈ 4-6% · balanceado ≈ 8-10% · renta variable ≈ 15-18%.</div>
       </div>
     </div>
   </div>
@@ -389,6 +399,25 @@
     <div class="ap-hint">Cada aporte es un monto <b>mensual</b> que entra al fondo durante una duración en <b>meses</b>, desde un año de inicio. Suma todos los aportes que planeas (o mueve los montos hasta que la proyección cierre).</div>
     <div id="apList"></div>
     <button class="add-ap" id="addAp" type="button">+ Añadir aporte</button>
+  </div>
+
+  <div class="panel">
+    <h2><span class="num">04</span> Monte-Carlo <span style="color:var(--muted);font-size:11px;letter-spacing:.1em;text-transform:none">(probabilístico)</span></h2>
+    <div class="inc-row" style="margin-bottom:12px">
+      <span class="inc-label">¿Modelar inflación y retorno con Monte-Carlo?</span>
+      <span class="pill-row" id="mcRow" style="margin:0">
+        <button class="pill active" data-mc="1">Sí — probabilístico</button>
+        <button class="pill" data-mc="0">No — determinista</button>
+      </span>
+    </div>
+    <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+      <div class="field">
+        <label for="nSims">Simulaciones</label>
+        <input type="number" id="nSims" value="2000" min="200" max="10000" step="100">
+        <div class="hint">Caminos aleatorios del fondo, año a año.</div>
+      </div>
+    </div>
+    <div class="ap-hint">Cada simulación tira una inflación anual (distribución log-normal calibrada a la historia de Colombia: media = inflación semilla, dispersión = σ histórica) y un retorno anual (normal: media = rentabilidad esperada ± incertidumbre de la media, con la volatilidad anual del fondo). Los costos de estudio se encarecen con la inflación <b>realizada</b> de cada año.</div>
   </div>
 
   <div class="cta-row">
@@ -408,19 +437,29 @@
       <div class="kpi"><div class="lab">Escenario optimista</div><div class="val pos" id="kMax">—</div><div class="sub">rentabilidad + margen de error</div></div>
     </div>
 
+    <div class="res-head" id="mcHead" style="margin-top:22px">Monte-Carlo · <span class="red">percentiles del saldo final</span></div>
+    <div class="kpis" id="mcKpis" hidden>
+      <div class="kpi"><div class="lab">P5 — confianza 95%</div><div class="val" id="kP5">—</div><div class="sub">95% de los escenarios terminan por encima</div></div>
+      <div class="kpi"><div class="lab">Mediana (P50)</div><div class="val" id="kP50">—</div><div class="sub">la mitad de los escenarios la superan</div></div>
+      <div class="kpi"><div class="lab">Media esperada</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios</div></div>
+      <div class="kpi"><div class="lab">P95 — escenario alto</div><div class="val pos" id="kP95">—</div><div class="sub">solo 5% de los escenarios lo superan</div></div>
+      <div class="kpi"><div class="lab">P(cubre el plan)</div><div class="val" id="kPSucc">—</div><div class="sub">sin agotar el fondo en ningún año</div></div>
+      <div class="kpi"><div class="lab">Costo estudio (P50)</div><div class="val acc" id="kCosto50">—</div><div class="sub">mediana del total desembolsado inflado</div></div>
+    </div>
+
     <div class="chart-box">
       <div class="cap">Proyección del fondo vs. costos de estudio</div>
       <canvas id="chart" width="900" height="380"></canvas>
       <div class="legend-row">
-        <span><i class="lg" style="background:#e8eaf6"></i> Saldo del fondo</span>
+        <span><i class="lg" style="background:#e8eaf6"></i> Saldo esperado (media)</span>
         <span><i class="lg" style="background:#ff3b5c"></i> Costo anual de estudio</span>
-        <span><i class="lg" style="background:#f5b64c"></i> Aporte anual</span>
-        <span><i class="lg" style="background:linear-gradient(90deg,rgba(16,185,129,.25),rgba(16,185,129,.5))"></i> Banda pesimista–optimista</span>
+        <span><i class="lg" style="background:#22d3ee"></i> Aporte anual</span>
+        <span><i class="lg" style="background:linear-gradient(90deg,rgba(167,139,250,.3),rgba(167,139,250,.65))"></i> Banda P5–P95 (Monte-Carlo)</span>
       </div>
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> el <b>saldo del fondo</b> (línea blanca) crece con tus aportes e intereses y cae cuando empiezan los desembolsos de estudio. La <b>banda verde</b> muestra el rango entre el escenario pesimista (rentabilidad − margen de error) y el optimista (+ margen): mientras más ancha se vuelve, más sensible es tu plan a la volatilidad del fondo. Las barras <b>rojas</b> son el costo anual de estudio ya inflado y las <b>doradas</b> lo que aportas cada año. Si el saldo cruza a negativo antes de terminar, el plan no alcanza: sube los aportes, baja el costo objetivo o aumenta el monto inicial.
+      <b>Cómo leer esto:</b> la <b>línea blanca</b> es el saldo esperado del fondo y la <b>banda violeta</b> el rango donde cae el 90% de los escenarios Monte-Carlo (P5–P95): mientras más ancha se vuelve, más incierto es el plan. Las barras <b>rojas</b> son el costo anual de estudio ya inflado y las <b>celestes</b> lo que aportas cada año. El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan. Si es negativo, sube los aportes mensuales o el monto inicial hasta que el P5 cierre en positivo.
     </div>
   </div>
 
@@ -463,6 +502,27 @@ function bindMoney(el) {
 ['univCosto', 'colMensual', 'kinMensual', 'montoInicial'].forEach(function (id) {
   bindMoney($(id));
 });
+
+// ── Monte-Carlo: aleatoriedad ──
+function randNormal() {
+  var u = 0, v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+// Parámetros de una log-normal con media m (decimal) y desviación sd (decimal)
+function lognormParams(m, sd) {
+  var sx2 = Math.log(1 + sd * sd / ((1 + m) * (1 + m)));
+  return { mx: Math.log(1 + m) - sx2 / 2, sx: Math.sqrt(sx2) };
+}
+function quantile(arr, q) {
+  var a = arr.slice().sort(function (x, y) { return x - y; });
+  var idx = (a.length - 1) * q;
+  var lo = Math.floor(idx), hi = Math.ceil(idx);
+  return a[lo] + (a[hi] - a[lo]) * (idx - lo);
+}
+var mcOn = 1;
+setPills('mcRow', 'mc', function (v) { mcOn = +v; });
 function setPills(rowId, attr, handler) {
   $(rowId).querySelectorAll('.pill').forEach(function (p) {
     p.addEventListener('click', function () {
@@ -515,8 +575,11 @@ function readParams() {
     kinAnios: kinIncl ? +$('kinAnios').value : 0,
     montoInicial: parseNum($('montoInicial').value),
     inflacion: +$('inflacion').value / 100,
+    inflVol: +$('inflVol').value / 100,
     rentabilidad: +$('rentabilidad').value / 100,
-    errorRent: +$('errorRent').value / 100
+    errorRent: +$('errorRent').value / 100,
+    volFondo: +$('volFondo').value / 100,
+    nSims: Math.max(200, Math.min(10000, +$('nSims').value || 2000))
   };
   if (!(p.edad >= 0)) errs.push('Edad actual inválida.');
   if (!(p.edadInicioUniv > p.edad)) errs.push('La edad de ingreso a la universidad debe ser mayor que la edad actual.');
@@ -624,8 +687,76 @@ function runModel(p) {
   };
 }
 
+// ── Monte-Carlo: N caminos con inflación y retorno aleatorios por año ──
+function runMC(p) {
+  var cats = [];
+  if (p.kinAnios > 0 && p.kinMensual > 0) cats.push({ key: 'kin', años: p.kinAnios, costoAnual: p.kinMensual * p.kinMeses });
+  if (p.colAnios > 0 && p.colMensual > 0) cats.push({ key: 'col', años: p.colAnios, costoAnual: p.colMensual * p.colMeses });
+  cats.push({ key: 'univ', años: p.univAnios, costoAnual: p.univCosto * p.univPeriodos });
+  var totalAños = 0;
+  cats.forEach(function (cc) { totalAños += cc.años; });
+  var horizonte = p.edadInicioUniv + totalAños - p.edad;
+  if (horizonte < 1) horizonte = 1;
+  function catDe(anioDes) {
+    var acc = 0;
+    for (var i = 0; i < cats.length; i++) {
+      if (anioDes <= acc + cats[i].años) return cats[i];
+      acc += cats[i].años;
+    }
+    return null;
+  }
+  var lp = lognormParams(p.inflacion, p.inflVol);
+  var n = p.nSims;
+  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0;
+  for (var a = 0; a < horizonte; a++) porAnio.push([]);
+  for (var s = 0; s < n; s++) {
+    var mu = p.rentabilidad + p.errorRent * randNormal(); // media de esta simulación
+    var saldo = p.montoInicial;
+    var acumInfl = 1, totalCosto = 0, ok = true;
+    for (var per = 1; per <= horizonte; per++) {
+      var anio = p.anioInicio + per - 1;
+      var edad = p.edad + per - 1;
+      var inflAnual = Math.exp(lp.mx + lp.sx * randNormal()) - 1;
+      var ret = mu + p.volFondo * randNormal();
+      // aporte del año
+      var aporte = 0;
+      p.aportes.forEach(function (ap) {
+        var fin = ap.desde + ap.meses / 12;
+        if (ap.desde <= anio && anio < fin) {
+          var iniMes = Math.max(0, (ap.desde - anio) * 12);
+          var finMes = Math.min(12, (fin - anio) * 12);
+          aporte += ap.monto * Math.max(0, finMes - iniMes);
+        }
+      });
+      saldo = saldo * (1 + ret) + aporte;
+      var anioDes = edad - p.edadInicioUniv + 1;
+      var cat = anioDes >= 1 ? catDe(anioDes) : null;
+      var costo = cat ? cat.costoAnual * acumInfl : 0; // inflación realizada de los años previos
+      saldo -= costo;
+      totalCosto += costo;
+      porAnio[per - 1].push(saldo);
+      if (saldo < 0) ok = false;
+      acumInfl *= (1 + inflAnual);
+    }
+    saldosFin.push(saldo);
+    costosFin.push(totalCosto);
+    if (ok) exitos++;
+  }
+  var mean = 0;
+  saldosFin.forEach(function (v) { mean += v; });
+  mean /= n;
+  return {
+    p5: quantile(saldosFin, .05), p50: quantile(saldosFin, .50), p95: quantile(saldosFin, .95),
+    mean: mean, pSucc: exitos / n, costo50: quantile(costosFin, .50),
+    horizonte: horizonte,
+    fan: porAnio.map(function (arr) {
+      return { p5: quantile(arr, .05), p50: quantile(arr, .50), p95: quantile(arr, .95), mean: arr.reduce(function (x, y) { return x + y; }, 0) / arr.length };
+    })
+  };
+}
+
 // ── gráfica (ejes dinámicos) ──
-function drawChart(res, p) {
+function drawChart(res, p, mc) {
   var cv = $('chart');
   var dpr = window.devicePixelRatio || 1;
   var rect = cv.getBoundingClientRect();
@@ -640,12 +771,18 @@ function drawChart(res, p) {
   var n = filas.length;
   var anios = filas.map(function (f) { return f.anio; });
 
-  // rangos dinámicos
+  // rangos dinámicos (incluye los percentiles MC si están)
   var lo = Infinity, hi = -Infinity;
   filas.forEach(function (f) {
     lo = Math.min(lo, f.saldo, f.worst, 0);
     hi = Math.max(hi, f.saldo, f.best);
   });
+  if (mc) {
+    mc.fan.forEach(function (pnt) {
+      lo = Math.min(lo, pnt.p5, 0);
+      hi = Math.max(hi, pnt.p95);
+    });
+  }
   var pad = (hi - lo) * 0.08 || 1;
   lo -= pad; hi += pad;
 
@@ -715,48 +852,50 @@ function drawChart(res, p) {
     ctx.setLineDash([]);
   }
 
-  // banda pesimista–optimista
+  // banda: fan chart MC (P5-P95) o banda pesimista–optimista determinista
+  var bandLo = function (i) { return mc ? mc.fan[i].p5 : filas[i].worst; };
+  var bandHi = function (i) { return mc ? mc.fan[i].p95 : filas[i].best; };
   ctx.beginPath();
-  ctx.moveTo(X(0), Y(filas[0].worst));
-  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].worst));
-  for (i = n - 1; i >= 0; i--) ctx.lineTo(X(i), Y(filas[i].best));
+  ctx.moveTo(X(0), Y(bandLo(0)));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(bandLo(i)));
+  for (i = n - 1; i >= 0; i--) ctx.lineTo(X(i), Y(bandHi(i)));
   ctx.closePath();
-  ctx.fillStyle = 'rgba(16,185,129,.14)';
+  ctx.fillStyle = mc ? 'rgba(139,92,246,.30)' : 'rgba(139,92,246,.20)';
   ctx.fill();
-  // bordes de la banda (pesimista y optimista punteados finos)
-  ctx.strokeStyle = 'rgba(16,185,129,.45)';
+  ctx.strokeStyle = mc ? 'rgba(167,139,250,.6)' : 'rgba(167,139,250,.5)';
   ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(X(0), Y(filas[0].worst));
-  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].worst));
+  ctx.moveTo(X(0), Y(bandLo(0)));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(bandLo(i)));
   ctx.stroke();
-  ctx.strokeStyle = 'rgba(16,185,129,.3)';
+  ctx.strokeStyle = mc ? 'rgba(167,139,250,.45)' : 'rgba(167,139,250,.35)';
   ctx.beginPath();
-  ctx.moveTo(X(0), Y(filas[0].best));
-  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].best));
+  ctx.moveTo(X(0), Y(bandHi(0)));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(bandHi(i)));
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // barras: aporte (oro) y costo (rojo) — en eje derecho
+  // barras: aporte (cian) y costo (rojo) — en eje derecho
   var bw = Math.max(3, Math.min(9, iw / n * 0.28));
   filas.forEach(function (f, idx) {
     var xc = X(idx);
     if (f.aporte > 0) {
-      ctx.fillStyle = 'rgba(245,182,76,.55)';
+      ctx.fillStyle = 'rgba(34,211,238,.62)';
       ctx.fillRect(xc - bw - 1, YF(f.aporte), bw, padT + ih - YF(f.aporte));
     }
     if (f.costo > 0) {
-      ctx.fillStyle = 'rgba(255,59,92,.6)';
+      ctx.fillStyle = 'rgba(255,59,92,.65)';
       ctx.fillRect(xc + 1, YF(f.costo), bw, padT + ih - YF(f.costo));
     }
   });
 
-  // línea del saldo (principal)
+  // línea central: media MC (gruesa blanca) o saldo determinista
+  var cen = function (i) { return mc ? mc.fan[i].mean : filas[i].saldo; };
   ctx.strokeStyle = '#e8eaf6';
-  ctx.lineWidth = 2.2;
+  ctx.lineWidth = mc ? 2.4 : 2.2;
   ctx.beginPath();
-  ctx.moveTo(X(0), Y(filas[0].saldo));
-  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(filas[i].saldo));
+  ctx.moveTo(X(0), Y(cen(0)));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(cen(i)));
   ctx.stroke();
 
   // etiqueta de ejes
@@ -779,8 +918,25 @@ $('runBtn').addEventListener('click', function () {
   }
   $('err').hidden = true;
   var res = runModel(r.p);
+  var mc = null;
+  if (mcOn) {
+    mc = runMC(r.p);
+    $('mcHead').style.display = '';
+    $('mcKpis').hidden = false;
+    $('kP5').innerHTML = money(mc.p5);
+    $('kP50').innerHTML = money(mc.p50);
+    $('kMean').innerHTML = money(mc.mean);
+    $('kP95').innerHTML = money(mc.p95);
+    var succ = $('kPSucc');
+    succ.innerHTML = (mc.pSucc * 100).toFixed(1) + '%';
+    succ.className = 'val ' + (mc.pSucc >= 0.8 ? 'pos' : (mc.pSucc >= 0.5 ? 'amber' : 'neg'));
+    $('kCosto50').innerHTML = money(mc.costo50);
+  } else {
+    $('mcKpis').hidden = true;
+    $('mcHead').style.display = 'none';
+  }
 
-  // KPIs
+  // KPIs deterministas (referencia)
   $('kAportado').innerHTML = money(res.totalAportado);
   $('kEstudio').innerHTML = money(res.totalCosto);
   $('kIntereses').innerHTML = money(res.totalInteres);
@@ -790,18 +946,31 @@ $('runBtn').addEventListener('click', function () {
 
   // veredicto
   var v = '';
-  if (res.ok) {
-    v = '<b>El fondo cubre el plan completo.</b> Con los aportes programados, el fondo de ' + res.nombre +
-        ' termina la universidad (año ' + res.anioFinal + ', edad ' + res.edadFinal + ') con un saldo de <span class="ok">' +
-        money(res.remanente) + '</span> — entre ' + money(res.min) + ' (pesimista) y ' + money(res.max) + ' (optimista).';
+  if (mcOn && mc) {
+    if (mc.p5 >= 0) {
+      v = '<b>Con 95% de confianza el fondo cubre el plan.</b> El saldo al terminar la universidad (año ' +
+          res.anioFinal + ', edad ' + res.edadFinal + ') será ≥ <span class="ok">' + money(mc.p5) + '</span> (P5), con una media de <b>' +
+          money(mc.mean) + '</b> y mediana de ' + money(mc.p50) + '. El fondo nunca se agota en el <b>' +
+          (mc.pSucc * 100).toFixed(1) + '%</b> de los ' + r.p.nSims.toLocaleString('en-US') + ' escenarios simulados.';
+    } else {
+      v = '<b>El plan no es seguro.</b> En el peor 5% de escenarios el fondo se agota (P5 = <span style="color:var(--accent)">' +
+          money(mc.p5) + '</span>); en promedio termina con <b>' + money(mc.mean) + '</b> y solo cubre el plan en el <b>' +
+          (mc.pSucc * 100).toFixed(1) + '%</b> de los escenarios. Para una confianza del 95%, sube los aportes mensuales o el monto inicial hasta que el P5 sea ≥ $0.';
+    }
   } else {
-    v = '<b>El fondo no alcanza.</b> En el escenario central termina con <span style="color:var(--accent)">' +
-        money(res.remanente) + '</span> al final del plan: faltan aportes por ~<span style="color:var(--accent)">' +
-        money(-Math.min(res.remanente, 0)) + '</span> para cubrir el último año de estudio. Sube los aportes mensuales o el monto inicial.';
+    if (res.ok) {
+      v = '<b>El fondo cubre el plan completo.</b> Con los aportes programados, el fondo de ' + res.nombre +
+          ' termina la universidad (año ' + res.anioFinal + ', edad ' + res.edadFinal + ') con un saldo de <span class="ok">' +
+          money(res.remanente) + '</span> — entre ' + money(res.min) + ' (pesimista) y ' + money(res.max) + ' (optimista).';
+    } else {
+      v = '<b>El fondo no alcanza.</b> En el escenario central termina con <span style="color:var(--accent)">' +
+          money(res.remanente) + '</span> al final del plan: faltan aportes por ~<span style="color:var(--accent)">' +
+          money(-Math.min(res.remanente, 0)) + '</span> para cubrir el último año de estudio. Sube los aportes mensuales o el monto inicial.';
+    }
   }
   $('verdict').innerHTML = v;
 
-  drawChart(res, r.p);
+  drawChart(res, r.p, mc);
   $('results').hidden = false;
   window.scrollTo({ top: $('results').offsetTop - 90, behavior: 'smooth' });
 });
