@@ -632,7 +632,7 @@ function runMC(p) {
   }
   var lp = lognormParams(p.inflacion, p.inflVol);
   var n = p.nSims;
-  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0, caminos = [], retsTodos = [];
+  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0, caminos = [], retsTodos = [], oks = [];
   for (var a = 0; a < horizonte; a++) porAnio.push([]);
   // aportes anuales (fijos: idénticos en todas las simulaciones)
   var aporteAnual = [];
@@ -685,6 +685,7 @@ function runMC(p) {
     caminos.push(caminoSim);
     retsTodos.push(retsSim);
     saldosFin.push(saldo);
+    oks.push(ok);
     costosFin.push(totalCosto);
     if (ok) exitos++;
   }
@@ -711,7 +712,7 @@ function runMC(p) {
   var paths = [];
   for (var k = 0; k < n; k += stepP) {
     var si = idxSorted[k];
-    paths.push({ pts: caminos[si], final: saldosFin[si] });
+    paths.push({ pts: caminos[si], final: saldosFin[si], ok: oks[si] });
   }
   var mean = 0;
   saldosFin.forEach(function (v) { mean += v; });
@@ -826,7 +827,7 @@ function drawChart(mc, p) {
   // ── mariposa: caminos individuales del Monte-Carlo ──
   // verde = el camino cubre el plan completo; rojo = se queda corto
   mc.paths.forEach(function (pa) {
-    ctx.strokeStyle = pa.final >= 0 ? 'rgba(52,211,153,.30)' : 'rgba(255,59,92,.26)';
+    ctx.strokeStyle = pa.ok ? 'rgba(52,211,153,.30)' : 'rgba(255,59,92,.26)';
     ctx.lineWidth = 0.9;
     ctx.beginPath();
     pa.pts.forEach(function (vv, t) {
