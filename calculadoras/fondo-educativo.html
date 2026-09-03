@@ -347,6 +347,11 @@
         <input type="number" id="colMeses" value="10" min="1" max="12">
       </div>
       <div class="field">
+        <label for="colEdad">Edad a la que empieza</label>
+        <input type="number" id="colEdad" value="6" min="1" max="20">
+        <div class="hint">El colegio se descuenta del fondo desde esta edad.</div>
+      </div>
+      <div class="field">
         <label for="colAnios">Años de colegio</label>
         <input type="number" id="colAnios" value="0" min="0" max="13">
       </div>
@@ -370,6 +375,11 @@
         <input type="number" id="kinMeses" value="10" min="1" max="12">
       </div>
       <div class="field">
+        <label for="kinEdad">Edad a la que empieza</label>
+        <input type="number" id="kinEdad" value="3" min="1" max="20">
+        <div class="hint">El kínder se descuenta del fondo desde esta edad.</div>
+      </div>
+      <div class="field">
         <label for="kinAnios">Años de kínder</label>
         <input type="number" id="kinAnios" value="0" min="0" max="13">
       </div>
@@ -385,29 +395,24 @@
         <div class="hint">Lo que ya tienes ahorrado hoy.</div>
       </div>
       <div class="field">
-        <label for="inflacion">Inflación semilla (% EA)</label>
+        <label for="inflacion">Inflación esperada (% EA)</label>
         <input type="number" id="inflacion" value="4" min="0" max="30" step="0.1">
-        <div class="hint">Arranque del modelo. Colombia 1999-2025: media 5.6% · expectativas BanRep ~3.5-4%.</div>
+        <div class="hint">Tu estimación del promedio anual. Histórico Colombia 1999-2025: 5.6% · expectativas BanRep: ~3.5-4%.</div>
       </div>
       <div class="field">
-        <label for="inflVol">Dispersión de la inflación (pp)</label>
+        <label for="inflVol">¿Qué tan variable será la inflación? (σ pp)</label>
         <input type="number" id="inflVol" value="2.6" min="0.1" max="8" step="0.1">
-        <div class="hint">Desviación histórica de Colombia en la era de metas (1999-2025: σ ≈ 2.7pp).</div>
+        <div class="hint">Cuánto puede desviarse de tu estimación cada año (σ). Histórico de Colombia: ≈ 2.7pp. Más alto = plan más prudente.</div>
       </div>
       <div class="field">
         <label for="rentabilidad">Rentabilidad esperada (% EA)</label>
         <input type="number" id="rentabilidad" value="7" min="0" max="30" step="0.1">
-        <div class="hint">Media del rendimiento anual del fondo.</div>
+        <div class="hint">Rendimiento anual promedio que esperas del fondo.</div>
       </div>
       <div class="field">
-        <label for="errorRent">Incertidumbre de la media (pp)</label>
-        <input type="number" id="errorRent" value="1" min="0" max="8" step="0.1">
-        <div class="hint">Cuánto puede desviarse la media real del 7% (antes "margen de error").</div>
-      </div>
-      <div class="field">
-        <label for="volFondo">Volatilidad anual del fondo (% EA)</label>
+        <label for="volFondo">¿Qué tan variable será la rentabilidad? (σ % EA)</label>
         <input type="number" id="volFondo" value="8" min="0" max="40" step="0.5">
-        <div class="hint">Renta fija COP ≈ 4-6% · balanceado ≈ 8-10% · renta variable ≈ 15-18%.</div>
+        <div class="hint">Cuánto se desvía el rendimiento año a año: renta fija COP ≈ 4-6% · balanceado ≈ 8-10% · renta variable ≈ 15-18%.</div>
       </div>
     </div>
   </div>
@@ -428,7 +433,7 @@
         <div class="hint">Caminos aleatorios del fondo, año a año.</div>
       </div>
     </div>
-    <div class="ap-hint">Cada simulación tira una inflación anual (distribución log-normal calibrada a la historia de Colombia: media = inflación semilla, dispersión = σ histórica) y un retorno anual (normal: media = rentabilidad esperada ± incertidumbre de la media, con la volatilidad anual del fondo). Los costos de estudio se encarecen con la inflación <b>realizada</b> de cada año.</div>
+    <div class="ap-hint">Cada simulación tira una inflación anual (distribución log-normal: media = inflación esperada, variación = la σ que definiste — calibrada al histórico de Colombia) y un retorno anual (normal: media = rentabilidad esperada, variación = la σ del fondo). Los costos de estudio —colegio, kínder o universidad, según la edad del niño ese año— se encarecen con la inflación <b>realizada</b> de cada año.</div>
   </div>
 
   <div class="cta-row">
@@ -460,14 +465,16 @@
       <div class="legend-row">
         <span><i class="lg" style="background:#34d399"></i> Camino que cubre el plan</span>
         <span><i class="lg" style="background:#ff3b5c"></i> Camino que se queda corto</span>
-        <span><i class="lg" style="background:#ff3b5c;height:4px;border-radius:0"></i> Costo anual</span>
-        <span><i class="lg" style="background:#22d3ee"></i> Aporte anual</span>
-        <span><i class="lg" style="background:repeating-linear-gradient(90deg,#a78bfa 0 4px,transparent 4px 8px)"></i> Límites P5 · P95</span>
+        <span><i class="lg" style="background:#00e676;height:5px;border-radius:1px"></i> Entradas (inicial + aportes)</span>
+        <span><i class="lg" style="background:#ff1744;height:5px;border-radius:1px"></i> Retiros (costos de estudio)</span>
+        <span><i class="lg" style="background:#e8eaf6;border-radius:0"></i> Media anual</span>
+        <span><i class="lg" style="background:repeating-linear-gradient(90deg,#e8eaf6 0 3px,transparent 3px 6px)"></i> Mediana</span>
+        <span><i class="lg" style="background:repeating-linear-gradient(90deg,#a78bfa 0 4px,transparent 4px 8px)"></i> P5 · P95</span>
       </div>
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b> completo (uno de los miles simulados): <b>verde</b> si el fondo cubre el plan hasta el final, <b>roja</b> si se queda corto en algún punto. La <b>línea blanca</b> es el saldo promedio y las <b>punteadas violeta</b> marcan el P5 y el P95 de cada año. El abanico que se abre con el tiempo es la incertidumbre: cuanto más se abre, menos seguro es el plan. Las barras <b>rojas</b> son el costo anual de estudio inflado y las <b>celestes</b> tus aportes. El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan. Si es negativo, sube los aportes mensuales o el monto inicial hasta que el P5 cierre en positivo.
+      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b>: <b>verde</b> si el fondo cubre el plan hasta el final, <b>roja</b> si se queda corto. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
     </div>
   </div>
 
@@ -540,8 +547,8 @@ function setPills(rowId, attr, handler) {
   });
 }
 var colIncl = 0, kinIncl = 0;
-setPills('colRow', 'col', function (v) { colIncl = +v; });
-setPills('kinRow', 'kin', function (v) { kinIncl = +v; });
+setPills('colRow', 'data-col', function (v) { colIncl = +v; });
+setPills('kinRow', 'data-kin', function (v) { kinIncl = +v; });
 
 // ── filas de aportes ──
 function apRow(monto, desde, meses) {
@@ -577,14 +584,15 @@ function readParams() {
     colMensual: colIncl ? parseNum($('colMensual').value) : 0,
     colMeses: +$('colMeses').value,
     colAnios: colIncl ? +$('colAnios').value : 0,
+    colEdad: colIncl ? +$('colEdad').value : 0,
     kinMensual: kinIncl ? parseNum($('kinMensual').value) : 0,
     kinMeses: +$('kinMeses').value,
     kinAnios: kinIncl ? +$('kinAnios').value : 0,
+    kinEdad: kinIncl ? +$('kinEdad').value : 0,
     montoInicial: parseNum($('montoInicial').value),
     inflacion: +$('inflacion').value / 100,
     inflVol: +$('inflVol').value / 100,
     rentabilidad: +$('rentabilidad').value / 100,
-    errorRent: +$('errorRent').value / 100,
     volFondo: +$('volFondo').value / 100,
     nSims: Math.max(200, Math.min(10000, +$('nSims').value || 2000))
   };
@@ -592,7 +600,7 @@ function readParams() {
   if (!(p.edadInicioUniv > p.edad)) errs.push('La edad de ingreso a la universidad debe ser mayor que la edad actual.');
   if (!(p.univCosto > 0 && p.univAnios > 0)) errs.push('Define el costo de la universidad.');
   if (!(p.rentabilidad > 0)) errs.push('La rentabilidad esperada debe ser mayor a 0.');
-  if (!(p.errorRent >= 0)) errs.push('Margen de error inválido.');
+  if (!(p.inflVol >= 0) || !(p.volFondo >= 0)) errs.push('Las variaciones deben ser mayores o iguales a 0.');
   // aportes
   p.aportes = [];
   $('apList').querySelectorAll('.ap-row').forEach(function (r) {
@@ -607,21 +615,20 @@ function readParams() {
 
 // ── Monte-Carlo: N caminos con inflación y retorno aleatorios por año ──
 function runMC(p) {
-  var cats = [];
-  if (p.kinAnios > 0 && p.kinMensual > 0) cats.push({ key: 'kin', años: p.kinAnios, costoAnual: p.kinMensual * p.kinMeses });
-  if (p.colAnios > 0 && p.colMensual > 0) cats.push({ key: 'col', años: p.colAnios, costoAnual: p.colMensual * p.colMeses });
-  cats.push({ key: 'univ', años: p.univAnios, costoAnual: p.univCosto * p.univPeriodos });
-  var totalAños = 0;
-  cats.forEach(function (cc) { totalAños += cc.años; });
-  var horizonte = p.edadInicioUniv + totalAños - p.edad;
+  // ── calendario de desembolsos por edades ──
+  // cada categoría retira del fondo los años en que la edad del niño cae en su rango
+  var kinFin = (p.kinAnios > 0 && p.kinMensual > 0) ? p.kinEdad + p.kinAnios : 0;
+  var colFin = (p.colAnios > 0 && p.colMensual > 0) ? p.colEdad + p.colAnios : 0;
+  var univFin = p.edadInicioUniv + p.univAnios;
+  var edadFin = Math.max(kinFin, colFin, univFin, p.edad + 1);
+  var horizonte = edadFin - p.edad;
   if (horizonte < 1) horizonte = 1;
-  function catDe(anioDes) {
-    var acc = 0;
-    for (var i = 0; i < cats.length; i++) {
-      if (anioDes <= acc + cats[i].años) return cats[i];
-      acc += cats[i].años;
-    }
-    return null;
+  function costoEdad(edad, acumInfl) {
+    var costo = 0;
+    if (kinFin && edad >= p.kinEdad && edad < kinFin) costo += p.kinMensual * p.kinMeses;
+    if (colFin && edad >= p.colEdad && edad < colFin) costo += p.colMensual * p.colMeses;
+    if (edad >= p.edadInicioUniv && edad < univFin) costo += p.univCosto * p.univPeriodos;
+    return costo * acumInfl;
   }
   var lp = lognormParams(p.inflacion, p.inflVol);
   var n = p.nSims;
@@ -642,10 +649,11 @@ function runMC(p) {
     });
     aporteAnual.push(apAnio);
   }
+  aporteAnual[0] += p.montoInicial; // la barra del primer año = monto inicial + aportes programados
   var costoSum = [];
   for (var cc = 0; cc < horizonte; cc++) costoSum.push(0);
   for (var s = 0; s < n; s++) {
-    var mu = p.rentabilidad + p.errorRent * randNormal(); // media de esta simulación
+    var mu = p.rentabilidad;
     var saldo = p.montoInicial;
     var acumInfl = 1, totalCosto = 0, ok = true, caminoSim = [], retsSim = [];
     for (var per = 1; per <= horizonte; per++) {
@@ -665,9 +673,7 @@ function runMC(p) {
         }
       });
       saldo = saldo * (1 + ret) + aporte;
-      var anioDes = edad - p.edadInicioUniv + 1;
-      var cat = anioDes >= 1 ? catDe(anioDes) : null;
-      var costo = cat ? cat.costoAnual * acumInfl : 0; // inflación realizada de los años previos
+      var costo = costoEdad(edad, acumInfl); // inflación realizada de los años previos
       saldo -= costo;
       totalCosto += costo;
       costoSum[per - 1] += costo;
@@ -716,6 +722,7 @@ function runMC(p) {
     paths: paths, horizonte: horizonte,
     extraInicio: extraInicio, minFinal: minFinal, anioIngreso: p.anioInicio + perIngreso - 1,
     anioFinal: p.anioInicio + horizonte - 1,
+    edadFinal: p.edad + horizonte - 1,
     aporteAnual: aporteAnual,
     costoAnual: costoSum.map(function (x) { return x / n; }),
     fan: porAnio.map(function (arr) {
@@ -842,27 +849,36 @@ function drawChart(mc, p) {
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // barras: aporte (cian) y costo (rojo) — eje derecho
+  // barras: entradas al fondo en VERDE chillón (estilo trading) y retiros en ROJO llamativo
   var bw = Math.max(3, Math.min(9, iw / n * 0.28));
   for (var bi = 0; bi < n; bi++) {
     var xc = X(bi);
     if (mc.aporteAnual[bi] > 0) {
-      ctx.fillStyle = 'rgba(34,211,238,.62)';
+      ctx.fillStyle = 'rgba(0,230,118,.85)';
       ctx.fillRect(xc - bw - 1, YF(mc.aporteAnual[bi]), bw, padT + ih - YF(mc.aporteAnual[bi]));
     }
     if (mc.costoAnual[bi] > 0) {
-      ctx.fillStyle = 'rgba(255,59,92,.65)';
+      ctx.fillStyle = 'rgba(255,23,68,.9)';
       ctx.fillRect(xc + 1, YF(mc.costoAnual[bi]), bw, padT + ih - YF(mc.costoAnual[bi]));
     }
   }
 
-  // línea central: media MC
+  // línea central: media MC (gruesa) — verificado: = promedio de los saldos simulados de cada año
   ctx.strokeStyle = '#e8eaf6';
   ctx.lineWidth = 2.4;
   ctx.beginPath();
   ctx.moveTo(X(0), Y(mc.fan[0].mean));
   for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(mc.fan[i].mean));
   ctx.stroke();
+  // mediana (escenario típico) punteada blanca fina
+  ctx.strokeStyle = 'rgba(232,234,246,.5)';
+  ctx.lineWidth = 1.2;
+  ctx.setLineDash([2, 4]);
+  ctx.beginPath();
+  ctx.moveTo(X(0), Y(mc.fan[0].p50));
+  for (i = 1; i < n; i++) ctx.lineTo(X(i), Y(mc.fan[i].p50));
+  ctx.stroke();
+  ctx.setLineDash([]);
 
   // etiquetas de ejes (en el espacio superior reservado, sin tocar los ticks)
   ctx.fillStyle = '#5b6288';
@@ -902,7 +918,7 @@ $('runBtn').addEventListener('click', function () {
   var v = '';
   if (mc.p5 >= 0) {
     v = '<b>Con 95% de confianza el fondo cubre el plan.</b> El saldo al terminar la universidad (año ' +
-        mc.anioFinal + ', edad ' + r.p.edadInicioUniv + ' + ' + (r.p.univAnios - 1) + ') será ≥ <span class="ok">' +
+        mc.anioFinal + ', edad ' + mc.edadFinal + ') será ≥ <span class="ok">' +
         money(mc.p5) + '</span> (P5), con una media de <b>' + money(mc.mean) + '</b> y mediana de ' + money(mc.p50) +
         '. El fondo nunca se agota en el <b>' + (mc.pSucc * 100).toFixed(1) + '%</b> de los ' +
         r.p.nSims.toLocaleString('en-US') + ' escenarios simulados.';
