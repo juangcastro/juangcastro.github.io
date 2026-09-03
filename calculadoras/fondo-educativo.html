@@ -636,8 +636,7 @@ function drawChart(res, p) {
   ctx.scale(dpr, dpr);
 
   var filas = res.filas;
-  var padL = 62, padR = 58, padT = 18, padB = 30;
-  var iw = W - padL - padR, ih = H - padT - padB;
+  var padT = 18, padB = 30;
   var n = filas.length;
   var anios = filas.map(function (f) { return f.anio; });
 
@@ -657,16 +656,31 @@ function drawChart(res, p) {
   if (hiF <= 0) hiF = 1;
   hiF *= 1.08;
 
+  // ── padding dinámico: medir las etiquetas para que ningún eje toque el borde ──
+  ctx.font = '10px "JetBrains Mono", monospace';
+  var maxWL = 0;
+  var ticksY = 5;
+  for (var g = 0; g <= ticksY; g++) {
+    var tv = lo + (hi - lo) * g / ticksY;
+    maxWL = Math.max(maxWL, ctx.measureText(money(tv)).width);
+  }
+  var maxWR = 0;
+  for (var g2 = 0; g2 <= 4; g2++) {
+    var tvf = hiF * g2 / 4;
+    maxWR = Math.max(maxWR, ctx.measureText(tvf >= 1000 ? '$' + (tvf / 1000).toFixed(tvf % 1000 === 0 ? 0 : 1).replace('.0', '') + 'k' : '$' + Math.round(tvf)).width);
+  }
+  var padL = Math.max(70, maxWL + 16);
+  var padR = Math.max(60, maxWR + 14);
+  var iw = W - padL - padR, ih = H - padT - padB;
+
   var X = function (i) { return padL + (i / (n - 1 || 1)) * iw; };
   var Y = function (v) { return padT + ih - ((v - lo) / (hi - lo)) * ih; };
   var YF = function (v) { return padT + ih - (v / hiF) * ih; };
 
   ctx.clearRect(0, 0, W, H);
-  ctx.font = '10px "JetBrains Mono", monospace';
 
   // grid Y izquierdo (saldo)
-  var ticksY = 5;
-  for (var g = 0; g <= ticksY; g++) {
+  for (g = 0; g <= ticksY; g++) {
     var v = lo + (hi - lo) * g / ticksY;
     var gy = Y(v);
     ctx.strokeStyle = 'rgba(35,40,69,.45)';
