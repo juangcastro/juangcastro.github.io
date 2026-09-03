@@ -749,16 +749,21 @@ function drawChart(mc, p) {
   var anios = [];
   for (var an = 0; an < n; an++) anios.push(p.anioInicio + an);
 
-  // rangos dinámicos (percentiles MC + media + cero)
+  // rangos dinámicos: se ajustan al contenido COMPLETO (percentiles + caminos dibujados)
+  // para que ninguna barra ni camino quede recortado
   var lo = Infinity, hi = -Infinity;
   mc.fan.forEach(function (pnt) {
-    lo = Math.min(lo, pnt.p5, 0);
+    lo = Math.min(lo, pnt.p5);
     hi = Math.max(hi, pnt.p95, pnt.mean);
+  });
+  mc.paths.forEach(function (pa) {
+    pa.pts.forEach(function (vv) {
+      lo = Math.min(lo, vv);
+      hi = Math.max(hi, vv);
+    });
   });
   var padRng = (hi - lo) * 0.08 || 1;
   lo -= padRng; hi += padRng;
-  lo = Math.max(0, lo); // eje vertical sin negativos: los saldos bajo cero se recortan en el piso
-  hi = Math.max(hi, lo + 1);
 
   // rango del flujo anual (aportes y costos)
   var hiF = -Infinity;
@@ -785,7 +790,9 @@ function drawChart(mc, p) {
   var padR = Math.max(60, maxWR + 14);
   var iw = W - padL - padR, ih = H - padT - padB;
 
-  var X = function (i) { return padL + (i / (n - 1 || 1)) * iw; };
+  // eje X por celdas: cada año ocupa su celda con margen interior,
+  // así las barras del primer y último año quedan completas dentro del área
+  var X = function (i) { return padL + ((i + 0.5) / n) * iw; };
   var Y = function (v) { return padT + ih - ((v - lo) / (hi - lo)) * ih; };
   var YF = function (v) { return padT + ih - (v / hiF) * ih; };
 
@@ -820,10 +827,6 @@ function drawChart(mc, p) {
   ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + ih); ctx.lineTo(padL + iw, padT + ih);
   ctx.stroke();
 
-
-  // clip: todo lo que caiga bajo $0 se recorta limpio en el piso del área
-  ctx.save();
-  ctx.beginPath(); ctx.rect(padL, padT, iw, ih); ctx.clip();
 
   // ── mariposa: caminos individuales del Monte-Carlo ──
   // verde = el camino cubre el plan completo; rojo = se queda corto
@@ -882,7 +885,13 @@ function drawChart(mc, p) {
   ctx.stroke();
   ctx.setLineDash([]);
 
-  ctx.restore();
+  // línea de referencia en $0 (solo si el contenido la cruza)
+  if (lo < 0 && hi > 0) {
+    ctx.strokeStyle = 'rgba(255,255,255,.22)';
+    ctx.setLineDash([3, 5]);
+    ctx.beginPath(); ctx.moveTo(padL, Y(0)); ctx.lineTo(padL + iw, Y(0)); ctx.stroke();
+    ctx.setLineDash([]);
+  }
 
   // etiquetas de ejes (en el espacio superior reservado, sin tocar los ticks)
   ctx.fillStyle = '#5b6288';
