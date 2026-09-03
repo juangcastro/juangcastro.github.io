@@ -344,7 +344,7 @@
       </div>
       <div class="field">
         <label for="colMeses">Meses al año</label>
-        <input type="number" id="colMeses" value="10" min="1" max="12">
+        <input type="number" id="colMeses" value="11" min="1" max="12">
       </div>
       <div class="field">
         <label for="colEdad">Edad a la que empieza</label>
@@ -372,7 +372,7 @@
       </div>
       <div class="field">
         <label for="kinMeses">Meses al año</label>
-        <input type="number" id="kinMeses" value="10" min="1" max="12">
+        <input type="number" id="kinMeses" value="11" min="1" max="12">
       </div>
       <div class="field">
         <label for="kinEdad">Edad a la que empieza</label>
@@ -449,9 +449,9 @@
       <div class="kpi"><div class="lab wide">Saldo final del fondo (P5 · 95% confianza)</div><div class="val" id="kP5">—</div><div class="sub">solo 1 de cada 20 escenarios termina con menos</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (mediana · P50)</div><div class="val" id="kP50">—</div><div class="sub">la mitad termina con más, la mitad con menos</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (media)</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios simulados</div></div>
-      <div class="kpi"><div class="lab wide">Saldo final del fondo (P95)</div><div class="val pos" id="kP95">—</div><div class="sub">solo 5% de los escenarios terminan con más</div></div>
+      <div class="kpi"><div class="lab wide">Saldo final del fondo (P95)</div><div class="val" id="kP95">—</div><div class="sub">solo 5% de los escenarios terminan con más</div></div>
       <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">sin agotar el fondo en ningún año</div></div>
-      <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val acc" id="kCosto50">—</div><div class="sub">todo lo desembolsado, inflado año a año</div></div>
+      <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val" id="kCosto50">—</div><div class="sub">todo lo desembolsado, inflado año a año</div></div>
     </div>
 
     <div class="solver-box" id="solverBox" hidden>
@@ -756,6 +756,8 @@ function drawChart(mc, p) {
   });
   var padRng = (hi - lo) * 0.08 || 1;
   lo -= padRng; hi += padRng;
+  lo = Math.max(0, lo); // eje vertical sin negativos: los saldos bajo cero se recortan en el piso
+  hi = Math.max(hi, lo + 1);
 
   // rango del flujo anual (aportes y costos)
   var hiF = -Infinity;
@@ -816,13 +818,11 @@ function drawChart(mc, p) {
   ctx.beginPath();
   ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + ih); ctx.lineTo(padL + iw, padT + ih);
   ctx.stroke();
-  // cero (si está dentro)
-  if (lo < 0 && hi > 0) {
-    ctx.strokeStyle = 'rgba(255,59,92,.5)';
-    ctx.setLineDash([3, 4]);
-    ctx.beginPath(); ctx.moveTo(padL, Y(0)); ctx.lineTo(padL + iw, Y(0)); ctx.stroke();
-    ctx.setLineDash([]);
-  }
+
+
+  // clip: todo lo que caiga bajo $0 se recorta limpio en el piso del área
+  ctx.save();
+  ctx.beginPath(); ctx.rect(padL, padT, iw, ih); ctx.clip();
 
   // ── mariposa: caminos individuales del Monte-Carlo ──
   // verde = el camino cubre el plan completo; rojo = se queda corto
@@ -881,6 +881,8 @@ function drawChart(mc, p) {
   ctx.stroke();
   ctx.setLineDash([]);
 
+  ctx.restore();
+
   // etiquetas de ejes (en el espacio superior reservado, sin tocar los ticks)
   ctx.fillStyle = '#5b6288';
   ctx.font = '9px "JetBrains Mono", monospace';
@@ -906,10 +908,15 @@ $('runBtn').addEventListener('click', function () {
   var ms = Math.round(performance.now() - t0);
 
   // KPIs probabilísticos
+  // nomenclatura de color por signo: ≥ $0 en verde, déficit en rojo, nunca al revés
   $('kP5').innerHTML = money(mc.p5);
   $('kP50').innerHTML = money(mc.p50);
   $('kMean').innerHTML = money(mc.mean);
   $('kP95').innerHTML = money(mc.p95);
+  [['kP5', mc.p5], ['kP50', mc.p50], ['kMean', mc.mean], ['kP95', mc.p95]].forEach(function (par) {
+    var el = $(par[0]);
+    el.className = 'val ' + (par[1] > 0 ? 'pos' : par[1] < 0 ? 'neg' : '');
+  });
   var succ = $('kPSucc');
   succ.innerHTML = (mc.pSucc * 100).toFixed(1) + '%';
   succ.className = 'val ' + (mc.pSucc >= 0.8 ? 'pos' : (mc.pSucc >= 0.5 ? 'amber' : 'neg'));
