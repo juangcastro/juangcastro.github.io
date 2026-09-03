@@ -292,7 +292,7 @@
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
       <div class="field">
         <label for="univCosto">Costo de un semestre hoy ($)</label>
-        <input type="number" id="univCosto" value="15000000" min="0" step="100000">
+        <input type="text" inputmode="numeric" class="money" id="univCosto" value="15,000,000">
       </div>
       <div class="field">
         <label for="univPeriodos">Semestres al año</label>
@@ -315,7 +315,7 @@
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
       <div class="field">
         <label for="colMensual">Mensualidad hoy ($)</label>
-        <input type="number" id="colMensual" value="0" min="0" step="10000">
+        <input type="text" inputmode="numeric" class="money" id="colMensual" value="0">
       </div>
       <div class="field">
         <label for="colMeses">Meses al año</label>
@@ -338,7 +338,7 @@
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
       <div class="field">
         <label for="kinMensual">Mensualidad hoy ($)</label>
-        <input type="number" id="kinMensual" value="0" min="0" step="10000">
+        <input type="text" inputmode="numeric" class="money" id="kinMensual" value="0">
       </div>
       <div class="field">
         <label for="kinMeses">Meses al año</label>
@@ -356,7 +356,7 @@
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
       <div class="field">
         <label for="montoInicial">Monto inicial del fondo ($)</label>
-        <input type="number" id="montoInicial" value="41793062" min="0" step="100000">
+        <input type="text" inputmode="numeric" class="money" id="montoInicial" value="41,793,062">
         <div class="hint">Lo que ya tienes ahorrado hoy.</div>
       </div>
       <div class="field">
@@ -433,6 +433,29 @@ function money(v) {
   var s = Math.round(v).toLocaleString('en-US');
   return v < 0 ? '-$' + s.slice(1) : '$' + s;
 }
+// ── dinero en inputs: formato con comas ──
+function parseNum(v) {
+  var n = parseFloat(String(v).replace(/[^0-9.\-]/g, ''));
+  return isNaN(n) ? 0 : n;
+}
+function fmtMoneyInput(n) {
+  if (n === '' || n == null || isNaN(n)) return '';
+  var neg = n < 0;
+  var s = Math.round(Math.abs(n)).toString();
+  s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return (neg ? '-' : '') + s;
+}
+function bindMoney(el) {
+  el.addEventListener('blur', function () {
+    el.value = fmtMoneyInput(parseNum(el.value));
+  });
+  el.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') el.blur();
+  });
+}
+['univCosto', 'colMensual', 'kinMensual', 'montoInicial'].forEach(function (id) {
+  bindMoney($(id));
+});
 function setPills(rowId, attr, handler) {
   $(rowId).querySelectorAll('.pill').forEach(function (p) {
     p.addEventListener('click', function () {
@@ -451,10 +474,11 @@ function apRow(monto, desde, meses) {
   var d = document.createElement('div');
   d.className = 'ap-row';
   d.innerHTML =
-    '<input type="number" class="ap-monto" placeholder="Monto mensual $" value="' + monto + '" min="0" step="10000">' +
+    '<input type="text" inputmode="numeric" class="ap-monto money" placeholder="Monto mensual $" value="' + fmtMoneyInput(monto) + '">' +
     '<input type="number" class="ap-desde" placeholder="Desde año" value="' + desde + '" min="2000" max="2050">' +
     '<input type="number" class="ap-meses" placeholder="Meses" value="' + meses + '" min="1" max="480">' +
     '<button type="button" class="rm" title="Quitar">✕</button>';
+  bindMoney(d.querySelector('.ap-monto'));
   d.querySelector('.rm').addEventListener('click', function () { d.remove(); });
   return d;
 }
@@ -473,16 +497,16 @@ function readParams() {
     edad: +$('edad').value,
     anioInicio: +$('anioInicio').value,
     edadInicioUniv: +$('edadInicioUniv').value,
-    univCosto: +$('univCosto').value,
+    univCosto: parseNum($('univCosto').value),
     univPeriodos: +$('univPeriodos').value,
     univAnios: +$('univAnios').value,
-    colMensual: colIncl ? +$('colMensual').value : 0,
+    colMensual: colIncl ? parseNum($('colMensual').value) : 0,
     colMeses: +$('colMeses').value,
     colAnios: colIncl ? +$('colAnios').value : 0,
-    kinMensual: kinIncl ? +$('kinMensual').value : 0,
+    kinMensual: kinIncl ? parseNum($('kinMensual').value) : 0,
     kinMeses: +$('kinMeses').value,
     kinAnios: kinIncl ? +$('kinAnios').value : 0,
-    montoInicial: +$('montoInicial').value,
+    montoInicial: parseNum($('montoInicial').value),
     inflacion: +$('inflacion').value / 100,
     rentabilidad: +$('rentabilidad').value / 100,
     errorRent: +$('errorRent').value / 100
@@ -495,7 +519,7 @@ function readParams() {
   // aportes
   p.aportes = [];
   $('apList').querySelectorAll('.ap-row').forEach(function (r) {
-    var m = +r.querySelector('.ap-monto').value || 0;
+    var m = parseNum(r.querySelector('.ap-monto').value);
     var d = +r.querySelector('.ap-desde').value || p.anioInicio;
     var mes = +r.querySelector('.ap-meses').value || 12;
     if (m > 0) p.aportes.push({ monto: m, desde: d, meses: mes });
