@@ -686,9 +686,10 @@ function runMC(p) {
           aporte += ap.monto * Math.max(0, finMes - iniMes);
         }
       });
-      saldo = saldo * (1 + ret) + aporte;
+      // cobro ANTICIPADO: las matrículas (kínder, colegio y universidad) se pagan al
+      // inicio del año académico — salen del saldo ANTES de que rinda el año
       var costo = costoAnio(anio, acumInfl); // inflación realizada de los años previos
-      saldo -= costo;
+      saldo = (saldo - costo) * (1 + ret) + aporte;
       totalCosto += costo;
       costoSum[per - 1] += costo;
       costosPorAnio[per - 1].push(costo);
