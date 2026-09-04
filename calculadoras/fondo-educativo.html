@@ -803,8 +803,10 @@ function drawChart(mc, p) {
     var tvf = hiF * g2 / 4;
     maxWR = Math.max(maxWR, ctx.measureText(tvf >= 1000 ? '$' + (tvf / 1000).toFixed(tvf % 1000 === 0 ? 0 : 1).replace('.0', '') + 'k' : '$' + Math.round(tvf)).width);
   }
-  var padL = Math.max(70, maxWL + 16);
-  var padR = Math.max(60, maxWR + 14);
+  // los títulos de eje van rotados (verticales) en los márgenes: se reserva espacio
+  // para que el texto entre completo sin chocar con los números ni recortarse
+  var padL = Math.max(96, maxWL + 20);
+  var padR = Math.max(78, maxWR + 30);
   var iw = W - padL - padR, ih = H - padT - padB;
 
   // eje X por celdas: cada año ocupa su celda con margen interior,
@@ -928,13 +930,23 @@ function drawChart(mc, p) {
     ctx.setLineDash([]);
   }
 
-  // etiquetas de ejes (en el espacio superior reservado, sin tocar los ticks)
-  ctx.fillStyle = '#5b6288';
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.fillText('SALDO DEL FONDO', padL - 8, 14);
-  ctx.textAlign = 'left';
-  ctx.fillText('APORTE / COSTO ANUAL', padL + iw + 8, 14);
+  // títulos de ejes VERTICALES (rotados 90°), centrados en la altura del área de datos
+  ctx.fillStyle = '#6b7299';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  var cY = padT + ih / 2;
+  // eje izquierdo (saldo): se lee de abajo hacia arriba
+  ctx.save();
+  ctx.translate(9, cY);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.fillText('SALDO DEL FONDO', 0, 0);
+  ctx.restore();
+  // eje derecho (flujo anual): se lee de abajo hacia arriba
+  ctx.save();
+  ctx.translate(W - 9, cY);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText('APORTE / COSTO ANUAL', 0, 0);
+  ctx.restore();
 }
 
 // ── disparador ──
