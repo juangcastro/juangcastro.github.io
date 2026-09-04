@@ -298,19 +298,16 @@
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
       <div class="field">
         <label for="nombre">Nombre del hijo</label>
-        <input type="text" id="nombre" value="Tomás">
+        <input type="text" id="nombre" value="Juan">
       </div>
       <div class="field">
         <label for="edad">Edad actual (años)</label>
-        <input type="number" id="edad" value="7" min="0" max="16">
+        <input type="number" id="edad" value="1" min="0" max="18">
       </div>
       <div class="field">
         <label for="anioInicio">Año de inicio del análisis</label>
-        <input type="number" id="anioInicio" value="2026" min="2000" max="2040">
-      </div>
-      <div class="field">
-        <label for="edadInicioUniv">Edad de ingreso a la universidad</label>
-        <input type="number" id="edadInicioUniv" value="17" min="15" max="22">
+        <input type="number" id="anioInicio" value="2026" min="2000" max="2060">
+        <div class="hint">Se carga el año en curso automáticamente.</div>
       </div>
     </div>
 
@@ -318,15 +315,21 @@
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
       <div class="field">
         <label for="univCosto">Costo de un semestre hoy ($)</label>
-        <input type="text" inputmode="numeric" class="money" id="univCosto" value="15,000,000">
+        <input type="text" inputmode="numeric" class="money" id="univCosto" value="1,000">
       </div>
       <div class="field">
         <label for="univPeriodos">Semestres al año</label>
         <input type="number" id="univPeriodos" value="2" min="1" max="4">
       </div>
       <div class="field">
-        <label for="univAnios">Años de carrera</label>
-        <input type="number" id="univAnios" value="5" min="1" max="8">
+        <label for="univInicio">Año de inicio</label>
+        <input type="number" id="univInicio" value="2042" min="2000" max="2070">
+        <div class="hint">Primer año en que pagas la universidad.</div>
+      </div>
+      <div class="field">
+        <label for="univDur">Duración (años)</label>
+        <input type="number" id="univDur" value="5" min="1" max="8">
+        <div class="hint">Años de carrera.</div>
       </div>
     </div>
 
@@ -341,20 +344,21 @@
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
       <div class="field">
         <label for="colMensual">Mensualidad hoy ($)</label>
-        <input type="text" inputmode="numeric" class="money" id="colMensual" value="0">
+        <input type="text" inputmode="numeric" class="money" id="colMensual" value="1,000">
       </div>
       <div class="field">
         <label for="colMeses">Meses al año</label>
         <input type="number" id="colMeses" value="11" min="1" max="12">
       </div>
       <div class="field">
-        <label for="colEdad">Edad a la que empieza</label>
-        <input type="number" id="colEdad" value="6" min="1" max="20">
-        <div class="hint">El colegio se descuenta del fondo desde esta edad.</div>
+        <label for="colInicio">Año de inicio</label>
+        <input type="number" id="colInicio" value="2031" min="2000" max="2070">
+        <div class="hint">Primer año de colegio del niño.</div>
       </div>
       <div class="field">
-        <label for="colAnios">Años de colegio</label>
-        <input type="number" id="colAnios" value="0" min="0" max="13">
+        <label for="colDur">Duración (años)</label>
+        <input type="number" id="colDur" value="11" min="1" max="14">
+        <div class="hint">Años de colegio (hasta grado 11).</div>
       </div>
     </div>
 
@@ -369,20 +373,21 @@
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
       <div class="field">
         <label for="kinMensual">Mensualidad hoy ($)</label>
-        <input type="text" inputmode="numeric" class="money" id="kinMensual" value="0">
+        <input type="text" inputmode="numeric" class="money" id="kinMensual" value="1,000">
       </div>
       <div class="field">
         <label for="kinMeses">Meses al año</label>
         <input type="number" id="kinMeses" value="11" min="1" max="12">
       </div>
       <div class="field">
-        <label for="kinEdad">Edad a la que empieza</label>
-        <input type="number" id="kinEdad" value="3" min="1" max="20">
-        <div class="hint">El kínder se descuenta del fondo desde esta edad.</div>
+        <label for="kinInicio">Año de inicio</label>
+        <input type="number" id="kinInicio" value="2028" min="2000" max="2070">
+        <div class="hint">Primer año de kínder del niño.</div>
       </div>
       <div class="field">
-        <label for="kinAnios">Años de kínder</label>
-        <input type="number" id="kinAnios" value="0" min="0" max="13">
+        <label for="kinDur">Duración (años)</label>
+        <input type="number" id="kinDur" value="3" min="1" max="5">
+        <div class="hint">Años de kínder (preescolar).</div>
       </div>
     </div>
   </div>
@@ -392,7 +397,7 @@
     <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
       <div class="field">
         <label for="montoInicial">Monto inicial del fondo ($)</label>
-        <input type="text" inputmode="numeric" class="money" id="montoInicial" value="41,793,062">
+        <input type="text" inputmode="numeric" class="money" id="montoInicial" value="1,000">
         <div class="hint">Lo que ya tienes ahorrado hoy.</div>
       </div>
       <div class="field">
@@ -451,7 +456,7 @@
       <div class="kpi"><div class="lab wide">Saldo final del fondo (mediana · P50)</div><div class="val" id="kP50">—</div><div class="sub">la mitad termina con más, la mitad con menos</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (media)</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios simulados</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (P95)</div><div class="val" id="kP95">—</div><div class="sub">solo 5% de los escenarios terminan con más</div></div>
-      <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">termina la universidad sin deuda (saldo ≥ $0)</div></div>
+      <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">paga todos los estudios y un año después sigue ≥ $0</div></div>
       <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val out" id="kCosto50">—</div><div class="sub">salidas del fondo · rojo como los retiros de la gráfica</div></div>
     </div>
 
@@ -461,7 +466,7 @@
     </div>
 
     <div class="chart-box">
-      <div class="cap">Proyección del fondo vs. costos de estudio · <span class="red">ajustado a la inflación</span></div>
+      <div class="cap">Proyección del fondo vs. costos de estudio · <span class="red">ajustado a la inflación · +1 año tras los estudios</span></div>
       <canvas id="chart" width="900" height="380"></canvas>
       <div class="legend-row">
         <span><i class="lg" style="background:#34d399"></i> Camino que termina sin deuda (saldo ≥ $0)</span>
@@ -475,7 +480,7 @@
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b> completo y su color es el de su <b>resultado final</b>: <b>verde</b> si el fondo paga toda la educación y termina sin deuda (saldo ≥ $0), <b>roja</b> si termina en déficit al final de los pagos. Todos los caminos suben juntos mientras ahorras; al final de la universidad el abanico se abre: los verdes cruzan el final por encima de $0 y los rojos por debajo. El KPI <b>P(termina sin deuda)</b> = fracción de caminos verdes. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
+      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b> completo y su color es el de su <b>resultado final</b>: <b>verde</b> si el fondo paga toda la educación y termina sin deuda (saldo ≥ $0), <b>roja</b> si termina en déficit al final de los pagos. Todos los caminos suben juntos mientras ahorras; al final de la universidad el abanico se abre: los verdes cruzan el final por encima de $0 y los rojos por debajo. La gráfica corre hasta <b>1 año después</b> de terminados los estudios (el fondo sigue rindiendo, sin pagos). El KPI <b>P(termina sin deuda)</b> = fracción de caminos verdes. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
     </div>
   </div>
 
@@ -565,31 +570,34 @@ function apRow(monto, desde, meses) {
   return d;
 }
 function addAp(monto, desde, meses) {
-  $('apList').appendChild(apRow(monto || 4695078, desde || +$('anioInicio').value || 2026, meses || 12));
+  $('apList').appendChild(apRow(monto || 1000, desde || +$('anioInicio').value || 2026, meses || 12));
 }
 $('addAp').addEventListener('click', function () { addAp(); });
 // fila default
-addAp(4695078, 2026, 12);
+addAp(1000, 2026, 12);
 
 // ── modelo ──
+// el año de inicio carga el año en curso al abrir la página
+$('anioInicio').value = new Date().getFullYear();
+
 function readParams() {
   var errs = [];
   var p = {
     nombre: $('nombre').value.trim() || 'el estudiante',
     edad: +$('edad').value,
     anioInicio: +$('anioInicio').value,
-    edadInicioUniv: +$('edadInicioUniv').value,
     univCosto: parseNum($('univCosto').value),
     univPeriodos: +$('univPeriodos').value,
-    univAnios: +$('univAnios').value,
+    univInicio: +$('univInicio').value,
+    univDur: +$('univDur').value,
     colMensual: colIncl ? parseNum($('colMensual').value) : 0,
     colMeses: +$('colMeses').value,
-    colAnios: colIncl ? +$('colAnios').value : 0,
-    colEdad: colIncl ? +$('colEdad').value : 0,
+    colInicio: colIncl ? +$('colInicio').value : 0,
+    colDur: colIncl ? +$('colDur').value : 0,
     kinMensual: kinIncl ? parseNum($('kinMensual').value) : 0,
     kinMeses: +$('kinMeses').value,
-    kinAnios: kinIncl ? +$('kinAnios').value : 0,
-    kinEdad: kinIncl ? +$('kinEdad').value : 0,
+    kinInicio: kinIncl ? +$('kinInicio').value : 0,
+    kinDur: kinIncl ? +$('kinDur').value : 0,
     montoInicial: parseNum($('montoInicial').value),
     inflacion: +$('inflacion').value / 100,
     inflVol: +$('inflVol').value / 100,
@@ -598,8 +606,10 @@ function readParams() {
     nSims: Math.max(200, Math.min(10000, +$('nSims').value || 2000))
   };
   if (!(p.edad >= 0)) errs.push('Edad actual inválida.');
-  if (!(p.edadInicioUniv > p.edad)) errs.push('La edad de ingreso a la universidad debe ser mayor que la edad actual.');
-  if (!(p.univCosto > 0 && p.univAnios > 0)) errs.push('Define el costo de la universidad.');
+  if (!(p.univCosto > 0 && p.univDur > 0)) errs.push('Define el costo y la duración de la universidad.');
+  if (!(p.univInicio >= p.anioInicio)) errs.push('La universidad debe empezar en un año igual o posterior al inicio del análisis.');
+  if (colIncl && (!(p.colInicio >= p.anioInicio) || !(p.colDur > 0))) errs.push('Revisa el año de inicio y la duración del colegio.');
+  if (kinIncl && (!(p.kinInicio >= p.anioInicio) || !(p.kinDur > 0))) errs.push('Revisa el año de inicio y la duración del kínder.');
   if (!(p.rentabilidad > 0)) errs.push('La rentabilidad esperada debe ser mayor a 0.');
   if (!(p.inflVol >= 0) || !(p.volFondo >= 0)) errs.push('Las variaciones deben ser mayores o iguales a 0.');
   // aportes
@@ -616,19 +626,23 @@ function readParams() {
 
 // ── Monte-Carlo: N caminos con inflación y retorno aleatorios por año ──
 function runMC(p) {
-  // ── calendario de desembolsos por edades ──
-  // cada categoría retira del fondo los años en que la edad del niño cae en su rango
-  var kinFin = (p.kinAnios > 0 && p.kinMensual > 0) ? p.kinEdad + p.kinAnios : 0;
-  var colFin = (p.colAnios > 0 && p.colMensual > 0) ? p.colEdad + p.colAnios : 0;
-  var univFin = p.edadInicioUniv + p.univAnios;
-  var edadFin = Math.max(kinFin, colFin, univFin, p.edad + 1);
-  var horizonte = edadFin - p.edad;
+  // ── calendario de desembolsos por AÑOS ──
+  // cada sección (kínder, colegio, universidad) tiene su año de inicio y su duración;
+  // retira del fondo su costo anual en los años [inicio, inicio + duración)
+  var secciones = [];
+  if (p.kinInicio && p.kinDur > 0 && p.kinMensual > 0) secciones.push({ inicio: p.kinInicio, fin: p.kinInicio + p.kinDur, costoAnual: p.kinMensual * p.kinMeses });
+  if (p.colInicio && p.colDur > 0 && p.colMensual > 0) secciones.push({ inicio: p.colInicio, fin: p.colInicio + p.colDur, costoAnual: p.colMensual * p.colMeses });
+  secciones.push({ inicio: p.univInicio, fin: p.univInicio + p.univDur, costoAnual: p.univCosto * p.univPeriodos });
+  // el análisis corre hasta el fin de los estudios + 1 año (el fondo sigue un año más sin pagos)
+  var finEstudios = 0;
+  secciones.forEach(function (s) { finEstudios = Math.max(finEstudios, s.fin); });
+  var horizonte = (finEstudios + 1) - p.anioInicio;
   if (horizonte < 1) horizonte = 1;
-  function costoEdad(edad, acumInfl) {
+  function costoAnio(anio, acumInfl) {
     var costo = 0;
-    if (kinFin && edad >= p.kinEdad && edad < kinFin) costo += p.kinMensual * p.kinMeses;
-    if (colFin && edad >= p.colEdad && edad < colFin) costo += p.colMensual * p.colMeses;
-    if (edad >= p.edadInicioUniv && edad < univFin) costo += p.univCosto * p.univPeriodos;
+    for (var s2 = 0; s2 < secciones.length; s2++) {
+      if (anio >= secciones[s2].inicio && anio < secciones[s2].fin) costo += secciones[s2].costoAnual;
+    }
     return costo * acumInfl;
   }
   var lp = lognormParams(p.inflacion, p.inflVol);
@@ -659,7 +673,6 @@ function runMC(p) {
     var acumInfl = 1, totalCosto = 0, caminoSim = [], retsSim = [];
     for (var per = 1; per <= horizonte; per++) {
       var anio = p.anioInicio + per - 1;
-      var edad = p.edad + per - 1;
       var inflAnual = Math.exp(lp.mx + lp.sx * randNormal()) - 1;
       var ret = mu + p.volFondo * randNormal();
       retsSim.push(ret);
@@ -674,7 +687,7 @@ function runMC(p) {
         }
       });
       saldo = saldo * (1 + ret) + aporte;
-      var costo = costoEdad(edad, acumInfl); // inflación realizada de los años previos
+      var costo = costoAnio(anio, acumInfl); // inflación realizada de los años previos
       saldo -= costo;
       totalCosto += costo;
       costoSum[per - 1] += costo;
@@ -692,7 +705,7 @@ function runMC(p) {
   // el peor camino (saldo final mínimo) define el caso extremo; el modelo es lineal en
   // el saldo, así que añadir A al inicio del año de ingreso lo multiplica por el factor
   // de crecimiento de ese camino: A = -min / factor
-  var perIngreso = p.edadInicioUniv - p.edad + 1; // período (1-based) del ingreso a la univ
+  var perIngreso = p.univInicio - p.anioInicio + 1; // período (1-based) del ingreso a la univ
   var idxPeor = 0;
   for (var w = 1; w < n; w++) if (saldosFin[w] < saldosFin[idxPeor]) idxPeor = w;
   var extraInicio = 0;
@@ -720,7 +733,7 @@ function runMC(p) {
     p5: quantile(saldosFin, .05), p50: quantile(saldosFin, .50), p95: quantile(saldosFin, .95),
     mean: mean, pSucc: exitos / n, costo50: quantile(costosFin, .50),
     paths: paths, horizonte: horizonte,
-    extraInicio: extraInicio, minFinal: minFinal, anioIngreso: p.anioInicio + perIngreso - 1,
+    extraInicio: extraInicio, minFinal: minFinal, anioIngreso: p.univInicio,
     anioFinal: p.anioInicio + horizonte - 1,
     edadFinal: p.edad + horizonte - 1,
     aporteAnual: aporteAnual,
@@ -937,13 +950,13 @@ $('runBtn').addEventListener('click', function () {
   // veredicto (MC)
   var v = '';
   if (mc.p5 >= 0) {
-    v = '<b>Con 95% de confianza el fondo cubre el plan.</b> El saldo al terminar la universidad (año ' +
+    v = '<b>Con 95% de confianza el fondo cubre el plan.</b> Un año después de terminar los estudios (año ' +
         mc.anioFinal + ', edad ' + mc.edadFinal + ') será ≥ <span class="ok">' +
         money(mc.p5) + '</span> (P5), con una media de <b>' + money(mc.mean) + '</b> y mediana de ' + money(mc.p50) +
         '. El fondo paga todo y termina sin deuda en el <b>' + (mc.pSucc * 100).toFixed(1) + '%</b> de los ' +
         r.p.nSims.toLocaleString('en-US') + ' escenarios simulados.';
   } else {
-    v = '<b>El plan no es seguro.</b> En el peor 5% de escenarios el fondo se agota (P5 = <span style="color:var(--accent)">' +
+    v = '<b>El plan no es seguro.</b> En el peor 5% de escenarios el fondo se agota antes de terminar (P5 = <span style="color:var(--accent)">' +
         money(mc.p5) + '</span>); en promedio termina con <b>' + money(mc.mean) + '</b> y solo termina sin deuda en el <b>' +
         (mc.pSucc * 100).toFixed(1) + '%</b> de los escenarios. Para una confianza del 95%, sube los aportes mensuales o el monto inicial hasta que el P5 sea ≥ $0.';
   }
@@ -956,7 +969,7 @@ $('runBtn').addEventListener('click', function () {
     sol.innerHTML = 'Incluso en el peor de los ' + r.p.nSims.toLocaleString('en-US') + ' escenarios, el fondo cubre el plan completo — no se requiere capital adicional.';
   } else {
     sol.innerHTML = 'Con este plan, en el <b>peor caso</b> podrías llegar a requerir <b>' + money(mc.extraInicio) +
-        '</b> adicionales al comienzo de la universidad (año <b>' + mc.anioIngreso + '</b>, edad ' + r.p.edadInicioUniv +
+        '</b> adicionales al comienzo de la universidad (año <b>' + mc.anioIngreso + '</b>, edad ' + (r.p.edad + (mc.anioIngreso - r.p.anioInicio)) +
         ') para cubrir el 100% de los escenarios. Esa es la cifra que tendrías que asegurar (hoy o antes del ingreso) si quieres eliminar el riesgo de faltante por completo.';
   }
 
