@@ -451,7 +451,7 @@
       <div class="kpi"><div class="lab wide">Saldo final del fondo (mediana · P50)</div><div class="val" id="kP50">—</div><div class="sub">la mitad termina con más, la mitad con menos</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (media)</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios simulados</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (P95)</div><div class="val" id="kP95">—</div><div class="sub">solo 5% de los escenarios terminan con más</div></div>
-      <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">sin agotar el fondo en ningún año</div></div>
+      <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">termina la universidad sin deuda (saldo ≥ $0)</div></div>
       <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val out" id="kCosto50">—</div><div class="sub">salidas del fondo · rojo como los retiros de la gráfica</div></div>
     </div>
 
@@ -475,7 +475,7 @@
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b>: <b>verde</b> si el fondo cubre el plan hasta el final, <b>roja</b> si se queda corto. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
+      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b>: <b>verde</b> si el fondo paga toda la educación y termina sin deuda (saldo ≥ $0), <b>roja</b> si termina en déficit. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
     </div>
   </div>
 
@@ -633,7 +633,7 @@ function runMC(p) {
   }
   var lp = lognormParams(p.inflacion, p.inflVol);
   var n = p.nSims;
-  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0, caminos = [], retsTodos = [], oks = [];
+  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0, caminos = [], retsTodos = [];
   for (var a = 0; a < horizonte; a++) porAnio.push([]);
   // aportes anuales (fijos: idénticos en todas las simulaciones)
   var aporteAnual = [];
@@ -656,7 +656,7 @@ function runMC(p) {
   for (var s = 0; s < n; s++) {
     var mu = p.rentabilidad;
     var saldo = p.montoInicial;
-    var acumInfl = 1, totalCosto = 0, ok = true, caminoSim = [], retsSim = [];
+    var acumInfl = 1, totalCosto = 0, caminoSim = [], retsSim = [];
     for (var per = 1; per <= horizonte; per++) {
       var anio = p.anioInicio + per - 1;
       var edad = p.edad + per - 1;
@@ -680,15 +680,13 @@ function runMC(p) {
       costoSum[per - 1] += costo;
       porAnio[per - 1].push(saldo);
       caminoSim.push(saldo);
-      if (saldo < 0) ok = false;
       acumInfl *= (1 + inflAnual);
     }
     caminos.push(caminoSim);
     retsTodos.push(retsSim);
     saldosFin.push(saldo);
-    oks.push(ok);
     costosFin.push(totalCosto);
-    if (ok) exitos++;
+    if (saldo >= 0) exitos++; // cubre el plan = paga todo y termina sin deuda
   }
   // ── solver: capital extra al inicio de la universidad para cubrir el 100% ──
   // el peor camino (saldo final mínimo) define el caso extremo; el modelo es lineal en
@@ -713,7 +711,7 @@ function runMC(p) {
   var paths = [];
   for (var k = 0; k < n; k += stepP) {
     var si = idxSorted[k];
-    paths.push({ pts: caminos[si], final: saldosFin[si], ok: oks[si] });
+    paths.push({ pts: caminos[si], final: saldosFin[si], ok: saldosFin[si] >= 0 });
   }
   var mean = 0;
   saldosFin.forEach(function (v) { mean += v; });
@@ -938,11 +936,11 @@ $('runBtn').addEventListener('click', function () {
     v = '<b>Con 95% de confianza el fondo cubre el plan.</b> El saldo al terminar la universidad (año ' +
         mc.anioFinal + ', edad ' + mc.edadFinal + ') será ≥ <span class="ok">' +
         money(mc.p5) + '</span> (P5), con una media de <b>' + money(mc.mean) + '</b> y mediana de ' + money(mc.p50) +
-        '. El fondo nunca se agota en el <b>' + (mc.pSucc * 100).toFixed(1) + '%</b> de los ' +
+        '. El fondo paga todo y termina sin deuda en el <b>' + (mc.pSucc * 100).toFixed(1) + '%</b> de los ' +
         r.p.nSims.toLocaleString('en-US') + ' escenarios simulados.';
   } else {
     v = '<b>El plan no es seguro.</b> En el peor 5% de escenarios el fondo se agota (P5 = <span style="color:var(--accent)">' +
-        money(mc.p5) + '</span>); en promedio termina con <b>' + money(mc.mean) + '</b> y solo cubre el plan en el <b>' +
+        money(mc.p5) + '</span>); en promedio termina con <b>' + money(mc.mean) + '</b> y solo termina sin deuda en el <b>' +
         (mc.pSucc * 100).toFixed(1) + '%</b> de los escenarios. Para una confianza del 95%, sube los aportes mensuales o el monto inicial hasta que el P5 sea ≥ $0.';
   }
   $('verdict').innerHTML = v;
