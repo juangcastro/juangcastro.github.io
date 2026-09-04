@@ -480,7 +480,7 @@
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b> completo y su color es el de su <b>resultado final</b>: <b>verde</b> si el fondo paga toda la educación y termina sin deuda (saldo ≥ $0), <b>roja</b> si termina en déficit al final de los pagos. Todos los caminos suben juntos mientras ahorras; al final de la universidad el abanico se abre: los verdes cruzan el final por encima de $0 y los rojos por debajo. La gráfica corre hasta <b>1 año después</b> de terminados los estudios (el fondo sigue rindiendo, sin pagos). El KPI <b>P(termina sin deuda)</b> = fracción de caminos verdes. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
+      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b> completo y su color es el de su <b>resultado final</b>: <b>verde</b> si el fondo paga toda la educación y termina sin deuda (saldo ≥ $0), <b>roja</b> si termina en déficit al final de los pagos. Todos los caminos suben juntos mientras ahorras; al final de la universidad el abanico se abre: los verdes cruzan el final por encima de $0 y los rojos por debajo. Las barras rojas muestran el costo anual típico (media de las corridas) y su línea blanca con topes, el rango mínimo–máximo que ese costo puede tomar según la inflación de cada corrida. La gráfica corre hasta <b>1 año después</b> de terminados los estudios (el fondo sigue rindiendo, sin pagos). El KPI <b>P(termina sin deuda)</b> = fracción de caminos verdes. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
     </div>
   </div>
 
@@ -647,8 +647,8 @@ function runMC(p) {
   }
   var lp = lognormParams(p.inflacion, p.inflVol);
   var n = p.nSims;
-  var saldosFin = [], costosFin = [], porAnio = [], exitos = 0, caminos = [], retsTodos = [];
-  for (var a = 0; a < horizonte; a++) porAnio.push([]);
+  var saldosFin = [], costosFin = [], porAnio = [], costosPorAnio = [], exitos = 0, caminos = [], retsTodos = [];
+  for (var a = 0; a < horizonte; a++) { porAnio.push([]); costosPorAnio.push([]); }
   // aportes anuales (fijos: idénticos en todas las simulaciones)
   var aporteAnual = [];
   for (var pp = 1; pp <= horizonte; pp++) {
@@ -691,6 +691,7 @@ function runMC(p) {
       saldo -= costo;
       totalCosto += costo;
       costoSum[per - 1] += costo;
+      costosPorAnio[per - 1].push(costo);
       porAnio[per - 1].push(saldo);
       caminoSim.push(saldo);
       acumInfl *= (1 + inflAnual);
@@ -738,6 +739,9 @@ function runMC(p) {
     edadFinal: p.edad + horizonte - 1,
     aporteAnual: aporteAnual,
     costoAnual: costoSum.map(function (x) { return x / n; }),
+    costoRango: costosPorAnio.map(function (arr) {
+      return { min: Math.min.apply(null, arr), max: Math.max.apply(null, arr) };
+    }),
     fan: porAnio.map(function (arr) {
       return { p5: quantile(arr, .05), p50: quantile(arr, .50), p95: quantile(arr, .95), mean: arr.reduce(function (x, y) { return x + y; }, 0) / arr.length };
     })
@@ -776,10 +780,12 @@ function drawChart(mc, p) {
   var padRng = (hi - lo) * 0.08 || 1;
   lo -= padRng; hi += padRng;
 
-  // rango del flujo anual (aportes y costos)
+  // rango del flujo anual (aportes y costos); con el rango del costo (min–max por la
+  // inflación de cada corrida) la escala abarca hasta el costo máximo posible
   var hiF = -Infinity;
   for (var fi = 0; fi < n; fi++) {
-    hiF = Math.max(hiF, mc.aporteAnual[fi], mc.costoAnual[fi]);
+    hiF = Math.max(hiF, mc.aporteAnual[fi], mc.costoAnual[fi],
+      mc.costoRango ? mc.costoRango[fi].max : 0);
   }
   if (!(hiF > 0)) hiF = 1;
   hiF *= 1.08;
@@ -878,8 +884,22 @@ function drawChart(mc, p) {
       ctx.fillRect(xc - bw - 1, YF(mc.aporteAnual[bi]), bw, padT + ih - YF(mc.aporteAnual[bi]));
     }
     if (mc.costoAnual[bi] > 0) {
-      ctx.fillStyle = 'rgba(255,23,68,.9)';
+      // barra = costo típico (media de las corridas); más translúcida para que se lea el rango
+      ctx.fillStyle = 'rgba(255,23,68,.55)';
       ctx.fillRect(xc + 1, YF(mc.costoAnual[bi]), bw, padT + ih - YF(mc.costoAnual[bi]));
+      // rango mínimo–máximo del costo de ese año entre las corridas (por la inflación)
+      var cr = mc.costoRango ? mc.costoRango[bi] : null;
+      if (cr && cr.max > cr.min) {
+        var xr = xc + 1 + bw / 2;
+        var yMn = YF(cr.min), yMx = YF(cr.max);
+        ctx.strokeStyle = 'rgba(255,255,255,.9)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(xr, yMn); ctx.lineTo(xr, yMx); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(xr - 3, yMn); ctx.lineTo(xr + 3, yMn);
+        ctx.moveTo(xr - 3, yMx); ctx.lineTo(xr + 3, yMx);
+        ctx.stroke();
+      }
     }
   }
 
