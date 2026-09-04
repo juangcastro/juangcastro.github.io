@@ -813,7 +813,17 @@ function drawChart(mc, p) {
   // así las barras del primer y último año quedan completas dentro del área
   var X = function (i) { return padL + ((i + 0.5) / n) * iw; };
   var Y = function (v) { return padT + ih - ((v - lo) / (hi - lo)) * ih; };
-  var YF = function (v) { return padT + ih - (v / hiF) * ih; };
+  // escala del flujo anual: las barras crecen desde el $0 real. Si el área muestra
+  // valores negativos (caminos que caen bajo cero), la base de las barras es la línea
+  // del $0 (no el fondo del área) para que nunca se dibujen en la zona negativa.
+  var baseFlujo;
+  if (lo < 0) {
+    baseFlujo = Y(0);
+    var YF = function (v) { return baseFlujo - (v / hiF) * (baseFlujo - padT); };
+  } else {
+    baseFlujo = padT + ih;
+    var YF = function (v) { return baseFlujo - (v / hiF) * ih; };
+  }
 
   ctx.clearRect(0, 0, W, H);
 
@@ -883,12 +893,12 @@ function drawChart(mc, p) {
     var xc = X(bi);
     if (mc.aporteAnual[bi] > 0) {
       ctx.fillStyle = 'rgba(0,230,118,.85)';
-      ctx.fillRect(xc - bw - 1, YF(mc.aporteAnual[bi]), bw, padT + ih - YF(mc.aporteAnual[bi]));
+      ctx.fillRect(xc - bw - 1, YF(mc.aporteAnual[bi]), bw, baseFlujo - YF(mc.aporteAnual[bi]));
     }
     if (mc.costoAnual[bi] > 0) {
       // barra = costo típico (media de las corridas); más translúcida para que se lea el rango
       ctx.fillStyle = 'rgba(255,23,68,.55)';
-      ctx.fillRect(xc + 1, YF(mc.costoAnual[bi]), bw, padT + ih - YF(mc.costoAnual[bi]));
+      ctx.fillRect(xc + 1, YF(mc.costoAnual[bi]), bw, baseFlujo - YF(mc.costoAnual[bi]));
       // rango mínimo–máximo del costo de ese año entre las corridas (por la inflación)
       var cr = mc.costoRango ? mc.costoRango[bi] : null;
       if (cr && cr.max > cr.min) {
