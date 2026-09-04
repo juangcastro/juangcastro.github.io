@@ -464,8 +464,8 @@
       <div class="cap">Proyección del fondo vs. costos de estudio · <span class="red">ajustado a la inflación</span></div>
       <canvas id="chart" width="900" height="380"></canvas>
       <div class="legend-row">
-        <span><i class="lg" style="background:#34d399"></i> Fondo con saldo ≥ $0 (cubre sus costos)</span>
-        <span><i class="lg" style="background:#ff3b5c"></i> Fondo agotado ese año (saldo &lt; $0)</span>
+        <span><i class="lg" style="background:#34d399"></i> Camino que termina sin deuda (saldo ≥ $0)</span>
+        <span><i class="lg" style="background:#ff3b5c"></i> Camino que termina en déficit</span>
         <span><i class="lg" style="background:#00e676;height:5px;border-radius:1px"></i> Entradas (inicial + aportes)</span>
         <span><i class="lg" style="background:#ff1744;height:5px;border-radius:1px"></i> Retiros (costos de estudio)</span>
         <span><i class="lg" style="background:#e8eaf6;border-radius:0"></i> Media anual</span>
@@ -475,7 +475,7 @@
     </div>
 
     <div class="note">
-      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b> y su color es un semáforo del saldo año a año: <b>verde</b> mientras el fondo tiene plata (≥ $0) y <b>rojo</b> en los años en que se agota. Todos los caminos suben juntos mientras ahorras; el abanico que se abre al final de la universidad muestra los que caen a déficit. El KPI <b>P(termina sin deuda)</b> cuenta los caminos que llegan a 2040 sin haberse puesto rojos nunca. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
+      <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b> completo y su color es el de su <b>resultado final</b>: <b>verde</b> si el fondo paga toda la educación y termina sin deuda (saldo ≥ $0), <b>roja</b> si termina en déficit al final de los pagos. Todos los caminos suben juntos mientras ahorras; al final de la universidad el abanico se abre: los verdes cruzan el final por encima de $0 y los rojos por debajo. El KPI <b>P(termina sin deuda)</b> = fracción de caminos verdes. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
     </div>
   </div>
 
@@ -827,24 +827,19 @@ function drawChart(mc, p) {
 
 
   // ── mariposa: caminos individuales del Monte-Carlo ──
-  // el color indica el ESTADO del saldo en cada tramo: verde mientras el fondo tiene
-  // plata (≥ $0), rojo en los años en que se agotó (< $0). Un camino que cae a déficit
-  // solo se pinta rojo desde el año en que cruza, no desde el principio.
-  mc.paths.forEach(function (pa) {
+  // color POR RESULTADO FINAL: el trazo completo es verde si el camino termina la
+  // educación con saldo ≥ $0 (pagó todo) y rojo si termina en déficit (< $0).
+  // se dibujan primero los que terminan en déficit y encima los que terminan sin deuda,
+  // para que los trazos verdes queden visibles sobre los cruces de los rojos
+  var ordenPaths = mc.paths.slice().sort(function (a, b) { return (a.final >= 0 ? 1 : 0) - (b.final >= 0 ? 1 : 0); });
+  ordenPaths.forEach(function (pa) {
+    ctx.strokeStyle = pa.final >= 0 ? 'rgba(52,211,153,.36)' : 'rgba(255,59,92,.32)';
     ctx.lineWidth = 0.9;
-    var colActual = null;
     ctx.beginPath();
-    for (var t = 1; t < pa.pts.length; t++) {
-      var col = pa.pts[t] >= 0 ? 'rgba(52,211,153,.32)' : 'rgba(255,59,92,.34)';
-      if (col !== colActual) {
-        ctx.stroke();
-        ctx.beginPath();
-        colActual = col;
-        ctx.strokeStyle = col;
-        ctx.moveTo(X(t - 1), Y(pa.pts[t - 1]));
-      }
-      ctx.lineTo(X(t), Y(pa.pts[t]));
-    }
+    pa.pts.forEach(function (vv, t) {
+      var pxx = X(t), pyy = Y(vv);
+      t === 0 ? ctx.moveTo(pxx, pyy) : ctx.lineTo(pxx, pyy);
+    });
     ctx.stroke();
   });
   // bordes P5 y P95 punteados (referencia de la confianza 95%)
@@ -894,7 +889,7 @@ function drawChart(mc, p) {
 
   // línea de referencia en $0 (solo si el contenido la cruza)
   if (lo < 0 && hi > 0) {
-    ctx.strokeStyle = 'rgba(255,255,255,.22)';
+    ctx.strokeStyle = 'rgba(255,255,255,.38)';
     ctx.setLineDash([3, 5]);
     ctx.beginPath(); ctx.moveTo(padL, Y(0)); ctx.lineTo(padL + iw, Y(0)); ctx.stroke();
     ctx.setLineDash([]);
