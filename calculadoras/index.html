@@ -99,9 +99,18 @@
   .masthead p b { color: var(--text); }
 
   .grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 18px;
   }
+  .sec {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--accent);
+  }
+  .sec::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .sec-later { margin-top: 40px; }
   .card {
     position: relative;
     display: flex; flex-direction: column; gap: 12px;
@@ -231,6 +240,19 @@
       <span class="tag">PROP FIRM</span>
       <h2>Prop Firm Analyzer <span class="badge">Nuevo</span></h2>
       <p>¿Tu edge pasa la evaluación? Monte-Carlo y Kelly para encontrar el riesgo que maximiza tu probabilidad de llegar al objetivo antes del drawdown.</p>
+      <span class="go">Abrir calculadora</span>
+    </a>
+
+  </div>
+
+  <div class="grid" style="margin-top:44px">
+
+    <div class="sec"><span>// Para la vida</span></div>
+
+    <a class="card" href="fondo-educativo.html">
+      <span class="tag">EDUCACIÓN</span>
+      <h2>Fondo Educativo <span class="badge">Nuevo</span></h2>
+      <p>Proyecta cuánto necesitas aportar para tener cubierta la universidad de tu hijo: 2.000 escenarios Monte-Carlo con inflación, rentabilidad de mercado y la probabilidad real de que el fondo pague todo.</p>
       <span class="go">Abrir calculadora</span>
     </a>
 
