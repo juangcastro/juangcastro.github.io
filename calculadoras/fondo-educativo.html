@@ -224,6 +224,16 @@
     letter-spacing: .2em; color: var(--accent);
   }
   .cta-row { margin-top: 22px; }
+.pdf-row { margin-top: 18px; display: flex; justify-content: flex-end; }
+.btn-pdf {
+  padding: 11px 22px; border-radius: 12px; cursor: pointer;
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: .08em;
+  transition: border-color .15s ease, color .15s ease;
+}
+.btn-pdf:hover { border-color: var(--accent); color: var(--accent); }
+.btn-pdf:disabled { opacity: .5; cursor: wait; }
   .cta-row .run { margin-top: 0; }
   .err {
     margin-top: 14px; border: 1px solid rgba(255,59,92,.5); border-radius: 10px;
@@ -465,6 +475,10 @@
       <div id="solverText"></div>
     </div>
 
+    <div class="pdf-row">
+      <button class="btn-pdf" id="pdfBtn" onclick="exportPDF()">⬇ Exportar PDF</button>
+    </div>
+
     <div class="chart-box">
       <div class="cap">Proyección del fondo vs. costos de estudio · <span class="red">ajustado a la inflación · +1 año tras los estudios</span></div>
       <canvas id="chart" width="900" height="380"></canvas>
@@ -588,8 +602,8 @@ function addAp(monto, desde, meses) {
   $('apList').appendChild(apRow(monto || 1000, desde || +$('anioInicio').value || 2026, meses || 12));
 }
 $('addAp').addEventListener('click', function () { addAp(); });
-// fila default
-addAp(1000, 2026, 12);
+// fila default: el primer aporte arranca el año siguiente al año en curso
+addAp(1000, new Date().getFullYear() + 1, 12);
 
 // ── modelo ──
 // el año de inicio carga el año en curso al abrir la página
@@ -1090,6 +1104,242 @@ function drawHist(mc, p) {
   ctx.setLineDash([]);
   ctx.fillStyle = 'rgba(232,234,246,.85)';
   ctx.fillText('mediana ' + fmtK(mc.p50), Math.max(padL + 4, Math.min(xM + 6, padL + plotW - 110)), padT + 23);
+}
+
+// ── exportar resultados a PDF (jsPDF vía CDN) ──
+function loadJsPdf() {
+  return new Promise(function (resolve, reject) {
+    if (window.jspdf && window.jspdf.jsPDF) return resolve();
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload = resolve;
+    s.onerror = function () { s.remove(); reject(new Error('cdn')); };
+    document.head.appendChild(s);
+  });
+}
+function exportPDF() {
+  var btn = $('pdfBtn');
+  btn.disabled = true;
+  btn.textContent = 'Generando PDF…';
+  loadJsPdf().then(function () {
+    try { buildPdf(); }
+    catch (e) { console.error('PDF', e); }
+    btn.disabled = false;
+    btn.textContent = '⬇ Exportar PDF';
+  }).catch(function () {
+    btn.disabled = false;
+    btn.textContent = '⬇ Exportar PDF';
+    alert('No se pudo cargar la librería de PDF. Revisa tu conexión a internet e inténtalo de nuevo.');
+  });
+}
+function buildPdf() {
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
+  var PW = doc.internal.pageSize.getWidth(), PH = doc.internal.pageSize.getHeight();
+  var M = 44, y = 0, page = 1;
+  var C = { bg: [7, 10, 20], card: [14, 17, 34], card2: [21, 25, 50], border: [35, 40, 69],
+    text: [232, 236, 255], muted: [139, 146, 184], red: [255, 59, 92], green: [52, 211, 153],
+    gold: [245, 182, 76], out: [255, 23, 68], amber: [251, 191, 36], violet: [167, 139, 250] };
+  function sanitize(t) {
+    return String(t).replace(/≥/g, '>=').replace(/≤/g, '<=').replace(/·/g, '-').replace(/—/g, '-')
+      .replace(/–/g, '-').replace(/±/g, '+/-').replace(/◈/g, '').replace(/\u2193/g, '');
+  }
+  function newPage() {
+    doc.addPage();
+    page++;
+    y = 0;
+    paintBg();
+  }
+  function paintBg() {
+    doc.setFillColor(C.bg[0], C.bg[1], C.bg[2]);
+    doc.rect(0, 0, PW, PH, 'F');
+  }
+  function ensure(h) { if (y + h > PH - 70) newPage(); }
+  function secTitle(txt) {
+    ensure(30);
+    y += 10;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5);
+    doc.setTextColor(C.red[0], C.red[1], C.red[2]);
+    doc.text(txt.toUpperCase(), M, y);
+    doc.setDrawColor(C.border[0], C.border[1], C.border[2]);
+    doc.setLineWidth(0.7);
+    doc.line(M, y + 5, PW - M, y + 5);
+    y += 16;
+  }
+  function labelValue(l, v) {
+    ensure(15);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+    doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
+    doc.text(sanitize(l), M, y);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5);
+    doc.setTextColor(C.text[0], C.text[1], C.text[2]);
+    var vw = doc.getTextWidth(sanitize(v));
+    doc.text(sanitize(v), PW - M - vw, y);
+    y += 14;
+  }
+  paintBg();
+  // ── header ──
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(16);
+  doc.setTextColor(C.text[0], C.text[1], C.text[2]);
+  doc.text('THE RED QUEEN', M, 46);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8);
+  doc.setTextColor(C.red[0], C.red[1], C.red[2]);
+  doc.text('CHECKMATE THE SYSTEM', M, 58);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
+  doc.setTextColor(C.text[0], C.text[1], C.text[2]);
+  doc.text('FONDO EDUCATIVO — PROYECCIÓN', PW / 2, 52, { align: 'center' });
+  var hoy = new Date();
+  var fecha = hoy.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+  doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
+  doc.text(sanitize(fecha), PW - M, 46, { align: 'right' });
+  doc.setDrawColor(C.red[0], C.red[1], C.red[2]);
+  doc.setLineWidth(1.1);
+  doc.line(M, 68, PW - M, 68);
+  y = 88;
+
+  var rp = readParams().p;
+  // ── plan ──
+  secTitle('El plan');
+  labelValue('Estudiante', rp.nombre);
+  labelValue('Edad actual / año de análisis', rp.edad + ' años · ' + rp.anioInicio);
+  labelValue('Universidad', 'desde ' + rp.univInicio + ' · ' + rp.univDur + ' años · $' + Number(rp.univCosto).toLocaleString('en-US') + ' semestre ×' + rp.univPeriodos);
+  var colTxt = colIncl ? 'desde ' + rp.colInicio + ' · ' + rp.colDur + ' años · $' + Number(rp.colMensual).toLocaleString('en-US') + ' mensual ×' + rp.colMeses : 'no incluido';
+  labelValue('Colegio', colTxt);
+  var kinTxt = kinIncl ? 'desde ' + rp.kinInicio + ' · ' + rp.kinDur + ' años · $' + Number(rp.kinMensual).toLocaleString('en-US') + ' mensual ×' + rp.kinMeses : 'no incluido';
+  labelValue('Kínder', kinTxt);
+  labelValue('Monto inicial', '$' + Number(rp.montoInicial).toLocaleString('en-US'));
+  var apTxt = rp.aportes.length ? rp.aportes.map(function (a) {
+    return '$' + Number(a.monto).toLocaleString('en-US') + '/mes desde ' + a.desde + ' (' + a.meses + ' meses)';
+  }).join('  +  ') : 'sin aportes programados';
+  labelValue('Aportes mensuales', apTxt);
+  labelValue('Rentabilidad del fondo', (rp.rentabilidad * 100) + '% EA ± ' + (rp.volFondo * 100) + '% (S&P 500)');
+  labelValue('Inflación esperada', (rp.inflacion * 100) + '% ± ' + (rp.inflVol * 100) + ' pp');
+  labelValue('Simulaciones Monte-Carlo', rp.nSims.toLocaleString('en-US') + ' universos · horizonte hasta 1 año después de los estudios');
+
+  // ── veredicto ──
+  secTitle('Conclusión');
+  var vText = sanitize($('verdict').textContent).trim();
+  var vLines = doc.splitTextToSize(vText, PW - 2 * M - 26);
+  var vh = Math.min(86, vLines.length * 11 + 20);
+  ensure(vh + 12);
+  doc.setFillColor(C.card[0], C.card[1], C.card[2]);
+  doc.roundedRect(M, y, PW - 2 * M, vh, 6, 6, 'F');
+  doc.setDrawColor(C.border[0], C.border[1], C.border[2]);
+  doc.setLineWidth(0.7);
+  doc.roundedRect(M, y, PW - 2 * M, vh, 6, 6, 'S');
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+  doc.setTextColor(C.text[0], C.text[1], C.text[2]);
+  doc.text(vLines, M + 13, y + 15);
+  y += vh + 8;
+
+  // ── KPIs ──
+  secTitle('Indicadores (saldo final del fondo)');
+  var kpis = [
+    { lab: $('kP5'), id: 'kP5' }, { lab: $('kP50'), id: 'kP50' }, { lab: $('kPSucc'), id: 'kPSucc' },
+    { lab: $('kInt50'), id: 'kInt50' }, { lab: $('kAportado'), id: 'kAportado' }, { lab: $('kCosto50'), id: 'kCosto50' }
+  ];
+  function kpiColor(el) {
+    var cn = el.className;
+    if (cn.indexOf('gold') >= 0) return C.gold;
+    if (cn.indexOf('out') >= 0) return C.out;
+    if (cn.indexOf('pos') >= 0) return C.green;
+    if (cn.indexOf('neg') >= 0) return C.red;
+    if (cn.indexOf('amber') >= 0) return C.amber;
+    return C.text;
+  }
+  var cw = (PW - 2 * M - 14) / 2, chh = 52;
+  kpis.forEach(function (k, ix) {
+    var colIx = ix % 2, rowIx = Math.floor(ix / 2);
+    if (y + chh > PH - 70) newPage();
+    var x = M + colIx * (cw + 14);
+    doc.setFillColor(C.card[0], C.card[1], C.card[2]);
+    doc.roundedRect(x, y, cw, chh, 6, 6, 'F');
+    doc.setDrawColor(C.border[0], C.border[1], C.border[2]);
+    doc.setLineWidth(0.6);
+    doc.roundedRect(x, y, cw, chh, 6, 6, 'S');
+    var card = k.lab.parentNode; // el contenedor .kpi (k.lab es el .val con el id)
+    var lab = sanitize(card.querySelector('.lab').textContent);
+    var val = sanitize(k.lab.textContent);
+    var sub = sanitize(card.querySelector('.sub').textContent);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7.2);
+    doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
+    var labLines = doc.splitTextToSize(lab, cw - 16);
+    doc.text(labLines.slice(0, 2), x + 10, y + 13);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(13);
+    var kc = kpiColor(k.lab);
+    doc.setTextColor(kc[0], kc[1], kc[2]);
+    doc.text(val, x + 10, y + 32);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(6.4);
+    doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
+    var subLines = doc.splitTextToSize(sub, cw - 16);
+    doc.text(subLines.slice(0, 2), x + 10, y + 44);
+    if (ix % 2 === 1) y += chh + 10;
+  });
+  if (kpis.length % 2 === 1) y += chh + 10;
+  y += 2;
+
+  // ── solver ──
+  if (!$('solverBox').hidden) {
+    secTitle('Solver — 95% de confianza');
+    var sText = sanitize($('solverText').textContent).trim();
+    ensure(50);
+    var sLines = doc.splitTextToSize(sText, PW - 2 * M - 26);
+    var sh = Math.min(80, sLines.length * 11 + 18);
+    doc.setFillColor(18, 15, 34);
+    doc.roundedRect(M, y, PW - 2 * M, sh, 6, 6, 'F');
+    doc.setDrawColor(C.violet[0], C.violet[1], C.violet[2]);
+    doc.setLineWidth(0.7);
+    doc.roundedRect(M, y, PW - 2 * M, sh, 6, 6, 'S');
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.6);
+    doc.setTextColor(C.text[0], C.text[1], C.text[2]);
+    doc.text(sLines, M + 13, y + 13);
+    y += sh + 4;
+  }
+
+  // ── gráficas ──
+  function addChart(cvId, caption) {
+    var cv = $(cvId);
+    if (!cv) return;
+    var dataUrl;
+    try { dataUrl = cv.toDataURL('image/png'); } catch (e) { return; }
+    var asp = cv.width / cv.height;
+    var iw2 = PW - 2 * M, ih2 = iw2 / asp;
+    if (ih2 > 300) { ih2 = 300; iw2 = ih2 * asp; }
+    newPage();
+    y += 6;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+    doc.setTextColor(C.text[0], C.text[1], C.text[2]);
+    doc.text(sanitize(caption), M, y);
+    y += 8;
+    doc.addImage(dataUrl, 'PNG', (PW - iw2) / 2, y, iw2, ih2);
+    y += ih2 + 6;
+  }
+  addChart('chart', 'Proyección del fondo vs. costos de estudio — mariposa de escenarios (verde: termina sin deuda)');
+  addChart('hist', 'Distribución del saldo final — 2.000 universos (verde: ≥ $0 · rojo: déficit)');
+
+  // ── disclaimer + links ──
+  newPage();
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.2);
+  doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
+  var disc = doc.splitTextToSize('Descargo de Responsabilidad: esta proyección es una simulación estadística con fines informativos y educativos de planificación. No constituye asesoría financiera ni garantía de resultados. Los retornos e inflaciones futuros son inciertos y pueden diferir de lo simulado.', PW - 2 * M);
+  doc.text(disc, M, 70);
+  y = 130;
+  secTitle('The Red Queen');
+  var links = [
+    ['theredqueen.co', 'https://theredqueen.co'],
+    ['Neuromancer — neuromancer-ai.app', 'https://neuromancer-ai.app/'],
+    ['BrAIn — theredqueen.co/brain.html', 'https://theredqueen.co/brain.html']
+  ];
+  links.forEach(function (lk) {
+    ensure(18);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+    doc.setTextColor(C.red[0], C.red[1], C.red[2]);
+    doc.textWithLink(lk[0], M, y, { url: lk[1] });
+    y += 18;
+  });
+
+  doc.save('fondo-educativo-proyeccion.pdf');
 }
 
 // ── disparador ──
