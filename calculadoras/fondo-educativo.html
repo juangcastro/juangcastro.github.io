@@ -224,16 +224,16 @@
     letter-spacing: .2em; color: var(--accent);
   }
   .cta-row { margin-top: 22px; }
-.pdf-row { margin-top: 18px; display: flex; justify-content: flex-end; }
+.pdf-row { margin-top: 22px; display: flex; justify-content: center; }
 .btn-pdf {
-  padding: 11px 22px; border-radius: 12px; cursor: pointer;
-  background: transparent; color: var(--text);
-  border: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: .08em;
-  transition: border-color .15s ease, color .15s ease;
+  padding: 15px 44px; border: none; border-radius: 12px; cursor: pointer;
+  background: var(--accent); color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; letter-spacing: .06em;
+  box-shadow: 0 10px 30px -12px rgba(255, 59, 92, .55);
+  transition: transform .15s ease, box-shadow .15s ease;
 }
-.btn-pdf:hover { border-color: var(--accent); color: var(--accent); }
-.btn-pdf:disabled { opacity: .5; cursor: wait; }
+.btn-pdf:hover { box-shadow: 0 14px 36px -12px rgba(255, 59, 92, .7); }
+.btn-pdf:disabled { opacity: .6; cursor: wait; }
 
 /* ── modal de email (gate del PDF) ── */
 .gate-overlay {
@@ -565,7 +565,7 @@
     </div>
 
     <div class="pdf-row">
-      <button class="btn-pdf" id="pdfBtn" onclick="openGate()">⬇ Exportar PDF</button>
+      <button class="btn-pdf" id="pdfBtn" onclick="openGate()">Exportar a PDF</button>
     </div>
   </div>
 
@@ -1257,10 +1257,10 @@ function exportPDF() {
     try { buildPdf(); }
     catch (e) { console.error('PDF', e); }
     btn.disabled = false;
-    btn.textContent = '⬇ Exportar PDF';
+    btn.textContent = 'Exportar a PDF';
   }).catch(function () {
     btn.disabled = false;
-    btn.textContent = '⬇ Exportar PDF';
+    btn.textContent = 'Exportar a PDF';
     alert('No se pudo cargar la librería de PDF. Revisa tu conexión a internet e inténtalo de nuevo.');
   });
 }
@@ -1268,17 +1268,31 @@ function buildPdf() {
   var jsPDF = window.jspdf.jsPDF;
   var doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
   var PW = doc.internal.pageSize.getWidth(), PH = doc.internal.pageSize.getHeight();
-  var M = 44, y = 0, page = 1;
-  var C = { bg: [7, 10, 20], card: [14, 17, 34], card2: [21, 25, 50], border: [35, 40, 69],
-    text: [232, 236, 255], muted: [139, 146, 184], red: [255, 59, 92], green: [52, 211, 153],
+  var M = 44, y = 0;
+  var C = { bg: [7, 10, 20], card: [14, 17, 34], cardLine: [42, 47, 94], text: [232, 236, 255],
+    muted: [139, 146, 184], red: [255, 59, 92], green: [52, 211, 153],
     gold: [245, 182, 76], out: [255, 23, 68], amber: [251, 191, 36], violet: [167, 139, 250] };
   function sanitize(t) {
-    return String(t).replace(/≥/g, '>=').replace(/≤/g, '<=').replace(/·/g, '-').replace(/—/g, '-')
-      .replace(/–/g, '-').replace(/±/g, '+/-').replace(/◈/g, '').replace(/\u2193/g, '');
+    return String(t).replace(/\u2265/g, '>=').replace(/\u2264/g, '<=').replace(/\u00b7/g, '-').replace(/\u2014/g, '-')
+      .replace(/\u2013/g, '-').replace(/\u00b1/g, '+/-').replace(/\u25c6/g, '').replace(/\u2193/g, '');
+  }
+  // ── composición opaca de un canvas: pinta el fondo oscuro y encima el contenido,
+  // para que el PDF no dependa de cómo el visor componga la transparencia del PNG ──
+  function canvasDataUrl(cvId) {
+    var cv = $(cvId);
+    if (!cv) return null;
+    try {
+      var tmp = document.createElement('canvas');
+      tmp.width = cv.width; tmp.height = cv.height;
+      var tctx = tmp.getContext('2d');
+      tctx.fillStyle = '#0a0d1c';
+      tctx.fillRect(0, 0, tmp.width, tmp.height);
+      tctx.drawImage(cv, 0, 0);
+      return tmp.toDataURL('image/png');
+    } catch (e) { return null; }
   }
   function newPage() {
     doc.addPage();
-    page++;
     y = 0;
     paintBg();
   }
@@ -1286,28 +1300,35 @@ function buildPdf() {
     doc.setFillColor(C.bg[0], C.bg[1], C.bg[2]);
     doc.rect(0, 0, PW, PH, 'F');
   }
-  function ensure(h) { if (y + h > PH - 70) newPage(); }
+  function ensure(h) { if (y + h > PH - 64) newPage(); }
   function secTitle(txt) {
-    ensure(30);
-    y += 10;
+    ensure(32);
+    y += 12;
     doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5);
     doc.setTextColor(C.red[0], C.red[1], C.red[2]);
     doc.text(txt.toUpperCase(), M, y);
-    doc.setDrawColor(C.border[0], C.border[1], C.border[2]);
+    doc.setDrawColor(C.cardLine[0], C.cardLine[1], C.cardLine[2]);
     doc.setLineWidth(0.7);
     doc.line(M, y + 5, PW - M, y + 5);
-    y += 16;
+    y += 17;
   }
+  // fila label → valor alineado a la derecha, con quiebre si el valor no cabe
   function labelValue(l, v) {
-    ensure(15);
+    var xv = M + 200;              // columna del valor
+    var avail = PW - M - 6 - xv;   // ancho disponible para el valor
+    ensure(30);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
     doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
-    doc.text(sanitize(l), M, y);
+    var ll = doc.splitTextToSize(sanitize(l), 190);
+    doc.text(ll.slice(0, 2), M, y);
     doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5);
     doc.setTextColor(C.text[0], C.text[1], C.text[2]);
-    var vw = doc.getTextWidth(sanitize(v));
-    doc.text(sanitize(v), PW - M - vw, y);
-    y += 14;
+    var vv = sanitize(v);
+    var vLines = doc.splitTextToSize(vv, avail);
+    var n = Math.min(vLines.length, 3);
+    doc.text(vLines.slice(0, n), xv, y, { align: 'left' });
+    var linesH = Math.max(ll.slice(0, 2).length, n) * 11.4;
+    y += Math.max(13, linesH + 2);
   }
   paintBg();
   // ── header ──
@@ -1319,7 +1340,7 @@ function buildPdf() {
   doc.text('CHECKMATE THE SYSTEM', M, 58);
   doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
   doc.setTextColor(C.text[0], C.text[1], C.text[2]);
-  doc.text('FONDO EDUCATIVO — PROYECCIÓN', PW / 2, 52, { align: 'center' });
+  doc.text('FONDO EDUCATIVO \u2014 PROYECCI\u00d3N', PW / 2, 52, { align: 'center' });
   var hoy = new Date();
   var fecha = hoy.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
   doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
@@ -1328,48 +1349,49 @@ function buildPdf() {
   doc.setDrawColor(C.red[0], C.red[1], C.red[2]);
   doc.setLineWidth(1.1);
   doc.line(M, 68, PW - M, 68);
-  y = 88;
+  y = 90;
 
   var rp = readParams().p;
   // ── plan ──
   secTitle('El plan');
   labelValue('Estudiante', rp.nombre);
-  labelValue('Edad actual / año de análisis', rp.edad + ' años · ' + rp.anioInicio);
-  labelValue('Universidad', 'desde ' + rp.univInicio + ' · ' + rp.univDur + ' años · $' + Number(rp.univCosto).toLocaleString('en-US') + ' semestre ×' + rp.univPeriodos);
-  var colTxt = colIncl ? 'desde ' + rp.colInicio + ' · ' + rp.colDur + ' años · $' + Number(rp.colMensual).toLocaleString('en-US') + ' mensual ×' + rp.colMeses : 'no incluido';
+  labelValue('Edad actual / a\u00f1o de an\u00e1lisis', rp.edad + ' a\u00f1os \u00b7 ' + rp.anioInicio);
+  labelValue('Universidad', 'desde ' + rp.univInicio + ' \u00b7 ' + rp.univDur + ' a\u00f1os \u00b7 $' + Number(rp.univCosto).toLocaleString('en-US') + ' semestre \u00d7' + rp.univPeriodos);
+  var colTxt = colIncl ? 'desde ' + rp.colInicio + ' \u00b7 ' + rp.colDur + ' a\u00f1os \u00b7 $' + Number(rp.colMensual).toLocaleString('en-US') + ' mensual \u00d7' + rp.colMeses : 'no incluido';
   labelValue('Colegio', colTxt);
-  var kinTxt = kinIncl ? 'desde ' + rp.kinInicio + ' · ' + rp.kinDur + ' años · $' + Number(rp.kinMensual).toLocaleString('en-US') + ' mensual ×' + rp.kinMeses : 'no incluido';
-  labelValue('Kínder', kinTxt);
+  var kinTxt = kinIncl ? 'desde ' + rp.kinInicio + ' \u00b7 ' + rp.kinDur + ' a\u00f1os \u00b7 $' + Number(rp.kinMensual).toLocaleString('en-US') + ' mensual \u00d7' + rp.kinMeses : 'no incluido';
+  labelValue('K\u00ednder', kinTxt);
   labelValue('Monto inicial', '$' + Number(rp.montoInicial).toLocaleString('en-US'));
   var apTxt = rp.aportes.length ? rp.aportes.map(function (a) {
     return '$' + Number(a.monto).toLocaleString('en-US') + '/mes desde ' + a.desde + ' (' + a.meses + ' meses)';
   }).join('  +  ') : 'sin aportes programados';
   labelValue('Aportes mensuales', apTxt);
-  labelValue('Rentabilidad del fondo', (rp.rentabilidad * 100) + '% EA ± ' + (rp.volFondo * 100) + '% (S&P 500)');
-  labelValue('Inflación esperada', (rp.inflacion * 100) + '% ± ' + (rp.inflVol * 100) + ' pp');
-  labelValue('Simulaciones Monte-Carlo', rp.nSims.toLocaleString('en-US') + ' universos · horizonte hasta 1 año después de los estudios');
+  labelValue('Rentabilidad del fondo', (rp.rentabilidad * 100) + '% EA \u00b1 ' + (rp.volFondo * 100) + '%');
+  labelValue('Inflaci\u00f3n esperada', (rp.inflacion * 100) + '% \u00b1 ' + (rp.inflVol * 100) + ' pp');
+  labelValue('Simulaciones Monte-Carlo', rp.nSims.toLocaleString('en-US') + ' universos');
 
   // ── veredicto ──
-  secTitle('Conclusión');
+  secTitle('Conclusi\u00f3n');
   var vText = sanitize($('verdict').textContent).trim();
   var vLines = doc.splitTextToSize(vText, PW - 2 * M - 26);
-  var vh = Math.min(86, vLines.length * 11 + 20);
-  ensure(vh + 12);
+  var lead = 10.9;
+  var vh = vLines.length * lead + 20;
+  ensure(vh + 14);
   doc.setFillColor(C.card[0], C.card[1], C.card[2]);
   doc.roundedRect(M, y, PW - 2 * M, vh, 6, 6, 'F');
-  doc.setDrawColor(C.border[0], C.border[1], C.border[2]);
-  doc.setLineWidth(0.7);
+  doc.setDrawColor(C.cardLine[0], C.cardLine[1], C.cardLine[2]);
+  doc.setLineWidth(0.8);
   doc.roundedRect(M, y, PW - 2 * M, vh, 6, 6, 'S');
   doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
   doc.setTextColor(C.text[0], C.text[1], C.text[2]);
-  doc.text(vLines, M + 13, y + 15);
-  y += vh + 8;
+  doc.text(vLines, M + 13, y + 15, { lineHeightFactor: lead / 9 });
+  y += vh + 10;
 
-  // ── KPIs ──
+  // ── KPIs: tarjetas con alto dinámico según el texto real ──
   secTitle('Indicadores (saldo final del fondo)');
   var kpis = [
-    { lab: $('kP5'), id: 'kP5' }, { lab: $('kP50'), id: 'kP50' }, { lab: $('kPSucc'), id: 'kPSucc' },
-    { lab: $('kInt50'), id: 'kInt50' }, { lab: $('kAportado'), id: 'kAportado' }, { lab: $('kCosto50'), id: 'kCosto50' }
+    { el: $('kP5') }, { el: $('kP50') }, { el: $('kPSucc') }, { el: $('kInt50') },
+    { el: $('kAportado') }, { el: $('kCosto50') }
   ];
   function kpiColor(el) {
     var cn = el.className;
@@ -1380,95 +1402,95 @@ function buildPdf() {
     if (cn.indexOf('amber') >= 0) return C.amber;
     return C.text;
   }
-  var cw = (PW - 2 * M - 14) / 2, chh = 52;
-  kpis.forEach(function (k, ix) {
-    var colIx = ix % 2, rowIx = Math.floor(ix / 2);
-    if (y + chh > PH - 70) newPage();
-    var x = M + colIx * (cw + 14);
-    doc.setFillColor(C.card[0], C.card[1], C.card[2]);
-    doc.roundedRect(x, y, cw, chh, 6, 6, 'F');
-    doc.setDrawColor(C.border[0], C.border[1], C.border[2]);
-    doc.setLineWidth(0.6);
-    doc.roundedRect(x, y, cw, chh, 6, 6, 'S');
-    var card = k.lab.parentNode; // el contenedor .kpi (k.lab es el .val con el id)
-    var lab = sanitize(card.querySelector('.lab').textContent);
-    var val = sanitize(k.lab.textContent);
-    var sub = sanitize(card.querySelector('.sub').textContent);
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(7.2);
-    doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
-    var labLines = doc.splitTextToSize(lab, cw - 16);
-    doc.text(labLines.slice(0, 2), x + 10, y + 13);
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(13);
-    var kc = kpiColor(k.lab);
-    doc.setTextColor(kc[0], kc[1], kc[2]);
-    doc.text(val, x + 10, y + 32);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(6.4);
-    doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
-    var subLines = doc.splitTextToSize(sub, cw - 16);
-    doc.text(subLines.slice(0, 2), x + 10, y + 44);
-    if (ix % 2 === 1) y += chh + 10;
-  });
-  if (kpis.length % 2 === 1) y += chh + 10;
-  y += 2;
+  var cw = (PW - 2 * M - 16) / 2;
+  var rows = Math.ceil(kpis.length / 2);
+  var rowH = 66;
+  for (var rw = 0; rw < rows; rw++) {
+    ensure(rowH + 4);
+    for (var cIx = 0; cIx < 2; cIx++) {
+      var k = kpis[rw * 2 + cIx];
+      if (!k) continue;
+      var x = M + cIx * (cw + 16);
+      doc.setFillColor(C.card[0], C.card[1], C.card[2]);
+      doc.roundedRect(x, y, cw, rowH, 6, 6, 'F');
+      doc.setDrawColor(C.cardLine[0], C.cardLine[1], C.cardLine[2]);
+      doc.setLineWidth(0.8);
+      doc.roundedRect(x, y, cw, rowH, 6, 6, 'S');
+      var card = k.el.parentNode;
+      var lab = sanitize(card.querySelector('.lab').textContent);
+      var val = sanitize(k.el.textContent);
+      var sub = sanitize(card.querySelector('.sub').textContent);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7.2);
+      doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
+      doc.text(doc.splitTextToSize(lab, cw - 16).slice(0, 2), x + 11, y + 13, { lineHeightFactor: 1.25 });
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(13);
+      var kc = kpiColor(k.el);
+      doc.setTextColor(kc[0], kc[1], kc[2]);
+      doc.text(val, x + 11, y + 33);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(6.6);
+      doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
+      doc.text(doc.splitTextToSize(sub, cw - 16).slice(0, 2), x + 11, y + 45, { lineHeightFactor: 1.25 });
+    }
+    y += rowH + 10;
+  }
 
   // ── solver ──
   if (!$('solverBox').hidden) {
-    secTitle('Solver — 95% de confianza');
+    secTitle('Solver \u2014 95% de confianza');
     var sText = sanitize($('solverText').textContent).trim();
-    ensure(50);
     var sLines = doc.splitTextToSize(sText, PW - 2 * M - 26);
-    var sh = Math.min(80, sLines.length * 11 + 18);
+    var sh = sLines.length * 10.9 + 20;
+    ensure(sh + 14);
     doc.setFillColor(18, 15, 34);
     doc.roundedRect(M, y, PW - 2 * M, sh, 6, 6, 'F');
     doc.setDrawColor(C.violet[0], C.violet[1], C.violet[2]);
-    doc.setLineWidth(0.7);
+    doc.setLineWidth(0.8);
     doc.roundedRect(M, y, PW - 2 * M, sh, 6, 6, 'S');
     doc.setFont('helvetica', 'normal'); doc.setFontSize(8.6);
     doc.setTextColor(C.text[0], C.text[1], C.text[2]);
-    doc.text(sLines, M + 13, y + 13);
-    y += sh + 4;
+    doc.text(sLines, M + 13, y + 15, { lineHeightFactor: 10.9 / 8.6 });
+    y += sh + 8;
   }
 
-  // ── gráficas ──
+  // ── gráficas (una por página, composición opaca) ──
   function addChart(cvId, caption) {
+    var dataUrl = canvasDataUrl(cvId);
+    if (!dataUrl) return;
     var cv = $(cvId);
-    if (!cv) return;
-    var dataUrl;
-    try { dataUrl = cv.toDataURL('image/png'); } catch (e) { return; }
     var asp = cv.width / cv.height;
     var iw2 = PW - 2 * M, ih2 = iw2 / asp;
-    if (ih2 > 300) { ih2 = 300; iw2 = ih2 * asp; }
+    if (ih2 > 330) { ih2 = 330; iw2 = ih2 * asp; }
     newPage();
-    y += 6;
+    y += 10;
     doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
     doc.setTextColor(C.text[0], C.text[1], C.text[2]);
     doc.text(sanitize(caption), M, y);
-    y += 8;
+    y += 10;
     doc.addImage(dataUrl, 'PNG', (PW - iw2) / 2, y, iw2, ih2);
-    y += ih2 + 6;
+    y += ih2 + 8;
   }
-  addChart('chart', 'Proyección del fondo vs. costos de estudio — mariposa de escenarios (verde: termina sin deuda)');
-  addChart('hist', 'Distribución del saldo final — 2.000 universos (verde: ≥ $0 · rojo: déficit)');
+  addChart('chart', 'Proyecci\u00f3n del fondo vs. costos de estudio \u2014 mariposa de escenarios (verde: termina sin deuda)');
+  addChart('hist', 'Distribuci\u00f3n del saldo final \u2014 2.000 universos (verde: \u2265 $0 \u00b7 rojo: d\u00e9ficit)');
 
   // ── disclaimer + links ──
   newPage();
   doc.setFont('helvetica', 'normal'); doc.setFontSize(7.2);
   doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
-  var disc = doc.splitTextToSize('Descargo de Responsabilidad: esta proyección es una simulación estadística con fines informativos y educativos de planificación. No constituye asesoría financiera ni garantía de resultados. Los retornos e inflaciones futuros son inciertos y pueden diferir de lo simulado.', PW - 2 * M);
+  var disc = doc.splitTextToSize('Descargo de Responsabilidad: esta proyecci\u00f3n es una simulaci\u00f3n estad\u00edstica con fines informativos y de planificaci\u00f3n. No constituye asesor\u00eda financiera ni garant\u00eda de resultados. Los retornos e inflaciones futuros son inciertos y pueden diferir de lo simulado.', PW - 2 * M);
   doc.text(disc, M, 70);
-  y = 130;
+  y = 128;
   secTitle('The Red Queen');
   var links = [
     ['theredqueen.co', 'https://theredqueen.co'],
-    ['Neuromancer — neuromancer-ai.app', 'https://neuromancer-ai.app/'],
-    ['BrAIn — theredqueen.co/brain.html', 'https://theredqueen.co/brain.html']
+    ['Neuromancer \u2014 neuromancer-ai.app', 'https://neuromancer-ai.app/'],
+    ['BrAIn \u2014 theredqueen.co/brain.html', 'https://theredqueen.co/brain.html']
   ];
   links.forEach(function (lk) {
-    ensure(18);
+    ensure(20);
     doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
     doc.setTextColor(C.red[0], C.red[1], C.red[2]);
     doc.textWithLink(lk[0], M, y, { url: lk[1] });
-    y += 18;
+    y += 20;
   });
 
   doc.save('fondo-educativo-proyeccion.pdf');
