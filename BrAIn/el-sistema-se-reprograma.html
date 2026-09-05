@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ═══════════════════════════════════════════════════════════════
+     PLANTILLA CANÓNICA DE ARTÍCULO — BrAIn · The Red Queen
+     Sistema: ARCADE IVORY (blanco puro + pixel/ink + emerald SOLO status)
+     Cuerpo 14.5px · Inter · JetBrains Mono para datos/fórmulas
+     Copiar este archivo a BrAIn/<slug>.html y reemplazar los [PLACEHOLDER]
+     Mantener: nav, masthead, lede, h2 con .n, fig, blockquote, cierre, footer
+     ═══════════════════════════════════════════════════════════════ -->
+<title>[TÍTULO DEL ARTÍCULO] — BrAIn · The Red Queen</title>
+<meta name="description" content="[DESCRIPCIÓN 1-2 frases, sin humo ni hype]">
+<meta property="og:title" content="[TÍTULO DEL ARTÍCULO]">
+<meta property="og:description" content="[DESCRIPCIÓN]">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://theredqueen.co/BrAIn/[slug].html">
+<meta property="og:image" content="https://theredqueen.co/BrAIn/assets/[portada].png">
+<link rel="icon" type="image/x-icon" href="../assets/braIn-favicon.ico">
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/braIn-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Arcade Ivory: blanco puro + ink + emerald SOLO para status ── */
+  :root {
+    --bg: #FFFFFF;
+    --ink: #0A0A0A;
+    --muted: #666666;
+    --line: #E5E5E5;
+    --surface: #F5F5F5;
+    --accent: #10B981;          /* emerald — SOLO status/vivo */
+      --display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Roboto', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  .nm-link { color: #7C3AED; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+  .nm-link:hover { color: #5B21B6; }
+  img { display: block; max-width: 100%; }
+
+  /* ── nav (idéntico en todas las páginas TRQ) ── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 13px; letter-spacing: .28em; text-transform: uppercase; color: var(--ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links .active { color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+  @media (max-width: 560px) { .nav-links a:not(.active) { display: none; } }
+
+  /* ── masthead del artículo ── */
+  .masthead {
+    position: relative; overflow: hidden;
+    text-align: center; padding: 72px 24px 56px;
+  }
+  .masthead-inner {
+    max-width: 780px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .masthead .byline { align-self: flex-start; margin-left: 24px; }
+  .masthead::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background-image: radial-gradient(rgba(229, 229, 229, .55) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 80%);
+  }
+  .masthead .kicker {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    margin: 0 auto 28px;
+  }
+  .masthead .kicker .kicker-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .kicker img.kicker-logo { height: 32px; width: auto; }
+  .masthead .kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .18); }
+  .masthead h1 {
+    font-family: var(--display);
+    max-width: 860px; margin: 0 auto;
+    font-size: clamp(23px, 4.2vw, 38px);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.14;
+  }
+  .masthead .sub {
+    margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+  }
+  .masthead .sub b { color: var(--ink); font-weight: 700; }
+  .masthead .meta { margin-top: 20px; color: var(--muted); font-size: 12px; }
+  .masthead .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ── byline estilo Substack: avatar circular + fecha ── */
+  .byline {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 22px; align-self: flex-start; text-align: left;
+  }
+  .byline img {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1px solid var(--line); object-fit: cover;
+  }
+  .byline .b-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .byline .b-logo { height: 15px; width: auto; display: block; }
+  .byline .b-date {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .08em; color: var(--muted);
+  }
+  .byline .b-date::before { content: "·"; margin: 0 8px; color: #c8c8c8; }
+
+  /* ── cuerpo ── */
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+
+  .lede {
+    font-size: 16px; line-height: 1.7; color: #333;
+    border-left: 3px solid var(--line); padding-left: 22px; margin: 8px 0 40px;
+  }
+  .lede strong { color: var(--ink); }
+
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(18px, 2.8vw, 24px); font-weight: 800; letter-spacing: -.015em;
+    margin: 48px 0 12px; line-height: 1.25;
+  }
+  h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: .48em; font-weight: 500;
+    color: #b0b0b0; letter-spacing: .24em; text-transform: uppercase;
+    display: block; margin-bottom: 10px;
+  }
+  h3 { font-family: var(--display); font-size: 15px; font-weight: 700; margin: 24px 0 8px; }
+
+  p { margin: 0 0 16px; color: #222; font-size: 15.5px; }
+  p b, li b { color: var(--ink); font-weight: 700; }
+
+  ul { margin: 0 0 16px 4px; padding-left: 20px; }
+  li { margin-bottom: 7px; color: #222; font-size: 15.5px; }
+
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 2.2vw, 16px);
+    font-weight: 600; text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px 22px; margin: 24px 0;
+    color: var(--ink); letter-spacing: .01em;
+  }
+
+  blockquote {
+    margin: 22px 0; padding: 16px 22px;
+    border-left: 3px solid var(--ink);
+    background: var(--surface);
+    font-size: 15.5px; font-weight: 600; color: var(--ink);
+    line-height: 1.6; border-radius: 0 10px 10px 0;
+  }
+  blockquote.quote::before { content: "“"; color: #c8c8c8; font-size: 1.4em; font-weight: 800; margin-right: 2px; }
+
+  .fig { margin: 30px 0; }
+  .fig img {
+    width: 100%; height: auto;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(10, 10, 10, .10);
+  }
+  .fig figcaption {
+    margin-top: 10px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 22px 0 26px;
+    font-size: 13px;
+  }
+  th {
+    text-align: left; font-weight: 700; color: var(--ink);
+    border-bottom: 2px solid var(--ink); padding: 9px 12px;
+  }
+  td { border-bottom: 1px solid var(--line); padding: 9px 12px; color: #222; }
+  tr:last-child td { border-bottom: none; }
+
+  .divider { height: 1px; background: var(--line); margin: 44px 0; }
+
+  .outro {
+    margin-top: 44px;
+    font-size: 12px; color: var(--muted); line-height: 1.65;
+    border-top: 1px solid var(--line); padding-top: 20px;
+  }
+  .outro a { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--line); }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin-top: 36px; transition: color .15s ease;
+  }
+  .back:hover { color: var(--ink); }
+  .back::before { content: "←"; }
+
+  footer {
+    border-top: 1px solid var(--line); background: var(--bg);
+    padding: 28px 24px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  /* ── apoya BrAIn ── */
+  .support { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); text-align: center; }
+  .support-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .support-text { font-size: 14px; color: #444; max-width: 480px; margin: 0 auto 14px; line-height: 1.6; }
+  .support-amounts { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+  .sup-btn { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px 22px; background: #fff; text-decoration: none; transition: border-color .15s ease, background .15s ease, color .15s ease; }
+  .sup-btn:hover { border-color: var(--ink); background: var(--ink); color: #fff; }
+  .support-note { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--muted); margin: 0; }
+
+
+  /* ── workbook 017 ── */
+.howto { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px; margin: 30px 0 8px; }
+.howto h3 { font-size: 14px; font-weight: 800; margin-bottom: 10px; letter-spacing: .02em; color: var(--ink); }
+.howto ol { margin-left: 18px; font-size: 13.5px; line-height: 1.8; color: var(--ink); }
+.howto li { margin-bottom: 4px; color: var(--ink); }
+.q {
+    background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--ink);
+    border-radius: 10px; padding: 16px 20px; margin: 18px 0;
+    font-size: 15.5px; font-weight: 700; line-height: 1.5; color: var(--ink);
+  }
+.q span {
+    display: block; font-size: 10.5px; font-family: 'JetBrains Mono', monospace; font-weight: 400;
+    letter-spacing: .14em; text-transform: uppercase; color: #EA580C; margin-bottom: 6px;
+  }
+.write { border: 1.5px dashed var(--line); border-radius: 10px; padding: 14px 18px; margin: 12px 0 20px; }
+.write label { display: block; color: var(--muted); font-size: 12.5px; font-style: italic; margin-bottom: 10px; }
+.write b { color: var(--muted); font-style: normal; font-weight: 700; }
+.write textarea {
+    width: 100%; min-height: 96px; resize: vertical; border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; font-family: inherit; font-size: 15px; line-height: 1.6; color: var(--ink);
+    background: var(--bg); outline: none; transition: border-color .15s ease, box-shadow .15s ease;
+  }
+.write textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, .12); }
+.write textarea::placeholder { color: #b4bcc8; font-style: italic; }
+.actions {
+    position: sticky; bottom: 16px; z-index: 20; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    background: rgba(255, 255, 255, .94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; margin: 34px 0 8px;
+    box-shadow: 0 8px 30px rgba(10, 10, 10, .10);
+  }
+.actions button {
+    border: none; border-radius: 8px; padding: 11px 18px; font-family: inherit; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: transform .12s ease, box-shadow .12s ease;
+  }
+.actions button:active { transform: scale(.96); }
+.btn-pdf { background: var(--ink); color: #FFFFFF; }
+.btn-pdf:hover { box-shadow: 0 4px 14px rgba(26, 26, 26, .28); }
+.btn-mail { background: #E8F8EF; color: #0B7A4B; }
+.btn-mail:hover { box-shadow: 0 4px 14px rgba(16, 185, 129, .22); }
+.hint { width: 100%; text-align: center; font-size: 11.5px; color: #9AA3B2; font-family: 'JetBrains Mono', monospace; }
+.related { margin: 30px 0 8px; padding: 20px 24px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.related-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.related-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.related-list li { font-size: 14px; color: #222; margin: 0; }
+.related-list a { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--line); transition: text-decoration-color .15s ease; }
+.related-list a:hover { text-decoration-color: var(--ink); }
+.comp { background: var(--surface); border: 1.5px solid var(--ink); border-radius: 12px; padding: 22px 26px; margin: 26px 0 8px; }
+.comp .comp-head { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #EA580C; margin-bottom: 8px; font-weight: 700; }
+.comp p { margin: 6px 0; font-size: 15px; line-height: 1.65; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a class="active" href="../brain.html">BrAIn</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="kicker">
+    <img class="kicker-logo" src="../assets/brain-logo-only.png" alt="BrAIn">
+    <span class="kicker-num">ARTÍCULO 017</span>
+  </div>
+    <h1>EL SISTEMA SE REPROGRAMA</h1>
+    <div class="sub">NO ERES QUIEN CREES — ESTÁS PROGRAMADO PARA SERLO</div>
+    <div class="byline">
+      <img src="../assets/braIn-favicon.png" alt="BrAIn">
+      <span class="b-name">BrAIn</span><span class="b-date">14 DIC 2026</span>
+    </div>
+  </div>
+</header>
+
+
+<div class="wrap">
+<div class="lede">
+    En los años cincuenta, un cirujano plástico de Nueva York llamado Maxwell Maltz notó algo que no debería ser posible. Operaba narices, orejas y mandíbulas — y la vida de sus pacientes no cambiaba. Algunos salían de la cirugía con el rostro que siempre quisieron y seguían sintiéndose feos. Otros, con una corrección mínima, se transformaban por completo: conseguían el trabajo, la pareja, la confianza.
+  </div>
+  <p>La diferencia no estaba en la cara. Estaba en la imagen que cada uno llevaba de sí mismo — y esa imagen no se toca con bisturí.</p>
+  <p>Maltz convirtió esa observación en un libro, <b>Psycho-Cybernetics</b> (1960), que vendió decenas de millones de copias y se convirtió en la raíz de medio género de autoayuda. Lo que sigue no es un resumen del libro: es su mecánica, traducida a acciones.</p>
+
+  <div class="howto">
+    <h3>CÓMO USAR ESTE ARTÍCULO</h3>
+    <ol>
+      <li>Este artículo no se lee: se hace. Papel y lápiz (o las cajas de abajo, que guardan solas lo que escribes).</li>
+      <li>Una sección a la vez. No pases a la siguiente sin hacer la acción.</li>
+      <li>Cada sección es un concepto + una acción. El concepto te dice cómo funciona la máquina; la acción la reprograma.</li>
+      <li>El final pide un compromiso con fecha. Si no lo escribes, esto fue entretenimiento.</li>
+    </ol>
+  </div>
+
+  <h2><span class="n">SECCIÓN 01</span>El target: tu sistema ya tiene un objetivo</h2>
+  <p>Tu cerebro no es una computadora que piensa: es un sistema que persigue objetivos. Los cibernéticos de los años cuarenta — los que diseñaron los primeros misiles guiados — descubrieron la pieza clave: un misil no necesita saber dónde está el blanco. Necesita un target fijado y un mecanismo que corrija el rumbo cuando se desvía. Si se va a la izquierda, corrige a la derecha. Error tras error, llega solo.</p>
+  <p>Tu sistema nervioso funciona igual. Tiene un target — tu autoimagen — y corrige tu comportamiento automáticamente para que coincida con él. No juzga si el target es sano o destructivo: obedece. Si tu target dice "soy malo con el dinero", el sistema encontrará la manera de gastar de más, aunque estudies finanzas. Si dice "soy malo en público", el sistema te pondrá nervioso aunque practiques. No es sabotaje: es ejecución perfecta de una instrucción.</p>
+
+  <div class="q"><span>ACCIÓN 01</span>Escribe tu código dominante: las tres frases que te dices cuando algo importa de verdad. ("Soy malo para…", "Siempre me pasa que…", "La gente como yo no…"). Sin censura, lo primero que salga.</div>
+  <div class="write">
+    <label for="t1">Escribe aquí — tu código dominante actual:</label>
+    <textarea id="t1" rows="4" placeholder="Soy malo para… · Siempre me pasa que… · La gente como yo no…"></textarea>
+  </div>
+
+  <h2><span class="n">SECCIÓN 02</span>La hipnosis: quién instaló tu código</h2>
+  <p>No elegiste ese código. Te lo instalaron — y tú lo repetiste hasta grabarlo. Un padre que dijo "no sirves para esto". Un profesor que te comparó. Un grupo que te marcó. La repetición constante de una creencia actúa como una sugestión hipnótica: se acepta sin examen y se vuelve "tu verdad". Estás hipnotizado, literalmente: la voz que te dijo quién eres puede no haber sido tuya — pero la repetiste durante años hasta hacerla tuya.</p>
+  <p>La buena noticia: lo que se instala por sugestión se desinstala por examen. La hipnosis no se rompe con fuerza de voluntad: se rompe viendo la grabación y preguntando quién habla.</p>
+
+  <div class="q"><span>ACCIÓN 02</span>Traza el origen de una sola creencia limitante. ¿Quién la instaló? ¿Qué edad tenías? ¿Qué quería esa persona de ti? Escríbelo como un informe: fecha, instalador, instrucción.</div>
+  <div class="write">
+    <label for="t2">Escribe aquí — el origen de la creencia:</label>
+    <textarea id="t2" rows="4" placeholder="Creencia: … · Instalador: … · Edad: … · Instrucción recibida: …"></textarea>
+  </div>
+
+  <h2><span class="n">SECCIÓN 03</span>El error es data: no eres tu fallo</h2>
+  <p>El misil se desvía cientos de veces antes de llegar. Cada desviación no es un fracaso del misil: es información que el sistema usa para corregir. Tu cerebro confunde dos frases que suenan parecido: "fallé esto" — descriptiva, un dato — y "soy un fracaso" — una sentencia, una identidad. La primera corrige el rumbo. La segunda fija el target en el fracaso, y el sistema hace el resto.</p>
+  <p>El error no es evidencia de que no vales: es evidencia de que el sistema está funcionando. Solo un sistema sin target no se desvía nunca.</p>
+
+  <div class="q"><span>ACCIÓN 03</span>Reescribe un fracaso reciente como feedback. ¿Qué input alimenté? ¿Qué señal llegó? ¿Qué corrección de rumbo indica? Sin juicios: solo data.</div>
+  <div class="write">
+    <label for="t3">Escribe aquí — el fracaso como data:</label>
+    <textarea id="t3" rows="4" placeholder="Evento: … · Input que alimenté: … · Señal recibida: … · Corrección de rumbo: …"></textarea>
+  </div>
+
+  <h2><span class="n">SECCIÓN 04</span>El re-ensamble: actúa como si</h2>
+  <p>Tu sistema nervioso no distingue con precisión entre una experiencia real y una vívidamente imaginada. Piensa en un limón: la boca se te hace agua sin que haya limón. Piensa en un momento de vergüenza: el cuerpo reacciona años después. La imaginación es maquinaria, no fantasía — y se puede programar.</p>
+  <p>Dos reglas. Primera: actúa "como si" la nueva identidad fuera cierta — el comportamiento precede a la convicción, no al revés. Segunda: ensaya mentalmente el resultado con detalle y emoción. No esperes a sentirte confiado para actuar confiado: actúa, y el sistema registra la evidencia.</p>
+
+  <div class="q"><span>ACCIÓN 04</span>Cinco minutos de visualización funcional. Elige una situación próxima. Imagínala con detalle: qué ves, qué oyes, qué sientes, cómo te mueves. Específica, con emoción — no una fantasía vaga.</div>
+  <div class="write">
+    <label for="t4">Escribe aquí — qué visualizaste y cuándo harás el ensayo:</label>
+    <textarea id="t4" rows="4" placeholder="Situación: … · Detalle sensorial: … · Emoción asociada: … · Fecha del ensayo: …"></textarea>
+  </div>
+
+  <h2><span class="n">SECCIÓN 05</span>La confianza: suelta el control</h2>
+  <p>El misil no se pregunta en cada instante si va bien: se apunta, se lanza, y confía en el mecanismo. El piloto que micro-gestiona cada corrección lo vuelve loco. Tu sistema es igual: el consciente decide dónde (el target), el inconsciente decide cómo (la ejecución). Cuando intentas controlar el cómo — forzar el sueño, forzar la calma, forzar la simpatía — el sistema se atasca.</p>
+  <p>Es la ley del esfuerzo invertido: cuanto más intentas dormir, más despierto estás. La confianza no es un sentimiento: es la decisión de dejar de agarrar.</p>
+
+  <div class="q"><span>ACCIÓN 05</span>Identifica un área donde "agarras" — donde controlas el cómo con fuerza. Defínela con precisión. Y define qué soltarías si confiaras en el sistema.</div>
+  <div class="write">
+    <label for="t5">Escribe aquí — dónde agarras y qué soltarías:</label>
+    <textarea id="t5" rows="4" placeholder="Área donde agarras: … · Cómo lo controlo: … · Qué pasaría si suelto: …"></textarea>
+  </div>
+
+  <h2><span class="n">SECCIÓN 06</span>La identidad flexible: "yo soy así" es una elección congelada</h2>
+  <p>La identidad que defiendes con más fuerza es la que te limita. "Yo soy así" suena a esencia, pero es una elección congelada. La identidad estática te da comodidad — ya sabes quién eres, no hay sorpresas — y te cobra con la imposibilidad de cambiar. El sistema fue diseñado para ajustarse: cada target nuevo recalibra todo.</p>
+  <p>La pregunta no es "¿quién soy?" — es "¿qué target quiero fijar hoy?"</p>
+
+  <div class="q"><span>ACCIÓN 06</span>Elige un comportamiento nuevo que contradiga tu autodefinición vieja. Si te defines como tímido, inicia una conversación. Si te defines como desordenado, ordena algo. Pequeño, concreto, esta semana.</div>
+  <div class="write">
+    <label for="t6">Escribe aquí — el comportamiento que contradice tu autodefinición:</label>
+    <textarea id="t6" rows="4" placeholder="Autodefinición vieja: … · Comportamiento nuevo: … · Cuándo lo haré: …"></textarea>
+  </div>
+
+  <div class="comp">
+    <div class="comp-head">// EL ACTO CON FECHA</div>
+    <p>Un artículo que se lee y no se hace es entretenimiento. Esto se hace.</p>
+    <p>Escribe tu compromiso: una acción de las seis — la que más te haya removido — con fecha exacta dentro de las próximas 72 horas, y la frase que la conecta con algo más alto.</p>
+  </div>
+  <div class="write">
+    <label for="t7">Escribe aquí — tu compromiso con fecha (≤72h):</label>
+    <textarea id="t7" rows="4" placeholder="Acción: … · Fecha exacta: … · Esto importa porque: …"></textarea>
+  </div>
+
+  <div class="actions">
+    <button class="btn-pdf" onclick="descargarPDF()">⬇ Descargar PDF</button>
+    <button class="btn-mail" onclick="enviarEmail()">✉ Envíate las respuestas!</button>
+    <span class="hint">tus respuestas se guardan solas en este navegador — no se envían a ningún servidor</span>
+  </div>
+
+  <h2><span class="n">—</span>Para el trader que hay en ti</h2>
+  <p>El P&amp;L es el feedback loop más honesto que existe: no miente, no se ofende, no negocia. Perder no te hace perdedor — te dice que el target está mal. Si pierdes sistemáticamente con el mismo patrón, no necesitas más disciplina: necesitas revisar qué autoimagen está conduciendo.</p>
+  <p>El trader que se define como "alguien que no puede con esto" ejecutará esa instrucción con precisión perfecta. El que se redefine como "un sistema que aprende de cada operación" corrige el rumbo como el misil: error tras error, hasta llegar.</p>
+
+  <div class="related">
+    <div class="related-head">// Artículos relacionados</div>
+    <ul class="related-list">
+      <li><a href="la-disciplina-del-no.html"><b>La disciplina del no</b></a> <span class="rel-why">· reprogramar es primero restar</span></li>
+      <li><a href="menos-informacion-mejor-mente.html"><b>Menos información, mejor mente</b></a> <span class="rel-why">· el ruido que alimenta el target</span></li>
+      <li><a href="la-ola-del-estadio.html"><b>La ola del estadio</b></a> <span class="rel-why">· la creencia que crea la realidad</span></li>
+      <li><a href="el-divorcio.html"><b>El divorcio</b></a> <span class="rel-why">· los costos hundidos de la identidad</span></li>
+    </ul>
+  </div>
+  <div class="support">
+    <div class="support-head">// Apoya BrAIn</div>
+    <p class="support-text">Si este artículo te movió algo, sigue a <a href="../brain.html">BrAIn</a> — en cada pieza aprendemos y aplicamos conceptos para pensar mejor.</p>
+    <p class="support-text">Ayúdame a seguir escribiendo, invítame un café (o un almuerzo!) — cualquier aporte suma.</p>
+    <div class="support-amounts">
+      <a class="sup-btn" href="https://ko-fi.com/coffee4brain?amount=10" target="_blank" rel="noopener">$10</a>
+      <a class="sup-btn" href="https://ko-fi.com/coffee4brain?amount=20" target="_blank" rel="noopener">$20</a>
+      <a class="sup-btn" href="https://ko-fi.com/coffee4brain?amount=50" target="_blank" rel="noopener">$50</a>
+    </div>
+    <p class="support-note">// gracias por mantener esto vivo</p>
+  </div>
+
+</div>
+
+  <a class="back" href="../brain.html">Volver a BrAIn</a>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html">Términos</a></span>
+</footer>
+
+<script>
+(function () {
+  var KEY = 'brAIn-017-reprograma-v1';
+  var ids = ['t1','t2','t3','t4','t5','t6','t7'];
+  function leer() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function guardar() {
+    var data = {};
+    ids.forEach(function (id) { var el = document.getElementById(id); if (el) data[id] = el.value; });
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+  }
+  var saved = leer();
+  ids.forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el && saved[id]) el.value = saved[id];
+    if (el) el.addEventListener('input', guardar);
+  });
+  function textoCompleto() {
+    var acciones = [
+      'Mi codigo dominante actual',
+      'El origen de mi creencia limitante',
+      'Mi fracaso reescrito como data',
+      'Mi visualizacion funcional',
+      'Donde agarro y que soltaria',
+      'El comportamiento que contradice mi autodefinicion',
+      'Mi compromiso con fecha'
+    ];
+    var out = 'EL SISTEMA SE REPROGRAMA — BrAIn\n';
+    out += 'Fecha: ' + new Date().toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' }) + '\n';
+    out += '==================================================\n\n';
+    ids.forEach(function (id, i) {
+      var el = document.getElementById(id);
+      var resp = (el && el.value.trim()) ? el.value.trim() : '(sin responder)';
+      out += 'ACCION ' + (i + 1) + ': ' + acciones[i] + '\n';
+      out += 'Respuesta: ' + resp + '\n\n';
+    });
+    out += '— The Red Queen · BrAIn (Breaking AI Non-sense)';
+    return out;
+  }
+  window.descargarPDF = function () {
+    var win = window.open('', '_blank');
+    if (!win) { alert('Permite ventanas emergentes para descargar el PDF.'); return; }
+    win.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Mis respuestas — El sistema se reprograma</title>' +
+      '<style>body{font-family:Georgia,serif;max-width:640px;margin:40px auto;padding:0 24px;color:#1a1a1a;line-height:1.6;}' +
+      'h1{font-size:22px;margin-bottom:4px;} .f{color:#666;font-size:13px;margin-bottom:28px;}' +
+      '.q{margin-bottom:22px;page-break-inside:avoid;} .qn{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#EA580C;font-weight:700;}' +
+      '.qt{font-weight:700;margin:4px 0 6px;} .qr{background:#F8FAFC;border-left:3px solid #10B981;padding:10px 14px;border-radius:0 6px 6px 0;}' +
+      '.foot{margin-top:36px;border-top:1px solid #e5e7eb;padding-top:14px;color:#666;font-size:12px;}' +
+      '@media print{body{margin:0;}}</style></head><body>');
+    win.document.write('<h1>El sistema se reprograma</h1><div class="f">BrAIn — ' + new Date().toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' }) + '</div>');
+    var acc = ['Codigo dominante','Origen de la creencia','Fracaso como data','Visualizacion funcional','Donde agarras','Contradiccion a la identidad','Compromiso'];
+    ids.forEach(function (id, i) {
+      var el = document.getElementById(id);
+      var resp = (el && el.value.trim()) ? el.value.trim() : '(sin responder)';
+      win.document.write('<div class="q"><div class="qn">ACCION ' + (i+1) + '</div><div class="qt">' + acc[i] + '</div><div class="qr">' + resp.replace(/\n/g,'<br>') + '</div></div>');
+    });
+    win.document.write('<div class="foot">— The Red Queen · BrAIn (Breaking AI Non-sense)</div>');
+    win.document.write('</body></html>');
+    win.document.close();
+    win.focus();
+    setTimeout(function () { win.print(); }, 300);
+  };
+  window.enviarEmail = function () {
+    var out = textoCompleto();
+    var subject = encodeURIComponent('Mis respuestas — El sistema se reprograma (BrAIn)');
+    var body = encodeURIComponent(out);
+    window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+  };
+})();
+</script>
+</body>
+</html>
