@@ -455,7 +455,7 @@
       <div class="kpi"><div class="lab wide">Saldo final del fondo (95% confianza)</div><div class="val" id="kP5">—</div><div class="sub">en el 95% de los universos el fondo termina con un saldo superior a este</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (mediana · P50)</div><div class="val" id="kP50">—</div><div class="sub">la mitad termina con más, la mitad con menos</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (media)</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios simulados</div></div>
-      <div class="kpi"><div class="lab wide">Saldo final del fondo (P95)</div><div class="val" id="kP95">—</div><div class="sub">solo 5% de los escenarios terminan con más</div></div>
+      <div class="kpi"><div class="lab wide">Intereses totales generados (mediana · P50)</div><div class="val" id="kInt50">—</div><div class="sub">lo que el fondo gana por su rentabilidad · la mitad de los universos genera más</div></div>
       <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">paga todos los estudios y un año después sigue ≥ $0</div></div>
       <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val out" id="kCosto50">—</div><div class="sub">salidas del fondo · rojo como los retiros de la gráfica</div></div>
     </div>
@@ -648,7 +648,7 @@ function runMC(p) {
   var lp = lognormParams(p.inflacion, p.inflVol);
   var lpRet = lognormParams(p.rentabilidad, p.volFondo); // factor (1+ret) log-normal
   var n = p.nSims;
-  var saldosFin = [], costosFin = [], porAnio = [], costosPorAnio = [], exitos = 0, caminos = [], retsTodos = [];
+  var saldosFin = [], costosFin = [], intsTodos = [], porAnio = [], costosPorAnio = [], exitos = 0, caminos = [], retsTodos = [];
   for (var a = 0; a < horizonte; a++) { porAnio.push([]); costosPorAnio.push([]); }
   // aportes anuales (fijos: idénticos en todas las simulaciones)
   var aporteAnual = [];
@@ -670,7 +670,7 @@ function runMC(p) {
   for (var cc = 0; cc < horizonte; cc++) costoSum.push(0);
   for (var s = 0; s < n; s++) {
     var saldo = p.montoInicial;
-    var acumInfl = 1, totalCosto = 0, caminoSim = [], retsSim = [];
+    var acumInfl = 1, totalCosto = 0, interesSim = 0, caminoSim = [], retsSim = [];
     for (var per = 1; per <= horizonte; per++) {
       var anio = p.anioInicio + per - 1;
       var inflAnual = Math.exp(lp.mx + lp.sx * randNormal()) - 1;
@@ -691,7 +691,9 @@ function runMC(p) {
       // cobro ANTICIPADO: las matrículas (kínder, colegio y universidad) se pagan al
       // inicio del año académico — salen del saldo ANTES de que rinda el año
       var costo = costoAnio(anio, acumInfl); // inflación realizada de los años previos
-      saldo = (saldo - costo) * (1 + ret) + aporte;
+      var baseRet = saldo - costo; // capital que rinde este año
+      saldo = baseRet * (1 + ret) + aporte;
+      interesSim += baseRet * ret; // intereses generados este año
       totalCosto += costo;
       costoSum[per - 1] += costo;
       costosPorAnio[per - 1].push(costo);
@@ -702,6 +704,7 @@ function runMC(p) {
     caminos.push(caminoSim);
     retsTodos.push(retsSim);
     saldosFin.push(saldo);
+    intsTodos.push(interesSim);
     costosFin.push(totalCosto);
     if (saldo >= 0) exitos++; // cubre el plan = paga todo y termina sin deuda
   }
@@ -735,7 +738,7 @@ function runMC(p) {
   mean /= n;
   return {
     p5: quantile(saldosFin, .05), p50: quantile(saldosFin, .50), p95: quantile(saldosFin, .95),
-    mean: mean, pSucc: exitos / n, costo50: quantile(costosFin, .50),
+    mean: mean, pSucc: exitos / n, costo50: quantile(costosFin, .50), int50: quantile(intsTodos, .50),
     paths: paths, horizonte: horizonte,
     extraInicio: extraInicio, minFinal: minFinal, anioIngreso: p.univInicio,
     anioFinal: p.anioInicio + horizonte - 1,
@@ -982,8 +985,8 @@ $('runBtn').addEventListener('click', function () {
   $('kP5').innerHTML = money(mc.p5);
   $('kP50').innerHTML = money(mc.p50);
   $('kMean').innerHTML = money(mc.mean);
-  $('kP95').innerHTML = money(mc.p95);
-  [['kP5', mc.p5], ['kP50', mc.p50], ['kMean', mc.mean], ['kP95', mc.p95]].forEach(function (par) {
+  $('kInt50').innerHTML = money(mc.int50);
+  [['kP5', mc.p5], ['kP50', mc.p50], ['kMean', mc.mean], ['kInt50', mc.int50]].forEach(function (par) {
     var el = $(par[0]);
     el.className = 'val ' + (par[1] > 0 ? 'pos' : par[1] < 0 ? 'neg' : '');
   });
