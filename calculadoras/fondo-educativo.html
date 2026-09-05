@@ -1034,7 +1034,7 @@ $('runBtn').addEventListener('click', function () {
   } else {
     sol.innerHTML = 'Para que el peor caso razonable cierre en $0 (95% de confianza), necesitarías asegurar <b>' + money(mc.extraInicio) +
         '</b> adicionales al comienzo de la universidad (año <b>' + mc.anioIngreso + '</b>, edad ' + (r.p.edad + (mc.anioIngreso - r.p.anioInicio)) +
-        '). Con esa cifra, solo 1 de cada 20 escenarios quedaría corto — ya no el peor de todos los universos.';
+        '). Con esa cifra, solo 1 de cada 20 escenarios quedaría corto.';
   }
 
   drawChart(mc, r.p);
