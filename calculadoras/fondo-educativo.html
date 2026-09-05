@@ -234,6 +234,61 @@
 }
 .btn-pdf:hover { border-color: var(--accent); color: var(--accent); }
 .btn-pdf:disabled { opacity: .5; cursor: wait; }
+
+/* ── modal de email (gate del PDF) ── */
+.gate-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(4, 5, 12, .82); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.gate-card {
+  width: 100%; max-width: 460px;
+  background: linear-gradient(165deg, #10132a, #0b0d1c);
+  border: 1px solid #2a2f5e; border-radius: 18px;
+  padding: 30px 28px 26px; position: relative;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .8);
+}
+.gate-x {
+  position: absolute; top: 12px; right: 14px;
+  background: none; border: none; color: var(--muted);
+  font-size: 15px; cursor: pointer; padding: 6px;
+}
+.gate-x:hover { color: var(--accent); }
+.gate-brand {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .22em; color: var(--text); margin-bottom: 2px;
+}
+.gate-brand .red { color: var(--accent); }
+.gate-brand small {
+  display: block; font-size: 8px; font-weight: 400; letter-spacing: .3em;
+  color: var(--muted); margin-top: 3px;
+}
+.gate-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 21px; margin: 14px 0 8px; letter-spacing: -.01em; }
+.gate-txt { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+.gate-txt b { color: var(--text); }
+.gate-card input[type="email"] {
+  width: 100%; padding: 13px 14px; border-radius: 10px;
+  background: rgba(6, 7, 15, .7); border: 1px solid var(--border);
+  color: var(--text); font: 14px 'JetBrains Mono', monospace;
+  outline: none; margin-bottom: 12px;
+}
+.gate-card input[type="email"]:focus { border-color: var(--accent); }
+.gate-check {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; cursor: pointer;
+}
+.gate-check input { margin-top: 2px; accent-color: var(--accent); }
+.gate-msg { font-size: 12px; line-height: 1.5; margin-bottom: 12px; min-height: 16px; font-family: 'JetBrains Mono', monospace; }
+.gate-msg.err { color: var(--down); }
+.gate-msg.ok { color: var(--up); }
+.gate-btn {
+  width: 100%; padding: 13px; border: none; border-radius: 12px; cursor: pointer;
+  background: var(--accent); color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; letter-spacing: .05em;
+  box-shadow: 0 10px 30px -12px rgba(255, 59, 92, .55);
+}
+.gate-btn:disabled { opacity: .6; cursor: wait; }
+.gate-fine { font-size: 10.5px; color: var(--muted); margin-top: 13px; line-height: 1.55; opacity: .85; }
   .cta-row .run { margin-top: 0; }
   .err {
     margin-top: 14px; border: 1px solid rgba(255,59,92,.5); border-radius: 10px;
@@ -476,7 +531,7 @@
     </div>
 
     <div class="pdf-row">
-      <button class="btn-pdf" id="pdfBtn" onclick="exportPDF()">⬇ Exportar PDF</button>
+      <button class="btn-pdf" id="pdfBtn" onclick="openGate()">⬇ Exportar PDF</button>
     </div>
 
     <div class="chart-box">
@@ -518,6 +573,20 @@
 <footer>
   <span>© 2026 The Red Queen — Checkmate the System · <a href="../trq-terms.html" style="color:var(--muted)">Términos</a></span>
 </footer>
+
+<div class="gate-overlay" id="gateOverlay" hidden>
+  <div class="gate-card">
+    <button class="gate-x" id="gateX" aria-label="Cerrar">✕</button>
+    <div class="gate-brand">THE RED QUEEN <span class="red">· FONDO EDUCATIVO</span><small>CHECKMATE THE SYSTEM</small></div>
+    <h3>Obtén tu proyección en PDF</h3>
+    <p class="gate-txt">Deja tu email para descargar el reporte completo. Al enviar aceptas recibir las newsletters de <b>The Red Queen</b> y <b>BrAIn</b> — puedes darte de baja cuando quieras con un clic.</p>
+    <input type="email" id="gateEmail" placeholder="tu@email.com" autocomplete="email" spellcheck="false">
+    <label class="gate-check"><input type="checkbox" id="gateConsent"> Quiero recibir el PDF y suscribirme a las newsletters de The Red Queen y BrAIn</label>
+    <div class="gate-msg" id="gateMsg"></div>
+    <button class="gate-btn" id="gateBtn">Enviar y descargar mi PDF</button>
+    <p class="gate-fine">Doble opt-in: recibirás un correo de confirmación antes de quedar suscrito. Tus datos solo se usan para las newsletters.</p>
+  </div>
+</div>
 
 <script>
 function $(id) { return document.getElementById(id); }
@@ -1105,6 +1174,68 @@ function drawHist(mc, p) {
   ctx.fillStyle = 'rgba(232,234,246,.85)';
   ctx.fillText('mediana ' + fmtK(mc.p50), Math.max(padL + 4, Math.min(xM + 6, padL + plotW - 110)), padT + 23);
 }
+
+// ── gate de email: para descargar el PDF se entrega el email aceptando las newsletters ──
+// (TRQ + BrAIn vía el worker trq-newsletter · doble opt-in de EmailOctopus)
+var GATE_URL = 'https://trq-newsletter.theredqueen.workers.dev/subscribe';
+function openGate() {
+  $('gateOverlay').hidden = false;
+  $('gateMsg').textContent = '';
+  $('gateMsg').className = 'gate-msg';
+  setTimeout(function () { $('gateEmail').focus(); }, 50);
+}
+function closeGate() {
+  $('gateOverlay').hidden = true;
+}
+function submitGate() {
+  var email = $('gateEmail').value.trim().toLowerCase();
+  var msg = $('gateMsg');
+  msg.className = 'gate-msg';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 254) {
+    msg.textContent = 'Escribe un email válido.';
+    msg.className = 'gate-msg err';
+    return;
+  }
+  if (!$('gateConsent').checked) {
+    msg.textContent = 'Debes aceptar recibir las newsletters para descargar el PDF.';
+    msg.className = 'gate-msg err';
+    return;
+  }
+  var btn = $('gateBtn');
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+  fetch(GATE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email, source: 'trq' })
+  }).then(function (res) {
+    return res.json().catch(function () { return {}; }).then(function (d) { return { status: res.status, d: d }; });
+  }).then(function (r) {
+    if (r.d.ok) {
+      msg.textContent = '¡Listo! Revisa tu correo para confirmar la suscripción. Generando tu PDF…';
+      msg.className = 'gate-msg ok';
+      setTimeout(function () { closeGate(); exportPDF(); }, 700);
+    } else if (r.d.error === 'rate_limited') {
+      msg.textContent = 'Demasiados intentos desde esta IP. Espera un minuto e inténtalo de nuevo.';
+      msg.className = 'gate-msg err';
+    } else {
+      msg.textContent = 'No se pudo procesar tu solicitud (' + (r.d.error || r.status) + '). Inténtalo de nuevo.';
+      msg.className = 'gate-msg err';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Enviar y descargar mi PDF';
+  }).catch(function () {
+    msg.textContent = 'Error de conexión. Revisa tu internet e inténtalo de nuevo.';
+    msg.className = 'gate-msg err';
+    btn.disabled = false;
+    btn.textContent = 'Enviar y descargar mi PDF';
+  });
+}
+$('gateX').addEventListener('click', closeGate);
+$('gateOverlay').addEventListener('click', function (e) { if (e.target === this) closeGate(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('gateOverlay').hidden) closeGate(); });
+$('gateBtn').addEventListener('click', submitGate);
+$('gateEmail').addEventListener('keydown', function (e) { if (e.key === 'Enter') submitGate(); });
 
 // ── exportar resultados a PDF (jsPDF vía CDN) ──
 function loadJsPdf() {
