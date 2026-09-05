@@ -482,6 +482,21 @@
     <div class="note">
       <b>Cómo leer esto:</b> cada línea fina es un <b>escenario Monte-Carlo</b> completo y su color es el de su <b>resultado final</b>: <b>verde</b> si el fondo paga toda la educación y termina sin deuda (saldo ≥ $0), <b>roja</b> si termina en déficit al final de los pagos. Todos los caminos suben juntos mientras ahorras; al final de la universidad el abanico se abre: los verdes cruzan el final por encima de $0 y los rojos por debajo. Las barras rojas muestran el costo anual típico (media de las corridas) y su línea blanca con topes, el rango mínimo–máximo que ese costo puede tomar según la inflación de cada corrida. La gráfica corre hasta <b>1 año después</b> de terminados los estudios (el fondo sigue rindiendo, sin pagos). El KPI <b>P(termina sin deuda)</b> = fracción de caminos verdes. La <b>línea blanca gruesa</b> es la <b>media</b> (promedio real de los saldos simulados de cada año — los pocos escenarios muy buenos la jalan hacia arriba, por eso suele verse por encima del grueso de la mariposa); la <b>blanca punteada</b> es la <b>mediana</b> (el escenario típico: la mitad termina arriba, la mitad abajo) y las <b>violetas punteadas</b> son el P5 y P95. Las barras <b>verdes</b> son las entradas al fondo (monto inicial + aportes del año) y las <b>rojas</b> los retiros (costos de estudio ya inflados). El KPI clave es el <b>P5</b>: si es ≥ $0, tienes 95% de confianza de cubrir el plan.
     </div>
+
+    <div class="chart-box">
+      <div class="cap">Distribución del saldo final · <span class="red">2.000 universos · un año después de los estudios</span></div>
+      <canvas id="hist" width="900" height="380"></canvas>
+      <div class="legend-row">
+        <span><i class="lg" style="background:#00e676;height:5px;border-radius:1px"></i> Termina sin deuda (saldo ≥ $0)</span>
+        <span><i class="lg" style="background:#ff1744;height:5px;border-radius:1px"></i> Termina en déficit</span>
+        <span><i class="lg" style="background:repeating-linear-gradient(90deg,#a78bfa 0 4px,transparent 4px 8px)"></i> Peor escenario (P5)</span>
+        <span><i class="lg" style="background:repeating-linear-gradient(90deg,#e8eaf6 0 3px,transparent 3px 6px)"></i> Mediana</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Cómo leer esto:</b> el histograma agrupa los <b>2.000 saldos finales</b> (uno por universo). Cada barra <b>verde</b> agrupa los universos que terminan sin deuda (≥ $0) y cada <b>roja</b> los que terminan en déficit: si el plan es sano, casi toda la masa cae en verde a la derecha del $0; si no alcanza, una parte se derrama en rojo a la izquierda. La línea <b>violeta</b> marca el peor escenario (P5) y la <b>blanca punteada</b> la mediana (escenario más probable).
+    </div>
   </div>
 
 </div>
@@ -766,7 +781,8 @@ function runMC(p) {
     }),
     fan: porAnio.map(function (arr) {
       return { p5: quantile(arr, .05), p50: quantile(arr, .50), p95: quantile(arr, .95), mean: arr.reduce(function (x, y) { return x + y; }, 0) / arr.length };
-    })
+    }),
+    saldos: saldosFin // distribución completa de saldos finales (para el histograma)
   };
 }
 
@@ -981,6 +997,101 @@ function drawChart(mc, p) {
   ctx.restore();
 }
 
+// ── histograma: distribución del saldo final ──
+function drawHist(mc, p) {
+  var cv = $('hist');
+  var dpr = window.devicePixelRatio || 1;
+  var rect = cv.getBoundingClientRect();
+  var W = rect.width || cv.clientWidth || 900;
+  var H = 380;
+  cv.width = W * dpr; cv.height = H * dpr;
+  var ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  var finals = mc.saldos;
+  var n = finals.length;
+  var BINS = 48;
+  // rango: del mínimo real (cola de déficit completa) al percentil 99 — los pocos universos
+  // de lujo (cola derecha extrema del interés compuesto) se acumulan en el último bin para
+  // que la masa central no quede aplastada
+  var srt = finals.slice().sort(function (a, b) { return a - b; });
+  var lo = srt[0], hi = srt[Math.floor(n * 0.99)];
+  if (!(hi > lo)) hi = lo + 1;
+  var counts = new Array(BINS).fill(0);
+  for (var i = 0; i < n; i++) {
+    var bi = Math.floor(((finals[i] - lo) / (hi - lo)) * BINS);
+    if (bi < 0) bi = 0;
+    if (bi >= BINS) bi = BINS - 1;
+    counts[bi]++;
+  }
+  var maxC = Math.max.apply(null, counts);
+  var padL = 46, padB = 26, padT = 14, padR = 12;
+  var plotW = W - padL - padR, plotH = H - padT - padB;
+  var bw = plotW / BINS;
+  function fmtK(v) {
+    var s = v < 0 ? '−' : '';
+    var a = Math.abs(v);
+    return s + '$' + (a >= 1000 ? (a / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : Math.round(a));
+  }
+
+  // grid izquierdo (frecuencia relativa)
+  ctx.font = '10px "JetBrains Mono", monospace';
+  for (var g = 0; g <= 4; g++) {
+    var gy = padT + plotH - (g / 4) * plotH;
+    ctx.strokeStyle = 'rgba(35,40,69,.5)';
+    ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(padL + plotW, gy); ctx.stroke();
+    ctx.fillStyle = '#8a90b3'; ctx.textAlign = 'right';
+    ctx.fillText(Math.round((g / 4) * 100) + '%', padL - 6, gy + 3);
+  }
+  // marco
+  ctx.strokeStyle = '#232845'; ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH);
+  ctx.stroke();
+  // eje X: valores de saldo final
+  ctx.textAlign = 'center'; ctx.fillStyle = '#8a90b3';
+  var xVals = [lo, lo + (hi - lo) * 0.25, (lo + hi) / 2, lo + (hi - lo) * 0.75, hi];
+  xVals.forEach(function (xv) {
+    var xx = padL + ((xv - lo) / (hi - lo)) * plotW;
+    ctx.fillText(fmtK(xv), xx, H - 8);
+  });
+
+  // ── barras por signo del bin (verde = sin deuda, rojo = déficit) ──
+  for (var b = 0; b < BINS; b++) {
+    var c0 = lo + (b + 0.5) * (hi - lo) / BINS;
+    var h = (counts[b] / maxC) * plotH;
+    if (h < 1 && counts[b] > 0) h = 1.5;
+    ctx.fillStyle = c0 >= 0 ? 'rgba(0,230,118,.72)' : 'rgba(255,23,68,.8)';
+    ctx.fillRect(padL + b * bw, padT + plotH - h, Math.max(1, bw - 1), h);
+  }
+
+  // línea del $0 (separa déficit de superávit)
+  if (lo < 0 && hi > 0) {
+    var xz = padL + ((0 - lo) / (hi - lo)) * plotW;
+    ctx.strokeStyle = 'rgba(255,255,255,.4)';
+    ctx.setLineDash([3, 5]); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(xz, padT); ctx.lineTo(xz, padT + plotH); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  // peor escenario (P5) — violeta
+  var xP5 = padL + ((mc.p5 - lo) / (hi - lo)) * plotW;
+  ctx.strokeStyle = 'rgba(167,139,250,.85)';
+  ctx.setLineDash([4, 4]); ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(xP5, padT); ctx.lineTo(xP5, padT + plotH); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(167,139,250,.95)'; ctx.textAlign = 'left';
+  ctx.fillText('peor escenario (P5) ' + fmtK(mc.p5), Math.max(padL + 4, Math.min(xP5 + 6, padL + plotW - 130)), padT + 11);
+  // mediana — blanca punteada
+  var xM = padL + ((mc.p50 - lo) / (hi - lo)) * plotW;
+  ctx.strokeStyle = 'rgba(232,234,246,.8)';
+  ctx.setLineDash([5, 5]); ctx.lineWidth = 1.1;
+  ctx.beginPath(); ctx.moveTo(xM, padT); ctx.lineTo(xM, padT + plotH); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(232,234,246,.85)';
+  ctx.fillText('mediana ' + fmtK(mc.p50), Math.max(padL + 4, Math.min(xM + 6, padL + plotW - 110)), padT + 23);
+}
+
 // ── disparador ──
 $('runBtn').addEventListener('click', function () {
   var r = readParams();
@@ -1038,6 +1149,7 @@ $('runBtn').addEventListener('click', function () {
   }
 
   drawChart(mc, r.p);
+  drawHist(mc, r.p);
   $('results').hidden = false;
   window.scrollTo({ top: $('results').offsetTop - 90, behavior: 'smooth' });
 });
