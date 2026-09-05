@@ -461,7 +461,7 @@
     </div>
 
     <div class="solver-box" id="solverBox" hidden>
-      <div class="solver-title">Solver — cobertura total (100% de los escenarios)</div>
+      <div class="solver-title">Solver — 95% de confianza (peor caso razonable en $0)</div>
       <div id="solverText"></div>
     </div>
 
@@ -708,21 +708,36 @@ function runMC(p) {
     costosFin.push(totalCosto);
     if (saldo >= 0) exitos++; // cubre el plan = paga todo y termina sin deuda
   }
-  // ── solver: capital extra al inicio de la universidad para cubrir el 100% ──
-  // el peor camino (saldo final mínimo) define el caso extremo; el modelo es lineal en
-  // el saldo, así que añadir A al inicio del año de ingreso lo multiplica por el factor
-  // de crecimiento de ese camino: A = -min / factor
+  // ── solver: capital extra al inicio de la universidad para que el P5 del saldo
+  // final (peor caso razonable · 95% de confianza) cierre en $0 ──
+  // añadir A al inicio del año de ingreso es lineal por camino: cada saldo final sube
+  // A × factor_s, con factor_s = Π(1+ret) de ese camino desde el ingreso hasta el final.
+  // Se busca A por bisección hasta que el percentil 5 de los saldos ajustados sea 0.
   var perIngreso = p.univInicio - p.anioInicio + 1; // período (1-based) del ingreso a la univ
-  var idxPeor = 0;
-  for (var w = 1; w < n; w++) if (saldosFin[w] < saldosFin[idxPeor]) idxPeor = w;
+  var factores = [];
+  for (var w = 0; w < n; w++) {
+    var f = 1;
+    for (var j = perIngreso - 1; j <= horizonte - 1; j++) f *= (1 + retsTodos[w][j]);
+    factores.push(f);
+  }
+  function p5ConExtra(A) {
+    var vals = [];
+    for (var w2 = 0; w2 < n; w2++) vals.push(saldosFin[w2] + A * factores[w2]);
+    return quantile(vals, .05);
+  }
+  var minFinal = Math.min.apply(null, saldosFin);
   var extraInicio = 0;
-  var minFinal = saldosFin[idxPeor];
-  if (minFinal < 0) {
-    var factor = 1;
-    for (var j = perIngreso - 1; j <= horizonte - 1; j++) {
-      factor *= (1 + retsTodos[idxPeor][j]);
+  if (p5ConExtra(0) < 0) {
+    // cota superior: el capital que cubre incluso el peor camino real (con eso el P5 queda > 0)
+    var idxPeor = 0;
+    for (var w3 = 1; w3 < n; w3++) if (saldosFin[w3] < saldosFin[idxPeor]) idxPeor = w3;
+    var hiA = -saldosFin[idxPeor] / factores[idxPeor];
+    var loA = 0;
+    for (var it = 0; it < 50; it++) {
+      var mid = (loA + hiA) / 2;
+      if (p5ConExtra(mid) < 0) loA = mid; else hiA = mid;
     }
-    extraInicio = -minFinal / factor;
+    extraInicio = (loA + hiA) / 2;
   }
   // muestra estratificada de caminos (ordenados por saldo final → cubren toda la mariposa)
   var idxSorted = saldosFin.map(function (v, i) { return i; }).sort(function (a, b) { return saldosFin[a] - saldosFin[b]; });
@@ -1011,15 +1026,15 @@ $('runBtn').addEventListener('click', function () {
   }
   $('verdict').innerHTML = v;
 
-  // solver: cobertura al 100%
+  // solver: capital para que el P5 (peor caso razonable, 95% de confianza) cierre en $0
   var sol = $('solverText');
   $('solverBox').hidden = false;
-  if (mc.minFinal >= 0) {
-    sol.innerHTML = 'Incluso en el peor de los ' + r.p.nSims.toLocaleString('en-US') + ' escenarios, el fondo cubre el plan completo — no se requiere capital adicional.';
+  if (mc.p5 >= 0) {
+    sol.innerHTML = 'El peor caso razonable ya cierra sin deuda: en el 95% de los ' + r.p.nSims.toLocaleString('en-US') + ' escenarios el fondo paga todo y termina con saldo ≥ $0 — no se requiere capital adicional.';
   } else {
-    sol.innerHTML = 'Con este plan, en el <b>peor caso</b> podrías llegar a requerir <b>' + money(mc.extraInicio) +
+    sol.innerHTML = 'Para que el peor caso razonable cierre en $0 (95% de confianza), necesitarías asegurar <b>' + money(mc.extraInicio) +
         '</b> adicionales al comienzo de la universidad (año <b>' + mc.anioIngreso + '</b>, edad ' + (r.p.edad + (mc.anioIngreso - r.p.anioInicio)) +
-        ') para cubrir el 100% de los escenarios. Esa es la cifra que tendrías que asegurar (hoy o antes del ingreso) si quieres eliminar el riesgo de faltante por completo.';
+        '). Con esa cifra, solo 1 de cada 20 escenarios quedaría corto — ya no el peor de todos los universos.';
   }
 
   drawChart(mc, r.p);
