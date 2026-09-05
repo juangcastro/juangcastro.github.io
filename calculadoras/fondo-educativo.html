@@ -1254,7 +1254,9 @@ function exportPDF() {
   btn.disabled = true;
   btn.textContent = 'Generando PDF…';
   loadJsPdf().then(function () {
-    try { buildPdf(); }
+    return loadLogo();
+  }).then(function (logo) {
+    try { buildPdf(logo); }
     catch (e) { console.error('PDF', e); }
     btn.disabled = false;
     btn.textContent = 'Exportar a PDF';
@@ -1264,7 +1266,25 @@ function exportPDF() {
     alert('No se pudo cargar la librería de PDF. Revisa tu conexión a internet e inténtalo de nuevo.');
   });
 }
-function buildPdf() {
+// el logo de The Red Queen (emblema rojo transparente) para el encabezado del PDF
+function loadLogo() {
+  var url = '../assets/trq-logo-main.png';
+  if (window.fetch) {
+    return fetch(url).then(function (r) {
+      if (!r.ok) throw new Error('logo');
+      return r.blob();
+    }).then(function (b) {
+      return new Promise(function (resolve) {
+        var fr = new FileReader();
+        fr.onload = function () { resolve(fr.result); };
+        fr.onerror = function () { resolve(null); };
+        fr.readAsDataURL(b);
+      });
+    }).catch(function () { return null; });
+  }
+  return Promise.resolve(null);
+}
+function buildPdf(logoDataUrl) {
   var jsPDF = window.jspdf.jsPDF;
   var doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
   var PW = doc.internal.pageSize.getWidth(), PH = doc.internal.pageSize.getHeight();
@@ -1331,25 +1351,33 @@ function buildPdf() {
     y += Math.max(13, linesH + 2);
   }
   paintBg();
-  // ── header ──
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(16);
+  // ── header: logo + marca (como el header del sitio) ──
+  var lx = M;
+  if (logoDataUrl) {
+    var lh = 34;                       // alto del logo en pt
+    var lw = lh * (640 / 372);         // proporción real del emblema (640×372)
+    doc.addImage(logoDataUrl, 'PNG', lx, 24, lw, lh);
+    lx += lw + 12;
+  }
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
   doc.setTextColor(C.text[0], C.text[1], C.text[2]);
-  doc.text('THE RED QUEEN', M, 46);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(8);
+  doc.text('THE RED QUEEN', lx, 45);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5);
   doc.setTextColor(C.red[0], C.red[1], C.red[2]);
-  doc.text('CHECKMATE THE SYSTEM', M, 58);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
-  doc.setTextColor(C.text[0], C.text[1], C.text[2]);
-  doc.text('FONDO EDUCATIVO \u2014 PROYECCI\u00d3N', PW / 2, 52, { align: 'center' });
+  doc.text('CHECKMATE THE SYSTEM', lx, 57);
   var hoy = new Date();
   var fecha = hoy.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
   doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
   doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
-  doc.text(sanitize(fecha), PW - M, 46, { align: 'right' });
+  doc.text(sanitize(fecha), PW - M, 47, { align: 'right' });
   doc.setDrawColor(C.red[0], C.red[1], C.red[2]);
   doc.setLineWidth(1.1);
   doc.line(M, 68, PW - M, 68);
-  y = 90;
+  // título del reporte (bajo la línea)
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(12.5);
+  doc.setTextColor(C.text[0], C.text[1], C.text[2]);
+  doc.text('FONDO EDUCATIVO - PROYECCI\u00d3N MONTE-CARLO', M, 84);
+  y = 100;
 
   var rp = readParams().p;
   // ── plan ──
@@ -1452,25 +1480,37 @@ function buildPdf() {
     y += sh + 8;
   }
 
-  // ── gráficas (una por página, composición opaca) ──
-  function addChart(cvId, caption) {
-    var dataUrl = canvasDataUrl(cvId);
-    if (!dataUrl) return;
+  // ── gráficas: las DOS en una sola página, cada una con su caption real de la calculadora ──
+  function chartCaption(cvId) {
     var cv = $(cvId);
-    var asp = cv.width / cv.height;
-    var iw2 = PW - 2 * M, ih2 = iw2 / asp;
-    if (ih2 > 330) { ih2 = 330; iw2 = ih2 * asp; }
-    newPage();
-    y += 10;
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
-    doc.setTextColor(C.text[0], C.text[1], C.text[2]);
-    doc.text(sanitize(caption), M, y);
-    y += 10;
-    doc.addImage(dataUrl, 'PNG', (PW - iw2) / 2, y, iw2, ih2);
-    y += ih2 + 8;
+    if (!cv || !cv.closest) return '';
+    var box = cv.closest('.chart-box');
+    if (!box) return '';
+    var cap = box.querySelector('.cap');
+    return cap ? sanitize(cap.textContent).trim() : '';
   }
-  addChart('chart', 'Proyecci\u00f3n del fondo vs. costos de estudio \u2014 mariposa de escenarios (verde: termina sin deuda)');
-  addChart('hist', 'Distribuci\u00f3n del saldo final \u2014 2.000 universos (verde: \u2265 $0 \u00b7 rojo: d\u00e9ficit)');
+  function addChartPair() {
+    var c1 = $('chart'), c2 = $('hist');
+    if (!c1 || !c2) return;
+    var asp = c1.width / c1.height;
+    // ancho para que ambas (con captions) quepan holgadas en la página
+    var iw2 = Math.min(PW - 2 * M, (PH - 64 - 70) * asp / 2);
+    var ih2 = iw2 / asp;
+    newPage();
+    y += 8;
+    [c1, c2].forEach(function (cv) {
+      var dataUrl = canvasDataUrl(cv.id);
+      if (dataUrl) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+        doc.setTextColor(C.text[0], C.text[1], C.text[2]);
+        doc.text(chartCaption(cv.id), M, y);
+        y += 10;
+        doc.addImage(dataUrl, 'PNG', (PW - iw2) / 2, y, iw2, ih2);
+        y += ih2 + 22;
+      }
+    });
+  }
+  addChartPair();
 
   // ── disclaimer + links ──
   newPage();
