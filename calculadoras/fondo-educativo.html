@@ -454,7 +454,7 @@
     <div class="kpis" id="mcKpis">
       <div class="kpi"><div class="lab wide">Saldo final del fondo (95% confianza)</div><div class="val" id="kP5">—</div><div class="sub">en el 95% de los universos el fondo termina con un saldo superior a este</div></div>
       <div class="kpi"><div class="lab wide">Saldo final del fondo (mediana · P50)</div><div class="val" id="kP50">—</div><div class="sub">la mitad termina con más, la mitad con menos</div></div>
-      <div class="kpi"><div class="lab wide">Saldo final del fondo (media)</div><div class="val" id="kMean">—</div><div class="sub">promedio de todos los escenarios simulados</div></div>
+      <div class="kpi"><div class="lab wide">Total aportado</div><div class="val gold" id="kAportado">—</div><div class="sub">monto inicial + todos los aportes (lo que metes de tu bolsillo)</div></div>
       <div class="kpi"><div class="lab wide">Intereses totales generados (mediana · P50)</div><div class="val" id="kInt50">—</div><div class="sub">lo que el fondo gana por su rentabilidad · la mitad de los universos genera más</div></div>
       <div class="kpi"><div class="lab wide">Probabilidad de cubrir el plan</div><div class="val" id="kPSucc">—</div><div class="sub">paga todos los estudios y un año después sigue ≥ $0</div></div>
       <div class="kpi"><div class="lab wide">Costo total de estudio (mediana · P50)</div><div class="val out" id="kCosto50">—</div><div class="sub">salidas del fondo · rojo como los retiros de la gráfica</div></div>
@@ -739,6 +739,7 @@ function runMC(p) {
   return {
     p5: quantile(saldosFin, .05), p50: quantile(saldosFin, .50), p95: quantile(saldosFin, .95),
     mean: mean, pSucc: exitos / n, costo50: quantile(costosFin, .50), int50: quantile(intsTodos, .50),
+    totalAport: aporteAnual.reduce(function (a, b) { return a + b; }, 0),
     paths: paths, horizonte: horizonte,
     extraInicio: extraInicio, minFinal: minFinal, anioIngreso: p.univInicio,
     anioFinal: p.anioInicio + horizonte - 1,
@@ -984,9 +985,9 @@ $('runBtn').addEventListener('click', function () {
   // nomenclatura de color por signo: ≥ $0 en verde, déficit en rojo, nunca al revés
   $('kP5').innerHTML = money(mc.p5);
   $('kP50').innerHTML = money(mc.p50);
-  $('kMean').innerHTML = money(mc.mean);
   $('kInt50').innerHTML = money(mc.int50);
-  [['kP5', mc.p5], ['kP50', mc.p50], ['kMean', mc.mean], ['kInt50', mc.int50]].forEach(function (par) {
+  $('kAportado').innerHTML = money(mc.totalAport);
+  [['kP5', mc.p5], ['kP50', mc.p50], ['kInt50', mc.int50]].forEach(function (par) {
     var el = $(par[0]);
     el.className = 'val ' + (par[1] > 0 ? 'pos' : par[1] < 0 ? 'neg' : '');
   });
