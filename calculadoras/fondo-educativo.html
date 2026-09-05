@@ -505,7 +505,7 @@
         <div class="hint">Caminos aleatorios del fondo, año a año.</div>
       </div>
     </div>
-    <div class="ap-hint">Cada simulación tira una inflación anual (distribución log-normal: media = inflación esperada, variación = la σ que definiste — calibrada al histórico de Colombia) y un retorno anual (normal: media = rentabilidad esperada, variación = la σ del fondo). Los costos de estudio —colegio, kínder o universidad, según la edad del niño ese año— se encarecen con la inflación <b>realizada</b> de cada año.</div>
+    <div class="ap-hint">Cada simulación <b>calcula</b> una inflación anual (distribución log-normal: media = inflación esperada, variación = la σ que definiste) y un retorno anual (log-normal: media = rentabilidad esperada, variación = la σ del fondo). Los costos de estudio —colegio, kínder o universidad, según el año que corresponda— se encarecen con la inflación <b>realizada</b> de cada año.</div>
   </div>
 
   <div class="cta-row">
@@ -529,10 +529,6 @@
     <div class="solver-box" id="solverBox" hidden>
       <div class="solver-title">Solver — 95% de confianza (peor caso razonable en $0)</div>
       <div id="solverText"></div>
-    </div>
-
-    <div class="pdf-row">
-      <button class="btn-pdf" id="pdfBtn" onclick="openGate()">⬇ Exportar PDF</button>
     </div>
 
     <div class="chart-box">
@@ -566,6 +562,10 @@
 
     <div class="note">
       <b>Cómo leer esto:</b> el histograma agrupa los <b>2.000 saldos finales</b> (uno por universo). Cada barra <b>verde</b> agrupa los universos que terminan sin deuda (≥ $0) y cada <b>roja</b> los que terminan en déficit: si el plan es sano, casi toda la masa cae en verde a la derecha del $0; si no alcanza, una parte se derrama en rojo a la izquierda. La línea <b>violeta</b> marca el peor escenario (P5) y la <b>blanca punteada</b> la mediana (escenario más probable).
+    </div>
+
+    <div class="pdf-row">
+      <button class="btn-pdf" id="pdfBtn" onclick="openGate()">⬇ Exportar PDF</button>
     </div>
   </div>
 
