@@ -1492,21 +1492,50 @@ function buildPdf(logoDataUrl) {
   function addChartPair() {
     var c1 = $('chart'), c2 = $('hist');
     if (!c1 || !c2) return;
+    var notes = document.querySelectorAll('#results .note');
+    function notaTxt(ix) {
+      return notes[ix] ? sanitize(notes[ix].textContent).trim() : '';
+    }
+    var n1 = notaTxt(0), n2 = notaTxt(1);
     var asp = c1.width / c1.height;
-    // ancho para que ambas (con captions) quepan holgadas en la página
-    var iw2 = Math.min(PW - 2 * M, (PH - 64 - 70) * asp / 2);
-    var ih2 = iw2 / asp;
+    // ── dimensiones: margen superior + caption + imagen + nota "Cómo leer esto" por gráfica ──
+    var yTop = 62;                       // margen superior de la página de gráficas
+    var space = PH - 64 - yTop;
+    function notaH(t, w) {
+      if (!t) return 0;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(6.8);
+      return doc.splitTextToSize(t, w).length * 8.2;
+    }
+    var w = PW - 2 * M;
+    for (var it = 0; it < 10; it++) {    // si no cabe, encoge las imágenes
+      var ih = w / asp;
+      var total = 12 + ih + 6 + notaH(n1, w) + 18 + 12 + ih + 6 + notaH(n2, w) + 4;
+      if (total <= space || w < 320) break;
+      w *= 0.94;
+    }
     newPage();
-    y += 8;
-    [c1, c2].forEach(function (cv) {
+    y = yTop;
+    [c1, c2].forEach(function (cv, ix) {
+      var capTxt = chartCaption(cv.id);
+      if (capTxt) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5);
+        doc.setTextColor(C.text[0], C.text[1], C.text[2]);
+        doc.text(capTxt, M, y);
+        y += 11;
+      }
       var dataUrl = canvasDataUrl(cv.id);
       if (dataUrl) {
-        doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
-        doc.setTextColor(C.text[0], C.text[1], C.text[2]);
-        doc.text(chartCaption(cv.id), M, y);
-        y += 10;
-        doc.addImage(dataUrl, 'PNG', (PW - iw2) / 2, y, iw2, ih2);
-        y += ih2 + 22;
+        var ih2 = w / asp;
+        doc.addImage(dataUrl, 'PNG', (PW - w) / 2, y, w, ih2);
+        y += ih2 + 7;
+      }
+      var nTxt = ix === 0 ? n1 : n2;
+      if (nTxt) {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(6.8);
+        doc.setTextColor(C.muted[0], C.muted[1], C.muted[2]);
+        var nLines = doc.splitTextToSize(nTxt, PW - 2 * M);
+        doc.text(nLines, M, y, { lineHeightFactor: 8.2 / 6.8 });
+        y += nLines.length * 8.2 + 20;
       }
     });
   }
