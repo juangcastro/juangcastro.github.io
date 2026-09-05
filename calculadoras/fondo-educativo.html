@@ -646,6 +646,7 @@ function runMC(p) {
     return costo * acumInfl;
   }
   var lp = lognormParams(p.inflacion, p.inflVol);
+  var lpRet = lognormParams(p.rentabilidad, p.volFondo); // factor (1+ret) log-normal
   var n = p.nSims;
   var saldosFin = [], costosFin = [], porAnio = [], costosPorAnio = [], exitos = 0, caminos = [], retsTodos = [];
   for (var a = 0; a < horizonte; a++) { porAnio.push([]); costosPorAnio.push([]); }
@@ -668,13 +669,14 @@ function runMC(p) {
   var costoSum = [];
   for (var cc = 0; cc < horizonte; cc++) costoSum.push(0);
   for (var s = 0; s < n; s++) {
-    var mu = p.rentabilidad;
     var saldo = p.montoInicial;
     var acumInfl = 1, totalCosto = 0, caminoSim = [], retsSim = [];
     for (var per = 1; per <= horizonte; per++) {
       var anio = p.anioInicio + per - 1;
       var inflAnual = Math.exp(lp.mx + lp.sx * randNormal()) - 1;
-      var ret = mu + p.volFondo * randNormal();
+      // retorno anual log-normal: el factor (1+ret) = exp(mx + sx·Z) nunca cae por debajo
+      // de 0 → no se puede perder más de lo invertido en un año (cola inferior acotada en −100%)
+      var ret = Math.exp(lpRet.mx + lpRet.sx * randNormal()) - 1;
       retsSim.push(ret);
       // aporte del año
       var aporte = 0;
