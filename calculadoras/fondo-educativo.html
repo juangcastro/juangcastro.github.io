@@ -1016,12 +1016,12 @@ $('runBtn').addEventListener('click', function () {
   if (mc.p5 >= 0) {
     v = '<b>Con 95% de confianza el fondo cubre el plan.</b> Un año después de terminar los estudios (año ' +
         mc.anioFinal + ', edad ' + mc.edadFinal + ') será ≥ <span class="ok">' +
-        money(mc.p5) + '</span> (P5), con una media de <b>' + money(mc.mean) + '</b> y mediana de ' + money(mc.p50) +
-        '. El fondo paga todo y termina sin deuda en el <b>' + (mc.pSucc * 100).toFixed(1) + '%</b> de los ' +
+        money(mc.p5) + '</span> (P5); en el escenario más probable la mediana es de <b>' + money(mc.p50) +
+        '</b>. El fondo paga todo y termina sin deuda en el <b>' + (mc.pSucc * 100).toFixed(1) + '%</b> de los ' +
         r.p.nSims.toLocaleString('en-US') + ' escenarios simulados.';
   } else {
     v = '<b>El plan no es seguro.</b> En el peor 5% de escenarios el fondo se agota antes de terminar (P5 = <span style="color:var(--accent)">' +
-        money(mc.p5) + '</span>); en promedio termina con <b>' + money(mc.mean) + '</b> y solo termina sin deuda en el <b>' +
+        money(mc.p5) + '</span>); en el escenario más probable (mediana) termina con <b>' + money(mc.p50) + '</b> y solo termina sin deuda en el <b>' +
         (mc.pSucc * 100).toFixed(1) + '%</b> de los escenarios. Para una confianza del 95%, sube los aportes mensuales o el monto inicial hasta que el P5 sea ≥ $0.';
   }
   $('verdict').innerHTML = v;
