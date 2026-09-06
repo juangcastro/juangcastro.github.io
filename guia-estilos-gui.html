@@ -69,7 +69,7 @@
   <div class="page cover">
     <div class="ck">Red Queen · Design System</div>
     <h1>Guía de estilos GUI</h1>
-    <p class="csub">92 estilos de interfaz documentados: los 6 aprobados por Juan con interfaces de ejemplo completas, y 84 estilos de referencia con mockup visual de cada uno.</p>
+    <p class="csub">93 estilos de interfaz documentados: los 6 aprobados por Juan con interfaces de ejemplo completas, y 84 estilos de referencia con mockup visual de cada uno.</p>
     <div class="cchips">
       <span class="chip c1">Cyberpunk / Neuromancer</span>
       <span class="chip c2">Ivory Terminal</span>
@@ -79,9 +79,10 @@
       <span class="chip" style="color:#ff3b5c;border-color:#ff3b5c">The Red Queen</span>
       <span class="chip" style="color:#FA8072;border-color:#FA8072">StatMap</span>
       <span class="chip" style="color:#0E78E8;border-color:#0E78E8">AM Trades</span>
+      <span class="chip" style="color:#625FFF;border-color:#625FFF">StockNest</span>
     </div>
     <div class="cbar"></div>
-    <div class="cmeta">Agosto 2026 · theredqueen.co · 92 estilos</div>
+    <div class="cmeta">Agosto 2026 · theredqueen.co · 93 estilos</div>
   </div>
 
   <div class="page">
@@ -2444,6 +2445,91 @@
 
     <h3 class="ah" style="--ac:#0E78E8;font-size:15px;margin-top:26px">Métrica · uso en TRQ</h3>
     <p style="font-size:12px;color:#6b7280;margin-top:6px">Referencia para: blog de educación de trading (estructura artículo con hero dark + cuerpo blanco), páginas de programa, community landing con Discord CTA. El acento azul #0E78E8 es muy distinto al rojo TRQ #ff3b5c — si se adopta, decidir si se mantiene el esquema dark + azul para un sub-brand educativo o se mapea al rojo de marca. El patrón "bandas alternas dark/light" y el CTA pill radius 40 son trasladables tal cual.</p>
+  </div>
+
+
+  <div class="page">
+    <div class="phead"><span class="pnum">09</span><span class="pref">Referencia · stocknest.app · React SPA</span></div>
+    <div class="tag-row"><span class="tag" style="--ac:#625FFF">StockNest</span><span class="tag2">análisis de stocks · screener · dashboard data-dense</span></div>
+    <h2 class="ah" style="--ac:#625FFF">StockNest (ficha de stock / terminal de datos)</h2>
+    <p class="adesc">React SPA (Vite + Tailwind v4 + Recharts + Lucide). Dark-first terminal de análisis: fondo casi negro #09090B, paneles #1E1E21, acento índigo #625FFF, semántica esmeralda/rojo para positivo/negativo. Firma visual: logo de barras blancas + <b>anillo cónico multicolor giratorio</b> (azul → púrpura → rosa → ámbar) en cards/logo. Tipografía: system-ui sans (Inter-like) + mono para números. Texto diminuto (10-13px) y data-dense.</p>
+
+    <div class="mock" style="background:#0A0A0C;border:1px solid #1E1E21;border-radius:14px;padding:0;font-family:system-ui,sans-serif;color:#fff;overflow:hidden">
+      <!-- sidebar + topbar mock -->
+      <div style="display:flex;min-height:340px">
+        <div style="width:150px;background:#09090B;border-right:1px solid #1E1E21;padding:12px 8px;flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:6px;padding:4px 8px 14px;border-bottom:1px solid #1E1E21;margin-bottom:10px">
+            <span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:conic-gradient(from 0deg,#4285F4,#9B72CB,#D96570,#F0A04B,#4285F4)"></span>
+            <span style="font-size:12px;font-weight:700">Stock<span style="color:#9B72CB">Nest</span></span>
+          </div>
+          <div style="font-size:10px;color:#71717A;line-height:1.9;padding-left:4px">
+            <div style="color:#fff;background:#1E1E21;border-radius:5px;padding:2px 6px">◧ Overview</div>
+            <div>◈ Score</div><div>◈ Holdings</div><div>◈ Analyst</div><div>◈ Financials</div>
+            <div>⇄ Compare</div><div style="margin-top:8px;color:#52525B">────────</div>
+            <div>◈ Screener</div><div>◈ Calendar</div><div>◈ DCF</div>
+          </div>
+        </div>
+        <div style="flex:1;padding:14px 18px">
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span style="font-size:13px;font-weight:600">MU</span>
+            <span style="font-size:20px;font-weight:700;letter-spacing:-.02em">$1,015</span>
+            <span style="background:#10B9811A;color:#10B981;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px">+6.33% (+60.45)</span>
+            <span style="font-size:9px;color:#71717A;margin-left:auto">Sep 4, 2026 · 5Y</span>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:10px;align-items:flex-end;height:70px">
+            <div style="width:8%;height:30%;background:#625FFF;opacity:.6;border-radius:2px"></div>
+            <div style="width:8%;height:42%;background:#625FFF;opacity:.7;border-radius:2px"></div>
+            <div style="width:8%;height:38%;background:#625FFF;opacity:.7;border-radius:2px"></div>
+            <div style="width:8%;height:55%;background:#625FFF;opacity:.8;border-radius:2px"></div>
+            <div style="width:8%;height:70%;background:#625FFF;border-radius:2px"></div>
+            <div style="width:8%;height:85%;background:#10B981;border-radius:2px"></div>
+            <div style="width:8%;height:100%;background:#10B981;border-radius:2px"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px">
+            <div style="background:#1E1E21;border-radius:8px;padding:6px 8px"><div style="font-size:8px;color:#71717A">MARKET CAP</div><div style="font-size:11px;font-weight:600">$1.15T</div></div>
+            <div style="background:#1E1E21;border-radius:8px;padding:6px 8px"><div style="font-size:8px;color:#71717A">P/E TTM</div><div style="font-size:11px;font-weight:600">22.7×</div></div>
+            <div style="background:#1E1E21;border-radius:8px;padding:6px 8px"><div style="font-size:8px;color:#71717A">REV GROWTH</div><div style="font-size:11px;font-weight:600;color:#10B981">+167%</div></div>
+            <div style="background:#1E1E21;border-radius:8px;padding:6px 8px"><div style="font-size:8px;color:#71717A">NET MARGIN</div><div style="font-size:11px;font-weight:600">55.9%</div></div>
+          </div>
+          <div style="margin-top:10px;background:#1E1E21;border-radius:10px;padding:10px 12px">
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px">Score Card · <span style="color:#F0A04B">3.6 Good</span></div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+              <div style="text-align:center"><div style="height:3px;background:#10B981;border-radius:2px;width:80%;margin:auto"></div><div style="font-size:7px;color:#71717A;margin-top:3px">Profit</div></div>
+              <div style="text-align:center"><div style="height:3px;background:#10B981;border-radius:2px;width:90%;margin:auto"></div><div style="font-size:7px;color:#71717A;margin-top:3px">Growth</div></div>
+              <div style="text-align:center"><div style="height:3px;background:#9B72CB;border-radius:2px;width:70%;margin:auto"></div><div style="font-size:7px;color:#71717A;margin-top:3px">Mgmt</div></div>
+              <div style="text-align:center"><div style="height:3px;background:#10B981;border-radius:2px;width:90%;margin:auto"></div><div style="font-size:7px;color:#71717A;margin-top:3px">Health</div></div>
+              <div style="text-align:center"><div style="height:3px;background:#9B72CB;border-radius:2px;width:70%;margin:auto"></div><div style="font-size:7px;color:#71717A;margin-top:3px">Div</div></div>
+              <div style="text-align:center"><div style="height:3px;background:#EF4444;border-radius:2px;width:25%;margin:auto"></div><div style="font-size:7px;color:#71717A;margin-top:3px">Val</div></div>
+              <div style="text-align:center"><div style="height:3px;background:#F0A04B;border-radius:2px;width:70%;margin:auto"></div><div style="font-size:7px;color:#71717A;margin-top:3px">Signal</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="ah" style="--ac:#625FFF;font-size:15px;margin-top:26px">Especificación</h3>
+    <div style="font-size:12px;color:#6b7280;line-height:1.7">
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Stack:</b> React SPA (Vite) + Tailwind CSS v4 (LightningCSS, colores oklch) + Recharts (charts) + Lucide (iconos stroke 2) + sistema dark por clase .dark. Sin framework de página (no Next).</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Fuentes:</b> system-ui sans (ui-sans-serif → SF/Inter-like) + ui-monospace (SF Mono/Menlo) para números. Sin Google Fonts — tipografía nativa del sistema. Números con <code>tabular-nums</code>.</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Tipos de objeto:</b> sidebar fija con logo + 15 secciones (icono + label, activo = panel #1E1E21 con radius 5) · topbar con buscador · ficha de stock: ticker + precio grande (20px/700) + chip de cambio (esmeralda/rojo bg 10%) · gráfico de velas/barras Recharts · grid de métricas (Market Cap, P/E, growth...) en cards #1E1E21 radius 8 · Score Card con 7 barras de sub-scores coloreadas · listas de actividad (insiders/instituciones) con avatares y montos · tabs · footer con Discord CTA.</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Estados:</b> positivo = esmeralda #10B981 · negativo = rojo #EF4444 · alerta = ámbar #F0A04B · primario = índigo #625FFF · texto muted zinc #71717A (dark) · texto zinc-900/zinc-100. Badges con bg 10% del color + texto del color.</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Firma visual:</b> logo = barras blancas ascendentes (rects con fill-opacity 0.55→0.85) · anillo cónico conic-gradient giratorio (8s) en 4 colores #4285F4→#9B72CB→#D96570→#F0A04B (sn-ring) · texto con gradiente animado (sn-text-sweep) en títulos especiales.</p>
+    </div>
+
+    <h3 class="ah" style="--ac:#625FFF;font-size:15px;margin-top:26px">Paleta</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <div style="background:#09090B;border:1px solid #333;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">bg<br>#09090B</div>
+      <div style="background:#1E1E21;border:1px solid #333;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">panel<br>#1E1E21</div>
+      <div style="background:#625FFF;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">primary<br>#625FFF</div>
+      <div style="background:#10B981;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">up<br>#10B981</div>
+      <div style="background:#EF4444;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">down<br>#EF4444</div>
+      <div style="background:#9B72CB;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">violet<br>#9B72CB</div>
+      <div style="background:#F0A04B;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">amber<br>#F0A04B</div>
+    </div>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px">Fondo y paneles verificados por píxeles (RGB 9,9,11 y 30,30,33/24,24,27); esmeralda/índigo/rojo/ámbar presentes en DOM + píxeles. Ring multicolor: #4285F4 #9B72CB #D96570 #F0A04B.</p>
+
+    <h3 class="ah" style="--ac:#625FFF;font-size:15px;margin-top:26px">Métrica · uso en TRQ</h3>
+    <p style="font-size:12px;color:#6b7280;margin-top:6px">Referencia para: ficha de ticker/activo del engine Neuromancer (precio + chip % + gráfico + grid de métricas), dashboard de portafolio con Score Card por dimensiones (α, β, régimen, liquidez), comparador de fundamentales. El patrón "card data-dense con label 8px + valor 11px semibold" y el Score Card con barras por dimensión son directamente trasladables a Neuromancer. El anillo multicolor giratorio como marca de "live" es un recurso interesante para el estatus del engine. #625FFF ≠ rojo TRQ #ff3b5c — el índigo funcionaría como acento secundario si se adopta (los verdes/rojos semánticos ya son los del dashboard).</p>
   </div>
 
 </body>
