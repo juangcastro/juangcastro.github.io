@@ -3,33 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v35 — Juan Castro</title>
+<title>Odyssey Dashboard v36 — Juan Castro</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #0a0a0f; --surface: #12121a; --card: #1a1a28; --border: #2a2a3e;
-    --text: #e8e8f0; --muted: #8888a0; --accent: #f0c040;
-    --green: #40d080; --red: #e05050; --blue: #5090f0; --purple: #a070f0;
+    --bg: #06070c; --surface: #0c0e17; --card: #10131f; --border: #1c2233;
+    --text: #c9d1e4; --muted: #55617e; --accent: #ff9e1b;
+    --green: #3dd68c; --red: #ff4d5e; --blue: #4cc9f0; --purple: #b18cff;
+    --amber-dim: rgba(255,158,27,0.14); --cyan-dim: rgba(76,201,240,0.10);
   }
-  body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background: var(--bg); color: var(--text); padding: 24px; }
-  .container { max-width: 1400px; margin: 0 auto; }
-  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-  .header h1 { font-size: 22px; font-weight: 700; text-wrap: balance; }
-  .header h1 span { color: var(--accent); }
-  .header .date { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  body {
+    font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased;
+    color: var(--text); padding: 24px; min-height: 100vh; position: relative;
+    background:
+      radial-gradient(ellipse 900px 500px at 12% -5%, rgba(255,158,27,0.07), transparent 60%),
+      radial-gradient(ellipse 1100px 600px at 100% 105%, rgba(76,201,240,0.06), transparent 55%),
+      radial-gradient(ellipse 700px 400px at 85% 20%, rgba(177,140,255,0.04), transparent 60%),
+      var(--bg);
+  }
+  /* scanlines CRT + viñeta */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.014) 0px, rgba(255,255,255,0.014) 1px, transparent 1px, transparent 3px);
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 9997;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(2,3,7,0.55) 100%);
+  }
+  ::selection { background: rgba(255,158,27,0.35); color: #fff; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #232b42; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+  .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,158,27,0.25); box-shadow: 0 1px 0 rgba(76,201,240,0.08); }
+  .header h1 { font-family: 'Rajdhani', sans-serif; font-size: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; text-wrap: balance; color: var(--text); text-shadow: 0 0 18px rgba(255,158,27,0.25); }
+  .header h1 span { color: var(--accent); text-shadow: 0 0 22px rgba(255,158,27,0.55); }
+  .header .date { color: var(--muted); font-size: 12px; margin-top: 2px; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; }
   .grid { display: grid; gap: 16px; }
   .kpi-row { grid-template-columns: repeat(7, 1fr); }
   @media (max-width: 1000px) { .kpi-row { grid-template-columns: repeat(4, 1fr); } }
   @media (max-width: 600px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
-  .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; transition: transform 0.2s ease-out, border-color 0.2s ease-out; cursor: default; }
-  .kpi-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .kpi-card { background: linear-gradient(180deg, rgba(16,19,31,0.9), rgba(12,14,23,0.95)); border: 1px solid var(--border); border-radius: 6px; padding: 14px; text-align: center; transition: transform 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out; cursor: default; position: relative; }
+  .kpi-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,158,27,0.4), transparent); opacity: 0; transition: opacity 0.2s; }
+  .kpi-card:hover { border-color: rgba(255,158,27,0.55); transform: translateY(-2px); box-shadow: 0 0 18px rgba(255,158,27,0.10), inset 0 0 22px rgba(76,201,240,0.03); }
+  .kpi-card:hover::before { opacity: 1; }
   .kpi-card:active { transform: translateY(-1px) scale(0.98); }
-  .kpi-card .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 3px; }
-  .kpi-card .value { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .kpi-card .sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-  .kpi-card .target { font-size: 10px; color: var(--muted); margin-top: 3px; }
-  .kpi-card .diff { font-size: 11px; font-weight: 600; margin-top: 2px; }
+  .kpi-card .label { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 3px; }
+  .kpi-card .value { font-family: 'Rajdhani', sans-serif; font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: 1px; }
+  .kpi-card .sub { font-size: 11px; color: var(--muted); margin-top: 1px; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; }
+  .kpi-card .target { font-size: 10px; color: var(--muted); margin-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: 9px; }
+  .kpi-card .diff { font-size: 11px; font-weight: 600; margin-top: 2px; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
   .diff.positive { color: var(--green); }
   .diff.negative { color: var(--red); }
   .diff.neutral { color: var(--accent); }
@@ -42,59 +67,67 @@
   .two-col { grid-template-columns: 1fr 1fr; }
   .three-col { grid-template-columns: 1fr 1fr 1fr; }
   @media (max-width: 900px) { .two-col, .three-col { grid-template-columns: 1fr; } }
-  .section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
-  .section h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); text-wrap: balance; }
-  .section h2 .badge { font-size: 9px; background: var(--surface); padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-weight: 400; color: var(--muted); }
+  .section { background: linear-gradient(180deg, rgba(16,19,31,0.75), rgba(10,12,20,0.9)); border: 1px solid var(--border); border-radius: 6px; padding: 18px; position: relative; }
+  .section::before { content: ""; position: absolute; top: -1px; left: 16px; width: 60px; height: 1px; background: var(--accent); opacity: 0.6; }
+  .section h2 { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--text); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); text-wrap: balance; }
+  .section h2 .badge { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; background: rgba(76,201,240,0.08); border: 1px solid rgba(76,201,240,0.2); padding: 2px 8px; border-radius: 2px; margin-left: 8px; font-weight: 400; color: var(--blue); text-transform: none; letter-spacing: 0.5px; }
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th { text-align: left; color: var(--muted); font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 4px; border-bottom: 1px solid var(--border); }
-  td { padding: 6px 4px; border-bottom: 1px solid rgba(255,255,255,0.04); font-variant-numeric: tabular-nums; }
-  .value-good { color: var(--green); font-weight: 600; }
-  .value-warn { color: var(--accent); font-weight: 600; }
-  .value-bad { color: var(--red); font-weight: 600; }
+  th { text-align: left; color: var(--muted); font-weight: 500; font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.2px; padding: 6px 4px; border-bottom: 1px solid rgba(255,158,27,0.2); }
+  td { padding: 6px 4px; border-bottom: 1px solid rgba(255,255,255,0.04); font-variant-numeric: tabular-nums; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  tr:hover td { background: rgba(76,201,240,0.03); }
+  .value-good { color: var(--green); font-weight: 600; text-shadow: 0 0 10px rgba(61,214,140,0.25); }
+  .value-warn { color: var(--accent); font-weight: 600; text-shadow: 0 0 10px rgba(255,158,27,0.2); }
+  .value-bad { color: var(--red); font-weight: 600; text-shadow: 0 0 10px rgba(255,77,94,0.25); }
   .value-neutral { color: var(--muted); }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 6px; }
-  .cal-header { font-size: 9px; text-transform: uppercase; color: var(--muted); text-align: center; padding: 3px; font-weight: 500; letter-spacing: 0.5px; }
-  .cal-day { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px; min-height: 65px; text-align: center; font-size: 11px; transition: border-color 0.2s ease-out; }
-  .cal-day .day-num { font-weight: 600; font-size: 12px; margin-bottom: 3px; }
-  .cal-day .workout-label { font-size: 8px; color: var(--muted); line-height: 1.2; }
-  .cal-day .act-done { font-size: 16px; margin-top: 1px; }
-  .cal-day.today { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-  .cal-day.completed { border-color: var(--green); background: rgba(64,208,128,0.06); }
+  .cal-header { font-family: 'JetBrains Mono', monospace; font-size: 8px; text-transform: uppercase; color: var(--muted); text-align: center; padding: 3px; font-weight: 500; letter-spacing: 1px; }
+  .cal-day { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 6px; min-height: 65px; text-align: center; font-size: 11px; transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out; }
+  .cal-day .day-num { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 3px; letter-spacing: 1px; }
+  .cal-day .workout-label { font-family: 'JetBrains Mono', monospace; font-size: 7.5px; color: var(--muted); line-height: 1.3; }
+  .cal-day .act-done { font-size: 15px; margin-top: 1px; }
+  .cal-day.today { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 14px rgba(255,158,27,0.2); }
+  .cal-day.completed { border-color: rgba(61,214,140,0.5); background: rgba(61,214,140,0.05); }
   .cal-day.today.completed { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-  .cal-day.missed { border-color: var(--red); background: rgba(224,80,80,0.06); }
+  .cal-day.missed { border-color: rgba(255,77,94,0.5); background: rgba(255,77,94,0.05); }
   .cal-day.future { border-color: rgba(255,255,255,0.06); opacity: 0.5; }
   .cal-day.prev { opacity: 0.7; }
-  .rec-card { padding: 12px; background: var(--surface); border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 10px; transition: transform 0.2s ease-out; }
-  .rec-card:hover { transform: translateX(2px); }
-  .rec-card .title { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
-  .rec-card .body { font-size: 12.5px; color: #aeaecc; line-height: 1.65; }
+  .rec-card { padding: 12px; background: var(--surface); border-radius: 4px; border-left: 3px solid var(--accent); margin-bottom: 10px; transition: transform 0.2s ease-out, background 0.2s ease-out; }
+  .rec-card:hover { transform: translateX(2px); background: rgba(16,19,31,0.85); }
+  .rec-card .title { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+  .rec-card .body { font-size: 12.5px; color: #98a2bf; line-height: 1.65; }
   .rec-card.critical { border-left-color: var(--red); }
   .rec-card.good { border-left-color: var(--green); }
   .rec-card.info { border-left-color: var(--blue); }
   .week-summary { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-  .week-summary span { font-size: 10px; color: var(--muted); background: var(--surface); padding: 3px 8px; border-radius: 4px; }
+  .week-summary span { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); background: rgba(12,14,23,0.9); border: 1px solid var(--border); padding: 3px 8px; border-radius: 2px; }
   .swim-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
   @media (max-width: 700px) { .swim-kpis { grid-template-columns: repeat(2, 1fr); } }
   .athlete-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; margin-bottom: 16px; }
   @media (max-width: 800px) { .athlete-row { grid-template-columns: 1fr; } }
-  .athlete-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; animation: fadeIn 0.5s ease-out 0.1s both; }
-  .athlete-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
-  .athlete-main { font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
-  .athlete-main span { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .athlete-card { background: linear-gradient(180deg, rgba(16,19,31,0.9), rgba(12,14,23,0.95)); border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; position: relative; animation: fadeIn 0.5s ease-out 0.1s both; }
+  .athlete-card::after { content: ""; position: absolute; bottom: -1px; right: 16px; width: 44px; height: 1px; background: var(--blue); opacity: 0.5; }
+  .athlete-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 6px; }
+  .athlete-main { font-family: 'Rajdhani', sans-serif; font-size: 40px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; letter-spacing: 1px; }
+  .athlete-main span { font-size: 13px; font-weight: 500; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
   .athlete-sub { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
-  .athlete-delta { font-size: 11px; font-weight: 600; margin-top: 4px; }
+  .athlete-delta { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; margin-top: 4px; }
   .vo2-bar { position: relative; height: 10px; border-radius: 5px; background: linear-gradient(90deg, var(--red) 0%, var(--accent) 45%, var(--green) 70%, var(--green) 100%); margin-top: 10px; }
   .vo2-marker { position: absolute; top: -3px; width: 4px; height: 16px; border-radius: 2px; background: var(--text); box-shadow: 0 0 6px rgba(232,232,240,0.6); }
   .vo2-scale { display: flex; justify-content: space-between; font-size: 8px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
   .age-flex { display: flex; align-items: center; gap: 14px; }
-  .age-big { font-size: 40px; font-weight: 800; color: var(--green); font-variant-numeric: tabular-nums; line-height: 1; }
+  .age-big { font-family: 'Rajdhani', sans-serif; font-size: 44px; font-weight: 700; color: var(--green); font-variant-numeric: tabular-nums; line-height: 1; text-shadow: 0 0 16px rgba(61,214,140,0.35); }
   .age-vs { font-size: 11px; color: var(--muted); line-height: 1.5; }
-  .age-delta { font-size: 12px; font-weight: 700; color: var(--green); }
+  .age-delta { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--green); }
   .age-components { display: grid; gap: 6px; margin-top: 12px; }
-  .comp { display: grid; grid-template-columns: 1fr 90px 26px; align-items: center; gap: 8px; font-size: 10px; color: var(--muted); }
-  .comp .mini-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-  .comp .mini-fill { height: 100%; border-radius: 3px; }
+  .comp { display: grid; grid-template-columns: 1fr 90px 26px; align-items: center; gap: 8px; font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 9px; }
+  .comp .mini-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+  .comp .mini-fill { height: 100%; border-radius: 2px; }
   .comp .prio { font-size: 8px; text-align: right; color: var(--muted); }
+  .progress-bar { height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+  .progress-bar .fill { height: 100%; border-radius: 3px; }
+  .fill-green { background: linear-gradient(90deg, rgba(61,214,140,0.5), var(--green)); box-shadow: 0 0 8px rgba(61,214,140,0.4); }
+  .fill-yellow { background: linear-gradient(90deg, rgba(255,158,27,0.5), var(--accent)); box-shadow: 0 0 8px rgba(255,158,27,0.4); }
+  .fill-red { background: linear-gradient(90deg, rgba(255,77,94,0.5), var(--red)); box-shadow: 0 0 8px rgba(255,77,94,0.4); }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .kpi-card { animation: fadeIn 0.4s ease-out both; }
   .kpi-card:nth-child(1) { animation-delay: 0.05s; }
@@ -107,41 +140,43 @@
   .section { animation: fadeIn 0.5s ease-out 0.2s both; }
   .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 900px) { .chart-grid { grid-template-columns: 1fr; } }
-  .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
-  .chart-panel h3 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 6px; }
+  .chart-panel { background: linear-gradient(180deg, rgba(16,19,31,0.85), rgba(12,14,23,0.95)); border: 1px solid var(--border); border-radius: 6px; padding: 12px; position: relative; }
+  .chart-panel::before { content: ""; position: absolute; top: -1px; left: 12px; width: 40px; height: 1px; background: var(--blue); opacity: 0.6; }
+  .chart-panel h3 { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
   .chart-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 10px; color: var(--muted); margin-top: 8px; }
-  .chart-legend span { display: inline-flex; align-items: center; gap: 5px; }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .chart-legend span { display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 9px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
   html { scroll-behavior: smooth; }
-  /* ── Nav sticky ── */
+  /* ── Nav sticky (HUD) ── */
   .site-nav { position: sticky; top: 0; z-index: 100; display: flex; gap: 6px; align-items: center;
-    background: rgba(10,10,15,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; margin-bottom: 18px;
-    overflow-x: auto; scrollbar-width: thin; }
+    background: rgba(6,7,12,0.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,158,27,0.2); border-radius: 4px; padding: 8px 12px; margin-bottom: 18px;
+    overflow-x: auto; scrollbar-width: thin; box-shadow: 0 1px 0 rgba(76,201,240,0.06), 0 8px 24px rgba(0,0,0,0.4); }
   .site-nav::-webkit-scrollbar { height: 4px; }
   .site-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-  .nav-chip { flex: 0 0 auto; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.5px;
-    text-transform: uppercase; color: var(--muted); background: var(--surface); border: 1px solid var(--border);
-    border-radius: 999px; padding: 6px 12px; cursor: pointer; transition: all 0.15s ease-out;
+  .nav-chip { flex: 0 0 auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--muted); background: rgba(16,19,31,0.8); border: 1px solid var(--border);
+    border-radius: 3px; padding: 6px 12px; cursor: pointer; transition: all 0.15s ease-out;
     text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
-  .nav-chip:hover { color: var(--text); border-color: var(--accent); transform: translateY(-1px); }
+  .nav-chip:hover { color: var(--text); border-color: rgba(255,158,27,0.6); transform: translateY(-1px); text-shadow: 0 0 8px rgba(255,158,27,0.3); }
   .nav-chip:active { transform: scale(0.96); }
-  .nav-chip.active { color: var(--bg); background: var(--accent); border-color: var(--accent); font-weight: 700; }
+  .nav-chip.active { color: #06070c; background: var(--accent); border-color: var(--accent); font-weight: 700; box-shadow: 0 0 14px rgba(255,158,27,0.35); }
   .section { scroll-margin-top: 70px; }
   /* card-section unificado a .section */
-  .card-section { scroll-margin-top: 70px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
-  .card-section h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); text-wrap: balance; }
-  .card-section h2 .badge { font-size: 9px; background: var(--surface); padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-weight: 400; color: var(--muted); }
+  .card-section { scroll-margin-top: 70px; background: linear-gradient(180deg, rgba(16,19,31,0.75), rgba(10,12,20,0.9)); border: 1px solid var(--border); border-radius: 6px; padding: 18px; position: relative; }
+  .card-section::before { content: ""; position: absolute; top: -1px; left: 16px; width: 60px; height: 1px; background: var(--accent); opacity: 0.6; }
+  .card-section h2 { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--text); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); text-wrap: balance; }
+  .card-section h2 .badge { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; background: rgba(76,201,240,0.08); border: 1px solid rgba(76,201,240,0.2); padding: 2px 8px; border-radius: 2px; margin-left: 8px; font-weight: 400; color: var(--blue); text-transform: none; letter-spacing: 0.5px; }
   .card-section .rec-card { background: var(--surface); }
-  @media (max-width: 600px) { .site-nav { padding: 6px 8px; } .nav-chip { font-size: 9px; padding: 5px 9px; } }
+  @media (max-width: 600px) { .site-nav { padding: 6px 8px; } .nav-chip { font-size: 8.5px; padding: 5px 9px; } }
   /* ── top button ── */
   .to-top { position: fixed; bottom: 20px; right: 20px; z-index: 90; width: 42px; height: 42px;
-    border-radius: 50%; background: var(--card); border: 1px solid var(--accent); color: var(--accent);
+    border-radius: 4px; background: var(--card); border: 1px solid rgba(255,158,27,0.6); color: var(--accent);
     font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
     opacity: 0; pointer-events: none; transition: opacity 0.2s ease-out, transform 0.15s ease-out; }
   .to-top.visible { opacity: 1; pointer-events: auto; }
   .to-top:active { transform: scale(0.96); }
-  .to-top:hover { background: var(--accent); color: var(--bg); }
+  .to-top:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 16px rgba(255,158,27,0.4); }
 </style>
 </head>
 <body>
@@ -150,9 +185,9 @@
 <div class="header">
   <div>
     <h1>⚔️ <span>ODYSSEY</span> DASHBOARD</h1>
-    <div class="date">Actualizado: 2 Sep 2026 · Garmin + Fitdays (LePulse)</div>
+    <div class="date">Actualizado: 6 Sep 2026 · Garmin + Fitdays (LePulse) · BR2049 HUD</div>
   </div>
-  <div style="text-align:right;font-size:11px;color:var(--muted);">
+  <div style="text-align:right;font-size:11px;color:var(--muted);font-family:var(--mono,'JetBrains Mono');letter-spacing:1px;">
     Juan Castro · V3 Elite · Semana 31 Ago → 6 Sep
   </div>
 </div>
@@ -203,50 +238,50 @@
 <div class="grid kpi-row" style="margin-bottom:16px;">
   <div class="kpi-card">
     <div class="label">Peso</div>
-    <div class="value" style="color:var(--red);">83.3</div>
-    <div class="sub">kg <span style="color:var(--red);">▲ +0.7 en 9 días</span></div>
-    <div class="target">Meta: 77.0 · ⚠️ sin bajar</div>
-    <div class="diff neutral" style="color:var(--red);">⚠️ plan no ejecutado (0 fuerza)</div>
+    <div class="value" style="color:var(--green);">82.9</div>
+    <div class="sub">kg <span style="color:var(--green);">▼ -0.4 en 4 días</span></div>
+    <div class="target">Meta: 77.0 · mín 82.0 (5 Sep)</div>
+    <div class="diff neutral" style="color:var(--accent);">▼ mínimo del ciclo: 82.0</div>
   </div>
   <div class="kpi-card">
     <div class="label">Grasa</div>
-    <div class="value" style="color:var(--accent);">19.3<span style="font-size:14px;">%</span></div>
-    <div class="sub">16.1 kg <span style="color:var(--red);">▲ +0.5 en 2 días</span></div>
-    <div class="target" style="color:var(--green);">mín. 18.8% (31 Ago) · sube hoy</div>
+    <div class="value" style="color:var(--green);">19.2<span style="font-size:14px;">%</span></div>
+    <div class="sub">15.9 kg <span style="color:var(--green);">▼ mín 15.0 (5 Sep)</span></div>
+    <div class="target" style="color:var(--green);">▼ 18.3% el 5 Sep — mejor del ciclo</div>
   </div>
   <div class="kpi-card">
     <div class="label">Músculo Tot</div>
-    <div class="value" style="color:var(--green);">62.6</div>
-    <div class="sub">kg <span style="color:var(--green);">▲ +0.7 vs 24 Ago</span></div>
-    <div class="target">62.4-62.7 · tendencia positiva</div>
+    <div class="value" style="color:var(--green);">62.5</div>
+    <div class="sub">kg <span style="color:var(--green);">= estable 62.5-63.0</span></div>
+    <div class="target">pico 63.0 (3-4 Sep)</div>
   </div>
   <div class="kpi-card">
     <div class="label">Sueño (prom 7d)</div>
-    <div class="value" style="color:var(--accent);">6.6</div>
-    <div class="sub">horas <span style="color:var(--red);">▼ -0.4</span></div>
-    <div class="target">Meta: 7-8h · 2 noches &lt;7h</div>
-    <div class="progress-bar"><div class="fill fill-yellow" style="width:44%"></div></div>
+    <div class="value" style="color:var(--accent);">6.4</div>
+    <div class="sub">horas <span style="color:var(--red);">▼ -0.4 vs prev</span></div>
+    <div class="target">Meta: 7-8h · 4 noches &lt;7h</div>
+    <div class="progress-bar"><div class="fill fill-yellow" style="width:41%"></div></div>
   </div>
   <div class="kpi-card">
     <div class="label">HRV (prom 7d)</div>
-    <div class="value" style="color:var(--accent);">46</div>
-    <div class="sub">ms <span style="color:var(--accent);">▼ -2 · volátil</span></div>
-    <div class="target" style="color:var(--green);">picos 32 (sáb) → 57 (lun)</div>
-    <div class="progress-bar"><div class="fill fill-yellow" style="width:46%"></div></div>
+    <div class="value" style="color:var(--green);">49</div>
+    <div class="sub">ms <span style="color:var(--accent);">volátil</span></div>
+    <div class="target" style="color:var(--green);">61 → 36 (dom) · semana irregular</div>
+    <div class="progress-bar"><div class="fill fill-green" style="width:50%"></div></div>
   </div>
   <div class="kpi-card">
     <div class="label">Sueño anoche</div>
-    <div class="value" style="color:var(--green);">6.8</div>
-    <div class="sub">h · Score 83</div>
-    <div class="target">REM 1.4h · profundo 1.2h</div>
-    <div class="diff positive" style="color:var(--green);">● GOOD — estable</div>
+    <div class="value" style="color:var(--green);">7.2</div>
+    <div class="sub">h · Score 72</div>
+    <div class="target">REM 1.5h · profundo 1.4h</div>
+    <div class="diff neutral" style="color:var(--muted);">● FAIR — domingo recovery</div>
   </div>
   <div class="kpi-card">
     <div class="label">HRV anoche</div>
-    <div class="value" style="color:var(--accent);">43</div>
-    <div class="sub">ms <span style="color:var(--accent);">▼ -14 · del pico 57</span></div>
-    <div class="target">🔬 volátil esta semana</div>
-    <div class="progress-bar"><div class="fill fill-yellow" style="width:55%"></div></div>
+    <div class="value" style="color:var(--red);">36</div>
+    <div class="sub">ms <span style="color:var(--red);">▼ -15 · mínimo semanal</span></div>
+    <div class="target">🔬 61 (jue) → 36 (dom) descendente</div>
+    <div class="progress-bar"><div class="fill fill-red" style="width:36%"></div></div>
   </div>
 </div>
 
@@ -254,36 +289,36 @@
   <div class="section" id="composicion">
     <h2><span class="emoji">🧬</span>Composición y Sueño <span class="badge">últimos 3 días con reporte</span></h2>
     <table>
-      <tr><th>Métrica</th><th>31 Ago</th><th>1 Sep</th><th>Hoy 2 Sep</th></tr>
-      <tr><td>Peso (kg)</td><td>82.8</td><td>82.5</td><td><strong class="value-warn">83.3 ▲</strong></td></tr>
-      <tr><td>Grasa %</td><td class="value-good">18.8 ▼ mín</td><td>18.9</td><td><strong>19.3</strong></td></tr>
-      <tr><td>Grasa (kg)</td><td class="value-good">15.6 ▼ mín</td><td>15.6</td><td><strong>16.1</strong></td></tr>
-      <tr><td>Músculo tot (kg)</td><td class="value-good">62.7 ▲</td><td>62.4</td><td><strong>62.6</strong></td></tr>
-      <tr><td>Sueño (h)</td><td>6.3</td><td>7.1</td><td><strong>6.8</strong></td></tr>
-      <tr><td>Sleep Score</td><td>83</td><td>88</td><td><strong>83</strong></td></tr>
-      <tr><td>HRV últ. noche</td><td class="value-good">57 ▲</td><td>48</td><td><strong>43</strong></td></tr>
-      <tr><td>Entreno</td><td>🚶 58m</td><td>—</td><td>🚶 51m (2 Sep)</td></tr>
+      <tr><th>Métrica</th><th>4 Sep</th><th>5 Sep</th><th>Hoy 6 Sep</th></tr>
+      <tr><td>Peso (kg)</td><td>82.9</td><td class="value-good">82.0 ▼ mín</td><td><strong>82.9</strong></td></tr>
+      <tr><td>Grasa %</td><td class="value-good">18.5</td><td class="value-good">18.3 ▼ mín</td><td><strong>19.2</strong></td></tr>
+      <tr><td>Grasa (kg)</td><td>15.3</td><td class="value-good">15.0 ▼ mín</td><td><strong>15.9</strong></td></tr>
+      <tr><td>Músculo tot (kg)</td><td class="value-good">63.0 ▲</td><td>62.5</td><td><strong>62.5</strong></td></tr>
+      <tr><td>Sueño (h)</td><td>5.0</td><td>6.2</td><td><strong>7.2</strong></td></tr>
+      <tr><td>Sleep Score</td><td>70</td><td>79</td><td><strong>72</strong></td></tr>
+      <tr><td>HRV últ. noche</td><td>46</td><td>51</td><td><strong class="value-warn">36 ▼</strong></td></tr>
+      <tr><td>Entreno</td><td>—</td><td>—</td><td>— (4º día sin actividad)</td></tr>
     </table>
-    <div style="margin-top:8px;font-size:10px;color:var(--muted);">⚠️ 7 reportes Fitdays (25 Ago-2 Sep) capturados y trashed · serie grasa: 19.9→19.4→19.0→19.1→18.8→18.9→19.3% — mínimo el 31 Ago, rebote de 2 días sin entrenar</div>
-    <div style="margin-top:8px;font-size:10px;color:var(--muted);">🔬 9 días sin sesiones de fuerza registradas (solo 🚶) · VO₂max 45→43 · la composición mejora por dieta pero el estímulo falta.</div>
+    <div style="margin-top:8px;font-size:10px;color:var(--muted);">✅ 4 reportes Fitdays (3-6 Sep) capturados y trashed · <strong style="color:var(--green);">5 Sep = mínimo del ciclo: 82.0 kg / 18.3% grasa / 15.0 kg grasa</strong> — la dieta sigue bajando grasa real</div>
+    <div style="margin-top:8px;font-size:10px;color:var(--muted);">🔬 12 días sin sesiones de fuerza (25 Ago-6 Sep) · VO₂max 43 · la grasa kg cayó 16.4→15.0 (−1.4) con dieta sola — el estímulo es el siguiente paso.</div>
   </div>
   <div class="section" id="sueno">
     <h2><span class="emoji">📊</span>Histórico de Sueño (7 días)</h2>
     <table>
       <tr><th>Día</th><th>Total</th><th>Profundo</th><th>REM</th><th>Score</th><th>HRV</th><th>Status</th></tr>
-      <tr><td>Jue 27</td><td>6.4h</td><td>1.2h</td><td>1.1h</td><td>84</td><td>47</td><td class="value-good">✅ GOOD</td></tr>
-      <tr><td>Vie 28</td><td>5.4h</td><td>1.1h</td><td>0.9h</td><td>72</td><td>45</td><td class="value-warn">● FAIR</td></tr>
-      <tr><td>Sáb 29</td><td class="value-good">8.2h</td><td>1.4h</td><td>1.5h</td><td class="value-bad">55 POOR</td><td class="value-warn">32 ▼ mín</td><td class="value-warn">● noche pobre</td></tr>
-      <tr><td>Dom 30</td><td>6.1h</td><td>1.4h</td><td>0.7h</td><td>78</td><td>52</td><td class="value-warn">● FAIR</td></tr>
       <tr><td>Lun 31</td><td>6.3h</td><td>0.9h</td><td>1.8h</td><td>83</td><td class="value-good">57 ▲</td><td class="value-good">✅ GOOD</td></tr>
       <tr><td>Mar 1</td><td>7.1h</td><td>1.5h</td><td>1.8h</td><td>88</td><td>48</td><td class="value-good">✅ GOOD</td></tr>
-      <tr><td><strong>Mié 2</strong></td><td><strong>6.8h</strong></td><td><strong>1.2h</strong></td><td><strong>1.4h</strong></td><td><strong>83</strong></td><td><strong>43</strong></td><td><strong class="value-good">✅ GOOD</strong></td></tr>
+      <tr><td>Mié 2</td><td>6.8h</td><td>1.2h</td><td>1.4h</td><td>83</td><td>43</td><td class="value-good">✅ GOOD</td></tr>
+      <tr><td>Jue 3</td><td>6.0h</td><td>0.8h</td><td>1.0h</td><td>77</td><td class="value-good">61 ▲ pico</td><td class="value-warn">● FAIR</td></tr>
+      <tr><td>Vie 4</td><td>5.0h</td><td>1.4h</td><td>1.0h</td><td>70</td><td>46</td><td class="value-warn">● FAIR</td></tr>
+      <tr><td>Sáb 5</td><td>6.2h</td><td>1.4h</td><td>0.9h</td><td>79</td><td>51</td><td class="value-warn">● FAIR</td></tr>
+      <tr><td><strong>Dom 6</strong></td><td><strong>7.2h</strong></td><td><strong>1.4h</strong></td><td><strong>1.5h</strong></td><td><strong>72</strong></td><td><strong class="value-warn">36 ▼ mín</strong></td><td><strong class="value-warn">● HRV descendente</strong></td></tr>
     </table>
     <div style="margin-top:8px;display:flex;gap:8px;font-size:10px;color:var(--muted);flex-wrap:wrap;">
-      <span>📊 Promedio: 6.6h/noche</span>
+      <span>📊 Promedio: 6.4h/noche</span>
       <span>🧠 Profundo: 1.2h (19%)</span>
-      <span>💭 REM: 1.3h (20%)</span>
-      <span>📈 HRV: 32 (sáb 29) → 57 (lun 31) · sin patrón de ensayo (sin registro de jueves)</span>
+      <span>💭 REM: 1.3h (21%)</span>
+      <span>📈 HRV: 61 (mié) → 36 (sáb) — tendencia descendente toda la semana</span>
     </div>
   </div>
 </div>
@@ -374,20 +409,20 @@
     <div class="week-summary"><span>🔴 0/7 fuerza · solo 4 🚶</span><span>⚠️ plan Odyssey NO ejecutado</span></div>
   </div>
   <div class="section" id="semana-act">
-    <h2><span class="emoji">📅</span>Semana Actual <span class="badge">31 Ago → 6 Sep</span></h2>
+    <h2><span class="emoji">📅</span>Semana Actual <span class="badge">31 Ago → 6 Sep · cierre</span></h2>
     <div class="cal-grid">
       <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
       <div class="cal-header">Dom</div>
-      <div class="cal-day completed"><div class="day-num">31</div><div class="workout-label">🚶 58m · HRV 57</div><div class="act-done">✅</div></div>
-      <div class="cal-day missed"><div class="day-num">1</div><div class="workout-label">Mar · natación plan</div><div class="act-done">💔</div></div>
-      <div class="cal-day today"><div class="day-num">2</div><div class="workout-label">Mié · 🚶 51m</div><div class="act-done">⏰</div></div>
-      <div class="cal-day future"><div class="day-num">3</div><div class="workout-label">Shoulder &lt;17:00</div><div class="act-icon">⏳</div></div>
-      <div class="cal-day future"><div class="day-num">4</div><div class="workout-label">Posterior</div><div class="act-icon">⏳</div></div>
-      <div class="cal-day future"><div class="day-num">5</div><div class="workout-label">Sprint</div><div class="act-icon">⏳</div></div>
-      <div class="cal-day future"><div class="day-num">6</div><div class="workout-label">Recovery</div><div class="act-icon">⏳</div></div>
+      <div class="cal-day prev completed"><div class="day-num">31</div><div class="workout-label">🚶 58m · HRV 57</div><div class="act-done">✅</div></div>
+      <div class="cal-day prev missed"><div class="day-num">1</div><div class="workout-label">Mar · natación ✗</div><div class="act-done">💔</div></div>
+      <div class="cal-day prev completed"><div class="day-num">2</div><div class="workout-label">🚶 51m</div><div class="act-done">✅</div></div>
+      <div class="cal-day prev missed"><div class="day-num">3</div><div class="workout-label">Shoulder ✗</div><div class="act-done">💔</div></div>
+      <div class="cal-day prev missed"><div class="day-num">4</div><div class="workout-label">Posterior ✗</div><div class="act-done">💔</div></div>
+      <div class="cal-day prev missed"><div class="day-num">5</div><div class="workout-label">Sprint ✗</div><div class="act-done">💔</div></div>
+      <div class="cal-day today completed"><div class="day-num">6</div><div class="workout-label">Dom recovery</div><div class="act-done">🛋️</div></div>
     </div>
-    <div class="week-summary"><span>🟡 1/7 · ⏳ 5</span><span>⚠️ Mar 1 sin natación · retomar plan HOY</span></div>
+    <div class="week-summary"><span>🔴 0/7 fuerza · semana en blanco</span><span>⚠️ 2ª semana sin ejecutar Odyssey</span></div>
   </div>
   <div class="section" id="tracker">
     <h2><span class="emoji">🔄</span>Tracker Diario</h2>
@@ -408,20 +443,20 @@
 </div>
 
 <div class="section" id="analisis" style="margin-bottom:16px;">
-  <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 2 Sep</h2>
+  <h2><span class="emoji">🧠</span>Análisis y Recomendaciones — 6 Sep</h2>
 
   <div class="rec-card critical">
-    <div class="title">🔴 9 DÍAS SIN FUERZA: el plan Odyssey v2 NO se ejecutó — y los datos lo confirman</div>
+    <div class="title">🔴 12 DÍAS SIN FUERZA (25 Ago-6 Sep): 2 semanas del Odyssey v2 en blanco</div>
     <div class="body">
-      <strong>25 Ago → 2 Sep: cero sesiones de fuerza registradas</strong> (solo 6 caminatas). El resultado es exactamente el esperado por tus propias reglas:
+      La racha se extiende: <strong>cero sesiones de fuerza y cero natación en 12 días</strong>. Pero hay una noticia importante en la báscula:
       <br><br>
-      • <strong>VO₂max 45 → 43</strong> (▼ -2.0) — sin estímulo de intensidad, el motor baja<br>
-      • <strong>Peso estable 82.5-83.3</strong> — el déficit de 1,850-1,950 kcal no se sostuvo (o el ayuno 16:8 no se ejecutó)<br>
-      • <strong>Grasa kg: 16.4 → 15.6 (31 Ago) → 16.1 (2 Sep)</strong> — bajó con la dieta los primeros días y rebotó al relajarla<br>
-      • <strong>Músculo: 61.9 → 62.6</strong> — la única buena noticia (probablemente por hidratación/medición, no por estímulo)<br>
-      • <strong>HRV errático: 36 → 32 → 57 → 43</strong> — sin la ancla del entreno regular, la recuperación no tiene ritmo
+      • <strong>🏆 5 Sep = mínimo del ciclo: 82.0 kg / 18.3% grasa / 15.0 kg grasa</strong> — la dieta + ayuno 16:8 SÍ están funcionando (grasa kg: 16.4 → 15.0, −1.4 kg de grasa real en 12 días)<br>
+      • <strong>Músculo estable 62.5-63.0</strong> — no se está quemando masa magra<br>
+      • <strong>VO₂max 43</strong> — sin estímulo de intensidad sigue a la baja<br>
+      • <strong>HRV descendente toda la semana: 61 → 46 → 51 → 36</strong> — sin la ancla del entreno, la recuperación no tiene ritmo (36 hoy es mínimo)<br>
+      • <strong>Peso hoy 82.9 (+0.9 vs ayer)</strong> — rebote de hidratación fin de semana, normal
       <br><br>
-      <strong>Lectura honesta:</strong> el plan agresivo que diseñamos el 24 Ago (natación martes + 5-6 sesiones/semana + 2,500-3,000 kcal quemadas) <strong>requiere ejecución</strong>. La dieta sola bajó la grasa 0.8 kg en 6 días — imagina con el estímulo. <strong>Hoy es el día de retomar: Upper X3 + Rings 400-450 kcal.</strong>
+      <strong>Lectura honesta:</strong> la proyección decía 82.5 kg a esta altura y vas en 82.9 — el atraso es pequeño gracias a la dieta. El cuerpo está listo (músculo estable, sueño 7.2h anoche). <strong>La semana 7-13 Sep es la de arrancar: 5 sesiones + natación martes.</strong>
     </div>
   </div>
 
@@ -461,16 +496,16 @@
   </div>
 
   <div class="rec-card" style="border-left-color:var(--purple);">
-    <div class="title">🎯 Plan de acción 2-8 Sep — RE-ARRANQUE del Odyssey v2</div>
+    <div class="title">🎯 Plan de acción 7-13 Sep — SEMANA DE ARRANQUE (2ª oportunidad)</div>
     <div class="body">
-      1. <strong>Mié 2 (HOY):</strong> 💪 Upper X3 + Rings — 400-450 kcal · romper la racha de 9 días YA<br>
-      2. <strong>Jue 3 (crítico):</strong> Shoulder ANTES de las 17:00 — ensayo de música; la regla ya costó 2 HRV mínimos<br>
-      3. <strong>Vie 4:</strong> Posterior + Unilateral — 400-450 kcal; la noche es libre<br>
-      4. <strong>Sáb 5:</strong> Sprint / rower pyramid en ayunas — 350-400 kcal · devuelve el VO₂max (43)<br>
-      5. <strong>Dom 6:</strong> Recovery + 🏀 (validado) · 8-10k pasos<br>
-      6. <strong>Lun 7 - Mar 8:</strong> Upper + <strong>🏊 NATACIÓN (día fijo)</strong> — la sesión de 30-40 min que se saltó el Mar 1<br>
-      7. <strong>Nutrición:</strong> ayuno 16:8 formal · 1,850-1,950 kcal · proteína 175-190g · agua 2.5L+electrolitos · meta: grasa ≤18.5% al cierre del domingo 6<br>
-      8. <strong>Meta semanal:</strong> 2,500-3,000 kcal de ejercicio — la gráfica REAL ya muestra el atraso (peso 83.3 vs 82.5 proyectado); 2 semanas seguidas por encima = ajuste
+      1. <strong>Lun 7:</strong> 💪 Upper X3 + Rings — 400-450 kcal · romper la racha de 12 días<br>
+      2. <strong>Mar 8:</strong> 🏊 NATACIÓN 30-40 min (día fijo, horario laboral) + Legs — 500-550 kcal<br>
+      3. <strong>Mié 9:</strong> Metabolic / rower HIIT — 350-400 kcal · devuelve el VO₂max<br>
+      4. <strong>Jue 10 (crítico):</strong> Shoulder ANTES de las 17:00 — ensayo de música<br>
+      5. <strong>Vie 11:</strong> Posterior + Unilateral — 400-450 kcal<br>
+      6. <strong>Sáb 12:</strong> Sprint en ayunas — 350-400 kcal<br>
+      7. <strong>Dom 13:</strong> Recovery + 🏀 (validado)<br>
+      8. <strong>Nutrición:</strong> mantener ayuno 16:8 + 1,850-1,950 kcal + prot 175-190g — <strong>la dieta YA demostró que baja grasa (18.3% el 5 Sep); ahora el estímulo la hará caer más rápido</strong> · meta ≤18.0% al 13 Sep
     </div>
   </div>
 </div>
@@ -564,16 +599,20 @@
         <!-- REAL (gruesa, sólida) — se actualiza cada semana con datos de báscula/Garmin -->
         <!-- Semana 0 (24 Ago): 83.2 / 19.6 / 62.4 — punto de partida -->
         <!-- Semana 1 (2 Sep): 83.3 / 19.3 / 62.6 — real vs proyección 82.5/19.0/62.2 (atrasado) -->
-        <polyline points="50.0,45.6 119.6,42.4" fill="none" stroke="#ffd166" stroke-width="2.5" stroke-linecap="round"/>
-        <polyline points="50.0,50.9 119.6,61.1" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"/>
-        <polyline points="50.0,146.0 119.6,134.0" fill="none" stroke="#f472b6" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Semana 1.9 (6 Sep): 82.9 / 19.2 / 62.5 — real vs proyección ~81.9/18.9/62.3 (atraso ~1 kg) -->
+        <polyline points="50.0,45.6 119.6,42.4 150.6,55.2" fill="none" stroke="#ffd166" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="50.0,50.9 119.6,61.1 150.6,64.6" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="50.0,146.0 119.6,134.0 150.6,140.0" fill="none" stroke="#f472b6" stroke-width="2.5" stroke-linecap="round"/>
         <circle cx="50" cy="45.6" r="4" fill="#ffd166" stroke="#0b0e17" stroke-width="1.5"/>
         <circle cx="50" cy="50.9" r="4" fill="#4ade80" stroke="#0b0e17" stroke-width="1.5"/>
         <circle cx="50" cy="146.0" r="4" fill="#f472b6" stroke="#0b0e17" stroke-width="1.5"/>
         <circle cx="119.6" cy="42.4" r="4" fill="#ffd166" stroke="#0b0e17" stroke-width="1.5"/>
         <circle cx="119.6" cy="61.1" r="4" fill="#4ade80" stroke="#0b0e17" stroke-width="1.5"/>
         <circle cx="119.6" cy="134.0" r="4" fill="#f472b6" stroke="#0b0e17" stroke-width="1.5"/>
-        <text x="119.6" y="34" text-anchor="middle" font-size="8.5" fill="#ffd166" font-weight="600">2 Sep</text>
+        <circle cx="150.6" cy="55.2" r="4" fill="#ffd166" stroke="#0b0e17" stroke-width="1.5"/>
+        <circle cx="150.6" cy="64.6" r="4" fill="#4ade80" stroke="#0b0e17" stroke-width="1.5"/>
+        <circle cx="150.6" cy="140.0" r="4" fill="#f472b6" stroke="#0b0e17" stroke-width="1.5"/>
+        <text x="150.6" y="30" text-anchor="middle" font-size="8.5" fill="#ffd166" font-weight="600">6 Sep</text>
         <!-- Ejes de fecha -->
         <text x="50" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">24 Ago</text><text x="158" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">7 Sep</text><text x="267" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">21 Sep</text><text x="375" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">5 Oct</text><text x="483" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">19 Oct</text><text x="592" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">2 Nov</text><text x="700" y="282" text-anchor="middle" font-size="9" fill="#8a94b0">16 Nov</text>
         <!-- Títulos -->
@@ -765,7 +804,7 @@
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v35 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 2 Sep 2026
+  Odyssey Dashboard v36 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 6 Sep 2026 · BR2049 HUD
 </div>
 
 </div>
