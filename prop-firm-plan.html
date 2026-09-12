@@ -114,8 +114,8 @@
   /* ---------- breadcrumbs ---------- */
   .crumbs {
     grid-column: 1 / -1; padding: 26px 0 0;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    letter-spacing: .1em; text-transform: uppercase; color: var(--muted-ink);
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 500;
+    letter-spacing: .05em; text-transform: uppercase; color: var(--muted-ink);
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
   }
   .crumbs a { color: var(--muted-ink); }
@@ -126,13 +126,13 @@
   aside { position: sticky; top: 84px; padding-top: 30px; }
   @media (max-width: 940px) { aside { position: static; padding-top: 4px; } }
   .lib-title {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    letter-spacing: .3em; text-transform: uppercase; color: var(--muted-ink);
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted-ink);
     padding-bottom: 10px; border-bottom: 1px solid var(--line);
   }
   .lib-sub {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+    font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 500;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
     margin: 18px 0 10px;
   }
   .tree { display: flex; flex-direction: column; gap: 4px; }
@@ -148,7 +148,7 @@
   .tree summary .caret { color: var(--muted); font-size: 10px; transition: transform .18s ease; }
   .tree details[open] summary .caret { transform: rotate(90deg); }
   .count {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
     color: var(--muted-ink); background: #FFFFFF; border: 1px solid var(--line);
     border-radius: 9999px; min-width: 22px; height: 20px;
     display: inline-flex; align-items: center; justify-content: center; padding: 0 6px;
@@ -164,8 +164,8 @@
   /* ---------- artículo ---------- */
   article { padding-top: 30px; min-width: 0; }
   .kicker {
-    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
-    letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
     display: flex; align-items: center; gap: 12px;
   }
   .kicker::before { content: ""; width: 26px; height: 1px; background: var(--accent); }
@@ -191,8 +191,8 @@
     text-wrap: balance; scroll-margin-top: 84px;
   }
   h2 .num {
-    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
-    color: var(--accent); display: block; letter-spacing: .2em; margin-bottom: 8px;
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 700;
+    color: var(--accent); display: block; letter-spacing: .12em; margin-bottom: 8px;
   }
   h3 { font-size: 16px; font-weight: 700; margin: 30px 0 8px; letter-spacing: -.005em; }
   p { margin: 12px 0; color: #3F3F46; text-wrap: pretty; }
@@ -205,8 +205,8 @@
   .steps { display: flex; flex-direction: column; gap: 22px; margin: 24px 0; }
   .step { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; }
   .step .n {
-    font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600;
-    color: var(--accent); line-height: 1.1;
+    font-family: 'Inter', sans-serif; font-size: 25px; font-weight: 700;
+    color: var(--accent); line-height: 1.05; font-variant-numeric: tabular-nums;
   }
   .step h4 { font-size: 15.5px; font-weight: 700; margin-bottom: 4px; }
   .step p { margin: 4px 0 0; font-size: 15px; }
@@ -229,8 +229,8 @@
   .tw { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 16px; }
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 500px; }
   caption {
-    text-align: left; padding: 14px 18px 0; font-size: 12px;
-    font-family: 'JetBrains Mono', monospace; letter-spacing: .14em;
+    text-align: left; padding: 14px 18px 0; font-size: 11.5px; font-weight: 600;
+    font-family: 'Inter', sans-serif; letter-spacing: .1em;
     text-transform: uppercase; color: var(--muted-ink);
   }
   th, td { padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--line); }
@@ -241,7 +241,7 @@
   tbody tr:last-child td { border-bottom: none; }
   tbody tr:hover { background: #FCFDFE; }
   .num-col { text-align: right; font-variant-numeric: tabular-nums; }
-  td.num-col { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--ink); }
+  td.num-col { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--ink); }
   tr.hl { background: rgba(94, 107, 136, .07); }
   tr.hl td { font-weight: 600; }
   tr.hl:hover { background: rgba(94, 107, 136, .1); }
@@ -250,8 +250,8 @@
 
   /* badges inline */
   .tag {
-    display: inline-block; font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; font-weight: 600; letter-spacing: .08em;
+    display: inline-block; font-family: 'Inter', sans-serif;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .06em;
     color: var(--accent); background: var(--surface); border: 1px solid var(--line);
     border-radius: 6px; padding: 2px 7px; vertical-align: 1px;
   }
@@ -260,8 +260,8 @@
   .chartwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   figure svg { width: 100%; height: auto; display: block; }
   figcaption {
-    font-size: 12.5px; color: var(--muted-ink); margin-top: 10px;
-    font-family: 'JetBrains Mono', monospace; letter-spacing: .06em;
+    font-size: 12.5px; font-weight: 500; color: var(--muted-ink); margin-top: 10px;
+    font-family: 'Inter', sans-serif; letter-spacing: .01em;
   }
   .cta-row { margin: 34px 0 10px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
   .pill {
@@ -273,19 +273,19 @@
   .pill:hover { background: var(--accent-ink); color: #FFFFFF; text-decoration: none; }
   .pill:active { transform: scale(.96); }
 
-  .disclaimer {
+  .descargo {
     margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--line);
     font-size: 12.5px; color: var(--muted-ink);
   }
-  .disclaimer h2 {
-    font-size: 13px; border: none; margin: 0 0 6px; padding: 0;
-    font-family: 'JetBrains Mono', monospace; letter-spacing: .16em;
-    text-transform: uppercase; color: var(--muted-ink); font-weight: 600;
+  .descargo h2 {
+    font-size: 12px; border: none; margin: 0 0 6px; padding: 0;
+    font-family: 'Inter', sans-serif; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--muted-ink); font-weight: 700;
   }
   footer { border-top: 1px solid var(--line); background: var(--surface); padding: 26px 24px; text-align: center; }
   footer span {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    letter-spacing: .1em; color: var(--muted-ink);
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 500;
+    letter-spacing: .04em; color: var(--muted-ink);
   }
   @media (max-width: 620px) {
     .shell { padding: 0 18px 72px; }
@@ -798,7 +798,7 @@
         <a href="calculadoras/risk-of-ruin.html">Ver el Risk of Ruin →</a>
       </div>
 
-      <div class="disclaimer">
+      <div class="descargo">
         <h2>Descargo de Responsabilidad</h2>
         <p>La información presentada es de carácter informativo y analítico. No constituye asesoría financiera, de inversión, legal ni tributaria, ni una oferta o solicitud de compra o venta de instrumento alguno. Las cifras provienen de simulaciones Monte-Carlo sobre una secuencia histórica de referencia y de las condiciones publicadas por cada firma a la fecha indicada; los resultados pasados no garantizan resultados futuros y las reglas de las firmas pueden cambiar. Operar instrumentos apalancados implica riesgo de pérdida. Las decisiones de inversión son responsabilidad exclusiva del lector.</p>
       </div>
