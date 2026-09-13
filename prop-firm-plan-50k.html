@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan de Fondeo: LUCID + Tradeify · The Red Queen</title>
+<meta name="description" content="Modelo Monte-Carlo sobre las reglas reales de LUCID Flex y Tradeify Select: optimización del riesgo por operación, ciclo de retiros, drawdown con lock y el plan de 10 cuentas en copytrading.">
+<meta property="og:title" content="Plan de Fondeo: LUCID + Tradeify">
+<meta property="og:description" content="Optimización de R, ciclo de retiros y drawdown con lock sobre las reglas oficiales de ambas firmas.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://theredqueen.co/prop-firm-plan.html">
+<meta property="og:image" content="https://theredqueen.co/assets/trq-logo-main.png">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     SLATE MANUAL — documentación técnica
+     blanco #FFFFFF · tinta #1A1A1A · acento slate #5E6B88
+     Inter para el documento · JetBrains Mono solo en nav/meta
+     ============================================================ */
+  :root {
+    --bg: #FFFFFF;
+    --ink: #1A1A1A;
+    --accent: #5E6B88;
+    --accent-ink: #47536B;      /* hover/active (más oscuro, AA) */
+    --surface: #F8FAFC;
+    --line: #E5E7EB;
+    --line-soft: rgba(147, 147, 147, .2);
+    --muted: #939393;            /* decorativo: badges, contadores */
+    --muted-ink: #6B7280;        /* texto secundario accesible (4.83:1) */
+    --good: #2F6F4E;
+    --warn: #9A5B2B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { max-width: 100%; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  img { display: block; max-width: 100%; }
+  b, strong { font-weight: 600; color: var(--ink); }
+
+  /* ---------- nav (canónico TRQ, adaptado a superficie clara) ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, .88);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1160px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+  .nav-brand:hover { text-decoration: none; }
+  .nav-brand img { width: 38px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 15px; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--accent); line-height: 1.25; min-width: 0;
+  }
+  .nav-brand .word small {
+    display: block; font-size: 9px; font-weight: 500;
+    letter-spacing: .3em; color: var(--muted-ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; min-width: 0; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted-ink);
+    display: inline-flex; align-items: center; min-height: 44px;
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--accent); text-decoration: none; }
+  .nav-links .cta {
+    background: var(--accent); color: #FFFFFF; border-radius: 9999px;
+    padding: 0 18px; font-weight: 600; letter-spacing: .1em;
+    transition: background-color .18s ease, transform .12s ease;
+  }
+  .nav-links .cta:hover { background: var(--accent-ink); color: #FFFFFF; }
+  .nav-links .cta:active { transform: scale(.96); }
+  @media (max-width: 780px) { .nav-links a:not(.back-link):not(.cta) { display: none; } }
+  @media (max-width: 620px) {
+    .nav-inner { padding: 12px 18px; gap: 10px; }
+    .nav-links .cta { display: none; }
+    .nav-brand img { width: 30px; }
+    .nav-brand .word { font-size: 12px; letter-spacing: .22em; }
+    .nav-brand .word small { font-size: 8px; letter-spacing: .18em; }
+    .nav-links { gap: 14px; }
+    .nav-links a { font-size: 11px; letter-spacing: .08em; }
+  }
+
+  /* ---------- layout 2 columnas: sidebar + artículo ---------- */
+  .shell {
+    max-width: 1160px; margin: 0 auto; padding: 0 24px 96px;
+    min-width: 0;
+    display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 940px) {
+    .shell { grid-template-columns: 1fr; gap: 28px; padding-bottom: 72px; }
+  }
+
+  /* ---------- breadcrumbs ---------- */
+  .crumbs {
+    grid-column: 1 / -1; padding: 26px 0 0;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 500;
+    letter-spacing: .05em; text-transform: uppercase; color: var(--muted-ink);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .crumbs a { color: var(--muted-ink); }
+  .crumbs a:hover { color: var(--accent); }
+  .crumbs .sep { color: var(--muted); }
+
+  /* ---------- sidebar ---------- */
+  aside { position: sticky; top: 84px; padding-top: 30px; }
+  @media (max-width: 940px) { aside { position: static; padding-top: 4px; } }
+  .lib-title {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted-ink);
+    padding-bottom: 10px; border-bottom: 1px solid var(--line);
+  }
+  .lib-sub {
+    font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 500;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 18px 0 10px;
+  }
+  .tree { display: flex; flex-direction: column; gap: 4px; }
+  .tree summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 9px 10px; border-radius: 10px; cursor: pointer;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line);
+    list-style: none; transition: border-color .16s ease, background-color .16s ease;
+  }
+  .tree summary::-webkit-details-marker { display: none; }
+  .tree summary:hover { border-color: var(--accent); }
+  .tree summary .caret { color: var(--muted); font-size: 10px; transition: transform .18s ease; }
+  .tree details[open] summary .caret { transform: rotate(90deg); }
+  .count {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+    color: var(--muted-ink); background: #FFFFFF; border: 1px solid var(--line);
+    border-radius: 9999px; min-width: 22px; height: 20px;
+    display: inline-flex; align-items: center; justify-content: center; padding: 0 6px;
+  }
+  .tree ol { list-style: none; margin: 6px 0 10px; padding-left: 10px; border-left: 1px solid var(--line); }
+  .tree ol a {
+    display: block; padding: 6px 8px; border-radius: 8px; font-size: 13px;
+    color: var(--muted-ink); transition: color .16s ease, background-color .16s ease;
+  }
+  .tree ol a:hover { color: var(--accent); background: var(--surface); text-decoration: none; }
+  .tree ol a.active { color: var(--accent); background: var(--surface); font-weight: 600; }
+
+  /* ---------- artículo ---------- */
+  article { padding-top: 30px; min-width: 0; }
+  .kicker {
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .kicker::before { content: ""; width: 26px; height: 1px; background: var(--accent); }
+  h1 {
+    font-size: clamp(30px, 4.4vw, 46px); font-weight: 800;
+    letter-spacing: -.022em; line-height: 1.08; margin: 16px 0 14px;
+    text-wrap: balance;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+  .meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted-ink);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    padding-bottom: 22px; border-bottom: 1px solid var(--line);
+  }
+  .meta .sep { color: var(--muted); }
+  .lead { font-size: 17px; color: #3F3F46; margin: 24px 0 8px; text-wrap: pretty; }
+  .lead b { color: var(--ink); }
+
+  h2 {
+    font-size: 24px; font-weight: 700; letter-spacing: -.01em;
+    margin: 56px 0 6px; padding-top: 26px; border-top: 1px solid var(--line);
+    text-wrap: balance; scroll-margin-top: 84px;
+  }
+  h2 .num {
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 700;
+    color: var(--accent); display: block; letter-spacing: .12em; margin-bottom: 8px;
+  }
+  h3 { font-size: 16px; font-weight: 700; margin: 30px 0 8px; letter-spacing: -.005em; }
+  p { margin: 12px 0; color: #3F3F46; text-wrap: pretty; }
+  .article-body > p:first-of-type { margin-top: 16px; }
+  ul, ol { margin: 12px 0 12px 20px; color: #3F3F46; }
+  li { margin: 7px 0; }
+  li::marker { color: var(--accent); }
+
+  /* pasos numerados (patrón Slate Manual) */
+  .steps { display: flex; flex-direction: column; gap: 22px; margin: 24px 0; }
+  .step { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; }
+  .step .n {
+    font-family: 'Inter', sans-serif; font-size: 25px; font-weight: 700;
+    color: var(--accent); line-height: 1.05; font-variant-numeric: tabular-nums;
+  }
+  .step h4 { font-size: 15.5px; font-weight: 700; margin-bottom: 4px; }
+  .step p { margin: 4px 0 0; font-size: 15px; }
+
+  /* superficies / cards */
+  .panel {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 16px; padding: 20px 22px; margin: 22px 0;
+  }
+  .panel h3 { margin-top: 0; }
+  .note {
+    border-left: 3px solid var(--accent); background: var(--surface);
+    border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 20px 0;
+    font-size: 14.5px; color: #3F3F46;
+  }
+  .note strong { color: var(--ink); }
+  .warn-note { border-left-color: var(--warn); }
+
+  /* tablas */
+  .tw { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 500px; }
+  caption {
+    text-align: left; padding: 14px 18px 0; font-size: 11.5px; font-weight: 600;
+    font-family: 'Inter', sans-serif; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted-ink);
+  }
+  th, td { padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--line); }
+  thead th {
+    font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted-ink); background: var(--surface); white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #FCFDFE; }
+  .num-col { text-align: right; font-variant-numeric: tabular-nums; }
+  td.num-col { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--ink); }
+  tr.hl { background: rgba(94, 107, 136, .07); }
+  tr.hl td { font-weight: 600; }
+  tr.hl:hover { background: rgba(94, 107, 136, .1); }
+  .ok { color: var(--good); font-weight: 600; }
+  .bad { color: var(--warn); font-weight: 600; }
+
+  /* badges inline */
+  .tag {
+    display: inline-block; font-family: 'Inter', sans-serif;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .06em;
+    color: var(--accent); background: var(--surface); border: 1px solid var(--line);
+    border-radius: 6px; padding: 2px 7px; vertical-align: 1px;
+  }
+  /* gráficas */
+  figure { margin: 24px 0; }
+  .chartwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption {
+    font-size: 12.5px; font-weight: 500; color: var(--muted-ink); margin-top: 10px;
+    font-family: 'Inter', sans-serif; letter-spacing: .01em;
+  }
+  .cta-row { margin: 34px 0 10px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+    background: var(--accent); color: #FFFFFF; border-radius: 9999px;
+    padding: 0 22px; font-weight: 600; font-size: 14px;
+    transition: background-color .18s ease, transform .12s ease;
+  }
+  .pill:hover { background: var(--accent-ink); color: #FFFFFF; text-decoration: none; }
+  .pill:active { transform: scale(.96); }
+
+  .descargo {
+    margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--line);
+    font-size: 12.5px; color: var(--muted-ink);
+  }
+  .descargo h2 {
+    font-size: 12px; border: none; margin: 0 0 6px; padding: 0;
+    font-family: 'Inter', sans-serif; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--muted-ink); font-weight: 700;
+  }
+  footer { border-top: 1px solid var(--line); background: var(--surface); padding: 26px 24px; text-align: center; }
+  footer span {
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 500;
+    letter-spacing: .04em; color: var(--muted-ink);
+  }
+  @media (max-width: 620px) {
+    .shell { padding: 0 18px 72px; }
+    .crumbs { font-size: 10px; }
+    table { font-size: 12.5px; min-width: 440px; }
+    th, td { padding: 9px 12px; }
+    caption { font-size: 11px; padding: 12px 14px 0; }
+    .tw { position: relative; }
+    .tw caption::after { content: "  ↔ desliza"; color: var(--muted); letter-spacing: .1em; }
+    .chartwrap svg { min-width: 580px; }
+    figure figcaption::after { content: "  · ↔ desliza la gráfica"; color: var(--muted); }
+    .panel { padding: 16px 18px; border-radius: 14px; }
+    .note { padding: 12px 14px; font-size: 14px; }
+    .step { grid-template-columns: 34px minmax(0, 1fr); gap: 10px; }
+    .step .n { font-size: 18px; }
+    h2 { margin-top: 44px; }
+    .lead { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<script>history.scrollRestoration='manual';</script>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html" aria-label="The Red Queen — inicio">
+      <img src="assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen<small>CHECKMATE THE SYSTEM</small></span>
+    </a>
+    <div class="nav-links">
+      <a class="back-link" href="calculadoras/">← Calculadoras</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="trq-program.html">Mentoría</a>
+      <a class="cta" href="calculadoras/prop-firm-analyzer.html">Abrir el Analyzer</a>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <div class="crumbs">
+    <a href="calculadoras/">Recursos</a><span class="sep">›</span>
+    <a href="calculadoras/">Calculadoras</a><span class="sep">›</span>
+    <span>Plan de fondeo · $50.000</span>
+  </div>
+
+  <aside aria-label="Índice del documento">
+    <div class="lib-title">Library</div>
+    <div class="lib-sub">Browse</div>
+    <div class="tree">
+
+      <details open>
+        <summary>El sistema <span class="count">3</span><span class="caret">›</span></summary>
+        <ol>
+          <li><a href="#base">La base del sistema</a></li>
+          <li><a href="#firmas">Las dos firmas</a></li>
+          <li><a href="#vocabulario">Vocabulario del ciclo</a></li>
+        </ol>
+      </details>
+
+      <details open>
+        <summary>Las reglas <span class="count">4</span><span class="caret">›</span></summary>
+        <ol>
+          <li><a href="#drawdown">Drawdown y buffer</a></li>
+          <li><a href="#retiro">El retiro</a></li>
+          <li><a href="#tope">El tope de 5 retiros</a></li>
+          <li><a href="#live">Live y churn</a></li>
+        </ol>
+      </details>
+
+      <details open>
+        <summary>El modelo <span class="count">4</span><span class="caret">›</span></summary>
+        <ol>
+          <li><a href="#r">Optimización de R</a></li>
+          <li><a href="#primer">El primer cobro</a></li>
+          <li><a href="#plan">El plan</a></li>
+          <li><a href="#riesgos">Riesgos y controles</a></li>
+        </ol>
+      </details>
+
+    </div>
+  </aside>
+
+  <article>
+  <div class="kicker">Prop Firms · Plan de fondeo · Cuentas de $50.000</div>
+  <h1>LUCID + Tradeify: el plan de <em>diez cuentas de $50.000</em></h1>
+  <div class="meta">
+    <span>13/09/2026</span><span class="sep">·</span>
+    <span>Prop Firms</span><span class="sep">·</span>
+    <span>18 min de lectura</span>
+
+  </div>
+
+  <div class="article-body">
+
+    <p class="lead">El mismo motor del plan de cuentas de $150.000, corrido ahora sobre cuentas de <b>$50.000</b>. Cambian los números de la firma —target, drawdown, tope de retiro, costo de la evaluación— y cambia el resultado: aquí el <b>buffer después del retiro es más grande en R</b>, el riesgo de perder una cuenta fondeada cae a cero y lo único frágil es la evaluación, que se arregla con $95. Este documento fija el <b>retiro mensual para este tamaño de cuenta</b>, el R de régimen y las cuentas exactas del ciclo.</p>
+
+    <h2 id="base"><span class="num">01</span>La base del sistema</h2>
+    <p>Todo el análisis se apoya en la misma secuencia que el plan de $150.000: <b>1 señal por día</b>, cinco días por semana, y la regla de que <b>si la condición no se da, no hay operación</b>. Los días sin setup no son días perdidos: son el resultado de exigir una condición concreta en lugar de operar por operar.</p>
+
+    <div class="tw">
+      <table>
+        <caption>Secuencia de referencia · RTP 1:1 · 214 días de mercado</caption>
+        <thead>
+          <tr><th>Métrica</th><th class="num-col">Valor</th><th>Lectura</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Días evaluados</td><td class="num-col">214</td><td>≈ 10,2 meses de mercado</td></tr>
+          <tr><td>Operaciones ejecutadas</td><td class="num-col">148</td><td>104 ganadoras / 44 perdedoras</td></tr>
+          <tr class="hl"><td>Winrate</td><td class="num-col">70,3%</td><td>IC95%: 62,9% – 77,6%</td></tr>
+          <tr class="hl"><td>Expectancy por operación</td><td class="num-col">+0,405R</td><td>IC95%: +0,258R a +0,553R</td></tr>
+          <tr><td>Días sin setup</td><td class="num-col">66</td><td>30,8% del tiempo</td></tr>
+          <tr><td>Frecuencia real</td><td class="num-col">14,5 /mes</td><td>3,46 por semana</td></tr>
+          <tr><td>Racha perdedora máxima</td><td class="num-col">3</td><td>escenario adverso a respetar</td></tr>
+          <tr><td>Drawdown máximo observado</td><td class="num-col">4R</td><td>en la secuencia completa</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>Lo que cambia al bajar a $50.000.</strong> La señal es la misma y la frecuencia es la misma. Lo que cambia es la aritmética de la firma: el target de evaluación baja de $9.000 a <b>$3.000</b>, el drawdown de $4.500 a <b>$2.000</b>, el tope de retiro de $3.000 a <b>$2.000</b> — y la evaluación cuesta <b>$95,20</b> en lugar de $260. Esa última cifra es la que reordena todo el plan de riesgo.
+    </div>
+
+    <h2 id="firmas"><span class="num">02</span>Las dos firmas</h2>
+    <p>Reglas verificadas en los Help Center y en las tablas de precios de cada firma el 13/09/2026 para <b>LucidFlex $50K</b> y <b>Tradeify Select Flex $50K</b>. Todo lo que sigue sale de esta tabla.</p>
+
+    <div class="tw">
+      <table>
+        <caption>Reglas verificadas · cuentas de $50.000</caption>
+        <thead>
+          <tr><th>Regla</th><th>LUCID Flex $50K</th><th>Tradeify Select Flex $50K</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Costo de la evaluación</td><td><b>$136</b> · con cupón −30%: <b>$95,20</b></td><td><b>$165</b></td></tr>
+          <tr><td>Reset de la evaluación</td><td>$95</td><td>$109</td></tr>
+          <tr><td>Target de evaluación</td><td>$3.000</td><td>$3.000</td></tr>
+          <tr class="hl"><td>Retiro máximo por solicitud</td><td><b>$2.000</b> (50% del profit)</td><td><b>$2.500</b> (50% del profit)</td></tr>
+          <tr><td>Mínimo por solicitud</td><td>$500</td><td>$150</td></tr>
+          <tr><td>Ciclo de retiro</td><td>5 días con ≥$150 de profit + neto positivo</td><td>5 días con ≥$150 de profit</td></tr>
+          <tr><td>Max Loss Limit</td><td>$2.000 · EOD <b>trailing</b></td><td>$2.000 · EOD <b>trailing</b></td></tr>
+          <tr class="hl"><td>Dónde se fija el drawdown</td><td>$50.100 (lock, +$100)</td><td>$50.100 (lock, +$100)</td></tr>
+          <tr><td>Daily loss limit</td><td>Opcional (no contratado)</td><td>Ninguno</td></tr>
+          <tr><td>Consistencia</td><td>50% en evaluación · ninguna en fondeada</td><td>Ninguna</td></tr>
+          <tr><td>Profit split</td><td>90 / 10</td><td>90 / 10</td></tr>
+          <tr><td>Contratos máximos</td><td>2 a 4 minis según el profit de la cuenta</td><td>4 minis / 40 micros</td></tr>
+          <tr><td>Retiros por cuenta</td><td><b>5</b> → luego Live</td><td><b>3</b> (umbral de revisión)</td></tr>
+          <tr><td>Tope agregado de la firma</td><td>Por cuenta</td><td><b>10 retiros</b> totales</td></tr>
+          <tr><td>Cuentas fondeadas simultáneas</td><td>5</td><td>5</td></tr>
+          <tr><td>Evaluaciones en paralelo</td><td>5 en reserva (10 total)</td><td>Ilimitadas</td></tr>
+          <tr><td>Comisión</td><td>MES / MNQ $0,50 por lado</td><td>$5,76 round-trip por mini</td></tr>
+          <tr><td>Copy trading</td><td>Permitido</td><td>Permitido</td></tr>
+          <tr><td>Hedging</td><td>Prohibido</td><td>Prohibido</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Tres de estas reglas son las que gobiernan el plan:</p>
+    <ul>
+      <li><b>El drawdown se fija al primer retiro.</b> Mientras no cobres, el piso sube con cada nuevo máximo de la cuenta; cuando cobras, queda clavado en <b>$50.100</b> y no vuelve a moverse.</li>
+      <li><b>El tope de retiro es $2.000 en LUCID y $2.500 en Tradeify.</b> Es el techo duro de cuánto puedes sacar por solicitud, y también el número que dimensiona el ciclo completo.</li>
+      <li><b>La evaluación cuesta una fracción de lo que cuesta en $150.000.</b> $95,20 contra $260 en LUCID; $165 contra $369 en Tradeify. El capital en riesgo del plan —que son los fees, no las cuentas— se reduce a menos de la mitad.</li>
+    </ul>
+
+    <h2 id="vocabulario"><span class="num">03</span>Vocabulario del ciclo</h2>
+    <p>Cuatro conceptos, con los números de esta cuenta:</p>
+    <ul>
+      <li><b>R</b> — lo que arriesgas por operación. Con un drawdown de $2.000, la referencia de régimen es <b>$400 = MLL/5</b>. En evaluación se puede subir a <b>$600 = MLL/3,3</b>, porque fallar solo cuesta $95 y tiempo.</li>
+      <li><b>MLL</b> — el Max Loss Limit de $2.000. Es <i>trailing</i> (sube con el máximo de la cuenta) hasta el primer retiro y luego queda bloqueado en $50.100.</li>
+      <li><b>Buffer</b> — la distancia entre el balance y el piso del drawdown. Se mide en R porque es lo que dice cuántas pérdidas seguidas aguanta la cuenta.</li>
+      <li><b>Churn</b> — quemar la cuenta cuando cumple su último retiro permitido, para no entrar al proceso de Live. El reemplazo tiene que estar listo antes.</li>
+    </ul>
+
+    <h2 id="drawdown"><span class="num">04</span>Drawdown y buffer</h2>
+    <p>El drawdown tiene dos etapas. Entender la segunda es lo que hace rentable este tamaño de cuenta.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h4>Mientras no cobras: el piso te sigue</h4>
+          <p>El MLL es <b>trailing</b> sobre el balance más alto alcanzado (a cierre de día). Si la cuenta llega a $51.400, el piso pasa a $49.400. Solo puede subir: cada nuevo máximo sube el piso, y una racha perdedora no lo baja.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h4>Al primer retiro: el piso se clava</h4>
+          <p>Cuando haces el primer retiro, el piso queda fijo en <b>$50.100</b>: $100 por encima del balance inicial. Desde ahí la cuenta tiene un colchón que ya no se mueve, sin importar cuánto suba el balance.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h4>Y aquí está la diferencia con $150.000</h4>
+          <p>El lock es de <b>+$100 en dólares, no en R</b>. Con un R más pequeño, ese mismo lock equivale a más R de colchón: cobrando el tope en el disparador m = 2, la cuenta queda con <b>$1.900 de buffer = 4,75R</b>. En una cuenta de $150.000 el mismo cálculo deja <b>4,0R</b>. Es la primera razón por la que este plan puede ser <b>más agresivo en R</b> que el de $150.000.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note warn-note">
+      <strong>La regla de oro sigue siendo la misma:</strong> después de cobrar, la cuenta aguanta 4,75R de pérdida consecutiva. El drawdown máximo de la secuencia es de 4R, así que el margen es real pero corto: <b>lo que protege la cuenta no es el número de cuentas, es el tamaño de R</b>.
+    </div>
+
+    <h2 id="retiro"><span class="num">05</span>El retiro</h2>
+    <p>La regla de la firma es <b>50% del profit acumulado, con tope de $2.000</b>. La pregunta relevante no es cuánto puedes pedir, sino <b>cuándo pedirlo</b>: retirar el máximo deja el buffer en su punto más bajo, y de ahí sale el multiplicador <i>m</i> — cuántas veces el tope acumulas antes de cobrar.</p>
+
+    <div class="tw">
+      <table>
+        <caption>Disparador de retiro (<i>m</i>) y su efecto · cuenta de $50.000 con R = $400</caption>
+        <thead>
+          <tr><th>Disparador</th><th class="num-col">Profit que esperas</th><th class="num-col">Retiras</th><th class="num-col">Buffer restante</th><th class="num-col">$/mes por cuenta</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hl"><td>m = 2 → al tope</td><td class="num-col">$4.000</td><td class="num-col">$2.000</td><td class="num-col">$1.900 (4,75R)</td><td class="num-col">$1.477</td></tr>
+          <tr><td>m = 2,5</td><td class="num-col">$5.000</td><td class="num-col">$2.000</td><td class="num-col">$2.900 (7,25R)</td><td class="num-col">$1.342</td></tr>
+          <tr><td>m = 3</td><td class="num-col">$6.000</td><td class="num-col">$2.000</td><td class="num-col">$3.900 (9,75R)</td><td class="num-col">$1.236</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Esperar <b>m = 2</b> —acumular $4.000 para retirar $2.000— deja el buffer en 4,75R y es el punto donde el ingreso se maximiza sin volver frágil la cuenta. Subir a m = 3 protege más y cuesta un 16% de ingreso, con un beneficio marginal: el drawdown histórico solo llegó a 4R.</p>
+
+    <div class="panel">
+      <h3>El retiro mensual de una cuenta de $50.000</h3>
+      <ul>
+        <li><b>Por solicitud:</b> $2.000 brutos → <b>$1.800 netos</b> al 90%</li>
+        <li><b>Ritmo del ciclo:</b> una solicitud cada <b>1,7 meses</b> con R = $400</li>
+        <li><b>Equivalente mensual:</b> <b>$1.477 por cuenta</b> (ya descontados reemplazos y comisiones)</li>
+        <li><b>Cinco cuentas LUCID:</b> <b>$7.384 al mes</b> de extracción recurrente</li>
+      </ul>
+    </div>
+
+    <h2 id="tope"><span class="num">06</span>El tope de 5 retiros</h2>
+    <p>El ciclo completo de una cuenta de $50.000 son <b>5 retiros</b>: $2.000 en el primero y el tope en cada uno de los cuatro siguientes. Ese es el número que decide cuánto dura la cuenta antes de tener que reemplazarla.</p>
+
+    <div class="panel">
+      <h3>La aritmética del ciclo completo</h3>
+      <ul>
+        <li>Extracción bruta: <b>$10.000</b> ($2.000 + 4 × $2.000)</li>
+        <li>Duración: <b>5,86 meses</b> por ciclo</li>
+        <li>Extracción neta: <b>$9.000</b> (5 × $2.000 × 90%)</li>
+        <li>Resultado: <b>$1.477/mes por cuenta</b>, y de ahí en adelante cada ciclo se repite con el reemplazo</li>
+      </ul>
+    </div>
+
+    <h2 id="live"><span class="num">07</span>Live y churn</h2>
+    <p>Las cuentas de fondeo terminan en una de dos formas: te pasan a Live, o quemás la cuenta antes de que eso pase. El plan elige la segunda — siempre que el reemplazo esté listo.</p>
+    <p>La lógica es simple: al pasar a Live, las cuentas <b>arrancan en $0</b> y perdes el buffer retenido; en LUCID además el pase lo decide el equipo de riesgo, no tú. Quemar la cuenta después del último retiro permitido cancela ese escenario y reinicia el reloj en una evaluación nueva.</p>
+
+    <div class="note">
+      <strong>El timing del reemplazo.</strong> Si cada ciclo dura 5,86 meses, la evaluación de reemplazo hay que comprarla alrededor de <b>1 mes antes</b> del quinto retiro esperado, para que se supere justo cuando toca quemar. Si se calza bien, el ciclo no tiene tiempo muerto. Si no, cada transición cuesta un mes de ingresos.
+    </div>
+
+    <p>Las dos firmas se comportan distinto en este punto, y es la razón por la que una es motor recurrente y la otra es cosecha:</p>
+
+    <div class="tw">
+      <table>
+        <caption>Disparadores del pase a Live</caption>
+        <thead>
+          <tr><th>Condición de revisión</th><th>LUCID</th><th>Tradeify</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Al completar el último retiro</td><td>Retiro 5</td><td>3 retiros en una misma cuenta</td></tr>
+          <tr><td>Tope agregado de la firma</td><td>—</td><td><b>10 retiros</b> desde la primera compra</td></tr>
+          <tr><td>Volumen acumulado de retiros</td><td>Sí: "significativo en la vida de la cuenta"</td><td>—</td></tr>
+          <tr><td>Rendimiento excepcional en simulada</td><td>Sí</td><td>A discreción del equipo</td></tr>
+          <tr class="hl"><td>¿Se puede rechazar el pase a Live?</td><td>A discreción de la firma</td><td><b>No: es obligatorio</b></td></tr>
+          <tr><td>Al pasar a Live</td><td>Cuentas Live arrancan en $0</td><td>Todas las cuentas simuladas se cierran · split 80/20</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>LUCID deja el pase a criterio del equipo de riesgo: el gatillo más claro es el quinto retiro, y por eso el churn a los 5 funciona como defensa. Tradeify no es discrecional: a los 3 retiros de una cuenta —o a los 10 de la firma— el pase es obligatorio y cierra todas las cuentas simuladas a la vez. Con 5 cuentas y un tope agregado de 10, a Tradeify le quedan <b>2 retiros efectivos por cuenta</b>: es una cosecha, no un motor.</p>
+
+    <h2 id="r"><span class="num">08</span>Optimización de R</h2>
+    <p>Con el tope de $2.000 y el buffer de 4,75R, la pregunta es cuánto arriesgar por operación. La curva no es lineal: subir R acorta el ciclo y sube el ingreso mensual, pero también reduce el colchón en R. El barrido completo sobre la secuencia real —800 ciclos por fila— da el punto exacto.</p>
+
+    <figure>
+      <div class="chartwrap">
+        <svg viewBox="0 0 680 320" role="img" aria-label="Gráfica: ingreso mensual por cuenta según R, de 1.050 a 2.056 dólares con R de 300 a 600. El reinicio de evaluación pasa de 0 a 15,2% y el breach de cuenta fondeada sigue en cero hasta R de 450 y sube a 12% con R de 500.">
+          <!-- grid -->
+          <g stroke="#E5E7EB" stroke-width="1">
+            <line x1="60" y1="260" x2="640" y2="260"/>
+            <line x1="60" y1="160" x2="640" y2="160" stroke-dasharray="3 4"/>
+            <line x1="60" y1="60" x2="640" y2="60" stroke-dasharray="3 4"/>
+          </g>
+          <!-- y labels -->
+          <g fill="#6B7280" font-family="'JetBrains Mono',monospace" font-size="10">
+            <text x="52" y="264" text-anchor="end">1.000</text>
+            <text x="52" y="164" text-anchor="end">1.500</text>
+            <text x="52" y="64" text-anchor="end">2.000</text>
+          </g>
+          <text x="18" y="160" fill="#6B7280" font-family="'JetBrains Mono',monospace" font-size="10" transform="rotate(-90 18 160)" text-anchor="middle">$/MES POR CUENTA</text>
+          <!-- guide for recommended -->
+          <line x1="253.3" y1="40" x2="253.3" y2="260" stroke="#5E6B88" stroke-width="1" stroke-dasharray="4 4" opacity=".55"/>
+          <!-- series -->
+          <polyline points="60,250 205,186.4 253.3,164.6 350,138 446.7,116.2 640,48.8"
+                    fill="none" stroke="#5E6B88" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+          <g fill="#FFFFFF" stroke="#5E6B88" stroke-width="2">
+            <circle cx="60" cy="250" r="4.5"/>
+            <circle cx="205" cy="186.4" r="4.5"/>
+            <circle cx="350" cy="138" r="4.5"/>
+            <circle cx="446.7" cy="116.2" r="4.5"/>
+            <circle cx="640" cy="48.8" r="4.5"/>
+          </g>
+          <circle cx="253.3" cy="164.6" r="7.5" fill="#5E6B88" stroke="#FFFFFF" stroke-width="2.5"/>
+          <!-- breach labels -->
+          <g fill="#6B7280" font-family="'JetBrains Mono',monospace" font-size="9.5" text-anchor="middle">
+            <text x="70" y="240">0%</text>
+            <text x="205" y="176">7,8%</text>
+            <text x="253.3" y="151" fill="#47536B" font-weight="700">7,8%</text>
+            <text x="350" y="128">15,2%</text>
+            <text x="446.7" y="106" fill="#9A5B2B" font-weight="700">12,0%</text>
+            <text x="608" y="38" fill="#9A5B2B" font-weight="700">18,6%</text>
+          </g>
+          <!-- callout -->
+          <text x="253.3" y="288" fill="#47536B" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" text-anchor="middle">R = $400 · MLL/5</text>
+          <!-- x labels -->
+          <g fill="#6B7280" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">
+            <text x="60" y="306">300</text>
+            <text x="205" y="306">375</text>
+            <text x="350" y="306">450</text>
+            <text x="446.7" y="306">500</text>
+            <text x="640" y="306">600</text>
+          </g>
+          <text x="350" y="318" fill="#6B7280" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">R EN USD (MLL = $2.000)</text>
+        </svg>
+      </div>
+      <figcaption>Ingreso mensual por cuenta según R. En gris, el riesgo de reinicio de evaluación; en ámbar, donde aparece, el breach de la cuenta fondeada. El detalle de ambas columnas está en la tabla siguiente.</figcaption>
+    </figure>
+
+    <div class="tw">
+      <table>
+        <caption>Barrido completo · cuenta de $50.000 · 800 ciclos Monte-Carlo por fila</caption>
+        <thead>
+          <tr><th>R</th><th class="num-col">MLL/R</th><th class="num-col">Meses</th><th class="num-col">Neto/ciclo</th><th class="num-col">$/mes</th><th class="num-col">Reinicio</th><th class="num-col">Breach</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>$300</td><td class="num-col">6,7</td><td class="num-col">8,14</td><td class="num-col">$8.551</td><td class="num-col">$1.050</td><td class="num-col ok">0,0%</td><td class="num-col ok">0,0%</td></tr>
+          <tr><td>$325</td><td class="num-col">6,2</td><td class="num-col">7,76</td><td class="num-col">$8.567</td><td class="num-col">$1.104</td><td class="num-col ok">0,0%</td><td class="num-col ok">0,0%</td></tr>
+          <tr><td>$375</td><td class="num-col">5,3</td><td class="num-col">6,31</td><td class="num-col">$8.631</td><td class="num-col">$1.368</td><td class="num-col">7,8%</td><td class="num-col ok">0,0%</td></tr>
+          <tr class="hl"><td>$400 — objetivo</td><td class="num-col">5,0</td><td class="num-col">5,86</td><td class="num-col">$8.650</td><td class="num-col">$1.477</td><td class="num-col">7,8%</td><td class="num-col ok">0,0%</td></tr>
+          <tr><td>$450</td><td class="num-col">4,4</td><td class="num-col">5,38</td><td class="num-col">$8.662</td><td class="num-col">$1.610</td><td class="num-col">15,2%</td><td class="num-col ok">0,0%</td></tr>
+          <tr><td>$500</td><td class="num-col">4,0</td><td class="num-col">5,05</td><td class="num-col">$8.675</td><td class="num-col">$1.719</td><td class="num-col">15,2%</td><td class="num-col bad">12,0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>Por qué aquí el óptimo es MLL/5 y no MLL/6,2.</strong> El lock del piso es fijo en dólares (+$100) mientras la R se reduce: el buffer después de cobrar el tope pasa de 4,0R en una cuenta de $150.000 a <b>4,75R en una de $50.000</b>. Ese colchón extra permite subir el riesgo. El breach de la cuenta fondeada sigue en <b>cero hasta R = $450 (MLL/4,4)</b>; con $500 aparece y con un 12% por ciclo. Lo que sí sube antes es el <b>reinicio de evaluación</b> (7,8% con $400), y ese fallo es barato: cuesta <b>$95</b> y alrededor de un mes.
+    </div>
+
+    <h2 id="primer"><span class="num">09</span>El primer cobro</h2>
+    <p>La evaluación es la única parte del proceso donde se puede fallar sin perder capital. Y como el reset cuesta $95, aquí sí conviene ser agresivo: <b>R = MLL/3,3 ($600)</b> pasa el target de $3.000 en menos de un mes en la mitad de los casos.</p>
+
+    <div class="tw">
+      <table>
+        <caption>Tiempo al primer cobro según el R de evaluación</caption>
+        <thead>
+          <tr><th>R eval</th><th class="num-col">Eval (mediana)</th><th class="num-col">1er cobro mín.</th><th class="num-col">1er cobro tope</th><th class="num-col">Reinicio</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>$375 <span class="tag">MLL/5,3</span></td><td class="num-col">1,38 m</td><td class="num-col">1,81 m</td><td class="num-col">3,08 m</td><td class="num-col ok">0,0%</td></tr>
+          <tr><td>$500 <span class="tag">MLL/4</span></td><td class="num-col">1,05 m</td><td class="num-col">1,47 m</td><td class="num-col">2,75 m</td><td class="num-col">7,4%</td></tr>
+          <tr class="hl"><td>$600 <span class="tag">MLL/3,3</span></td><td class="num-col">0,86 m</td><td class="num-col">1,28 m</td><td class="num-col">2,56 m</td><td class="num-col">6,5%</td></tr>
+          <tr><td>$667 <span class="tag">MLL/3</span></td><td class="num-col">0,71 m</td><td class="num-col">1,14 m</td><td class="num-col">2,42 m</td><td class="num-col bad">13,1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="chartwrap">
+        <svg viewBox="0 0 680 170" role="img" aria-label="Línea de tiempo: compra de evaluaciones en el mes 0, evaluación superada en el mes 0,9, primer cobro al mínimo en el mes 1,3 y primer cobro al tope en el mes 2,6.">
+          <line x1="60" y1="88" x2="640" y2="88" stroke="#E5E7EB" stroke-width="2"/>
+          <line x1="60" y1="88" x2="552" y2="88" stroke="#5E6B88" stroke-width="2.5"/>
+          <g fill="#5E6B88">
+            <circle cx="60" cy="88" r="6"/><circle cx="225.4" cy="88" r="6"/>
+            <circle cx="306.2" cy="88" r="6"/><circle cx="552" cy="88" r="7.5"/>
+          </g>
+          <g stroke="#E5E7EB" stroke-width="1">
+            <line x1="60" y1="72" x2="60" y2="88"/><line x1="225.4" y1="72" x2="225.4" y2="88"/>
+            <line x1="306.2" y1="72" x2="306.2" y2="88"/><line x1="552" y1="72" x2="552" y2="88"/>
+          </g>
+          <g fill="#1A1A1A" font-family="'Inter',sans-serif" font-size="11.5" font-weight="600">
+            <text x="60" y="60" text-anchor="start">Compra de evals</text>
+            <text x="225.4" y="38" text-anchor="middle">Eval superada</text>
+            <text x="306.2" y="60" text-anchor="middle">Primer cobro</text>
+            <text x="552" y="38" text-anchor="middle">Cobro al tope</text>
+          </g>
+          <g fill="#6B7280" font-family="'JetBrains Mono',monospace" font-size="10" text-anchor="middle">
+            <text x="60" y="112">mes 0</text>
+            <text x="225.4" y="112">mes 0,9</text>
+            <text x="306.2" y="112">mes 1,3</text>
+            <text x="552" y="112">mes 2,6</text>
+          </g>
+          <g fill="#6B7280" font-family="'Inter',sans-serif" font-size="10.5" text-anchor="middle">
+            <text x="306.2" y="132">$500 · $450 netos</text>
+            <text x="552" y="132">$2.000 · $1.800 netos</text>
+          </g>
+          <text x="18" y="90" fill="#6B7280" font-family="'JetBrains Mono',monospace" font-size="9.5" text-anchor="middle" transform="rotate(-90 18 90)">MESES</text>
+        </svg>
+      </div>
+      <figcaption>Del mes 0 al primer cobro al tope pasan 2,6 meses: dos meses y medio para cobrar $1.800 netos por cuenta, con $95,20 de capital en riesgo.</figcaption>
+    </figure>
+
+    <p>Dos decisiones prácticas salen de esta tabla:</p>
+    <ul>
+      <li><b>Evaluación agresiva.</b> $600 de R pasa el target en 0,86 meses de mediana. El riesgo de reinicio (6,5%) cuesta $95, así que la agresividad aquí es gratis en términos de capital.</li>
+      <li><b>Régimen conservador.</b> Una vez fondeada, bajar a $400. Ahí el reinicio se paga con tiempo y con el buffer, no con $95.</li>
+    </ul>
+
+    <h2 id="plan"><span class="num">10</span>El plan</h2>
+    <p>Diez cuentas de $50.000 en copytrading: cinco de LUCID y cinco de Tradeify, operadas con el mismo flujo de órdenes. El capital en riesgo son los fees de las evaluaciones, no el capital de las cuentas.</p>
+
+    <div class="tw">
+      <table>
+        <caption>Estructura del portafolio</caption>
+        <thead>
+          <tr><th>Firma</th><th class="num-col">Cuentas</th><th class="num-col">Retiro máx.</th><th class="num-col">Retiros/cuenta</th><th>Rol</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hl"><td>LUCID Flex $50K</td><td class="num-col">5</td><td class="num-col">$2.000</td><td class="num-col">5 → churn</td><td>Motor recurrente · $7.384/mes</td></tr>
+          <tr><td>Tradeify Select Flex $50K</td><td class="num-col">5</td><td class="num-col">$2.500</td><td class="num-col">2 efectivos</td><td>~$22.500 de cosecha</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tw">
+      <table>
+        <caption>Secuencia de ejecución</caption>
+        <thead>
+          <tr><th>Fase</th><th>Ventana</th><th class="num-col">R</th><th>Objetivo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>0 · Evaluaciones</b></td><td>Mes 0 → 0,9</td><td class="num-col">$600</td><td>Superar las diez evaluaciones. Costo: $95,20 (LUCID) y $165 (Tradeify)</td></tr>
+          <tr><td><b>1 · Primer cobro</b></td><td>Mes 0,9 → 1,3</td><td class="num-col">$400</td><td>Cinco días con ≥$150 de profit → retiro mínimo en LUCID ($500)</td></tr>
+          <tr class="hl"><td><b>2 · Régimen</b></td><td>Mes 1,3 en adelante</td><td class="num-col">$400</td><td>Retirar $2.000 cada vez que el profit acumulado llega a $4.000</td></tr>
+          <tr><td><b>3 · Churn</b></td><td>Cada 5º retiro</td><td class="num-col">—</td><td>Quemar la cuenta y activar el reemplazo ya superado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h3>Los números del régimen</h3>
+      <ul>
+        <li><b>Extracción neta por ciclo (LUCID):</b> $9.000 · <b>duración:</b> 5,86 meses</li>
+        <li><b>$1.477/mes por cuenta</b>, con R = $400 y el disparador en m = 2</li>
+        <li><b>Libro LUCID (5 cuentas):</b> $7.384/mes de ingreso recurrente</li>
+        <li><b>Tradeify:</b> $22.500 de cosecha total (5 cuentas × 2 retiros × $2.500 × 90%)</li>
+        <li><b>Fees del pipeline completo:</b> $1.301 por las diez cuentas (5 × $95,20 + 5 × $165) — menos de la mitad que las mismas diez en $150.000 ($3.145)</li>
+      </ul>
+    </div>
+
+    <h3>El tamaño importa: $50.000 contra $150.000</h3>
+    <p>Con el mismo motor y la misma secuencia, el tamaño de la cuenta cambia el ingreso, el costo y el colchón. La comparación es directa:</p>
+
+    <div class="tw">
+      <table>
+        <caption>Mismo plan, dos tamaños de cuenta (R de régimen en cada caso)</caption>
+        <thead>
+          <tr><th>Cuenta</th><th class="num-col">Fee eval</th><th class="num-col">R régimen</th><th class="num-col">$/mes</th><th class="num-col">Buffer</th><th class="num-col">Fees pipeline</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hl"><td>$50.000</td><td class="num-col">$95,20 / $165</td><td class="num-col">$400 (MLL/5)</td><td class="num-col">$1.477</td><td class="num-col">4,75R</td><td class="num-col">$1.301</td></tr>
+          <tr><td>$150.000</td><td class="num-col">$260 / $369</td><td class="num-col">$725 (MLL/6,2)</td><td class="num-col">$2.333</td><td class="num-col">4,0R</td><td class="num-col">$3.145</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>El mismo número de cuentas rinde <b>58% más</b> en la cuenta de $150.000. Y como el tope es de <b>5 cuentas fondeadas por firma</b> —un límite de cantidad, no de tamaño—, si el cuello de botella son los cupos, la cuenta grande gana por ingresos. El tamaño de $50.000 tiene tres escenarios donde sí conviene: cuando el capital disponible para fees es la restricción ($1.301 contra $3.145 para arrancar diez cuentas), cuando el stop de la estrategia obliga a pocos contratos (arriba de 2-4 minis el R de $400 no se puede armar), y como escalón para validar el proceso completo antes de subir de tamaño.</p>
+
+    <h3>Palancas para subir el techo</h3>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Palanca</th><th class="num-col">Efecto</th><th>Costo</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hl"><td>Ejecutar 5 operaciones/semana (hoy 3,46)</td><td class="num-col">+44%</td><td>Ninguno: es ejecución</td></tr>
+          <tr><td>Pipeline de reemplazo bien calzado</td><td class="num-col">+40%</td><td>Disciplina de timing</td></tr>
+          <tr><td>Subir el tamaño de cuenta a $150.000</td><td class="num-col">+58%</td><td>Fees ×2,4 y evaluaciones más largas</td></tr>
+          <tr><td>Tercera firma (5 cuentas más)</td><td class="num-col">+$7.400</td><td>Fees y curva de aprendizaje</td></tr>
+          <tr><td>Subir el disparador a m = 3</td><td class="num-col">−16%</td><td>Reinicio de evaluación a la mitad</td></tr>
+          <tr><td>R por encima de MLL/4,4</td><td class="num-col">+17%</td><td class="bad">Aparece breach de cuenta fondeada</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="riesgos"><span class="num">11</span>Riesgos y controles</h2>
+    <p>El plan es viable, pero descansa en cinco supuestos. Cada uno tiene un control explícito:</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h4>El reinicio de evaluación</h4>
+          <p>En el régimen, un 7,8% de los ciclos empieza con una evaluación fallida. No es un riesgo de capital: cuesta <b>$95</b> y aproximadamente un mes. El control es tener siempre <b>una evaluación superada en reserva</b> para que el reinicio no deje una cuenta vacía.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h4>Riesgo de cola no medido</h4>
+          <p>214 días de historia contienen una racha perdedora de 3 y un drawdown de 4R. No contienen un cisne negro: un gap, un halt, un cambio de regla. El modelo no puede medir lo que la secuencia no vio, así que el buffer es la única defensa real. Ese es el argumento para no pasar de MLL/4,4.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h4>Correlación 1,0 entre las diez cuentas</h4>
+          <p>El copytrading replica la misma orden en todas las cuentas: diez cuentas no diversifican nada, multiplican. Una racha mala golpea el portafolio completo al mismo tiempo. La palanca de seguridad no es "más cuentas", es <b>R más bajo</b>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <div>
+          <h4>El proceso de Live</h4>
+          <p>En Tradeify el pase es obligatorio a los 3 retiros de una cuenta o a los 10 de la firma, y cierra todas las cuentas simuladas. En LUCID depende del equipo de riesgo. El control es el churn: quemar la cuenta en su último retiro permitido y no dejar acumular volumen que dispare una revisión.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">5</div>
+        <div>
+          <h4>Reglas que cambian, cuentas que se apagan</h4>
+          <p>Las condiciones de las firmas cambian sin previo aviso y LUCID elimina la cuenta tras <b>30 días sin operar</b>. Antes de comprar hay que revalidar la tabla de arriba, y durante la operación, mantener el mínimo de actividad: cinco días con al menos una operación por ciclo cubre ese frente.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a class="pill" href="calculadoras/prop-firm-analyzer.html">Correr mis números en el Analyzer</a>
+      <a href="prop-firm-plan.html">Ver el mismo plan con cuentas de $150.000 →</a>
+    </div>
+
+    <div class="descargo">
+      <h2>Descargo de Responsabilidad</h2>
+      <p>La información presentada es de carácter informativo y analítico. No constituye asesoría financiera, de inversión, legal ni tributaria. Las cifras provienen de simulaciones Monte-Carlo (800 ciclos por fila) sobre una secuencia histórica de referencia de 214 días y de las condiciones publicadas por cada firma a la fecha indicada; los resultados pasados no garantizan resultados futuros y las reglas de las firmas pueden cambiar. Operar instrumentos apalancados implica riesgo de pérdida. Las decisiones de inversión son responsabilidad exclusiva del lector.</p>
+    </div>
+
+  </div>
+</article>
+
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="trq-terms.html">Términos</a></span>
+</footer>
+
+</body>
+</html>
