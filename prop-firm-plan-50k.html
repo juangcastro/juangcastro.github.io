@@ -313,7 +313,67 @@
 
 <script>history.scrollRestoration='manual';</script>
 
-<article>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html" aria-label="The Red Queen — inicio">
+      <img src="assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen<small>CHECKMATE THE SYSTEM</small></span>
+    </a>
+    <div class="nav-links">
+      <a class="back-link" href="calculadoras/">← Calculadoras</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="trq-program.html">Mentoría</a>
+      <a class="cta" href="calculadoras/prop-firm-analyzer.html">Abrir el Analyzer</a>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <div class="crumbs">
+    <a href="calculadoras/">Recursos</a><span class="sep">›</span>
+    <a href="calculadoras/">Calculadoras</a><span class="sep">›</span>
+    <span>Plan de fondeo · $50.000</span>
+  </div>
+
+  <aside aria-label="Índice del documento">
+    <div class="lib-title">Library</div>
+    <div class="lib-sub">Browse</div>
+    <div class="tree">
+
+      <details open>
+        <summary>El sistema <span class="count">3</span><span class="caret">›</span></summary>
+        <ol>
+          <li><a href="#base">La base del sistema</a></li>
+          <li><a href="#firmas">Las dos firmas</a></li>
+          <li><a href="#vocabulario">Vocabulario del ciclo</a></li>
+        </ol>
+      </details>
+
+      <details open>
+        <summary>Las reglas <span class="count">4</span><span class="caret">›</span></summary>
+        <ol>
+          <li><a href="#drawdown">Drawdown y buffer</a></li>
+          <li><a href="#retiro">El retiro</a></li>
+          <li><a href="#tope">El tope de 5 retiros</a></li>
+          <li><a href="#live">Live y churn</a></li>
+        </ol>
+      </details>
+
+      <details open>
+        <summary>El modelo <span class="count">4</span><span class="caret">›</span></summary>
+        <ol>
+          <li><a href="#r">Optimización de R</a></li>
+          <li><a href="#primer">El primer cobro</a></li>
+          <li><a href="#plan">El plan</a></li>
+          <li><a href="#riesgos">Riesgos y controles</a></li>
+        </ol>
+      </details>
+
+    </div>
+  </aside>
+
+  <article>
   <div class="kicker">Prop Firms · Plan de fondeo · Cuentas de $50.000</div>
   <h1>LUCID + Tradeify: el plan de <em>diez cuentas de $50.000</em></h1>
   <div class="meta">
@@ -571,7 +631,7 @@
     </div>
 
     <div class="note">
-      <strong>Por qué aquí el óptimo es MLL/5 y no MLL/6,2.</strong> El lock del piso es fijo en dólares (+$100) mientras la R se reduce: el buffer después de cobrar el tope pasa de 4,0R en una cuenta de $150.000 a <b>4,75R en una de $50.000</b>. Ese colchón extra permite subir el riesgo. El breach de la cuenta fondeada sigue en <b>cero hasta R = $450 (MLL/4,4)</b>; con $500 aparece y con un 12% por ciclo. Lo que sí sube antes es el <b>reinicio de evaluación</b> (7,8% con $400), y ese fallo es barato: cuesta <b>$95</b> y alrededor de un mes.
+      <strong>Por qué aquí el óptimo es MLL/5 y no MLL/6,2.</strong> El lock del piso es fijo en dólares (+$100) mientras la R se reduce: el buffer después de cobrar el tope pasa de 4,0R en una cuenta de $150.000 a <b>4,75R en una de $50.000</b>. Ese colchón extra permite subir el riesgo. El breach de la cuenta fondeada sigue en <b>cero hasta R = $450 (MLL/4,4)</b>; con $500 aparece y con un 12% por ciclo. El único riesgo que se paga en tiempo es el <b>reinicio de evaluación</b> —7,8% con un R de evaluación de $600, independiente de la R de régimen—, y ese fallo es barato: cuesta <b>$95</b> y alrededor de un mes.
     </div>
 
     <h2 id="primer"><span class="num">09</span>El primer cobro</h2>
