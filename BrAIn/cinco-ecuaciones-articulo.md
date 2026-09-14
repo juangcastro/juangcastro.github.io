@@ -132,7 +132,7 @@ Pregunta: ¿cuál es tu rendimiento promedio?
 
 La respuesta instintiva: (50 − 50 + 50) ÷ 3 = **16.7%**. ¡Se ve genial! Un 16.7% promedio suena a producto de nivel Warren Buffett.
 
-La respuesta real: más cerca de **+7%**. Y aquí es donde se pone feo.
+La respuesta real: más cerca de **+4%**. Y aquí es donde se pone feo.
 
 Tu dinero real hizo esto: $100 → $150 → $75 → $112.50. En tres años, convertiste $100 en $112.50 — una ganancia total del 12.5%, o ~4% anual compuesto. **No 16.7%.**
 
