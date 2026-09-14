@@ -242,8 +242,6 @@ Ninguna de estas fórmulas está oculta. Ninguna requiere un título. Ninguna cu
 
 El hábito mental más útil que puedes construir es este: **cuando enfrentes una afirmación financiera, antes de sentir nada, pregúntate cuál de las cinco ecuaciones la gobierna — y corre el número.**
 
-> **Los ricos no son personas que vencen las ecuaciones. Son personas que nunca discutieron con ellas.**
-
 Y aquí está la pregunta que vale la pena contemplar — la que no te deja dormir si la tomas en serio:
 
 Si cinco ecuaciones cortas — todas gratis, todas públicas, todas más viejas que cualquier banco de la Tierra — deciden la mayor parte de tu vida financiera, y llevas años navegando el dinero sin ellas, entonces la pregunta honesta no es *"¿por qué no entiendo de finanzas?"*
