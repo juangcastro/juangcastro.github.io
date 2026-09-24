@@ -63,26 +63,28 @@
     .mcard { break-inside:avoid; page-break-inside:avoid; }
   }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <div class="page cover">
     <div class="ck">Red Queen · Design System</div>
     <h1>Guía de estilos GUI</h1>
-    <p class="csub">93 estilos de interfaz documentados: los 6 aprobados por Juan con interfaces de ejemplo completas, y 84 estilos de referencia con mockup visual de cada uno.</p>
+    <p class="csub">94 estilos de interfaz documentados: 10 secciones con interfaces de ejemplo completas (los 6 estilos aprobados por Juan + 4 sitios de referencia), y 84 estilos de referencia con mockup visual de cada uno.</p>
     <div class="cchips">
       <span class="chip c1">Cyberpunk / Neuromancer</span>
       <span class="chip c2">Ivory Terminal</span>
       <span class="chip c3">Golden Noir</span>
-      <span class="chip" style="color:#e8ecff;border-color:#e8ecff">Arcade Ivory</span>
+      <span class="chip" style="color:#0A0A0A;border-color:#0A0A0A">Arcade Ivory</span>
       <span class="chip" style="color:#5E6B88;border-color:#5E6B88">Slate Manual</span>
       <span class="chip" style="color:#ff3b5c;border-color:#ff3b5c">The Red Queen</span>
       <span class="chip" style="color:#FA8072;border-color:#FA8072">StatMap</span>
       <span class="chip" style="color:#0E78E8;border-color:#0E78E8">AM Trades</span>
       <span class="chip" style="color:#625FFF;border-color:#625FFF">StockNest</span>
+      <span class="chip" style="color:#171717;border-color:#171717">Rimu</span>
     </div>
     <div class="cbar"></div>
-    <div class="cmeta">Agosto 2026 · theredqueen.co · 93 estilos</div>
+    <div class="cmeta">Septiembre 2026 · theredqueen.co · 94 estilos</div>
   </div>
 
   <div class="page">
@@ -2530,6 +2532,146 @@
 
     <h3 class="ah" style="--ac:#625FFF;font-size:15px;margin-top:26px">Métrica · uso en TRQ</h3>
     <p style="font-size:12px;color:#6b7280;margin-top:6px">Referencia para: ficha de ticker/activo del engine Neuromancer (precio + chip % + gráfico + grid de métricas), dashboard de portafolio con Score Card por dimensiones (α, β, régimen, liquidez), comparador de fundamentales. El patrón "card data-dense con label 8px + valor 11px semibold" y el Score Card con barras por dimensión son directamente trasladables a Neuromancer. El anillo multicolor giratorio como marca de "live" es un recurso interesante para el estatus del engine. #625FFF ≠ rojo TRQ #ff3b5c — el índigo funcionaría como acento secundario si se adopta (los verdes/rojos semánticos ya son los del dashboard).</p>
+  </div>
+
+  <div class="page">
+    <div class="phead"><span class="pnum">10</span><span class="pref">Referencia · rimuapp.com · React SPA + Tailwind</span></div>
+    <div class="tag-row"><span class="tag" style="--ac:#171717">Rimu</span><span class="tag2">app de productividad · landing de producto · dark-first · mockups de producto</span></div>
+    <h2 class="ah" style="--ac:#171717">Rimu (landing de producto / app all-in-one)</h2>
+    <p class="adesc">React SPA (Vite + Tailwind) dark-first en <b>negro absoluto</b> con un sistema <b>monocromo</b> cuyo "acento" es la tinta misma (#efefef en oscuro, #171717 en claro). Firma: <b>titulares en serif editorial (Instrument Serif)</b> con degradado de texto y reveal blur→nítido, sobre UI sans ligera (Manrope 200-600) y micro-labels en mayúsculas con tracking amplio. Todo el producto se comunica con <b>mockups de UI reales</b> (capturas en marcos, teléfonos 211/432, chat de WhatsApp), nunca con iconos genéricos. El color solo aparece como semántica y como logos de integración.</p>
+
+    <div class="mock" style="background:#000;border:1px solid #1c1c1c;border-radius:14px;padding:0;font-family:Manrope,system-ui,sans-serif;color:#efefef;overflow:hidden">
+      <!-- nav -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #171717">
+        <span style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:-.01em">
+          <span style="display:inline-block;width:15px;height:15px;border-radius:4px;background:#fff;color:#0a0a0a;font-size:10px;line-height:15px;text-align:center;font-weight:700">r</span> rimu
+        </span>
+        <span style="display:flex;align-items:center;gap:14px;font-size:10px;color:#737373">
+          <span>US / ES</span>
+          <span style="background:#fff;color:#0a0a0a;border-radius:999px;padding:4px 13px;font-weight:600;font-size:10px">Login</span>
+        </span>
+      </div>
+      <!-- hero -->
+      <div style="padding:32px 24px 24px;text-align:center">
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:29px;line-height:1.18;letter-spacing:-.02em">
+          You only need <i style="color:#a3a3a3">one system</i> to be<br>organized and productive.<br>
+          <span style="background:linear-gradient(90deg,#efefef,#737373);-webkit-background-clip:text;background-clip:text;color:transparent">Stop switching between apps.</span>
+        </div>
+        <div style="display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:15px;font-size:9px;color:#a3a3a3">
+          <span>▣ Mobile + Desktop</span><span>◎ Anywhere</span><span>✓ No monthly fees</span><span>✓ Lifetime access</span>
+        </div>
+        <!-- video / app frame -->
+        <div style="margin:20px auto 0;max-width:430px;background:#0f0f0f;border:1px solid #1c1c1c;border-radius:12px;padding:9px">
+          <div style="background:#171717;border-radius:8px;padding:26px 12px;text-align:center;color:#666;font-size:9px">
+            <span style="display:inline-block;background:#fff;color:#0a0a0a;border-radius:999px;padding:5px 14px;font-weight:600;font-size:9px">▶ Watch to understand</span>
+            <div style="margin-top:8px;color:#3a3a3a">app showcase · 17.062,00 US$ · multi-currency</div>
+          </div>
+        </div>
+      </div>
+      <!-- features 2x3 -->
+      <div style="padding:6px 20px 20px">
+        <div style="text-align:center;font-size:8px;letter-spacing:.13em;color:#666;text-transform:uppercase">All-in-one app</div>
+        <div style="text-align:center;font-family:'Instrument Serif',Georgia,serif;font-size:19px;margin:6px 0 16px">Everything you need, in one app</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:#0f0f0f;border:1px solid #1c1c1c;border-radius:12px;padding:12px">
+            <div style="font-size:11px;font-weight:600;margin-bottom:8px">Tasks and habits</div>
+            <div style="font-size:9px;color:#737373;line-height:1.9">
+              <div>☑ Supermarket report <span style="float:right;color:#666">16:00</span></div>
+              <div>☑ Gym <span style="float:right;color:#666">19:00</span></div>
+              <div>☐ Meditate <span style="float:right;color:#666">6d</span></div>
+            </div>
+          </div>
+          <div style="background:#0f0f0f;border:1px solid #1c1c1c;border-radius:12px;padding:12px">
+            <div style="font-size:11px;font-weight:600;margin-bottom:8px">Productivity</div>
+            <div style="font-size:9px;color:#737373;line-height:1.7">Eisenhower, Kanban and Pomodoro to prioritize and focus.</div>
+            <div style="display:flex;gap:4px;margin-top:8px">
+              <span style="flex:1;height:16px;background:#171717;border-radius:4px"></span>
+              <span style="flex:1;height:16px;background:#171717;border-radius:4px"></span>
+              <span style="flex:1;height:16px;background:#2c2c2e;border-radius:4px"></span>
+            </div>
+          </div>
+          <div style="background:#0f0f0f;border:1px solid #1c1c1c;border-radius:12px;padding:12px">
+            <div style="font-size:11px;font-weight:600;margin-bottom:6px">Workouts</div>
+            <div style="font-size:9px;color:#737373;margin-bottom:8px">Log your weights and see your progress on a chart.</div>
+            <div style="display:flex;align-items:flex-end;gap:3px;height:34px">
+              <span style="width:12%;height:35%;background:#f59e0b;opacity:.5;border-radius:2px"></span>
+              <span style="width:12%;height:50%;background:#f59e0b;opacity:.65;border-radius:2px"></span>
+              <span style="width:12%;height:45%;background:#f59e0b;opacity:.75;border-radius:2px"></span>
+              <span style="width:12%;height:70%;background:#f59e0b;opacity:.85;border-radius:2px"></span>
+              <span style="width:12%;height:100%;background:#fbbf24;border-radius:2px"></span>
+            </div>
+          </div>
+          <div style="background:#0f0f0f;border:1px solid #1c1c1c;border-radius:12px;padding:12px">
+            <div style="font-size:11px;font-weight:600;margin-bottom:8px">Studies</div>
+            <div style="font-size:9px;color:#737373;line-height:1.9">
+              <div>☐ Calculus II <span style="float:right;color:#666">4h 30m</span></div>
+              <div>☐ Physics <span style="float:right;color:#666">2h 15m</span></div>
+            </div>
+          </div>
+          <div style="background:#0f0f0f;border:1px solid #1c1c1c;border-radius:12px;padding:12px">
+            <div style="font-size:11px;font-weight:600;margin-bottom:6px">Finance</div>
+            <div style="font-size:9px;color:#737373;margin-bottom:8px">Invoices, installments and budget, in your local currency.</div>
+            <div style="background:#171717;border-radius:8px;padding:7px 9px">
+              <div style="font-size:8px;color:#666">FEBRUARY</div>
+              <div style="font-size:13px;font-weight:600;letter-spacing:-.01em">$1.800.000</div>
+              <div style="font-size:8px;margin-top:4px"><span style="color:#10b981">▲ Salary +$4.075.000</span> &nbsp;<span style="color:#ef4444">▼ Groceries −$175.000</span></div>
+            </div>
+          </div>
+          <div style="background:#0f0f0f;border:1px solid #1c1c1c;border-radius:12px;padding:12px">
+            <div style="font-size:11px;font-weight:600;margin-bottom:6px">Reminders</div>
+            <div style="font-size:9px;color:#737373;margin-bottom:8px">Alerts for your tasks and bills at the right time.</div>
+            <div style="background:#171717;border-radius:8px;padding:6px 9px;font-size:9px;margin-bottom:5px">🔔 Team meeting <span style="float:right;color:#666">today</span></div>
+            <div style="background:#171717;border-radius:8px;padding:6px 9px;font-size:9px">🔔 Nubank statement <span style="float:right;color:#666">Mar 15</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- whatsapp strip -->
+      <div style="padding:0 20px 22px">
+        <div style="background:#0f0f0f;border:1px solid #1c1c1c;border-radius:12px;padding:14px;display:flex;gap:14px;align-items:center">
+          <div style="flex:1">
+            <div style="font-size:8px;letter-spacing:.13em;color:#666;text-transform:uppercase">WhatsApp</div>
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-size:17px;margin:5px 0 6px">A WhatsApp contact that organizes everything</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;font-size:8px;color:#a3a3a3">
+              <span style="border:1px solid #262626;border-radius:999px;padding:3px 9px">Daily briefing</span>
+              <span style="border:1px solid #262626;border-radius:999px;padding:3px 9px">Log an expense</span>
+              <span style="border:1px solid #262626;border-radius:999px;padding:3px 9px">Voice notes</span>
+            </div>
+          </div>
+          <div style="width:78px;height:160px;background:#171717;border:1px solid #262626;border-radius:14px;padding:8px;flex-shrink:0">
+            <div style="background:#25d366;border-radius:8px;padding:5px 7px;font-size:7px;color:#062b16;margin-bottom:5px">Briefing: 3 tasks, 1 bill today</div>
+            <div style="background:#2c2c2e;border-radius:8px;padding:5px 7px;font-size:7px;color:#efefef">Add "pay internet" for the 15th</div>
+            <div style="background:#25d366;border-radius:8px;padding:5px 7px;font-size:7px;color:#062b16;margin-top:5px">Done. Reminder set ✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="ah" style="--ac:#171717;font-size:15px;margin-top:26px">Especificación</h3>
+    <div style="font-size:12px;color:#6b7280;line-height:1.7">
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Stack:</b> React SPA (Vite) + Tailwind (colores en oklch, dark mode por clase <code>.dark</code> — sin <code>prefers-color-scheme</code>) + Google Fonts (Instrument Serif + Manrope). HTML shell de 8 KB; todo el contenido se renderiza por JS.</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Fuentes:</b> <b>Instrument Serif</b> (display, con itálica para énfasis dentro del titular) + <b>Manrope</b> (UI, pesos 200/300/400/500/600 — el cuerpo va en 400 y los titulares de tarjeta en 600) + ui-monospace para micro-datos. Escala <b>compacta</b>: cuerpo 0.8rem (68 usos), 0.72–0.875rem, labels 0.6rem. Títulos con tracking negativo −0.035em; labels en mayúsculas con +0.13em.</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Tipos de objeto:</b> (1) <b>phone mockups</b> con ratio fijo 211/432 dentro de marcos oscuros — capturas reales de la app; (2) <b>frames de showcase</b> con video de la app ("Watch to understand") — 4 videos en la página; (3) <b>tarjetas de feature con mini-UI funcional</b> (listas con check, charts de barras, montos con signo, pills de recordatorio) — nunca iconos abstractos; (4) <b>mockups de chat de WhatsApp</b> (burbujas verde #25d366 / gris); (5) <b>logos de integración</b> en SVG (Google Calendar #4285f4, WhatsApp #25d366, Stripe #635bff, Hotmart #ef4a23); (6) 157 SVG de iconos de UI; (7) acordeones de FAQ, tabs, testimonios.</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Distribución:</b> contenedor <b>max-w 1100px</b> (18 usos) · 24 secciones en ritmo vertical · <b>grids de 2 columnas</b> como base (33 usos) con composiciones asimétricas (mockups a un lado, texto al otro) · hero centrado full-bleed negro · secciones de tarjetas 2×3 · strip de WhatsApp · comparativa de precios · FAQ. Radios: <b>5px</b> en elementos de UI (79 usos), <b>16px (rounded-2xl)</b> en tarjetas (74), <b>full</b> en pills/botones (68). Sombras muy sutiles (shadow-sm).</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Estados y color:</b> dark-first (bg #000, surface #0f0f0f, surface-2 #171717, border #1c1c1c); tema claro disponible por tokens (bg #fff, ink #171717). Semánticos: esmeralda #10b981 (ingreso), rojo #ef4444 (gasto), ámbar #f59e0b (workouts), índigo #7c85f5, violeta #8b5cf6, cielo #38bdf8, rosa #f43f5e — <b>uno por categoría del producto</b>. Glassmorphism: --glass-bg #1119 (oscuro) / #ffffffb3 (claro) con backdrop-blur-xl.</p>
+      <p style="margin:6px 0"><b style="color:#1A1A1A">Firma visual:</b> <b>monocromo con acento = tinta</b> (blanco sobre negro en dark) · titular serif con <b>text-gradient</b> (linear #efefef→#737373 sobre el texto) y segundo plano con <b>reveal de entrada</b> (opacity 0 + blur(10px) → nítido) · blobs flotantes animados (blob-float-a/b) · micro-labels uppercase 0.6rem con tracking amplio antes de cada título · botones pill blancos con texto negro como único "acento" visual.</p>
+    </div>
+
+    <h3 class="ah" style="--ac:#171717;font-size:15px;margin-top:26px">Paleta</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <div style="background:#000;border:1px solid #333;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">bg<br>#000000</div>
+      <div style="background:#0f0f0f;border:1px solid #333;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">surface<br>#0F0F0F</div>
+      <div style="background:#171717;border:1px solid #333;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">surface-2<br>#171717</div>
+      <div style="background:#efefef;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">accent/ink<br>#EFEFEF</div>
+      <div style="background:#25d366;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">whatsapp<br>#25D366</div>
+      <div style="background:#4285f4;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">google<br>#4285F4</div>
+      <div style="background:#10b981;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">income<br>#10B981</div>
+      <div style="background:#ef4444;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">expense<br>#EF4444</div>
+      <div style="background:#f59e0b;border-radius:8px;width:64px;height:40px"></div><div style="font-size:10px;color:#6b7280;width:70px;padding-top:4px">workout<br>#F59E0B</div>
+    </div>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px">Tokens verificados en el CSS del sitio: <code>--bg:#000 · --surface:#0f0f0f · --surface-2:#171717 · --ink:#efefef · --border:#1c1c1c · --accent:#efefef · --glass-bg:#1119</code> (dark) y su equivalente claro <code>--bg:#fff · --ink:#171717</code>. Integraciones: stripe #635bff, hotmart #ef4a23. El verde WhatsApp #25d366 es el color más característico del producto (mockups de chat).</p>
+
+    <h3 class="ah" style="--ac:#171717;font-size:15px;margin-top:26px">Métrica · uso en TRQ</h3>
+    <p style="font-size:12px;color:#6b7280;margin-top:6px">Referencia para: <b>cualquier landing o ficha de producto</b> que muestre la app/página como protagonista en vez de iconos genéricos (el patrón "tarjeta con mini-UI real dentro" es directamente trasladable a las calculadoras y al hub de herramientas TRQ). El <b>mockup de teléfono con ratio fijo 211/432</b> es el recurso ideal para mostrar dashboards móviles del engine. La pareja <b>serif display + sans ligera + micro-label uppercase</b> da un tono "editorial premium" que encajaría como variante de BrAIn. El reveal con blur de entrada es un detalle reutilizable (sin librería). Advertencias: el acento de Rimu es la <b>tinta misma</b> (#efefef/#171717), no un color de marca — si se adopta, TRQ mantiene su rojo #ff3b5c como acento y Rimu aporta solo la estructura; y el verde WhatsApp #25d366 solo si algún día se integra WhatsApp al ecosistema.</p>
   </div>
 
 </body>
