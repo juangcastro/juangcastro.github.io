@@ -308,6 +308,12 @@
     * { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; }
   }
 </style>
+<style>
+  /* v2 — sin sidebar: una sola columna, legible en cualquier ancho (panel angosto o móvil) */
+  .shell { grid-template-columns: minmax(0, 1fr); max-width: 840px; gap: 0; padding: 0 24px 96px; }
+  article { padding-top: 30px; }
+  @media (max-width: 620px) { .shell { padding: 0 18px 72px; } }
+</style>
 </head>
 <body><nav>
   <div class="nav-inner">
@@ -331,38 +337,6 @@
     <a href="calculadoras/">Calculadoras</a><span class="sep">›</span>
     <span>Plan de fondeo · Topstep 150K</span>
   </div>
-
-  <aside aria-label="Índice del documento">
-  <div class="lib-title">Library</div>
-  <div class="lib-sub">Browse</div>
-  <div class="tree">
-    <details open>
-      <summary>El sistema <span class="count">3</span><span class="caret">›</span></summary>
-      <ol>
-        <li><a href="#base">La base del sistema</a></li>
-        <li><a href="#firmas">Las dos firmas</a></li>
-        <li><a href="#rotacion">La rotación A/B</a></li>
-      </ol>
-    </details>
-    <details open>
-      <summary>La evidencia <span class="count">2</span><span class="caret">›</span></summary>
-      <ol>
-        <li><a href="#memoria">Por qué el histórico lo permite</a></li>
-        <li><a href="#canje">El canje: qué cuesta</a></li>
-      </ol>
-    </details>
-    <details open>
-      <summary>El plan <span class="count">5</span><span class="caret">›</span></summary>
-      <ol>
-        <li><a href="#r">La R y el umbral de retiro</a></li>
-        <li><a href="#ciclo">El ciclo de una cuenta</a></li>
-        <li><a href="#plan">El plan completo</a></li>
-        <li><a href="#riesgos">Lo que hay que respetar</a></li>
-        <li><a href="#cierre">El cierre</a></li>
-      </ol>
-    </details>
-  </div>
-</aside>
 
   <article>
 
