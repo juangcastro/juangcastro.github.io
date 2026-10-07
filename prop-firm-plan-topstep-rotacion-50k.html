@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan de Fondeo $50.000: LUCID + Topstep con rotación A/B · The Red Queen</title>
+<meta name="description" content="Modelo Monte-Carlo sobre las reglas reales de LUCID Flex y Tradeify Select: optimización del riesgo por operación, ciclo de retiros, drawdown con lock y el plan de 10 cuentas en copytrading.">
+<meta property="og:title" content="Plan de Fondeo: LUCID + Tradeify">
+<meta property="og:description" content="Optimización de R, ciclo de retiros y drawdown con lock sobre las reglas oficiales de ambas firmas.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://theredqueen.co/prop-firm-plan.html">
+<meta property="og:image" content="https://theredqueen.co/assets/trq-logo-main.png">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     SLATE MANUAL — documentación técnica
+     blanco #FFFFFF · tinta #1A1A1A · acento slate #5E6B88
+     Inter para el documento · JetBrains Mono solo en nav/meta
+     ============================================================ */
+  :root {
+    --bg: #FFFFFF;
+    --ink: #1A1A1A;
+    --accent: #5E6B88;
+    --accent-ink: #47536B;      /* hover/active (más oscuro, AA) */
+    --surface: #F8FAFC;
+    --line: #E5E7EB;
+    --line-soft: rgba(147, 147, 147, .2);
+    --muted: #939393;            /* decorativo: badges, contadores */
+    --muted-ink: #6B7280;        /* texto secundario accesible (4.83:1) */
+    --good: #2F6F4E;
+    --warn: #9A5B2B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { max-width: 100%; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  img { display: block; max-width: 100%; }
+  b, strong { font-weight: 600; color: var(--ink); }
+
+  /* ---------- nav (canónico TRQ, adaptado a superficie clara) ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 255, 255, .88);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1160px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+  .nav-brand:hover { text-decoration: none; }
+  .nav-brand img { width: 38px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 15px; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--accent); line-height: 1.25; min-width: 0;
+  }
+  .nav-brand .word small {
+    display: block; font-size: 9px; font-weight: 500;
+    letter-spacing: .3em; color: var(--muted-ink);
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; min-width: 0; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted-ink);
+    display: inline-flex; align-items: center; min-height: 44px;
+    transition: color .18s ease;
+  }
+  .nav-links a:hover { color: var(--accent); text-decoration: none; }
+  .nav-links .cta {
+    background: var(--accent); color: #FFFFFF; border-radius: 9999px;
+    padding: 0 18px; font-weight: 600; letter-spacing: .1em;
+    transition: background-color .18s ease, transform .12s ease;
+  }
+  .nav-links .cta:hover { background: var(--accent-ink); color: #FFFFFF; }
+  .nav-links .cta:active { transform: scale(.96); }
+  @media (max-width: 780px) { .nav-links a:not(.back-link):not(.cta) { display: none; } }
+  @media (max-width: 620px) {
+    .nav-inner { padding: 12px 18px; gap: 10px; }
+    .nav-links .cta { display: none; }
+    .nav-brand img { width: 30px; }
+    .nav-brand .word { font-size: 12px; letter-spacing: .22em; }
+    .nav-brand .word small { font-size: 8px; letter-spacing: .18em; }
+    .nav-links { gap: 14px; }
+    .nav-links a { font-size: 11px; letter-spacing: .08em; }
+  }
+
+  /* ---------- layout 2 columnas: sidebar + artículo ---------- */
+  .shell {
+    max-width: 1160px; margin: 0 auto; padding: 0 24px 96px;
+    min-width: 0;
+    display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 940px) {
+    .shell { grid-template-columns: 1fr; gap: 28px; padding-bottom: 72px; }
+  }
+
+  /* ---------- breadcrumbs ---------- */
+  .crumbs {
+    grid-column: 1 / -1; padding: 26px 0 0;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 500;
+    letter-spacing: .05em; text-transform: uppercase; color: var(--muted-ink);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .crumbs a { color: var(--muted-ink); }
+  .crumbs a:hover { color: var(--accent); }
+  .crumbs .sep { color: var(--muted); }
+
+  /* ---------- sidebar ---------- */
+  aside { position: sticky; top: 84px; padding-top: 30px; }
+  @media (max-width: 940px) { aside { position: static; padding-top: 4px; } }
+  .lib-title {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--muted-ink);
+    padding-bottom: 10px; border-bottom: 1px solid var(--line);
+  }
+  .lib-sub {
+    font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 500;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 18px 0 10px;
+  }
+  .tree { display: flex; flex-direction: column; gap: 4px; }
+  .tree summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 9px 10px; border-radius: 10px; cursor: pointer;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line);
+    list-style: none; transition: border-color .16s ease, background-color .16s ease;
+  }
+  .tree summary::-webkit-details-marker { display: none; }
+  .tree summary:hover { border-color: var(--accent); }
+  .tree summary .caret { color: var(--muted); font-size: 10px; transition: transform .18s ease; }
+  .tree details[open] summary .caret { transform: rotate(90deg); }
+  .count {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+    color: var(--muted-ink); background: #FFFFFF; border: 1px solid var(--line);
+    border-radius: 9999px; min-width: 22px; height: 20px;
+    display: inline-flex; align-items: center; justify-content: center; padding: 0 6px;
+  }
+  .tree ol { list-style: none; margin: 6px 0 10px; padding-left: 10px; border-left: 1px solid var(--line); }
+  .tree ol a {
+    display: block; padding: 6px 8px; border-radius: 8px; font-size: 13px;
+    color: var(--muted-ink); transition: color .16s ease, background-color .16s ease;
+  }
+  .tree ol a:hover { color: var(--accent); background: var(--surface); text-decoration: none; }
+  .tree ol a.active { color: var(--accent); background: var(--surface); font-weight: 600; }
+
+  /* ---------- artículo ---------- */
+  article { padding-top: 30px; min-width: 0; }
+  .kicker {
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .kicker::before { content: ""; width: 26px; height: 1px; background: var(--accent); }
+  h1 {
+    font-size: clamp(30px, 4.4vw, 46px); font-weight: 800;
+    letter-spacing: -.022em; line-height: 1.08; margin: 16px 0 14px;
+    text-wrap: balance;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+  .meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted-ink);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    padding-bottom: 22px; border-bottom: 1px solid var(--line);
+  }
+  .meta .sep { color: var(--muted); }
+  .lead { font-size: 17px; color: #3F3F46; margin: 24px 0 8px; text-wrap: pretty; }
+  .lead b { color: var(--ink); }
+
+  h2 {
+    font-size: 24px; font-weight: 700; letter-spacing: -.01em;
+    margin: 56px 0 6px; padding-top: 26px; border-top: 1px solid var(--line);
+    text-wrap: balance; scroll-margin-top: 84px;
+  }
+  h2 .num {
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 700;
+    color: var(--accent); display: block; letter-spacing: .12em; margin-bottom: 8px;
+  }
+  h3 { font-size: 16px; font-weight: 700; margin: 30px 0 8px; letter-spacing: -.005em; }
+  p { margin: 12px 0; color: #3F3F46; text-wrap: pretty; }
+  .article-body > p:first-of-type { margin-top: 16px; }
+  ul, ol { margin: 12px 0 12px 20px; color: #3F3F46; }
+  li { margin: 7px 0; }
+  li::marker { color: var(--accent); }
+
+  /* pasos numerados (patrón Slate Manual) */
+  .steps { display: flex; flex-direction: column; gap: 22px; margin: 24px 0; }
+  .step { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; }
+  .step .n {
+    font-family: 'Inter', sans-serif; font-size: 25px; font-weight: 700;
+    color: var(--accent); line-height: 1.05; font-variant-numeric: tabular-nums;
+  }
+  .step h4 { font-size: 15.5px; font-weight: 700; margin-bottom: 4px; }
+  .step p { margin: 4px 0 0; font-size: 15px; }
+
+  /* superficies / cards */
+  .panel {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 16px; padding: 20px 22px; margin: 22px 0;
+  }
+  .panel h3 { margin-top: 0; }
+  .note {
+    border-left: 3px solid var(--accent); background: var(--surface);
+    border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 20px 0;
+    font-size: 14.5px; color: #3F3F46;
+  }
+  .note strong { color: var(--ink); }
+  .warn-note { border-left-color: var(--warn); }
+
+  /* tablas */
+  .tw { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 500px; }
+  caption {
+    text-align: left; padding: 14px 18px 0; font-size: 11.5px; font-weight: 600;
+    font-family: 'Inter', sans-serif; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted-ink);
+  }
+  th, td { padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--line); }
+  thead th {
+    font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted-ink); background: var(--surface); white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #FCFDFE; }
+  .num-col { text-align: right; font-variant-numeric: tabular-nums; }
+  td.num-col { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--ink); }
+  tr.hl { background: rgba(94, 107, 136, .07); }
+  tr.hl td { font-weight: 600; }
+  tr.hl:hover { background: rgba(94, 107, 136, .1); }
+  .ok { color: var(--good); font-weight: 600; }
+  .bad { color: var(--warn); font-weight: 600; }
+
+  /* badges inline */
+  .tag {
+    display: inline-block; font-family: 'Inter', sans-serif;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .06em;
+    color: var(--accent); background: var(--surface); border: 1px solid var(--line);
+    border-radius: 6px; padding: 2px 7px; vertical-align: 1px;
+  }
+  /* gráficas */
+  figure { margin: 24px 0; }
+  .chartwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption {
+    font-size: 12.5px; font-weight: 500; color: var(--muted-ink); margin-top: 10px;
+    font-family: 'Inter', sans-serif; letter-spacing: .01em;
+  }
+  .cta-row { margin: 34px 0 10px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+    background: var(--accent); color: #FFFFFF; border-radius: 9999px;
+    padding: 0 22px; font-weight: 600; font-size: 14px;
+    transition: background-color .18s ease, transform .12s ease;
+  }
+  .pill:hover { background: var(--accent-ink); color: #FFFFFF; text-decoration: none; }
+  .pill:active { transform: scale(.96); }
+
+  .descargo {
+    margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--line);
+    font-size: 12.5px; color: var(--muted-ink);
+  }
+  .descargo h2 {
+    font-size: 12px; border: none; margin: 0 0 6px; padding: 0;
+    font-family: 'Inter', sans-serif; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--muted-ink); font-weight: 700;
+  }
+  footer { border-top: 1px solid var(--line); background: var(--surface); padding: 26px 24px; text-align: center; }
+  footer span {
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 500;
+    letter-spacing: .04em; color: var(--muted-ink);
+  }
+  @media (max-width: 620px) {
+    .shell { padding: 0 18px 72px; }
+    .crumbs { font-size: 10px; }
+    table { font-size: 12.5px; min-width: 440px; }
+    th, td { padding: 9px 12px; }
+    caption { font-size: 11px; padding: 12px 14px 0; }
+    .tw { position: relative; }
+    .tw caption::after { content: "  ↔ desliza"; color: var(--muted); letter-spacing: .1em; }
+    .chartwrap svg { min-width: 580px; }
+    figure figcaption::after { content: "  · ↔ desliza la gráfica"; color: var(--muted); }
+    .panel { padding: 16px 18px; border-radius: 14px; }
+    .note { padding: 12px 14px; font-size: 14px; }
+    .step { grid-template-columns: 34px minmax(0, 1fr); gap: 10px; }
+    .step .n { font-size: 18px; }
+    h2 { margin-top: 44px; }
+    .lead { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; }
+  }
+</style>
+<style>
+  /* v2 — sin sidebar: una sola columna, legible en cualquier ancho (panel angosto o móvil) */
+  .shell { grid-template-columns: minmax(0, 1fr); max-width: 840px; gap: 0; padding: 0 24px 96px; }
+  article { padding-top: 30px; }
+  @media (max-width: 620px) { .shell { padding: 0 18px 72px; } }
+</style>
+</head>
+<body><nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html" aria-label="The Red Queen — inicio">
+      <img src="assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen<small>CHECKMATE THE SYSTEM</small></span>
+    </a>
+    <div class="nav-links">
+      <a class="back-link" href="calculadoras/">← Calculadoras</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="trq-program.html">Mentoría</a>
+      <a class="cta" href="calculadoras/prop-firm-analyzer.html">Abrir el Analyzer</a>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <div class="crumbs">
+    <a href="calculadoras/">Recursos</a><span class="sep">›</span>
+    <a href="calculadoras/">Calculadoras</a><span class="sep">›</span>
+    <span>Plan de fondeo · Topstep 50K</span>
+  </div>
+
+  <article>
+
+    <div class="kicker">// Prop Firms · Plan de fondeo con Topstep</div>
+    <h1>LUCID + Topstep con $50.000: el plan de diez cuentas <em>con rotación A/B</em></h1>
+    <div class="meta">
+      <span>24/09/2026</span><span class="sep">·</span>
+      <span>Prop Firms</span><span class="sep">·</span>
+      <span>Monte-Carlo sobre reglas verificadas · muestra de 229 días</span>
+    </div>
+
+    <div class="article-body">
+
+      <p class="lead">La guía de fondeo se diseñó con <b>LUCID y Tradeify</b>. Esto es lo mismo, con dos cambios de fondo: la segunda firma pasa a ser <b>Topstep</b> —cuyo drawdown se resetea a $0 con cada retiro— y las cuentas dejan de operar todas el mismo día. Se reparten en <b>dos grupos que rotan</b>. El modelo corre sobre las reglas verificadas de cada firma y sobre el backtest real de 229 días.</p>
+
+      <h2 id="base"><span class="num">01</span>La base del sistema</h2>
+      <p>Todo el modelo parte de la misma fuente: el backtest con <b>1 señal por día</b>, donde <b>0 significa que la condición no se dio</b>. La muestra creció desde la guía anterior, así que estos son los números vigentes.</p>
+
+      <div class="tw">
+        <table>
+          <caption>Estadística base · backtest de referencia (actualizado)</caption>
+          <thead>
+            <tr><th>Métrica</th><th class="num-col">Valor</th><th>Lectura</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Días evaluados</td><td class="num-col">229</td><td>≈ 10,9 meses de mercado</td></tr>
+            <tr><td>Operaciones ejecutadas</td><td class="num-col">156</td><td>109 ganadoras / 47 perdedoras</td></tr>
+            <tr class="hl"><td>Winrate</td><td class="num-col">69,9%</td><td>IC95%: 62,3% – 76,5%</td></tr>
+            <tr class="hl"><td>Expectancy por operación</td><td class="num-col">+0,397R</td><td>IC95%: +0,253R a +0,541R</td></tr>
+            <tr><td>Días sin setup</td><td class="num-col">73</td><td>31,9% del tiempo</td></tr>
+            <tr><td>Frecuencia real</td><td class="num-col">14,3 /mes</td><td>3,4 por semana</td></tr>
+            <tr><td>Racha perdedora máxima</td><td class="num-col">3</td><td>escenario adverso a respetar</td></tr>
+            <tr><td>Drawdown máximo observado</td><td class="num-col">4R</td><td>en la secuencia completa</td></tr>
+            <tr><td>Profit acumulado</td><td class="num-col">+62R</td><td>en 156 operaciones</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>La restricción que manda.</strong> Con <span class="tag">1 por día</span> la frecuencia no depende de la ambición sino del mercado: 21 sesiones al mes y una tasa de disparo del 68,1%. Eso da <b>14,3 operaciones al mes</b> y un 31,9% de días sin nada que hacer. El sistema no se acelera insistiendo: se acelera <b>replicando</b>.
+      </div>
+
+      <h2 id="firmas"><span class="num">02</span>Las dos firmas</h2>
+      <p>LUCID se queda igual que en la guía anterior. La novedad es la segunda pata: <b>Topstep</b>, con la cuenta de <b>$50.000</b>. Sus condiciones están verificadas en el checkout y en las reglas oficiales de la firma.</p>
+
+      <div class="tw">
+        <table>
+          <caption>Reglas verificadas · cuenta de $50.000</caption>
+          <thead>
+            <tr><th>Regla</th><th>LUCID Flex</th><th>Topstep (Trading Combine)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Fee de entrada</td><td>$136 (con cupón −30%: $95,20)</td><td><b>$95/mes</b> con DLL ($85 sin DLL)</td></tr>
+            <tr><td>Profit target (evaluación)</td><td>$3.000</td><td><b>$3.000</b></td></tr>
+            <tr><td>Max Loss Limit</td><td>$2.000 · EOD trailing</td><td><b>$2.000</b></td></tr>
+            <tr><td>Consistencia</td><td>50% en evaluación · ninguna fondeada</td><td>50% en evaluación · ninguna fondeada</td></tr>
+            <tr class="hl"><td>Dónde se fija el drawdown</td><td>+$100 sobre el inicio, al primer retiro</td><td><b>se clava en $0 y se resetea a $0 con cada retiro</b></td></tr>
+            <tr><td>Retiro máximo por solicitud</td><td>50% del profit</td><td><b>$4.000</b> (50% del balance, con tope)</td></tr>
+            <tr><td>Ciclo de retiro</td><td>5 días con ≥$150 + neto positivo</td><td><b>5 días ganadores de $150+</b></td></tr>
+            <tr><td>Split</td><td>90 / 10</td><td><b>100% de los primeros $10.000</b>, después 90/10</td></tr>
+            <tr><td>Cuentas fondeadas simultáneas</td><td>5</td><td><b>5</b></td></tr>
+            <tr><td>Contratos máximos</td><td>4 mini</td><td>5 mini / 50 micro</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>Por qué Topstep y no Tradeify.</strong> El drawdown de Topstep <b>se resetea a $0 con cada retiro</b>: el piso nunca sube a perseguirte. Eso convierte cada cobro en un reinicio del colchón en vez de un estrechamiento, y es lo que permite extraer más por cuenta que en cualquier otra firma del plan.
+      </div>
+
+      <h2 id="rotacion"><span class="num">03</span>La rotación A/B</h2>
+      <p>Hasta ahora todas las cuentas tomaban todas las señales: correlación 1,0. Cuando el mercado da un día malo, el libro entero lo paga junto. La rotación parte la flota en dos grupos y <b>alterna los resultados</b>: el grupo A toma el primero, el B el segundo, y así.</p>
+      <p>La regla que la define es la del día vacío: <b>si el día no da trade, el mismo grupo sigue de guardia hasta que salga un TP o un SL</b>. El turno no pasa sin resultado. Con eso, los 156 resultados ejecutados se reparten alternando y cada grupo toma la mitad exacta.</p>
+
+      <div class="chartwrap">
+        <svg viewBox="0 0 680 210" role="img" aria-label="Línea de tiempo de la rotación A/B: los días sin trade no cambian el grupo de guardia">
+          <text x="0" y="14" font-size="11" font-weight="700" fill="#5E6B88" letter-spacing="0.6">LÍNEA DE TIEMPO DE LA ROTACIÓN</text>
+          <text x="0" y="34" font-size="10" fill="#6B7280">Cada columna es un día. El color dice qué grupo está de guardia.</text>
+          <rect x="6" y="46" width="50" height="58" rx="8" fill="#F0FDF4" stroke="#86EFAC"/>
+          <text x="31.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 1</text>
+          <text x="31.0" y="80" font-size="12" font-weight="700" fill="#5E6B88" text-anchor="middle">A</text>
+          <text x="31.0" y="97" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">TP</text>
+          <rect x="62" y="46" width="50" height="58" rx="8" fill="#FEF2F2" stroke="#FCA5A5"/>
+          <text x="87.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 2</text>
+          <text x="87.0" y="80" font-size="12" font-weight="700" fill="#B08968" text-anchor="middle">B</text>
+          <text x="87.0" y="97" font-size="11" font-weight="700" fill="#991B1B" text-anchor="middle">SL</text>
+          <rect x="118" y="46" width="50" height="58" rx="8" fill="#F8FAFC" stroke="#E5E7EB" stroke-dasharray="3 2"/>
+          <text x="143.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 3</text>
+          <text x="143.0" y="80" font-size="12" font-weight="700" fill="#5E6B88" text-anchor="middle">A</text>
+          <text x="143.0" y="97" font-size="11" font-weight="700" fill="#9CA3AF" text-anchor="middle">—</text>
+          <rect x="174" y="46" width="50" height="58" rx="8" fill="#F0FDF4" stroke="#86EFAC"/>
+          <text x="199.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 4</text>
+          <text x="199.0" y="80" font-size="12" font-weight="700" fill="#5E6B88" text-anchor="middle">A</text>
+          <text x="199.0" y="97" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">TP</text>
+          <rect x="230" y="46" width="50" height="58" rx="8" fill="#F0FDF4" stroke="#86EFAC"/>
+          <text x="255.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 5</text>
+          <text x="255.0" y="80" font-size="12" font-weight="700" fill="#B08968" text-anchor="middle">B</text>
+          <text x="255.0" y="97" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">TP</text>
+          <rect x="286" y="46" width="50" height="58" rx="8" fill="#FEF2F2" stroke="#FCA5A5"/>
+          <text x="311.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 6</text>
+          <text x="311.0" y="80" font-size="12" font-weight="700" fill="#5E6B88" text-anchor="middle">A</text>
+          <text x="311.0" y="97" font-size="11" font-weight="700" fill="#991B1B" text-anchor="middle">SL</text>
+          <rect x="342" y="46" width="50" height="58" rx="8" fill="#F8FAFC" stroke="#E5E7EB" stroke-dasharray="3 2"/>
+          <text x="367.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 7</text>
+          <text x="367.0" y="80" font-size="12" font-weight="700" fill="#B08968" text-anchor="middle">B</text>
+          <text x="367.0" y="97" font-size="11" font-weight="700" fill="#9CA3AF" text-anchor="middle">—</text>
+          <rect x="398" y="46" width="50" height="58" rx="8" fill="#FEF2F2" stroke="#FCA5A5"/>
+          <text x="423.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 8</text>
+          <text x="423.0" y="80" font-size="12" font-weight="700" fill="#B08968" text-anchor="middle">B</text>
+          <text x="423.0" y="97" font-size="11" font-weight="700" fill="#991B1B" text-anchor="middle">SL</text>
+          <rect x="454" y="46" width="50" height="58" rx="8" fill="#F0FDF4" stroke="#86EFAC"/>
+          <text x="479.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 9</text>
+          <text x="479.0" y="80" font-size="12" font-weight="700" fill="#5E6B88" text-anchor="middle">A</text>
+          <text x="479.0" y="97" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">TP</text>
+          <rect x="510" y="46" width="50" height="58" rx="8" fill="#F0FDF4" stroke="#86EFAC"/>
+          <text x="535.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 10</text>
+          <text x="535.0" y="80" font-size="12" font-weight="700" fill="#B08968" text-anchor="middle">B</text>
+          <text x="535.0" y="97" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">TP</text>
+          <rect x="566" y="46" width="50" height="58" rx="8" fill="#F8FAFC" stroke="#E5E7EB" stroke-dasharray="3 2"/>
+          <text x="591.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 11</text>
+          <text x="591.0" y="80" font-size="12" font-weight="700" fill="#5E6B88" text-anchor="middle">A</text>
+          <text x="591.0" y="97" font-size="11" font-weight="700" fill="#9CA3AF" text-anchor="middle">—</text>
+          <rect x="622" y="46" width="50" height="58" rx="8" fill="#FEF2F2" stroke="#FCA5A5"/>
+          <text x="647.0" y="62" font-size="10" fill="#6B7280" text-anchor="middle">día 12</text>
+          <text x="647.0" y="80" font-size="12" font-weight="700" fill="#5E6B88" text-anchor="middle">A</text>
+          <text x="647.0" y="97" font-size="11" font-weight="700" fill="#991B1B" text-anchor="middle">SL</text>
+          <text x="6" y="130" font-size="11" fill="#5E6B88"><tspan font-weight="700">Días 3→4 (A) y 7→8 (B):</tspan> el día sin trade no cambia el turno. El grupo repite hasta que el mercado dé un resultado.</text>
+          <text x="6" y="150" font-size="11" fill="#6B7280">Los 156 resultados ejecutados del backtest se reparten alternando: 78 para cada grupo. El guion (—) es un día sin trade.</text>
+        </svg>
+      </div>
+
+      <div class="note">
+        <strong>Lo que resuelve.</strong> Cada grupo opera la <b>mitad de las señales</b>, así que cada cuenta recorre su propio camino. Un tramo malo ya no golpea al libro completo: golpea al grupo que está de turno mientras el otro está intacto. Ese es el seguro. <b>Cuesta, y el punto 05 lo mide.</b>
+      </div>
+
+      <h2 id="memoria"><span class="num">04</span>Por qué el histórico lo permite</h2>
+      <p>Repartir la secuencia en dos subseries solo tiene sentido si el orden <b>no aporta información</b>: si el resultado de ayer no predice el de mañana, cada mitad es una muestra limpia del mismo proceso. El backtest lo confirma.</p>
+
+      <div class="tw">
+        <table>
+          <caption>Matriz de transición · qué pasa mañana según lo de hoy</caption>
+          <thead>
+            <tr><th>Hoy</th><th class="num-col">n</th><th class="num-col">→ Ganador</th><th class="num-col">→ Perdedor</th><th class="num-col">→ Sin trade</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Ganador</td><td class="num-col">108</td><td class="num-col">50,0%</td><td class="num-col">20,4%</td><td class="num-col">29,6%</td></tr>
+            <tr><td>Perdedor</td><td class="num-col">47</td><td class="num-col">46,8%</td><td class="num-col">19,1%</td><td class="num-col">34,0%</td></tr>
+            <tr><td>Sin trade</td><td class="num-col">73</td><td class="num-col">43,8%</td><td class="num-col">21,9%</td><td class="num-col">34,2%</td></tr>
+            <tr class="hl"><td colspan="2">Base sin condición (ejecutados)</td><td class="num-col">69,9%</td><td class="num-col">30,1%</td><td class="num-col">31,9% de los días</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tw">
+        <table>
+          <caption>Tests de memoria de la secuencia</caption>
+          <thead>
+            <tr><th>Test</th><th class="num-col">Resultado</th><th>Lectura</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chi-cuadrado de independencia (3×3)</td><td class="num-col">χ²=0,83 · p=0,93</td><td>no se rechaza la independencia</td></tr>
+            <tr><td>Autocorrelación lag 1</td><td class="num-col">+0,04</td><td>sin memoria (significativo &gt; 0,13)</td></tr>
+            <tr class="hl"><td>P(segundo día sin trade | ya hubo uno)</td><td class="num-col">34,2%</td><td>igual que la base (31,9%)</td></tr>
+            <tr><td>Rachas sin trade</td><td class="num-col">48 · máx 5</td><td>34 de 48 fueron de un solo día</td></tr>
+            <tr><td>Racha perdedora máxima</td><td class="num-col">3</td><td>en 156 operaciones</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>Consecuencia práctica.</strong> Si la secuencia no tiene memoria, partirla en dos subseries <b>no cambia la estadística de ninguna de las dos</b>: cada grupo sigue viendo un 69,9% de acierto y +0,397R por operación. La rotación no crea ni destruye edge. Lo único que cambia es <b>cuándo</b> cada cuenta cobra su resultado.
+      </div>
+
+      <h2 id="canje"><span class="num">05</span>El canje: qué cuesta la rotación</h2>
+      <p>Este es el punto incómodo, y conviene leerlo antes que el resto. Rotar significa que cada cuenta opera la mitad de las señales. Con el mismo edge por operación, eso reduce la captura total. La pregunta es si el seguro de continuidad lo compensa. Las dos configuraciones, con la R de trabajo y el umbral de retiro en 2× el MLL:</p>
+
+      <div class="tw">
+        <table>
+          <caption>Paralelo vs rotación · $5 cuentas de $50.000 · 24 meses · 400 ciclos</caption>
+          <thead>
+            <tr><th>Métrica</th><th class="num-col">Paralelo (hoy)</th><th class="num-col">Rotación A/B</th></tr>
+          </thead>
+          <tbody>
+            <tr class="hl"><td>Ingreso del libro por mes</td><td class="num-col">$12.467</td><td class="num-col">$5.514</td></tr>
+            <tr><td>Ingreso por cuenta por mes</td><td class="num-col">$2.307</td><td class="num-col">$889</td></tr>
+            <tr><td>Primer cobro (meses)</td><td class="num-col">2,38</td><td class="num-col">5,81</td></tr>
+            <tr><td>Volatilidad del ingreso mensual</td><td class="num-col">$3.408</td><td class="num-col">$2.268</td></tr>
+            <tr><td>Tiempo fondeado (uptime de la flota)</td><td class="num-col">97,4%</td><td class="num-col">91,3%</td></tr>
+            <tr><td>Muertes simultáneas en 30 días</td><td class="num-col">0</td><td class="num-col">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chartwrap">
+        <svg viewBox="0 0 680 190" role="img" aria-label="Comparación de ingreso mensual del libro: paralelo contra rotación A/B">
+          <text x="0" y="14" font-size="11" font-weight="700" fill="#5E6B88" letter-spacing="0.6">INGRESO MENSUAL DEL LIBRO · 5 CUENTAS</text>
+          <text x="0" y="53" font-size="11" fill="#6B7280">Paralelo (hoy)</text>
+          <rect x="0" y="60" width="533" height="22" rx="6" fill="#5E6B88" opacity="0.92"/>
+          <text x="541" y="76" font-size="12" font-weight="700" fill="#1A1A1A">$12.467/mes</text>
+          <text x="0" y="105" font-size="11" fill="#6B7280">Rotación A/B</text>
+          <rect x="0" y="112" width="236" height="22" rx="6" fill="#B08968" opacity="0.75"/>
+          <text x="244" y="128" font-size="12" font-weight="700" fill="#1A1A1A">$5.514/mes</text>
+          <text x="0" y="160" font-size="11" fill="#991B1B"><tspan font-weight="700">La rotación extrae 56% menos</tspan> a cambio de un ingreso mensual más estable.</text>
+          <text x="0" y="178" font-size="10" fill="#9CA3AF">Mediana de 400 ciclos simulados de 24 meses sobre los 229 días del backtest.</text>
+        </svg>
+      </div>
+
+      <div class="warn-note">
+        <strong>Veredicto del modelo.</strong> La rotación rinde <b>44% del paralelo</b>: cuesta <b>56% del ingreso</b> y retrasa el primer cobro de 2,38 a 5,81 meses. A cambio baja la volatilidad mensual (3.408 → 2.268) y reparte las muertes en el tiempo. Pero con el umbral de retiro en 2× el MLL <b>ninguna de las dos configuraciones pierde una cuenta</b>: el seguro cubre un riesgo que hoy no existe. La rotación no es una palanca de ingreso; es una reserva de continuidad.
+      </div>
+
+      <p>Donde sí paga es si bajas el umbral para cobrar más rápido. Con retiro en 1× el MLL el paralelo pierde las 5 cuentas <b>10 veces por ventana de 30 días</b> (todas juntas, el mismo día) y la rotación baja esas muertes simultáneas a <b>3</b>. Ese es el único escenario donde el seguro se cobra solo.</p>
+
+      <div class="tw">
+        <table>
+          <caption>Cuándo el paralelo muere de golpe · retiro en 1× MLL</caption>
+          <thead>
+            <tr><th>Umbral de retiro</th><th class="num-col">Paralelo · $/mes</th><th class="num-col">Muertes/30d</th><th class="num-col">Rotación · $/mes</th><th class="num-col">Muertes/30d</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1,0× MLL (cobrar apenas se puede)</td><td class="num-col">$8.521</td><td class="num-col bad">10</td><td class="num-col">$4.069</td><td class="num-col ok">3</td></tr>
+            <tr><td>1,5× MLL</td><td class="num-col">$12.350</td><td class="num-col bad">0</td><td class="num-col">—</td><td class="num-col ok">0</td></tr>
+            <tr class="hl"><td>2,0× MLL (el que usa el plan)</td><td class="num-col">$12.467</td><td class="num-col ok">0</td><td class="num-col">$5.514</td><td class="num-col ok">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="r"><span class="num">06</span>La R y el umbral de retiro</h2>
+      <p>La R de trabajo sale del mismo criterio que en la guía anterior: <b>el MLL dividido 4,4</b>. Con eso el peor tramo del histórico (4R) cabe dentro del límite con margen, y el modelo no registra ni una muerte de cuenta fondeada.</p>
+
+      <div class="tw">
+        <table>
+          <caption>Frontera de R · paralelo, umbral 2× MLL, 5 cuentas</caption>
+          <thead>
+            <tr><th>R por operación</th><th class="num-col">MLL/R</th><th class="num-col">Ingreso del libro</th><th class="num-col">Muertes/30d</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>$400</td><td class="num-col">5,0</td><td class="num-col">$10.786</td><td class="num-col ok">0</td></tr>
+            <tr class="hl"><td>$455 — la del plan</td><td class="num-col">4,4</td><td class="num-col">$12.467</td><td class="num-col ok">0</td></tr>
+            <tr><td>$500</td><td class="num-col">4,0</td><td class="num-col">$12.569</td><td class="num-col ok">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>Por qué el umbral es 2× el MLL y no "cobrar apenas se pueda".</strong> La regla de Topstep deja como buffer la mitad del balance que no retiras. Si cobras en la primera oportunidad, ese buffer queda tan fino que una racha de tres pérdidas (la peor del histórico) se lleva la cuenta. Esperar a <b>2× el MLL</b> significa que después de cobrar te quedan 4.000 dólares de colchón dentro de la cuenta.
+      </div>
+
+      <h2 id="ciclo"><span class="num">07</span>El ciclo de una cuenta</h2>
+      <div class="steps">
+        <div class="step"><b>Evaluación.</b> Fee mensual de $95 mientras dure el Combine. Target de $3.000 con MLL de $2.000. La consistencia exige que ningún día supere el 55% del profit total. Con la R de trabajo, el target se alcanza en <b>2,4 meses</b>.</div>
+        <div class="step"><b>Activación.</b> La Express Funded Account arranca en <b>$0</b> y su Max Loss Limit trailea contigo. Sin DLL adicional en TopstepX.</div>
+        <div class="step"><b>Acumulación.</b> Se opera hasta que el balance toca <b>2× el MLL ($4.000)</b>. No antes: ese es el colchón que sobrevive a la peor racha.</div>
+        <div class="step"><b>Primer retiro.</b> A los <b>2,38 meses</b> en el modo paralelo. Se solicita el 50% del balance, con el tope de $4.000. El MLL se resetea a $0 y el conteo de días ganadores vuelve a cero.</div>
+        <div class="step"><b>Réplica.</b> Cada cobro rehace el ciclo. La cuenta fondeada no paga fee mensual: la suscripción solo corre en el Combine.</div>
+      </div>
+
+      <h2 id="plan"><span class="num">08</span>El plan completo</h2>
+      <p>5 cuentas de $50.000 = $250.000 de capital nominal. LUCID queda como está; Topstep entra con su propio ciclo y su propio reset de drawdown. Los dos libros son independientes: cada uno tiene sus evaluaciones, sus retiros y sus reglas.</p>
+
+      <div class="tw">
+        <table>
+          <caption>El libro a 10 cuentas · modo paralelo</caption>
+          <thead>
+            <tr><th>Firma</th><th class="num-col">Cuentas</th><th class="num-col">Tamaño</th><th class="num-col">Split</th><th class="num-col">Ingreso del libro /mes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>LUCID Flex</td><td class="num-col">5</td><td class="num-col">$50.000</td><td class="num-col">90/10</td><td class="num-col">$7.600</td></tr>
+            <tr class="hl"><td>Topstep</td><td class="num-col">5</td><td class="num-col">$50.000</td><td class="num-col">100% primeros $10K</td><td class="num-col">$12.467</td></tr>
+            <tr class="hl"><td><b>Total del libro</b></td><td class="num-col"><b>10</b></td><td class="num-col"><b>$50.000</b></td><td class="num-col">—</td><td class="num-col"><b>$20.067</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>La comparación honesta.</strong> El plan original (LUCID + Tradeify) dejaba el libro alrededor de la mitad de esto. El salto no viene de operar más: viene de que Topstep <b>no te persigue con el piso</b> y paga el primer tramo completo. La rotación A/B queda como módulo opcional, no como parte del plan de extracción.
+      </div>
+
+      <h2 id="riesgos"><span class="num">09</span>Lo que hay que respetar</h2>
+      <div class="tw">
+        <table>
+          <caption>Riesgos y reglas duras</caption>
+          <thead>
+            <tr><th>Riesgo</th><th>Qué significa</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Consistencia del 55% en el Combine</td><td>Ningún día puede aportar más del 55% del profit total al pasar. Con la R de trabajo, un día son ~15% del target: no ata.</td></tr>
+            <tr><td>El fee corre mientras la evaluación está abierta</td><td>$95 por mes hasta pasarla. Es el único costo real del sistema: la cuenta fondeada no paga suscripción.</td></tr>
+            <tr><td>Solo 16,8% de los Combines se pasan</td><td>Dato de la propia firma en 2025. El plan asume re-comprar evaluaciones, no pasarlas al primer intento.</td></tr>
+            <tr><td>Tope de 5 cuentas fondeadas</td><td>Es el techo de la firma. Con 10 cuentas hay que sumar una tercera firma (Apex, con 20 cupos).</td></tr>
+            <tr><td>Copytrading por verificar</td><td>Falta confirmar en las reglas de Topstep si el copiado entre cuentas propias está permitido y si el hedging está prohibido. Es la pieza que sostiene todo el plan.</td></tr>
+            <tr><td>El mismo día, el mismo resultado</td><td>Dentro de cada grupo las cuentas son réplicas exactas: ganan o pierden juntas. La rotación reparte los grupos, no las correlaciona.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="cierre"><span class="num">10</span>El cierre</h2>
+      <p>El plan de Topstep es el salto real: el mismo capital, la misma estrategia y casi el doble de extracción por cuenta, porque el drawdown se resetea con cada cobro. La rotación A/B es otra cosa: una decisión de <b>continuidad</b>, no de rentabilidad. Cuesta 56% del ingreso y compra una flota que nunca muere completa — algo que, con el umbral de retiro en 2× el MLL, el modelo todavía no necesita. Queda documentada y medida para el día en que el régimen cambie.</p>
+
+    </div>
+</article>
+</div>
+
+<footer>
+  <span>© 2026 The Red Queen — Checkmate the System · <a href="trq-terms.html">Términos</a></span>
+</footer>
+
+</body>
+</html>
