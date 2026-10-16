@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v46 — Juan Castro</title>
+<title>Odyssey Dashboard v47 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -88,6 +88,7 @@
   .cal-day.completed { border-color: rgba(201,242,132,0.5); background: rgba(201,242,132,0.08); }
   .cal-day.today.completed { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
   .cal-day.missed { border-color: rgba(224,85,94,0.5); background: rgba(224,85,94,0.08); }
+  .cal-day.rest { border-color: var(--border); opacity: 0.55; }
   .cal-day.future { border-color: rgba(255,255,255,0.06); opacity: 0.5; }
   .cal-day.prev { opacity: 0.7; }
   .rec-card { padding: 12px; background: var(--surface); border-radius: 4px; border-left: 3px solid var(--accent); margin-bottom: 10px; transition: transform 0.2s ease-out, background 0.2s ease-out; }
@@ -184,10 +185,10 @@
 <div class="header">
   <div>
     <h1> <span>ODYSSEY</span> DASHBOARD</h1>
-    <div class="date">Actualizado: 16 Oct 2026 · Garmin + Fitdays (LePulse) · DNA Lab HUD</div>
+    <div class="date">Actualizado: 16 Oct 2026 · datos hasta 15 Oct (último día cerrado) · Garmin + LePulse</div>
   </div>
   <div style="text-align:right;font-size:11px;color:var(--muted);font-family:var(--mono,'JetBrains Mono');letter-spacing:1px;">
-    Juan Castro · V3 Elite · Semana 5 Oct → 11 Oct
+    Juan Castro · V3 Elite · Semana 12 Oct → 18 Oct
   </div>
 </div>
 
@@ -502,9 +503,9 @@
             <div class="cal-day prev completed"><div class="day-num">5</div><div class="workout-label">Baloncesto 38m + Fuerza 31m</div></div>
       <div class="cal-day prev completed"><div class="day-num">6</div><div class="workout-label">Caminata 62m + Fuerza 31m</div></div>
       <div class="cal-day prev completed"><div class="day-num">7</div><div class="workout-label">Fuerza 36m</div></div>
-      <div class="cal-day prev missed"><div class="day-num">8</div><div class="workout-label">Jue · ✗</div></div>
+      <div class="cal-day prev rest"><div class="day-num">8</div><div class="workout-label">Jue · sin sesión registrada</div></div>
       <div class="cal-day prev completed"><div class="day-num">9</div><div class="workout-label">Fuerza 8m</div></div>
-      <div class="cal-day prev missed"><div class="day-num">10</div><div class="workout-label">Sáb · ✗</div></div>
+      <div class="cal-day prev rest"><div class="day-num">10</div><div class="workout-label">Sáb · sin sesión registrada</div></div>
       <div class="cal-day prev completed"><div class="day-num">11</div><div class="workout-label">Baloncesto 34m</div></div>
     </div>
     <div class="week-summary"><span class="value-good"> 5/7 días activos · 3 de fuerza</span><span>el jueves ya sin ensayo</span></div>
@@ -516,7 +517,7 @@
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
       <div class="cal-header">Dom</div>
       <div class="cal-day prev completed"><div class="day-num">12</div><div class="workout-label">Fuerza 45m · 323 kcal</div></div>
-      <div class="cal-day prev missed"><div class="day-num">13</div><div class="workout-label">Mar · ✗</div></div>
+      <div class="cal-day prev rest"><div class="day-num">13</div><div class="workout-label">Mar · sin sesión registrada</div></div>
       <div class="cal-day prev completed"><div class="day-num">14</div><div class="workout-label">Fuerza 30m</div></div>
       <div class="cal-day prev completed"><div class="day-num">15</div><div class="workout-label">Fuerza 25m</div></div>
       <div class="cal-day today"><div class="day-num">16</div><div class="workout-label">Vie · hoy — pendiente (entrena en la tarde)</div></div>
@@ -558,6 +559,18 @@
 
 <div class="section" id="analisis" style="margin-bottom:16px;">
   <h2>Análisis y Recomendaciones — 16 Oct</h2>
+  <div class="rec-card info">
+    <div class="title">CONTEXTO QUE FALTABA: lesión de espalda → descanso → reinicio con APS (Anatoly)</div>
+    <div class="body">
+      Este dashboard se construyó alrededor del Protocolo Odyssey y de su meta del 16 Nov. <strong>El programa hoy es otro:</strong><br><br>
+      • <strong>Lesión de espalda</strong> — ocurrió cuando se dejó el cronograma planeado (fecha exacta no recordada)<br>
+      • <strong>Descanso de varias semanas</strong><br>
+      • <strong>Reinicio la semana del 5 Oct 2026</strong> con <strong>APS — Anatoly's Power System</strong> (<em>anatolyfit.com</em>), el sistema de fuerza progresiva de Vladimir Shmondenko<br><br>
+      <strong>Lo que esto cambia en la lectura:</strong> los huecos de actividad y el estancamiento de composición de sep-oct <strong>no fueron falta de disciplina — fueron lesión y descanso.</strong> Las conclusiones anteriores que atribuían el estancamiento a la ingesta se escribieron sin este dato.<br><br>
+      <strong>Lo que NO cambia:</strong> el registro. El Garmin sigue capturando <em>todas</em> las actividades y <em>todo</em> el sueño; LePulse todo el peso y la composición. La serie está completa.<br><br>
+      <strong>Lo que este dashboard ya NO hace: medir cumplimiento.</strong> El cronograma de APS varía los descansos semana a semana, así que desde aquí no hay forma de saber si un día sin sesión fue descanso programado o un fallo. Ese track vive en la app de Anatoly. <strong>Aquí los días sin sesión se registran, no se juzgan.</strong>
+    </div>
+  </div>
 
   <div class="rec-card good">
     <div class="title">EL EXPERIMENTO DEL JUEVES QUEDÓ CONFIRMADO: el bajón del viernes era el ensayo, no el sobreentreno</div>
@@ -569,14 +582,13 @@
       Esto también cierra la duda de fondo: el HRV bajo del viernes <em>nunca</em> fue sobreentrenamiento. Era privación de sueño autoimpuesta, y era reversible.
     </div>
   </div><div class="rec-card critical">
-    <div class="title">LA GRASA CUMPLE 4 SEMANAS PLANAS: el entreno dejó de ser la variable, la ingesta es el cuello de botella</div>
+    <div class="title">LA META DEL 16 NOV: la grasa lleva 4 semanas plana — y la causa fue la lesión, no la disciplina</div>
     <div class="body">
-      Este es el dato incómodo. La fuerza se volvió rutina (6 sesiones en 11 días) y el sueño mejoró — y aun así:<br><br>
-      • Grasa: <strong>15.5-16.1 kg sin bajar desde el 17 Sep</strong> — hoy 16.0 kg<br>
-      • Peso: tocó <strong>81.8 kg el 12 Oct</strong> (mínimo del dashboard) y rebotó a 83.1 en cuatro días<br>
-      • Músculo: plano en 61.9-62.5, sin ganancia neta<br><br>
-      El rebote de 1.3 kg en 4 días no es grasa: 1 kg de grasa son ~7,700 kcal y no hay forma de comer eso de más en cuatro días. Es glucógeno + agua — normal, y volverá a bajar. <strong>Pero la línea de fondo no se mueve</strong>: cuatro semanas de entrenamiento sostenido sin que la grasa ceda un gramo.<br><br>
-      Con el entreno resuelto y el sueño en meta, queda una sola variable sin controlar: <strong>la ingesta real</strong>. Sigue sin medirse, y un déficit que no existe en los números no produce pérdida de grasa. <strong>Medir 7 días de comida (pesada, no estimada) es la tarea de esta semana</strong> — sin eso, cualquier ajuste es a ciegas.
+      La grasa se mantiene en <strong>15.5-16.1 kg desde el 17 Sep</strong> (hoy 16.0 kg). El peso tocó <strong>81.8 kg el 12 Oct</strong> (mínimo del dashboard) y rebotó a 83.1 — ese rebote es glucógeno + agua, no grasa.<br><br>
+      <strong>La lectura anterior era incorrecta.</strong> Se atribuyó el estancamiento a la ingesta y a falta de adherencia. El contexto real: <strong>lesión de espalda + semanas de descanso</strong>, con reinicio apenas la semana del 5 Oct.<br><br>
+      <strong>El mes plano no prueba que el déficit no funcione — prueba que no hubo entrenamiento durante buena parte de él.</strong><br><br>
+      <strong>La brecha que hay que cerrar:</strong> la meta es 77-78 kg al 14-15% de grasa el <strong>16 Nov</strong>. Hoy: 83.1 kg y 16.0 kg de grasa. Son <strong>~4.8 kg de grasa en 4,4 semanas ≈ 1,1 kg/semana</strong> — una tasa muy agresiva. La gráfica de proyección muestra la brecha exacta contra la línea de meta.<br><br>
+      Lo que dirime si es alcanzable son las <strong>próximas 2-3 semanas</strong>: ahora sí hay entrenamiento encima y el reloj del déficit acaba de reiniciarse.
     </div>
   </div><div class="rec-card" style="border-left-color:var(--purple);">
     <div class="title">Recomendación: medir la ingesta antes de tocar nada más</div>
@@ -618,12 +630,11 @@
   </div>
 
   <div class="rec-card info">
-    <div class="title">Contexto: el formato que se ejecuta ahora es FUERZA, y por fin dentro de casa</div>
+    <div class="title">Registro de actividad — lo que el Garmin capturó (hecho, sin juicio de cumplimiento)</div>
     <div class="body">
-      El hallazgo de septiembre fue que solo se ejecutaba lo que ocurría fuera de casa. Octubre lo corrige: <strong>6 sesiones de fuerza en 11 días</strong> (6, 7, 9, 12, 14 y 15 Oct), casi todas entre 18:00 y 19:00, más 2 de baloncesto. La fuerza dejó de ser la asignatura pendiente.<br><br>
-      Semanas: 28 Sep-4 Oct · 4/7 · 5-11 Oct <strong>5/7 (3 de fuerza)</strong> · 12-18 Oct 3/4 hasta hoy.<br><br>
-      El patrón de fallo se movió: ya no son los días de semana, son <strong>los fines de semana</strong> (10-11 Oct en blanco, y los tres anteriores también).<br><br>
-      Lo que sigue sin resolverse no es el entreno — es la ingesta. La grasa se mantiene en 15.5-16.1 kg desde el 17 Sep con 6 sesiones de fuerza encima. Un déficit supuesto que no baja la grasa es, en la práctica, mantenimiento.
+      Desde el reinicio (semana del 5 Oct), el Garmin registró <strong>8 sesiones entre el 6 y el 15 Oct</strong>: <strong>6 de fuerza</strong>, 1 de baloncesto y 1 caminata. Cuatro de las seis de fuerza duraron 30 min o más.<br><br>
+      El cambio de fondo respecto a agosto: <strong>la fuerza pasó de ser la asignatura pendiente a ser el grueso del registro</strong> — sesiones cortas, casi todas entre 18:00 y 19:00, y ejecutadas en casa.<br><br>
+      <strong>Lo que este número NO dice:</strong> si se cumplió o no. El cronograma de APS varía los descansos semana a semana y el cumplimiento se lleva en su app. Un día sin sesión aquí puede ser descanso programado. <strong>Se registra, no se evalúa.</strong>
     </div>
   </div><div class="rec-card" style="border-left-color:var(--purple);">
     <div class="title"> Plan 5-11 Oct — entrenar ya está resuelto; ahora se mide la comida</div>
@@ -689,21 +700,20 @@
   </div>
 
   <div class="rec-card info">
-    <div class="title"> Coaching — retomar el Mié 19 y el Sáb 22</div>
+    <div class="title">Natación — registro histórico (sin plan vigente)</div>
     <div class="body">
-      1. <strong>Mié 19 (Metabolic):</strong> sesión tipo 32 min — 5 min calentamiento · 6×100m con 20s descanso · 6 min enfriamiento (el patrón del 12 fue correcto)<br>
-      2. <strong>Sáb 22 (Sprint):</strong> 1,000m continuos con ritmo &lt;3:10/100m — la pausa no borró la base; el VO₂max (43.0) se devuelve con 2 sesiones de intensidad<br>
-      3. <strong>Drill:</strong> respiración bilateral cada 3 brazadas en series de 50m<br>
-      4. <strong>SWOLF:</strong> activar en el reloj Garmin para medir eficiencia desde la próxima sesión
+      La piscina no tiene plan asignado desde el cambio de programa. Lo que queda es el registro: <strong>5 sesiones, última el 8 Sep, 5,670 m acumulados</strong>.<br><br>
+      El hallazgo que sí sigue siendo válido: cuando nadaba, <strong>el HRV subía después</strong> (58 tras la sesión del 12) — su sistema nervioso la trataba como recuperación, no como estrés. Si en algún momento APS pide trabajo aerobio, la piscina es una herramienta ya probada en su propio cuerpo.
     </div>
   </div>
+
 </div>
 
 <div class="section" id="salud" style="margin-bottom:16px;">
   
 <section class="card-section" id="odyssey" style="margin-top:28px;">
   <h2>ODYSSEY PROTOCOL v2 — FASE AGRESIVA <span class="badge">Matt Damon · The Odyssey</span></h2>
-  <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Objetivo: <strong style="color:var(--green);">77-78 kg · 14-15% grasa · músculo ≥62 kg</strong> en ~12 semanas (16 Nov). Plan agresivo validado con tus datos: el descanso dominical (8.9h/91, HRV 59 pico) demuestra que la recuperación responde al estímulo. Cambios clave vs v1: natación los MARTES (horarios laborales + apertura de piscina), ayuno intermitente 16:8, meta de calorías por sesión, y déficit agresivo -750 kcal.</p>
+  <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">Objetivo <strong style="color:var(--green);">VIGENTE</strong>: <strong style="color:var(--green);">77-78 kg · 14-15% grasa · músculo ≥62 kg</strong> al <strong>16 Nov</strong>. <strong>Aviso de vigencia:</strong> el <em>entrenamiento</em> descrito en esta sección (natación los martes, días fijos, X3 + rings, meta de calorías por sesión) pertenece al marco Odyssey y quedó <strong>reemplazado por APS</strong> en la semana del 5 Oct 2026. <strong>La meta se mantiene; el plan que la perseguía, no.</strong> Lo que sigue siendo el marco de referencia es la nutrición y la gráfica de abajo.</p>
 
   <div class="rec-card" style="border-left-color:var(--cyan);">
     <div class="title"> PROYECCIÓN 12 SEMANAS — GRASA ▼ · MÚSCULO ▲ (basado en tu respuesta real al entrenamiento)</div>
@@ -813,22 +823,12 @@
     </div>
   </div>
 
-  <div class="rec-card" style="border-left-color:var(--accent);">
-    <div class="title"> PLAN SEMANAL AGRESIVO — con meta de calorías por sesión (equipo: X3 Bar + rings + KBs + Bowflex + paralletas + remo + piscina)</div>
+  <div class="rec-card info">
+    <div class="title">Programa vigente: APS (Anatoly's Power System) — no se replica aquí</div>
     <div class="body">
-      <table style="font-size:11px;">
-        <tr><th>Día</th><th>Sesión</th><th>Meta kcal</th><th>Detalle clave</th></tr>
-        <tr><td><strong>Lun</strong></td><td>Upper X3 + Rings</td><td class="value-good">400-450</td><td>Ring pull-ups 4×6-10 · X3 chest press 4×10-12 (burnout) · Ring dips 4×8-12 · lateral raises 4×12-15 ·  series finales a fallo</td></tr>
-        <tr><td><strong>Mar</strong></td><td>Row NATACIÓN + Legs</td><td class="value-good">500-550</td><td><strong>Natación 30-40 min (600-900m)</strong> como calentamiento metabólico — tu día fijo de piscina (apertura + horario laboral) · X3 deadlift 4×10-12 · X3 squats 4×10-12 · KB swings 4×20</td></tr>
-        <tr><td><strong>Mié</strong></td><td>Rower HIIT + Core</td><td class="value-good">350-400</td><td>5×500m sprint 85-90% (60s rest) · plank rings 3×60s · 10 min rower steady al final</td></tr>
-        <tr><td><strong>Jue</strong></td><td>Shoulder</td><td class="value-good">350-400</td><td>X3 overhead press 4×8-10 · ring push-ups 4×12-15 · X3 curls 3×10-12 · <em>sin deadline de 17:00 desde oct 2026</em></td></tr>
-        <tr><td><strong>Vie</strong></td><td>Posterior + Unilateral</td><td class="value-good">400-450</td><td>X3 squats 4×10-12 · KB RDL single-leg 3×10 · incline DB rows 4×10 · KB clean &amp; press 3×8</td></tr>
-        <tr><td><strong>Sáb</strong></td><td>Sprint / Rower pyramid</td><td class="value-good">350-400</td><td>Pool 8×50m sprint (60s rest) o rower pyramid 250/500/750/500/250 · mañana temprano (ayunas = oxidación de grasa)</td></tr>
-        <tr><td><strong>Dom</strong></td><td>Recovery + basketball</td><td class="value-good">150-250</td><td>basketball (validado: recuperación activa espalda + HRV) · caminata 8-10k pasos · natación suave 15-20 min si la piscina abre</td></tr>
-      </table>
-      <div style="margin-top:8px;font-size:10.5px;color:var(--muted);">
-         Meta semanal de quema: <strong>2,500-3,000 kcal de ejercicio</strong> (5-6 sesiones). Las metas por sesión son el piso — si te sobra gas, añade 5 min de rower o 2 series extra, no bajes la intensidad.
-      </div>
+      El plan anterior (Shoulder / Rowing HIIT / Sprint / Monkey bars / X3, con días fijos y meta de calorías por sesión) <strong>quedó retirado</strong> junto con el Protocolo Odyssey.<br><br>
+      Hoy el programa es <strong>APS</strong>, y su cronograma <strong>cambia semana a semana</strong>: los días de descanso y el tipo de sesión varían por diseño. Por eso este dashboard <strong>no muestra un plan semanal</strong> — no hay uno fijo que mostrar, y publicar uno inventado sería peor que no publicar ninguno.<br><br>
+      El plan y su cumplimiento viven en <strong>la app de Anatoly</strong>. Aquí queda el <strong>registro de lo que efectivamente ocurrió</strong> (Garmin) y su efecto fisiológico (sueño, HRV, composición).
     </div>
   </div>
 
@@ -976,7 +976,7 @@
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v46 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 6 Oct 2026 · DNA Lab HUD
+  Odyssey Dashboard v47 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 6 Oct 2026 · DNA Lab HUD
 </div>
 
 </div>
