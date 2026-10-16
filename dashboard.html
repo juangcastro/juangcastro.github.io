@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Dashboard v45c — Juan Castro</title>
+<title>Odyssey Dashboard v46 — Juan Castro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -184,7 +184,7 @@
 <div class="header">
   <div>
     <h1> <span>ODYSSEY</span> DASHBOARD</h1>
-    <div class="date">Actualizado: 6 Oct 2026 · Garmin + Fitdays (LePulse) · DNA Lab HUD</div>
+    <div class="date">Actualizado: 16 Oct 2026 · Garmin + Fitdays (LePulse) · DNA Lab HUD</div>
   </div>
   <div style="text-align:right;font-size:11px;color:var(--muted);font-family:var(--mono,'JetBrains Mono');letter-spacing:1px;">
     Juan Castro · V3 Elite · Semana 5 Oct → 11 Oct
@@ -237,120 +237,192 @@
 <div class="grid kpi-row" style="margin-bottom:16px;">
   <div class="kpi-card">
     <div class="label">Peso</div>
-    <div class="value" style="color:var(--green);">82.5</div>
-    <div class="sub">kg <span style="color:var(--green);">▼ -0.6 vs 23 Sep</span></div>
-    <div class="target">Meta: 77.0 · <strong>mín. del ciclo (nuevo)</strong></div>
-    <div class="diff positive" style="color:var(--green);">mínimo histórico del dashboard</div>
+    <div class="value" style="color:var(--accent);">83.1</div>
+    <div class="sub">kg <span style="color:var(--red);">▲ +1.3 vs mín. 81.8</span></div>
+    <div class="target">Meta: 77.0 · mín. 81.8 (12 Oct)</div>
+    <div class="diff neutral" style="color:var(--muted);">tocó 81.8 y rebotó (glucógeno + agua)</div>
   </div>
   <div class="kpi-card">
     <div class="label">Grasa</div>
-    <div class="value" style="color:var(--accent);">19.0<span style="font-size:14px;">%</span></div>
-    <div class="sub">15.7 kg <span style="color:var(--muted);">= plana 13 días</span></div>
-    <div class="target" style="color:var(--accent);">15.5-16.1 kg desde el 17 Sep · SIN tendencia</div>
+    <div class="value" style="color:var(--red);">19.3<span style="font-size:14px;">%</span></div>
+    <div class="sub">16.0 kg <span style="color:var(--red);">= plana 4 SEMANAS</span></div>
+    <div class="target" style="color:var(--red);">15.5-16.1 kg sin bajar desde el 17 Sep</div>
   </div>
   <div class="kpi-card">
     <div class="label">Músculo Tot</div>
-    <div class="value" style="color:var(--red);">62.4</div>
-    <div class="sub">kg <span style="color:var(--red);">▼ -0.5 vs 23 Sep</span></div>
-    <div class="target" style="color:var(--red);">pico 63.7 (28 Sep) · cediendo otra vez</div>
+    <div class="value" style="color:var(--accent);">62.5</div>
+    <div class="sub">kg <span style="color:var(--green);">▲ +0.6 vs mín. 61.9</span></div>
+    <div class="target">rango 61.9-62.5 en octubre · plano</div>
   </div>
   <div class="kpi-card">
     <div class="label">Sueño (prom 7d)</div>
-    <div class="value" style="color:var(--green);">7.3</div>
-    <div class="sub">horas <span style="color:var(--green);">▲ +0.3 · en meta</span></div>
-    <div class="target" style="color:var(--green);">Meta 7-8h — 2ª semana seguida en meta</div>
-    <div class="progress-bar"><div class="fill fill-green" style="width:73%"></div></div>
+    <div class="value" style="color:var(--green);">7.0</div>
+    <div class="sub">horas <span style="color:var(--green);">= en meta</span></div>
+    <div class="target" style="color:var(--green);">Meta 7-8h — 3ª semana seguida en meta</div>
+    <div class="progress-bar"><div class="fill fill-green" style="width:70%"></div></div>
   </div>
   <div class="kpi-card">
     <div class="label">HRV (prom 7d)</div>
-    <div class="value" style="color:var(--green);">47</div>
-    <div class="sub">ms <span style="color:var(--green);">▲ +2 · el mejor del ciclo</span></div>
-    <div class="target" style="color:var(--green);">rango normal sostenido pese a 9 días activos</div>
-    <div class="progress-bar"><div class="fill fill-green" style="width:48%"></div></div>
+    <div class="value" style="color:var(--green);">45</div>
+    <div class="sub">ms <span style="color:var(--muted);">= estable</span></div>
+    <div class="target" style="color:var(--green);">sostenido con 6 días de fuerza en 11</div>
+    <div class="progress-bar"><div class="fill fill-green" style="width:46%"></div></div>
   </div>
   <div class="kpi-card">
     <div class="label">Sueño anoche</div>
     <div class="value" style="color:var(--green);">7.2</div>
-    <div class="sub">h · Score 82</div>
-    <div class="target">REM 1.6h · profundo 1.1h</div>
-    <div class="diff positive" style="color:var(--green);">● GOOD — estable</div>
+    <div class="sub">h · Score 89</div>
+    <div class="target">Profundo 1.9h ▲ · REM 1.5h</div>
+    <div class="diff positive" style="color:var(--green);">● GOOD — mejor score en 5 días</div>
   </div>
   <div class="kpi-card">
     <div class="label">HRV anoche</div>
-    <div class="value" style="color:var(--accent);">43</div>
-    <div class="sub">ms <span style="color:var(--muted);">▼ -4</span></div>
-    <div class="target">baja tras el doble del lunes (basket + fuerza)</div>
-    <div class="progress-bar"><div class="fill fill-yellow" style="width:44%"></div></div>
+    <div class="value" style="color:var(--green);">46</div>
+    <div class="sub">ms <span style="color:var(--green);">▲ +6 · 2º viernes seguido alto</span></div>
+    <div class="target" style="color:var(--green);">sin ensayo ya no hay bajón de viernes</div>
+    <div class="progress-bar"><div class="fill fill-green" style="width:47%"></div></div>
   </div>
 </div>
 
-<div class="grid two-col" style="margin-bottom:16px;">
-  <div class="section" id="composicion">
-    <h2>Composición y Sueño <span class="badge">últimos 3 días con reporte</span></h2>
+<div class="section" id="composicion" style="margin-bottom:16px;">
+    <h2>Composición y Sueño <span class="badge">14 → 16 Oct · con reporte</span></h2>
     <table>
-      <tr><th>Métrica</th><th>2 Oct</th><th>5 Oct</th><th>Hoy 6 Oct</th></tr>
-      <tr><td>Peso (kg)</td><td>83.2</td><td>83.0</td><td><strong class="value-good">82.5 ▼</strong></td></tr>
-      <tr><td>Grasa %</td><td>18.6</td><td>18.9</td><td><strong class="value-warn">19.0 ▲</strong></td></tr>
-      <tr><td>Grasa (kg)</td><td class="value-good">15.5</td><td>15.7</td><td><strong>15.7 =</strong></td></tr>
-      <tr><td>Músculo tot (kg)</td><td class="value-good">63.2 ▲</td><td>62.7</td><td><strong class="value-bad">62.4 ▼</strong></td></tr>
-      <tr><td>Sueño (h)</td><td>6.7</td><td class="value-good">8.4 ▲</td><td><strong>7.2</strong></td></tr>
-      <tr><td>Sleep Score</td><td>82</td><td class="value-good">88 ▲</td><td><strong>82</strong></td></tr>
-      <tr><td>HRV últ. noche</td><td class="value-bad">39 ▼</td><td class="value-good">47</td><td><strong>43</strong></td></tr>
-      <tr><td>Entreno</td><td class="value-good">Caminata 34m</td><td class="value-good">Baloncesto 38m + Fuerza 31m</td><td class="value-good">Caminata 62m · 15:31</td></tr>
+      <tr><th>Métrica</th><th>14 Oct</th><th>15 Oct</th><th>Hoy 16 Oct</th></tr>
+      <tr><td>Peso (kg)</td><td>82.5</td><td>82.6</td><td><strong class="value-bad">83.1 ▲</strong></td></tr>
+      <tr><td>Grasa %</td><td>19.2</td><td>19.3</td><td><strong class="value-bad">19.3 ▲</strong></td></tr>
+      <tr><td>Grasa (kg)</td><td class="value-good">15.8</td><td class="value-good">15.9</td><td><strong>16.0 ▲</strong></td></tr>
+      <tr><td>Músculo tot (kg)</td><td>62.3</td><td>62.3</td><td><strong class="value-good">62.5 ▲</strong></td></tr>
+      <tr><td>Sueño (h)</td><td>6.5</td><td class="value-bad">6.0 ▼</td><td><strong class="value-good">7.2 ▲</strong></td></tr>
+      <tr><td>Sleep Score</td><td>84</td><td>85</td><td><strong class="value-good">89 ▲</strong></td></tr>
+      <tr><td>HRV últ. noche</td><td>46</td><td class="value-bad">40 ▼</td><td><strong class="value-good">46 ▲</strong></td></tr>
+      <tr><td>Entreno</td><td class="value-good">Fuerza 30m</td><td class="value-good">Fuerza 25m</td><td class="value-warn">— (aún sin sesión)</td></tr>
     </table>
-    <div style="margin-top:8px;font-size:10px;color:var(--muted);">9 reportes Fitdays capturados y trashed (24 Sep-6 Oct) · sin reportes los fines de semana (26-27 Sep, 3-4 Oct)</div>
-    <div style="margin-top:8px;font-size:10px;color:var(--accent);"><strong>ESTANCAMIENTO DE COMPOSICIÓN:</strong> en 13 días de entrenamiento sostenido (9 días activos) el peso bajó 0.6 kg pero la <strong>grasa no se movió</strong> (15.8 → 15.7 kg; se mantiene en 15.5-16.1 desde el 17 Sep) y el músculo cedió 0.5 kg. <strong>El déficit no está produciendo pérdida de grasa</strong> — ver análisis.</div>
+    <div style="margin-top:8px;font-size:10px;color:var(--muted);">8 reportes Fitdays capturados y trashed (7-16 Oct) · sin reportes el fin de semana (10-11 Oct)</div>
+    <div style="margin-top:8px;font-size:10px;color:var(--red);"><strong>ESTANCAMIENTO DE COMPOSICIÓN — 4ª SEMANA:</strong> desde el 17 Sep la grasa vive en <strong>15.5-16.1 kg sin bajar</strong>. En este tramo el peso tocó <strong>81.8 kg (12 Oct, mínimo del dashboard)</strong> y rebotó a 83.1, pero la grasa <em>subió</em> de 15.5 a 16.0 kg. El entrenamiento ya no es la variable — <strong>la ingesta es el cuello de botella</strong> y sigue sin medirse. Ver análisis.</div>
   </div>
-  <div class="section" id="sueno">
-    <h2>Histórico de Sueño <span class="badge">31 Ago → 6 Oct · acumulado</span></h2>
-    <table>
-      <tr><th>Día</th><th>Total</th><th>Profundo</th><th>REM</th><th>Score</th><th>HRV</th><th>Status</th></tr>
-      <tr><td>Lun 31</td><td>6.3h</td><td>0.9h</td><td>1.8h</td><td>83</td><td class="value-good">57 ▲</td><td class="value-good"> GOOD</td></tr>
-      <tr><td>Mar 1</td><td>7.1h</td><td>1.5h</td><td>1.8h</td><td>88</td><td>48</td><td class="value-good"> GOOD</td></tr>
-      <tr><td>Mié 2</td><td>6.8h</td><td>1.2h</td><td>1.4h</td><td>83</td><td>43</td><td class="value-good"> GOOD</td></tr>
-      <tr><td>Jue 3</td><td>6.0h</td><td>0.8h</td><td>1.0h</td><td>77</td><td class="value-good">61 ▲</td><td class="value-warn">● FAIR</td></tr>
-      <tr><td>Vie 4</td><td>5.0h</td><td>1.4h</td><td>1.0h</td><td>70</td><td>46</td><td class="value-warn">● FAIR</td></tr>
-      <tr><td>Sáb 5</td><td>6.2h</td><td>1.4h</td><td>0.9h</td><td>79</td><td>51</td><td class="value-warn">● FAIR</td></tr>
-      <tr><td>Dom 6</td><td>7.2h</td><td>1.4h</td><td>1.5h</td><td>72</td><td class="value-warn">36 ▼ mín</td><td class="value-warn">● + Rucking 51m</td></tr>
-      <tr><td>Lun 7</td><td>6.5h</td><td>1.2h</td><td>1.1h</td><td>80</td><td class="value-good">58 ▲</td><td class="value-good"> GOOD</td></tr>
-      <tr><td>Mar 8</td><td>6.3h</td><td class="value-good">1.8h ▲</td><td>1.0h</td><td>84</td><td class="value-good">68 ▲ PICO</td><td class="value-good"> Natación 35m</td></tr>
-      <tr><td>Mié 9</td><td>6.4h</td><td>1.7h</td><td class="value-good">1.8h ▲</td><td>82</td><td>44</td><td class="value-good"> GOOD</td></tr>
-      <tr><td>Jue 10</td><td>6.4h</td><td>1.5h</td><td>1.4h</td><td>80</td><td>43</td><td class="value-warn">● Shoulder ✗</td></tr>
-      <tr><td>Vie 11</td><td class="value-bad">4.7h ▼</td><td class="value-bad">0.8h</td><td>0.9h</td><td class="value-bad">58 ▼</td><td class="value-bad">34 ▼ mín</td><td class="value-bad">● POOR — ensayo</td></tr>
-      <tr><td>Sáb 12</td><td class="value-good">7.8h ▲</td><td>1.2h</td><td class="value-good">1.6h ▲</td><td>80</td><td>41</td><td class="value-good"> GOOD — rebote</td></tr>
-      <tr><td>Dom 13</td><td class="value-bad">4.4h ▼</td><td>1.6h</td><td class="value-bad">0.5h</td><td class="value-bad">62 ▼</td><td>45</td><td class="value-bad">● POOR</td></tr>
-      <tr><td>Lun 14</td><td>7.0h</td><td class="value-good">2.0h ▲</td><td>1.4h</td><td>83</td><td>41</td><td class="value-good"> GOOD</td></tr>
-      <tr><td>Mar 15</td><td>6.2h</td><td class="value-good">1.9h ▲</td><td>0.8h</td><td>78</td><td class="value-good">47 ▲</td><td class="value-warn">● natación ✗</td></tr>
-      <tr><td>Mié 16</td><td class="value-good">7.5h ▲</td><td>1.3h</td><td class="value-good">1.7h ▲</td><td class="value-good">84 ▲</td><td>44</td><td class="value-good"> Caminata + Baloncesto</td></tr>
-      <tr><td>Jue 17</td><td>6.9h</td><td class="value-good">1.7h ▲</td><td class="value-good">1.6h ▲</td><td>80</td><td>43</td><td class="value-warn">● Shoulder ✗ (ensayo)</td></tr>
-      <tr><td>Vie 18</td><td class="value-bad">5.6h ▼</td><td>1.6h</td><td>1.0h</td><td>74</td><td class="value-warn">39 ▼</td><td class="value-good"> Caminata 57m · 07:08</td></tr>
-      <tr><td>Sáb 19</td><td class="value-good">7.5h ▲</td><td>1.6h</td><td class="value-good">1.5h ▲</td><td class="value-good">83 ▲</td><td>45</td><td class="value-good"> GOOD</td></tr>
-      <tr><td>Dom 20</td><td>7.0h</td><td>1.3h</td><td>1.2h</td><td class="value-bad">59 ▼</td><td class="value-bad">31 ▼ mín</td><td class="value-good"> GOOD (báscula)</td></tr>
-      <tr><td>Lun 21</td><td class="value-good">7.7h ▲</td><td class="value-good">1.8h ▲</td><td class="value-good">1.6h ▲</td><td class="value-good">94 ▲ MÁX</td><td class="value-good">59 ▲</td><td class="value-good"> Caminata 71m + FUERZA 33m</td></tr>
-      <tr><td>Mar 22</td><td>6.4h</td><td class="value-bad">0.9h</td><td>1.2h</td><td>81</td><td class="value-good">52 ▲</td><td class="value-good"> Rucking 32m + FUERZA 14m</td></tr>
-      <tr><td>Mié 23</td><td class="value-good">8.1h ▲</td><td>1.0h</td><td class="value-good">1.7h ▲</td><td>83</td><td class="value-good">49</td><td class="value-good"> Rucking 40m · 06:12</td></tr>
-      <tr><td>Jue 24</td><td>7.3h</td><td>1.1h</td><td class="value-good">1.9h ▲</td><td class="value-good">87 ▲</td><td>42</td><td class="value-good"> Rucking 42m · 06:10</td></tr>
-      <tr><td>Vie 25</td><td class="value-bad">5.4h ▼</td><td class="value-good">2.1h ▲</td><td class="value-bad">0.7h</td><td>71</td><td class="value-warn">36 ▼</td><td class="value-good"> Caminata 58m + Fuerza 14m</td></tr>
-      <tr><td>Sáb 26</td><td class="value-good">7.5h ▲</td><td class="value-good">1.8h ▲</td><td class="value-good">1.8h ▲</td><td class="value-good">89 ▲</td><td>44</td><td class="value-warn">● sin entreno</td></tr>
-      <tr><td>Dom 27</td><td class="value-bad">4.9h ▼</td><td class="value-bad">0.8h</td><td class="value-bad">0.7h</td><td class="value-bad">66 ▼</td><td class="value-good">49</td><td class="value-warn">● sin entreno</td></tr>
-      <tr><td>Lun 28</td><td class="value-bad">5.1h ▼</td><td>1.5h</td><td class="value-bad">0.2h</td><td class="value-bad">61 ▼</td><td>47</td><td class="value-warn">● sin entreno (peso 84.4 pico)</td></tr>
-      <tr><td>Mar 29</td><td class="value-good">8.5h ▲</td><td class="value-bad">0.8h</td><td class="value-good">2.0h ▲</td><td class="value-good">85 ▲</td><td class="value-good">58 ▲</td><td class="value-good"> Caminata 37m + FUERZA 16m</td></tr>
-      <tr><td>Mié 30</td><td class="value-good">8.2h ▲</td><td>1.0h</td><td class="value-good">2.4h ▲ MÁX</td><td class="value-good">89 ▲</td><td>48</td><td class="value-good"> Caminata 24m</td></tr>
-      <tr><td>Jue 1</td><td class="value-good">8.0h ▲</td><td class="value-bad">0.9h</td><td class="value-good">1.9h ▲</td><td class="value-good">87 ▲</td><td>50</td><td class="value-good"> Baloncesto 35m</td></tr>
-      <tr><td>Vie 2</td><td>6.7h</td><td class="value-bad">0.9h</td><td class="value-good">2.1h ▲</td><td>82</td><td class="value-warn">39 ▼</td><td class="value-good"> Caminata 34m · 07:06</td></tr>
-      <tr><td>Sáb 3</td><td>6.1h</td><td class="value-bad">0.9h</td><td>1.0h</td><td>80</td><td class="value-good">51</td><td class="value-warn">● sin entreno</td></tr>
-      <tr><td>Dom 4</td><td>6.7h</td><td>1.6h</td><td>1.4h</td><td class="value-good">87 ▲</td><td class="value-good">52</td><td class="value-warn">● sin entreno</td></tr>
-      <tr><td>Lun 5</td><td class="value-good">8.4h ▲</td><td>1.2h</td><td class="value-good">1.7h ▲</td><td class="value-good">88 ▲</td><td>47</td><td class="value-good"> Baloncesto 38m + FUERZA 31m</td></tr>
-      <tr><td><strong>Mar 6</strong></td><td><strong>7.2h</strong></td><td><strong>1.1h</strong></td><td><strong>1.6h</strong></td><td><strong>82</strong></td><td><strong>43</strong></td><td><strong class="value-good"> Caminata 62m · 15:31</strong></td></tr>
-    </table>
+
+<div class="section" id="sueno" style="margin-bottom:16px;">
+    <h2>Histórico de Sueño <span class="badge">14 noches · 3 → 16 Oct</span></h2>
+            <svg viewBox="0 0 720 330" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace" style="width:100%;height:auto;background:var(--surface);border-radius:10px;">
+          <!-- Leyenda -->
+          <g font-size="7.5" font-weight="500">
+            <rect x="50" y="9" width="9" height="7" fill="#d6e8c9"/><text x="63" y="16" fill="#d6e8c9">PROFUNDO</text>
+            <rect x="126" y="9" width="9" height="7" fill="#a8e05a"/><text x="139" y="16" fill="#a8e05a">REM</text>
+            <rect x="172" y="9" width="9" height="7" fill="#64805c"/><text x="185" y="16" fill="#64805c">RESTO</text>
+            <line x1="236" y1="12.5" x2="256" y2="12.5" stroke="#c9f284" stroke-width="1.6" stroke-linecap="round"/><circle cx="246" cy="12.5" r="2" fill="#c9f284"/>
+            <text x="262" y="16" fill="#c9f284">SLEEP SCORE</text>
+            <text x="700" y="16" text-anchor="end" font-size="7" fill="#64805c">barras = horas por etapa &#183; l&#237;nea = score</text>
+          </g>
+          <!-- Panel A: sleep score -->
+          <line x1="50.0" y1="40.2" x2="700.0" y2="40.2" stroke="#1f2e24" stroke-width="0.8" stroke-dasharray="4,4"/>
+          <text x="44.0" y="42.7" text-anchor="end" font-size="7" fill="#64805c">90</text>
+          <text x="44.0" y="55.1" text-anchor="end" font-size="7" fill="#64805c">70</text>
+          <line x1="50.0" y1="52.6" x2="700.0" y2="52.6" stroke="#1f2e24" stroke-width="0.6" stroke-dasharray="2,5"/>
+          <polyline points="73.2,46.4 119.6,42.1 166.1,41.4 212.5,45.2 258.9,42.7 305.4,45.8 351.8,47.6 398.2,49.5 444.6,39.0 491.1,40.2 537.5,43.3 583.9,43.9 630.4,43.3 676.8,40.8" fill="none" stroke="#c9f284" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="73.2" cy="46.4" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="119.6" cy="42.1" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="166.1" cy="41.4" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="212.5" cy="45.2" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="258.9" cy="42.7" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="305.4" cy="45.8" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="351.8" cy="47.6" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="398.2" cy="49.5" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="444.6" cy="39.0" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="491.1" cy="40.2" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="537.5" cy="43.3" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="583.9" cy="43.9" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="630.4" cy="43.3" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <circle cx="676.8" cy="40.8" r="2.2" fill="#c9f284" stroke="#050a07" stroke-width="0.8"/>
+          <text x="44.0" y="28.0" text-anchor="end" font-size="7" fill="#64805c">SCORE</text>
+          <!-- Panel B: barras apiladas por etapa -->
+          <rect x="50.0" y="156.7" width="650.0" height="16.7" fill="rgba(168,224,90,0.11)"/>
+          <line x1="50.0" y1="173.3" x2="700.0" y2="173.3" stroke="rgba(168,224,90,0.5)" stroke-width="0.7" stroke-dasharray="4,4"/>
+          <line x1="50.0" y1="156.7" x2="700.0" y2="156.7" stroke="rgba(168,224,90,0.5)" stroke-width="0.7" stroke-dasharray="4,4"/>
+          <text x="54" y="167.5" font-size="7" fill="#64805c">META 7-8h</text>
+          <text x="44.0" y="159.2" text-anchor="end" font-size="7" fill="#64805c">8h</text>
+          <text x="44.0" y="225.8" text-anchor="end" font-size="7" fill="#64805c">4h</text>
+          <rect x="60.2" y="275.0" width="26.0" height="15.0" fill="#d6e8c9"/>
+          <rect x="60.2" y="258.3" width="26.0" height="16.7" fill="#a8e05a"/>
+          <rect x="60.2" y="188.3" width="26.0" height="70.0" fill="#64805c"/>
+          <text x="73.2" y="184.3" text-anchor="middle" font-size="7" fill="#64805c">6.1</text>
+          <rect x="106.6" y="263.3" width="26.0" height="26.7" fill="#d6e8c9"/>
+          <rect x="106.6" y="240.0" width="26.0" height="23.3" fill="#a8e05a"/>
+          <rect x="106.6" y="178.3" width="26.0" height="61.7" fill="#64805c"/>
+          <text x="119.6" y="174.3" text-anchor="middle" font-size="7" fill="#64805c">6.7</text>
+          <rect x="153.1" y="270.0" width="26.0" height="20.0" fill="#d6e8c9"/>
+          <rect x="153.1" y="241.7" width="26.0" height="28.3" fill="#a8e05a"/>
+          <rect x="153.1" y="150.0" width="26.0" height="91.7" fill="#64805c"/>
+          <text x="166.1" y="146.0" text-anchor="middle" font-size="7" fill="#64805c">8.4</text>
+          <rect x="199.5" y="271.7" width="26.0" height="18.3" fill="#d6e8c9"/>
+          <rect x="199.5" y="245.0" width="26.0" height="26.7" fill="#a8e05a"/>
+          <rect x="199.5" y="170.0" width="26.0" height="75.0" fill="#64805c"/>
+          <text x="212.5" y="166.0" text-anchor="middle" font-size="7" fill="#64805c">7.2</text>
+          <rect x="245.9" y="273.3" width="26.0" height="16.7" fill="#d6e8c9"/>
+          <rect x="245.9" y="246.7" width="26.0" height="26.7" fill="#a8e05a"/>
+          <rect x="245.9" y="176.7" width="26.0" height="70.0" fill="#64805c"/>
+          <text x="258.9" y="172.7" text-anchor="middle" font-size="7" fill="#64805c">6.8</text>
+          <rect x="292.4" y="261.7" width="26.0" height="28.3" fill="#d6e8c9"/>
+          <rect x="292.4" y="238.3" width="26.0" height="23.3" fill="#a8e05a"/>
+          <rect x="292.4" y="178.3" width="26.0" height="60.0" fill="#64805c"/>
+          <text x="305.4" y="174.3" text-anchor="middle" font-size="7" fill="#64805c">6.7</text>
+          <rect x="338.8" y="260.0" width="26.0" height="30.0" fill="#d6e8c9"/>
+          <rect x="338.8" y="235.0" width="26.0" height="25.0" fill="#a8e05a"/>
+          <rect x="338.8" y="175.0" width="26.0" height="60.0" fill="#64805c"/>
+          <text x="351.8" y="171.0" text-anchor="middle" font-size="7" fill="#64805c">6.9</text>
+          <rect x="385.2" y="261.7" width="26.0" height="28.3" fill="#d6e8c9"/>
+          <rect x="385.2" y="251.7" width="26.0" height="10.0" fill="#a8e05a"/>
+          <rect x="385.2" y="170.0" width="26.0" height="81.7" fill="#64805c"/>
+          <text x="398.2" y="166.0" text-anchor="middle" font-size="7" fill="#64805c">7.2</text>
+          <rect x="431.6" y="271.7" width="26.0" height="18.3" fill="#d6e8c9"/>
+          <rect x="431.6" y="241.7" width="26.0" height="30.0" fill="#a8e05a"/>
+          <rect x="431.6" y="156.7" width="26.0" height="85.0" fill="#64805c"/>
+          <text x="444.6" y="152.7" text-anchor="middle" font-size="7" fill="#64805c">8.0</text>
+          <rect x="478.1" y="270.0" width="26.0" height="20.0" fill="#d6e8c9"/>
+          <rect x="478.1" y="245.0" width="26.0" height="25.0" fill="#a8e05a"/>
+          <rect x="478.1" y="155.0" width="26.0" height="90.0" fill="#64805c"/>
+          <text x="491.1" y="151.0" text-anchor="middle" font-size="7" fill="#64805c">8.1</text>
+          <rect x="524.5" y="276.7" width="26.0" height="13.3" fill="#d6e8c9"/>
+          <rect x="524.5" y="240.0" width="26.0" height="36.7" fill="#a8e05a"/>
+          <rect x="524.5" y="185.0" width="26.0" height="55.0" fill="#64805c"/>
+          <text x="537.5" y="181.0" text-anchor="middle" font-size="7" fill="#64805c">6.3</text>
+          <rect x="570.9" y="276.7" width="26.0" height="13.3" fill="#d6e8c9"/>
+          <rect x="570.9" y="256.7" width="26.0" height="20.0" fill="#a8e05a"/>
+          <rect x="570.9" y="181.7" width="26.0" height="75.0" fill="#64805c"/>
+          <text x="583.9" y="177.7" text-anchor="middle" font-size="7" fill="#64805c">6.5</text>
+          <rect x="617.4" y="270.0" width="26.0" height="20.0" fill="#d6e8c9"/>
+          <rect x="617.4" y="245.0" width="26.0" height="25.0" fill="#a8e05a"/>
+          <rect x="617.4" y="190.0" width="26.0" height="55.0" fill="#64805c"/>
+          <text x="630.4" y="186.0" text-anchor="middle" font-size="7" fill="#64805c">6.0</text>
+          <rect x="663.8" y="258.3" width="26.0" height="31.7" fill="#d6e8c9"/>
+          <rect x="663.8" y="233.3" width="26.0" height="25.0" fill="#a8e05a"/>
+          <rect x="663.8" y="170.0" width="26.0" height="63.3" fill="#64805c"/>
+          <text x="676.8" y="166.0" text-anchor="middle" font-size="7" fill="#64805c">7.2</text>
+          <line x1="50.0" y1="290.0" x2="700.0" y2="290.0" stroke="#1f2e24" stroke-width="1"/>
+          <!-- eje x -->
+          <text x="73.2" y="303" text-anchor="middle" font-size="7" fill="#64805c">3</text>
+          <text x="119.6" y="303" text-anchor="middle" font-size="7" fill="#64805c">4</text>
+          <text x="166.1" y="303" text-anchor="middle" font-size="7" fill="#64805c">5</text>
+          <text x="212.5" y="303" text-anchor="middle" font-size="7" fill="#64805c">6</text>
+          <text x="258.9" y="303" text-anchor="middle" font-size="7" fill="#64805c">7</text>
+          <text x="305.4" y="303" text-anchor="middle" font-size="7" fill="#64805c">8</text>
+          <text x="351.8" y="303" text-anchor="middle" font-size="7" fill="#64805c">9</text>
+          <text x="398.2" y="303" text-anchor="middle" font-size="7" fill="#64805c">10</text>
+          <text x="444.6" y="303" text-anchor="middle" font-size="7" fill="#64805c">11</text>
+          <text x="491.1" y="303" text-anchor="middle" font-size="7" fill="#64805c">12</text>
+          <text x="537.5" y="303" text-anchor="middle" font-size="7" fill="#64805c">13</text>
+          <text x="583.9" y="303" text-anchor="middle" font-size="7" fill="#64805c">14</text>
+          <text x="630.4" y="303" text-anchor="middle" font-size="7" fill="#64805c">15</text>
+          <text x="676.8" y="303" text-anchor="middle" font-size="7" fill="#64805c">16</text>
+          <text x="700.0" y="317" text-anchor="end" font-size="7" fill="#64805c">Oct 2026</text>
+        </svg>
     <div style="margin-top:8px;display:flex;gap:8px;font-size:10px;color:var(--muted);flex-wrap:wrap;">
-      <span> Promedio: 7.3h/noche · 2ª semana en meta</span>
-      <span> Profundo: 1.1h (15%)</span>
-      <span> REM: 1.7h (23%) — el REM subió fuerte</span>
-      <span> HRV: 47 promedio 7d · el mejor del ciclo · 9 días activos sin caída</span>
+      <span> Promedio 14 noches: 7.1h</span>
+      <span> Profundo: 1.3h (18%)</span>
+      <span> REM: 1.5h (21%)</span>
+      <span class="value-good"> 5 noches con score &ge;88 (máx 92 el 11 Oct)</span>
+      <span class="value-bad"> 15 Oct = 6.0h, la más corta de las 14</span>
     </div>
   </div>
-</div>
 
 <div class="section" id="visual" style="margin-bottom:16px;">
   <h2>Análisis Visual — Composición + Recuperación <span class="badge">11 Ago → 17 Ago · gráfica de apoyo</span></h2>
@@ -427,31 +499,31 @@
       <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
       <div class="cal-header">Dom</div>
-      <div class="cal-day prev missed"><div class="day-num">28</div><div class="workout-label">Lun · ✗ (sueño 5.1h)</div></div>
-      <div class="cal-day prev completed"><div class="day-num">29</div><div class="workout-label">Caminata 37m + Fuerza 16m</div></div>
-      <div class="cal-day prev completed"><div class="day-num">30</div><div class="workout-label">Caminata 24m</div></div>
-      <div class="cal-day prev completed"><div class="day-num">1</div><div class="workout-label">Baloncesto 35m</div></div>
-      <div class="cal-day prev completed"><div class="day-num">2</div><div class="workout-label">Caminata 34m · 07:06</div></div>
-      <div class="cal-day prev missed"><div class="day-num">3</div><div class="workout-label">Sáb · ✗</div></div>
-      <div class="cal-day prev missed"><div class="day-num">4</div><div class="workout-label">Dom · ✗</div></div>
+            <div class="cal-day prev completed"><div class="day-num">5</div><div class="workout-label">Baloncesto 38m + Fuerza 31m</div></div>
+      <div class="cal-day prev completed"><div class="day-num">6</div><div class="workout-label">Caminata 62m + Fuerza 31m</div></div>
+      <div class="cal-day prev completed"><div class="day-num">7</div><div class="workout-label">Fuerza 36m</div></div>
+      <div class="cal-day prev missed"><div class="day-num">8</div><div class="workout-label">Jue · ✗</div></div>
+      <div class="cal-day prev completed"><div class="day-num">9</div><div class="workout-label">Fuerza 8m</div></div>
+      <div class="cal-day prev missed"><div class="day-num">10</div><div class="workout-label">Sáb · ✗</div></div>
+      <div class="cal-day prev completed"><div class="day-num">11</div><div class="workout-label">Baloncesto 34m</div></div>
     </div>
-    <div class="week-summary"><span class="value-good"> 4/7 días activos · 1 de fuerza</span><span>mejor semana desde agosto</span></div>
+    <div class="week-summary"><span class="value-good"> 5/7 días activos · 3 de fuerza</span><span>el jueves ya sin ensayo</span></div>
   </div>
   <div class="section" id="semana-act">
-    <h2>Semana Actual <span class="badge">5 Oct → 11 Oct</span></h2>
+    <h2>Semana Actual <span class="badge">12 Oct → 18 Oct</span></h2>
     <div class="cal-grid">
       <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
       <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div>
       <div class="cal-header">Dom</div>
-      <div class="cal-day prev completed"><div class="day-num">5</div><div class="workout-label">Baloncesto 38m + Fuerza 31m</div></div>
-      <div class="cal-day today completed"><div class="day-num">6</div><div class="workout-label">Caminata 62m · 15:31</div></div>
-      <div class="cal-day future"><div class="day-num">7</div><div class="workout-label">Natación / caminata</div></div>
-      <div class="cal-day future"><div class="day-num">8</div><div class="workout-label">Shoulder · sin deadline</div></div>
-      <div class="cal-day future"><div class="day-num">9</div><div class="workout-label">Caminata / Fuerza</div></div>
-      <div class="cal-day future"><div class="day-num">10</div><div class="workout-label">Baloncesto / rucking</div></div>
-      <div class="cal-day future"><div class="day-num">11</div><div class="workout-label">Recovery</div></div>
+      <div class="cal-day prev completed"><div class="day-num">12</div><div class="workout-label">Fuerza 45m · 323 kcal</div></div>
+      <div class="cal-day prev missed"><div class="day-num">13</div><div class="workout-label">Mar · ✗</div></div>
+      <div class="cal-day prev completed"><div class="day-num">14</div><div class="workout-label">Fuerza 30m</div></div>
+      <div class="cal-day prev completed"><div class="day-num">15</div><div class="workout-label">Fuerza 25m</div></div>
+      <div class="cal-day today missed"><div class="day-num">16</div><div class="workout-label">Vie · hoy — sin sesión aún</div></div>
+      <div class="cal-day future"><div class="day-num">17</div><div class="workout-label">Sáb</div></div>
+      <div class="cal-day future"><div class="day-num">18</div><div class="workout-label">Dom · recovery</div></div>
     </div>
-    <div class="week-summary"><span class="value-good"> 2/2 días activos · ya 1 de fuerza</span><span>la rutina ya está instalada</span></div>
+    <div class="week-summary"><span class="value-good"> 3/4 días activos hasta hoy · 3 de fuerza</span><span>racha: 3 días seguidos (12-15)</span></div>
   </div>
   <div class="section" id="tracker">
     <h2>Tracker Diario</h2>
@@ -467,44 +539,46 @@
       <tr><td>Dom 4</td><td>— (sin entreno)</td><td>—</td><td>—</td><td>6.7h</td><td class="value-good">52</td><td>4,154</td></tr>
       <tr><td>Lun 5</td><td class="value-good">Baloncesto 38m + FUERZA 31m · 636 kcal</td><td>83.0</td><td>18.9%</td><td class="value-good">8.4h</td><td>47</td><td>6,817</td></tr>
       <tr><td>Mar 6</td><td class="value-good">Caminata 62m · 218 kcal (15:31)</td><td class="value-good">82.5 ▼</td><td>19.0%</td><td>7.2h</td><td>43</td><td>6,673*</td></tr>
+
+<tr><td>Mié 7</td><td class="value-good">Fuerza 36m · 189 kcal</td><td>82.4</td><td>18.9%</td><td>6.8h</td><td class="value-bad">38 ▼</td><td>4,263</td></tr>
+<tr><td>Jue 8</td><td class="value-warn">— (sin entreno)</td><td>82.9</td><td>19.1%</td><td>6.7h</td><td>41</td><td>5,402</td></tr>
+<tr><td>Vie 9</td><td class="value-good">Fuerza 8m · 32 kcal</td><td>82.7</td><td>19.5%</td><td>6.9h</td><td class="value-good">54 ▲</td><td>5,744</td></tr>
+<tr><td>Sáb 10</td><td class="value-warn">— (sin entreno)</td><td>—</td><td>—</td><td>7.2h</td><td class="value-bad">38 ▼</td><td>5,668</td></tr>
+<tr><td>Dom 11</td><td class="value-good">Baloncesto 34m · 247 kcal</td><td>—</td><td>—</td><td>8.0h</td><td class="value-good">52 ▲</td><td>8,304</td></tr>
+<tr><td>Lun 12</td><td class="value-good">FUERZA 45m · 323 kcal</td><td>81.8 ▼</td><td>18.9%</td><td>8.1h</td><td>49</td><td>3,795</td></tr>
+<tr><td>Mar 13</td><td class="value-warn">— (sin entreno)</td><td>82.4</td><td>19.3%</td><td>6.3h</td><td>41</td><td>4,198</td></tr>
+<tr><td>Mié 14</td><td class="value-good">Fuerza 30m · 135 kcal</td><td>82.5</td><td>19.2%</td><td>6.5h</td><td>46</td><td>4,535</td></tr>
+<tr><td>Jue 15</td><td class="value-good">Fuerza 25m · 198 kcal</td><td>82.6</td><td>19.3%</td><td>6.0h ▼</td><td>40</td><td>6,876</td></tr>
+<tr><td><strong>Vie 16</strong></td><td class="value-warn">— (hoy, sin sesión aún)</td><td>83.1 ▲</td><td>19.3%</td><td>7.2h</td><td>46</td><td>617*</td></tr>
+
     </table>
     <div style="margin-top:6px;font-size:9px;color:var(--muted);">*parcial (día en curso) · 9 reportes trashed (24 Sep-6 Oct) · mínimos históricos: <strong style="color:var(--green);">82.5 kg (6 Oct, NUEVO)</strong> / 18.3% / 15.0 kg grasa (5 Sep) · músculo pico 63.7 (28 Sep) · <strong style="color:var(--accent);">grasa plana en 15.5-16.1 kg desde el 17 Sep</strong> · 9 días activos en 14</div>
   </div>
 </div>
 
 <div class="section" id="analisis" style="margin-bottom:16px;">
-  <h2>Análisis y Recomendaciones — 6 Oct</h2>
+  <h2>Análisis y Recomendaciones — 16 Oct</h2>
 
   <div class="rec-card good">
-    <div class="title">EL HÁBITO YA ESTÁ INSTALADO: 9 días activos en 14 (antes 2 en 30)</div>
+    <div class="title">EL EXPERIMENTO DEL JUEVES QUEDÓ CONFIRMADO: el bajón del viernes era el ensayo, no el sobreentreno</div>
     <div class="body">
-      Esto ya no es una racha frágil — es rutina. Desde el 24 de septiembre:
-      <br><br>
-      • <strong>9 de 14 días con actividad</strong> · 3 sesiones de <strong>fuerza</strong> (25 Sep, 29 Sep, 5 Oct) · 3 de <strong>baloncesto</strong> (1, 5 Oct) · rucking y caminatas el resto<br>
-      • Rachas de <strong>4 días seguidos</strong> (29 Sep-2 Oct) y <strong>2/2</strong> en la semana en curso<br>
-      • El único patrón de fallo: <strong>sábados y domingos</strong> (26-27 Sep y 3-4 Oct en blanco, los dos fines de semana completos)
-      <br><br>
-      <strong>El sueño acompaña:</strong> 7.3h de promedio (2ª semana en meta), REM subiendo a 1.7h/noche, y el <strong>HRV promedia 47 — el mejor del ciclo</strong> con 9 días de carga encima. Eso es adaptación.
+      Dejaste el ensayo de música a comienzos de octubre. La predicción que quedó anotada era falsable: si el viernes dejaba de caer, la causa era el ensayo.<br><br>
+      <strong>Los cuatro viernes con ensayo:</strong> HRV 34 · 39 · 36 · 39 (sueño 4.7 · 5.6 · 5.4 · 6.7h)<br>
+      <strong>Los dos viernes sin ensayo:</strong> HRV <strong>54</strong> (9 Oct) y <strong>46</strong> (16 Oct) — sueño 6.9 · 7.2h<br><br>
+      <strong>+12 ms de HRV en promedio</strong> y una hora más de sueño, sin cambiar nada más. El jueves ya es un día de semana normal: se entrenó fuerza el Jue 8 y el Jue 15, cosa que antes era imposible.<br><br>
+      Esto también cierra la duda de fondo: el HRV bajo del viernes <em>nunca</em> fue sobreentrenamiento. Era privación de sueño autoimpuesta, y era reversible.
     </div>
-  </div>
-
-  <div class="rec-card critical">
-    <div class="title">PERO LA COMPOSICIÓN NO SE MUEVE: un mes entero con la grasa en el mismo sitio</div>
+  </div><div class="rec-card critical">
+    <div class="title">LA GRASA CUMPLE 4 SEMANAS PLANAS: el entreno dejó de ser la variable, la ingesta es el cuello de botella</div>
     <div class="body">
-      Este es el dato incómodo de hoy. Comparando con el mínimo del ciclo (5 Sep):
-      <br><br>
-      • <strong>Grasa: 15.0 kg (5 Sep) → 15.7 kg (6 Oct)</strong> · +0.7 kg en un mes<br>
-      • Peso: 82.0 → <strong>82.5 kg</strong> · +0.5 kg<br>
-      • Músculo: 62.6 → <strong>62.4 kg</strong> · −0.2 kg<br>
-      • La grasa no ha bajado de <strong>15.5 kg</strong> en 4 semanas (banda 15.5-16.1)
-      <br><br>
-      <strong>Traducción:</strong> en el último mes el peso subió y lo que subió fue grasa. El "déficit de −400 kcal" que asume el plan <strong>no está produciendo pérdida de grasa</strong> en la práctica. Con 9 días de entrenamiento encima, la conclusión más probable es que <strong>la ingesta real está en mantenimiento</strong>, no en déficit.
-      <br><br>
-      <strong>Consecuencia sobre la meta:</strong> el objetivo de <strong>77-78 kg / 14-15% de grasa al 16 Nov</strong> exige perder ~4 kg de grasa en 6 semanas (≈0.65 kg/semana). Al ritmo actual (0 kg/semana) <strong>no es alcanzable</strong>. No es falta de voluntad en el entreno — eso ya está resuelto. El cuello de botella se movió a la cocina.
+      Este es el dato incómodo. La fuerza se volvió rutina (6 sesiones en 11 días) y el sueño mejoró — y aun así:<br><br>
+      • Grasa: <strong>15.5-16.1 kg sin bajar desde el 17 Sep</strong> — hoy 16.0 kg<br>
+      • Peso: tocó <strong>81.8 kg el 12 Oct</strong> (mínimo del dashboard) y rebotó a 83.1 en cuatro días<br>
+      • Músculo: plano en 61.9-62.5, sin ganancia neta<br><br>
+      El rebote de 1.3 kg en 4 días no es grasa: 1 kg de grasa son ~7,700 kcal y no hay forma de comer eso de más en cuatro días. Es glucógeno + agua — normal, y volverá a bajar. <strong>Pero la línea de fondo no se mueve</strong>: cuatro semanas de entrenamiento sostenido sin que la grasa ceda un gramo.<br><br>
+      Con el entreno resuelto y el sueño en meta, queda una sola variable sin controlar: <strong>la ingesta real</strong>. Sigue sin medirse, y un déficit que no existe en los números no produce pérdida de grasa. <strong>Medir 7 días de comida (pesada, no estimada) es la tarea de esta semana</strong> — sin eso, cualquier ajuste es a ciegas.
     </div>
-  </div>
-
-  <div class="rec-card" style="border-left-color:var(--purple);">
+  </div><div class="rec-card" style="border-left-color:var(--purple);">
     <div class="title">Recomendación: medir la ingesta antes de tocar nada más</div>
     <div class="body">
       <strong>No cambiar el entrenamiento</strong> — está funcionando y por fin es sostenible. El problema es que el plan da por sentado un déficit que los datos no confirman.
@@ -522,8 +596,8 @@
     <div class="body">
       <table style="margin-top:4px;">
         <tr><th>Día</th><th>Rutina</th><th>Impacto esperado en datos</th></tr>
-        <tr><td>Lun-Jue</td><td>Trabajo temprano → acostarse temprano</td><td class="value-good">Sueño estable 7-8h · HRV alto</td></tr>
-        <tr><td><strong>Jue</strong></td><td> Ensayo música hasta ~23:00</td><td class="value-warn">Noche corta ~4.5-5h · HRV del viernes bajo <em>por defecto</em></td></tr>
+        <tr><td>Lun-Vie</td><td>Trabajo temprano → acostarse temprano</td><td class="value-good">Sueño estable 7-8h · HRV alto</td></tr>
+        <tr><td><strong>Jue</strong></td><td class="value-good"> Día normal desde oct 2026 (sin ensayo)</td><td class="value-good">Sueño normal · el bajón del viernes <strong>YA NO aparece</strong> (54 y 46 vs 34-39)</td></tr>
         <tr><td><strong>Vie-Sáb</strong></td><td> TV / social → dormir tarde</td><td class="value-warn">Sueño 5-6h · despertar tardío si los hijos lo permiten</td></tr>
         <tr><td><strong>Dom</strong></td><td> Recuperación natural</td><td class="value-good">Mejor sueño de la semana (8h+, score 90+)</td></tr>
       </table>
@@ -533,7 +607,7 @@
   </div>
 
   <div class="rec-card info">
-    <div class="title"> GRÁFICA DE APOYO: qué dice ahora (6 Oct)</div>
+    <div class="title"> GRÁFICA DE APOYO: qué dice ahora (16 Oct)</div>
     <div class="body">
       Los dos paneles (composición + recuperación) muestran el periodo 11-24 Ago. La lectura vigente:
       <br><br>
@@ -544,21 +618,14 @@
   </div>
 
   <div class="rec-card info">
-    <div class="title"> Contexto: el entreno está resuelto; la grasa es el problema abierto</div>
+    <div class="title">Contexto: el formato que se ejecuta ahora es FUERZA, y por fin dentro de casa</div>
     <div class="body">
-      <strong>Lo que pasó:</strong> el parón del 9-15 Sep se rompió el 18 y desde el 24 la actividad es rutina: <strong>9 días activos en 14</strong>. Semanas: 14-20 Sep <strong>2 días</strong> · 21-27 Sep <strong>3 días</strong> (+ fuerza) · 28 Sep-4 Oct <strong>4/7</strong> · 5-11 Oct <strong>2/2 (en curso)</strong>.
-      <br><br>
-      <strong>Lo que sigue sin resolverse:</strong> el entreno dejó de ser el cuello de botella. Ahora lo es la <strong>ingesta</strong> — la grasa se mantiene en 15.5-16.1 kg desde el 17 Sep (mínimo 15.0 kg el 5 Sep) mientras el peso incluso subió 0.5 kg en el mes. Un déficit supuesto que no produce pérdida de grasa es, en la práctica, mantenimiento.
-      <br><br>
-      <strong>Reglas que se mantienen (validadas con datos):</strong><br>
-      • <strong>(Histórico, derogado oct 2026)</strong> el bajón de sueño/HRV del viernes venía del ensayo del jueves — el jueves es ahora día normal y el viernes ya no debería caer<br>
-      • El formato que se ejecuta: <strong>sesiones cortas (14-33 min), mañana temprano, fuera de casa</strong> — no las de 45-60 min con equipos<br>
-      • <strong>Fin de semana = el hueco del sistema</strong> (4 días en blanco de 4 posibles)<br>
-      • Déficit sin medir ≠ déficit: 4 semanas de grasa plana lo demuestran
+      El hallazgo de septiembre fue que solo se ejecutaba lo que ocurría fuera de casa. Octubre lo corrige: <strong>6 sesiones de fuerza en 11 días</strong> (6, 7, 9, 12, 14 y 15 Oct), casi todas entre 18:00 y 19:00, más 2 de baloncesto. La fuerza dejó de ser la asignatura pendiente.<br><br>
+      Semanas: 28 Sep-4 Oct · 4/7 · 5-11 Oct <strong>5/7 (3 de fuerza)</strong> · 12-18 Oct 3/4 hasta hoy.<br><br>
+      El patrón de fallo se movió: ya no son los días de semana, son <strong>los fines de semana</strong> (10-11 Oct en blanco, y los tres anteriores también).<br><br>
+      Lo que sigue sin resolverse no es el entreno — es la ingesta. La grasa se mantiene en 15.5-16.1 kg desde el 17 Sep con 6 sesiones de fuerza encima. Un déficit supuesto que no baja la grasa es, en la práctica, mantenimiento.
     </div>
-  </div>
-
-  <div class="rec-card" style="border-left-color:var(--purple);">
+  </div><div class="rec-card" style="border-left-color:var(--purple);">
     <div class="title"> Plan 5-11 Oct — entrenar ya está resuelto; ahora se mide la comida</div>
     <div class="body">
       <strong>La semana va 2/2.</strong> El entreno no necesita más plan: necesita continuidad y un fin de semana que no se caiga.<br><br>
@@ -677,9 +744,9 @@
         <!-- Semana 4.3 (23 Sep): 83.1 / 19.0 / 62.9 — recomposición POSITIVA con fuerza (grasa -0.2, músculo +0.4) -->
         <!-- 30 Sep: 83.1 / 18.9 / 62.9 — la franja plana de grasa se confirma (15.5-16.1 kg) -->
         <!-- Semana 6.2 (6 Oct): 82.5 / 19.0 / 62.4 — peso mínimo del ciclo, pero grasa SIN bajar: el déficit no aparece -->
-        <polyline points="50.0,45.6 119.6,42.4 150.6,55.2 166.1,32.8 173.8,52.0 189.3,52.0 228.0,61.6 235.7,52.0 282.1,48.8 336.3,48.8 382.7,68.0" fill="none" stroke="c9f284" stroke-width="1.6" stroke-linecap="round"/>
-        <polyline points="50.0,50.9 119.6,61.1 150.6,64.6 166.1,61.1 173.8,78.3 189.3,78.3 228.0,68.0 235.7,61.1 282.1,71.4 336.3,74.9 382.7,71.4" fill="none" stroke="a8e05a" stroke-width="1.6" stroke-linecap="round"/>
-        <polyline points="50.0,146.0 119.6,134.0 150.6,140.0 166.1,110.0 173.8,122.0 189.3,122.0 228.0,146.0 235.7,140.0 282.1,116.0 336.3,116.0 382.7,146.0" fill="none" stroke="8aa87c" stroke-width="1.6" stroke-linecap="round"/>
+        <polyline points="50.0,45.6 119.6,42.4 150.6,55.2 166.1,32.8 173.8,52.0 189.3,52.0 228.0,61.6 235.7,52.0 282.1,48.8 336.3,48.8 382.7,68.0 460.1,48.8" fill="none" stroke="#c9f284" stroke-width="1.6" stroke-linecap="round"/>
+        <polyline points="50.0,50.9 119.6,61.1 150.6,64.6 166.1,61.1 173.8,78.3 189.3,78.3 228.0,68.0 235.7,61.1 282.1,71.4 336.3,74.9 382.7,71.4 460.1,61.1" fill="none" stroke="#e0555e" stroke-width="1.6" stroke-linecap="round"/>
+        <polyline points="50.0,146.0 119.6,134.0 150.6,140.0 166.1,110.0 173.8,122.0 189.3,122.0 228.0,146.0 235.7,140.0 282.1,116.0 336.3,116.0 382.7,146.0 460.1,140.0" fill="none" stroke="#d6e8c9" stroke-width="1.6" stroke-linecap="round"/>
         <circle cx="50" cy="45.6" r="2.6" fill="#c9f284" stroke="#050a07" stroke-width="1"/>
         <circle cx="50" cy="50.9" r="2.6" fill="#e0555e" stroke="#050a07" stroke-width="1"/>
         <circle cx="50" cy="146.0" r="2.6" fill="#d6e8c9" stroke="#050a07" stroke-width="1"/>
@@ -713,13 +780,17 @@
         <circle cx="382.7" cy="68.0" r="2.6" fill="#c9f284" stroke="#050a07" stroke-width="1"/>
         <circle cx="382.7" cy="71.4" r="2.6" fill="#e0555e" stroke="#050a07" stroke-width="1"/>
         <circle cx="382.7" cy="146.0" r="2.6" fill="#d6e8c9" stroke="#050a07" stroke-width="1"/>
-        <text x="382.7" y="82" text-anchor="middle" font-size="7.5" fill="#c9f284" font-weight="600">6 Oct</text>
+        <text x="460.1" y="82" text-anchor="middle" font-size="7.5" fill="#c9f284" font-weight="600">16 Oct</text>
         <!-- Ejes de fecha -->
         <text x="50" y="282" text-anchor="middle" font-size="7.5" fill="#64805c">24 Ago</text><text x="158" y="282" text-anchor="middle" font-size="7.5" fill="#64805c">7 Sep</text><text x="267" y="282" text-anchor="middle" font-size="7.5" fill="#64805c">21 Sep</text><text x="375" y="282" text-anchor="middle" font-size="7.5" fill="#64805c">5 Oct</text><text x="483" y="282" text-anchor="middle" font-size="7.5" fill="#64805c">19 Oct</text><text x="592" y="282" text-anchor="middle" font-size="7.5" fill="#64805c">2 Nov</text><text x="700" y="282" text-anchor="middle" font-size="7.5" fill="#64805c">16 Nov</text>
         <!-- Títulos (arriba-derecha, zona libre) -->
         <text x="700" y="36" text-anchor="end" font-size="7.5" font-weight="700" fill="#c9f284">PESO 83.2 → 77.2 kg</text>
         <text x="700" y="48" text-anchor="end" font-size="7.5" font-weight="700" fill="#e0555e">GRASA 19.6 → 14.5%</text>
         <text x="700" y="60" text-anchor="end" font-size="7.5" font-weight="700" fill="#d6e8c9">MÚSCULO 62.4 → 63.2 kg</text>
+      
+        <circle cx="460.1" cy="48.8" r="2.6" fill="#c9f284" stroke="#050a07" stroke-width="1"/>
+        <circle cx="460.1" cy="61.1" r="2.6" fill="#e0555e" stroke="#050a07" stroke-width="1"/>
+        <circle cx="460.1" cy="140.0" r="2.6" fill="#d6e8c9" stroke="#050a07" stroke-width="1"/>
       </svg>
       <div style="margin-top:8px;font-size:10.5px;color:var(--muted);">
          Ritmo proyectado: −0.5 kg grasa/semana con déficit −750 kcal + ayuno 16:8. <strong style="color:var(--green);">La línea REAL se actualiza cada lunes</strong> con los datos de la báscula — si la real queda por encima de la proyección 2 semanas seguidas, se ajusta el plan (−100 kcal o +1 HIIT). Tu serie real (18.6→19.6% en 12 días con déficit moderado) valida que el cuerpo responde; con intensidad agresiva la pendiente se acelera. Revisión semanal: si la pérdida de grasa &lt;0.3 kg/semana, −100 kcal más o +1 sesión HIIT.
@@ -905,7 +976,7 @@
 </div>
 
 <div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);">
-  Odyssey Dashboard v45c · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 6 Oct 2026 · DNA Lab HUD
+  Odyssey Dashboard v46 · Juan Castro · Garmin (sleep, HRV, pasos, swim) + Fitdays/LePulse · 6 Oct 2026 · DNA Lab HUD
 </div>
 
 </div>
