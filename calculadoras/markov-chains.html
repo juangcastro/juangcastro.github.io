@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadenas de Markov · Calculadoras TRQ</title>
+<meta name="description" content="Mide si el resultado de una operación influye en la siguiente. Matriz de transición, distribución estacionaria y test chi-cuadrado sobre tu historial en Excel o CSV.">
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06070f; --surface: #0d0f1e; --card: #12142a; --card-2: #171a36;
+    --border: #252b52; --text: #e8ecff; --muted: #8b92b8;
+    --accent: #ff3b5c; --glow-accent: rgba(255, 59, 92, .35);
+    --up: #34d399; --down: #ff5c7a; --amber: #fbbf24;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px 40px; }
+
+  /* ── masthead ─────────────────────── */
+  .masthead { padding: 34px 0 8px; }
+  .masthead .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .masthead .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); box-shadow: 0 0 8px var(--glow-accent); }
+  .masthead h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(30px, 4.6vw, 42px); letter-spacing: -.02em; }
+  .masthead h1 .red { color: var(--accent); text-shadow: 0 0 26px var(--glow-accent); }
+  .masthead p { color: var(--muted); max-width: none; font-size: 15px; margin-top: 10px; line-height: 1.65; }
+  .masthead p b { color: var(--text); }
+
+  /* ── paneles ──────────────────────── */
+  .panel {
+    margin-top: 26px;
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px 22px 24px;
+  }
+  .panel h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .panel h2 .n {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    color: var(--accent); border: 1px solid var(--border); border-radius: 6px;
+    padding: 3px 7px; background: rgba(6, 7, 15, .45);
+  }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media (max-width: 560px) { .grid, .grid-2 { grid-template-columns: 1fr; } }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: .02em; }
+  label .hint { color: #5b6288; font-size: 11px; }
+  input[type="number"] {
+    width: 100%; padding: 10px 12px;
+    background: rgba(6, 7, 15, .55); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    outline: none; transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
+
+  /* ── pills (presets + modo) ───────── */
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pill {
+    padding: 7px 14px; font-size: 12px; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+    background: rgba(6, 7, 15, .45); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .pill:hover { color: var(--text); border-color: #3a4170; }
+  .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 18px rgba(255, 59, 92, .28); }
+
+  /* ── tabla de operaciones ─────────── */
+  .trades-head, .trade-row {
+    display: grid; grid-template-columns: 1fr 96px 88px 30px; gap: 10px; align-items: center;
+  }
+  .trades-head { font-size: 11px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 8px; }
+  .trade-row { margin-bottom: 8px; }
+  .trade-row .r-val {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .trade-row .r-val.pos { color: var(--up); }
+  .trade-row .r-val.neg { color: var(--down); }
+  .trade-row .r-val.zero { color: var(--muted); }
+  .trade-row .del {
+    background: rgba(255, 92, 122, .1); border: 1px solid rgba(255, 92, 122, .4);
+    color: var(--down); border-radius: 8px; width: 30px; height: 30px;
+    font-size: 14px; cursor: pointer; transition: all .15s ease; line-height: 1;
+  }
+  .trade-row .del:hover { background: rgba(255, 92, 122, .22); }
+  .add-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .btn-ghost {
+    padding: 8px 16px; font-size: 12px; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+    background: rgba(6, 7, 15, .45); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all .15s ease;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: #3a4170; }
+  .btn-ghost.blue { border-color: rgba(52, 211, 153, .4); color: var(--up); }
+  .btn-ghost.blue:hover { background: rgba(52, 211, 153, .1); }
+
+  /* ── botones ──────────────────────── */
+  .cta-row { display: flex; gap: 12px; margin-top: 22px; }
+  .run {
+    flex: 1; padding: 14px; border: none; border-radius: 12px; cursor: pointer;
+    background: var(--accent); color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; letter-spacing: .06em;
+    box-shadow: 0 10px 30px -12px rgba(255, 59, 92, .55);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .run:hover { box-shadow: 0 14px 36px -12px rgba(255, 59, 92, .7); }
+  .run:active { transform: scale(0.96); }
+  .run.ghost {
+    flex: 0 0 auto; background: transparent; color: var(--muted);
+    border: 1px solid var(--border); box-shadow: none;
+  }
+  .run.ghost:hover { color: var(--text); border-color: #3a4170; box-shadow: none; }
+  .err {
+    margin-top: 14px; padding: 12px 16px; border-radius: 12px;
+    border: 1px solid rgba(255, 92, 122, .5); background: rgba(255, 92, 122, .08);
+    color: #ffb3c2; font-size: 13px; display: none;
+  }
+
+  /* ── resultados ───────────────────── */
+  .results { margin-top: 26px; display: none; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .kpis .kpi {
+    background: linear-gradient(160deg, var(--card), var(--card-2));
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 16px 14px;
+  }
+  .kpi .lab { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+  .kpi .val { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi .val.pos { color: var(--up); }
+  .kpi .val.neg { color: var(--down); }
+  .kpi .val.acc { color: var(--accent); }
+  .kpi .sub { font-size: 11px; color: #5b6288; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+  @media (max-width: 640px) { .kpis { grid-template-columns: 1fr 1fr; } }
+
+  /* ── nota + descargo ──────────────── */
+  .note {
+    margin-top: 14px; padding: 14px 16px; border-radius: 12px;
+    border: 1px solid var(--border); background: rgba(6, 7, 15, .4);
+    font-size: 13px; color: var(--muted); line-height: 1.6;
+  }
+  .note.warn { border-color: rgba(255, 92, 122, .5); background: rgba(255, 92, 122, .07); color: #ffb3c2; }
+  .note b { color: var(--text); }
+  .canvas-box { margin-top: 16px; }
+  .canvas-box .cap { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+  canvas { width: 100%; height: auto; background: rgba(6, 7, 15, .4); border: 1px solid var(--border); border-radius: 14px; }
+
+  footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 40px; }
+  .foot-inner { max-width: 780px; margin: 0 auto; padding: 18px 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+  footer span { color: var(--muted); font-size: 12px; }
+  .back { color: var(--muted); text-decoration: none; font-size: 13px; font-family: 'JetBrains Mono', monospace; transition: color .15s ease; }
+  .back:hover { color: var(--accent); }
+  .back::before { content: "← "; }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(6, 7, 15, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1240px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-brand img { width: 34px; height: auto; }
+  .nav-brand .word {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 14px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); text-shadow: 0 0 16px var(--glow-accent);
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .15s ease; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links .back-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); }
+  @media (max-width: 720px) { .nav-links a:not(.back-link) { display: none; } }
+  .back-btn {
+    display: inline-block; margin: 26px 0 0; color: var(--muted);
+    text-decoration: none; font-size: 12px; font-family: 'JetBrains Mono', monospace;
+    transition: color .15s ease;
+  }
+  .back-btn:hover { color: var(--accent); }
+  .back-btn::before { content: "← "; }
+
+  /* ── específico: carga de archivo, selects y tablas ── */
+  select {
+    width: 100%; padding: 10px 12px;
+    background: rgba(6, 7, 15, .55); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none;
+  }
+  select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255, 59, 92, .15); }
+  .drop {
+    border: 1px dashed var(--border); border-radius: 14px;
+    background: rgba(6, 7, 15, .35); padding: 26px 20px; text-align: center;
+    transition: border-color .15s ease, background .15s ease; cursor: pointer;
+  }
+  .drop:hover, .drop.over { border-color: var(--accent); background: rgba(255, 59, 92, .05); }
+  .drop .big { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .drop .small { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .drop .small b { color: var(--text); }
+  .drop input[type="file"] { display: none; }
+  .fname {
+    margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--up); display: none;
+  }
+  .mapeo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; display: none; }
+  @media (max-width: 560px) { .mapeo { grid-template-columns: 1fr; } }
+  .tbl-wrap { overflow-x: auto; margin-top: 14px; }
+  table.mx { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+  table.mx th, table.mx td {
+    padding: 9px 12px; text-align: right; font-size: 13px;
+    border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace;
+  }
+  table.mx th { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  table.mx th:first-child, table.mx td:first-child { text-align: left; font-family: 'Inter', sans-serif; font-weight: 600; }
+  table.mx td small { color: #5b6288; font-size: 10.5px; }
+  table.mx tr:last-child td { border-bottom: none; }
+  .bars { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .bar-row { display: grid; grid-template-columns: 96px 1fr 62px; gap: 12px; align-items: center; font-size: 12.5px; }
+  .bar-row .name { color: var(--muted); }
+  .bar-row .track { height: 22px; background: rgba(6,7,15,.55); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .bar-row .fill { height: 100%; background: linear-gradient(90deg, rgba(255,59,92,.55), var(--accent)); }
+  .bar-row .num { font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: right; }
+  .chart-box { margin-top: 16px; background: rgba(6,7,15,.35); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+  .chart-box .cap { font-size: 11.5px; color: var(--muted); margin-top: 8px; line-height: 1.55; }
+  .sub-h { font-size: 13px; font-weight: 600; margin: 22px 0 6px; }
+  .sub-h .tagi { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: .1em; text-transform: uppercase; }
+</style>
+</head>
+<script>history.scrollRestoration='manual';window.scrollTo(0,0);</script>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">
+      <img src="../assets/trq-logo-main.png" alt="Logo de The Red Queen">
+      <span class="word">The Red Queen</span>
+    </a>
+    <div class="nav-links">
+      <a class="back-link" href="../calculadoras/">← Calculadoras</a>
+      <a href="../manifiesto.html">Manifiesto</a>
+      <a href="../trq-program.html">Mentoría</a>
+    </div>
+  </div>
+</nav>
+<div class="wrap">
+
+  <a class="back-btn" href="../calculadoras/" aria-label="Volver a las calculadoras">Volver a las calculadoras</a>
+
+  <header class="masthead">
+    <div class="kicker">Calculadoras</div>
+    <h1>Cadenas de <span class="red">Markov</span></h1>
+    <p>Sube tu historial de operaciones —<b>fecha</b> y <b>R</b>— y esto mide si el resultado de una operación influye en la siguiente. La lógica viene de las <b>cadenas de Markov</b> (A. A. Markov, 1906): el estado siguiente depende solo del estado actual. Si la <b>matriz de transición</b> es plana, tu sistema no tiene memoria y no hay nada que anticipar; si no lo es, hay rachas que el azar independiente no explica. Se calcula la matriz de transición, la <b>distribución estacionaria</b>, el <b>test χ²</b> de independencia y el drawdown de la serie.</p>
+  </header>
+
+  <div class="panel">
+    <h2><span class="n">01</span> Tu historial</h2>
+
+    <div class="drop" id="drop">
+      <div class="big">Arrastra tu archivo o haz clic aquí</div>
+      <div class="small"><b>.xlsx · .xls · .csv</b> — dos columnas: <b>fecha</b> (opcional) y <b>R</b> (obligatoria).<br>
+      El estado se deduce por el signo: <b>+</b> ganador · <b>−</b> perdedor · <b>0</b> no se dio (incluye breakeven).</div>
+      <input type="file" id="file" accept=".xlsx,.xls,.csv">
+      <div class="fname" id="fname"></div>
+    </div>
+
+    <div class="add-row">
+      <a class="btn-ghost blue" href="ejemplo-cadenas-markov.xlsx" download>Descargar archivo de ejemplo (.xlsx)</a>
+    </div>
+
+    <div class="mapeo" id="mapeo">
+      <div><label for="selHoja">Hoja</label><select id="selHoja"></select></div>
+      <div><label for="selFecha">Columna fecha <span class="hint">(opcional)</span></label><select id="selFecha"></select></div>
+      <div><label for="selR">Columna R</label><select id="selR"></select></div>
+    </div>
+
+    <div class="pill-row" id="unitRow" style="margin-top:18px">
+      <button class="pill active" data-unit="r">R viene en múltiplos de R</button>
+      <button class="pill" data-unit="usd">R viene en dólares</button>
+    </div>
+    <div class="grid" id="boxUsd" style="display:none">
+      <div><label for="unR">1R = ($) <span class="hint">opcional, para expresar los múltiplos</span></label><input id="unR" type="number" step="10" min="1" placeholder="ej. 250"></div>
+    </div>
+
+    <div class="cta-row">
+      <button class="run" id="run">Calcular la matriz</button>
+    </div>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div class="results" id="res">
+    <div class="panel">
+      <h2><span class="n">02</span> Resumen de la serie</h2>
+      <div class="kpis" id="kpis"></div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="n">03</span> Matriz de transición</h2>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:4px">Cada fila es el estado de hoy; cada celda, la probabilidad del estado siguiente. Si todas las filas se parecen, el estado de hoy no informa el de mañana.</p>
+      <div class="tbl-wrap"><table class="mx" id="mx"></table></div>
+      <div class="note" id="mxNote"></div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="n">04</span> Largo plazo y memoria</h2>
+      <div class="sub-h"><span class="tagi">Distribución estacionaria</span></div>
+      <div class="bars" id="bars"></div>
+      <div class="sub-h"><span class="tagi">Tiempo de retorno</span></div>
+      <div class="tbl-wrap"><table class="mx" id="tm"></table></div>
+      <div class="note" id="chiNote"></div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="n">05</span> Equity y drawdown</h2>
+      <div class="chart-box">
+        <div id="eq"></div>
+        <div class="cap">Curva de capital acumulado en R a lo largo de la serie. La línea punteada es el punto de partida.</div>
+      </div>
+      <div class="sub-h"><span class="tagi">Episodios de drawdown</span></div>
+      <div class="tbl-wrap"><table class="mx" id="ddt"></table></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Qué estás viendo.</b> Los estados se deducen del signo de R, así que la herramienta funciona igual si R viene en múltiplos o en dólares. El test χ² compara la matriz observada con la que saldría si cada operación fuese independiente de la anterior: un p-valor alto significa que no hay memoria. Con menos de ~5 observaciones por celda el test pierde potencia — la herramienta te avisa si es el caso.
+  </div>
+  <div class="note">
+    Todo se calcula en tu navegador sobre el archivo que cargas: no se envía nada a ningún servidor. No es predicción ni consejo financiero.
+  </div>
+
+  <footer>
+    <div class="foot-inner">
+      <span>The Red Queen · Calculadoras de trading</span>
+      <a class="back" href="../calculadoras/">Calculadoras</a>
+    </div>
+  </footer>
+</div>
+<script src="xlsx.full.min.js"></script>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const ESTADOS = ['Gana', 'Pierde', 'No se dio'];
+const COL = { 'Gana': 'var(--up)', 'Pierde': 'var(--down)', 'No se dio': 'var(--muted)' };
+let CRUDO = null;      // {cols:[], rows:[[]], nombre}
+let LIBRO = null;      // workbook SheetJS
+let UNIDAD = 'r';
+
+const clasifica = r => r > 0 ? 'Gana' : (r < 0 ? 'Pierde' : 'No se dio');
+
+/* ───────── números ───────── */
+function num(s) {
+  if (typeof s === 'number') return isFinite(s) ? s : NaN;
+  if (s === null || s === undefined) return NaN;
+  let t = String(s).trim().replace(/[\s$%]/g, '');
+  if (t === '' || t === '-' || t === '—' || /^n\/?a$/i.test(t)) return NaN;
+  const c = t.includes(','), d = t.includes('.');
+  if (c && d) {
+    t = (t.lastIndexOf(',') > t.lastIndexOf('.')) ? t.replace(/\./g, '').replace(',', '.') : t.replace(/,/g, '');
+  } else if (c) {
+    t = /^-?\d{1,3}(,\d{3})+$/.test(t) ? t.replace(/,/g, '') : t.replace(',', '.');
+  } else if (d) {
+    t = /^-?\d{1,3}(\.\d{3})+$/.test(t) ? t.replace(/\./g, '') : t;
+  }
+  const v = parseFloat(t);
+  return isFinite(v) ? v : NaN;
+}
+
+/* ───────── fechas ───────── */
+const p2 = n => String(n).padStart(2, '0');
+function iso(d, utc) {
+  const y = utc ? d.getUTCFullYear() : d.getFullYear();
+  const m = utc ? d.getUTCMonth() : d.getMonth();
+  const a = utc ? d.getUTCDate() : d.getDate();
+  return y + '-' + p2(m + 1) + '-' + p2(a);
+}
+function fechaDe(v) {
+  if (v instanceof Date && !isNaN(v)) return iso(v);
+  if (typeof v === 'number' && v > 20000 && v < 60000) {
+    return iso(new Date(Date.UTC(1899, 11, 30) + Math.round(v) * 86400000), true);
+  }
+  const s = String(v === null || v === undefined ? '' : v).trim();
+  let m;
+  if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return m[1] + '-' + p2(m[2]) + '-' + p2(m[3]);
+  if ((m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/))) return m[3] + '-' + p2(m[2]) + '-' + p2(m[1]);
+  return '';
+}
+
+/* ───────── CSV ───────── */
+function parseCSV(txt) {
+  txt = txt.replace(/^\uFEFF/, '');
+  const lines = txt.split(/\r?\n/).filter(l => l.trim() !== '');
+  if (!lines.length) throw new Error('El archivo está vacío.');
+  const head0 = lines[0];
+  const delim = head0.split(';').length > head0.split(',').length ? ';' : (head0.includes('\t') ? '\t' : ',');
+  const rows = lines.map(l => l.split(delim).map(s => s.trim().replace(/^"|"$/g, '')));
+  return { head: rows.shift(), rows, delim };
+}
+
+/* ───────── carga y mapeo ───────── */
+function pintaMapeo(cols, rows, nombre) {
+  CRUDO = { cols, rows, nombre };
+  $('mapeo').style.display = 'grid';
+  $('fname').style.display = 'block';
+  $('fname').textContent = '✓ ' + nombre + ' · ' + rows.length + ' filas';
+  const selH = $('selHoja'), selF = $('selFecha'), selR = $('selR');
+  selH.parentElement.style.display = LIBRO ? '' : 'none';
+  [selF, selR].forEach(sel => { sel.innerHTML = ''; });
+  const none = document.createElement('option'); none.value = ''; none.textContent = '— ninguna —';
+  selF.appendChild(none);
+  cols.forEach((c, i) => {
+    [selF, selR].forEach(sel => {
+      const o = document.createElement('option'); o.value = i; o.textContent = c + ' (col ' + (i + 1) + ')';
+      sel.appendChild(o);
+    });
+  });
+  const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  let iR = cols.findIndex(c => /^(r|resultado|result|retorno|ret|pnl|p&l|profit|ganancia)$/.test(norm(c)));
+  let iF = cols.findIndex(c => /^(fecha|date|dia|day)$/.test(norm(c)));
+  if (iR < 0) iR = cols.findIndex((_, i) => rows.slice(0, 40).some(r => isFinite(num(r[i]))));
+  selR.value = iR >= 0 ? iR : '';
+  selF.value = iF >= 0 ? iF : '';
+  $('res').style.display = 'none';
+}
+
+async function cargar(file) {
+  const nombre = file.name, low = nombre.toLowerCase();
+  $('err').style.display = 'none';
+  try {
+    if (low.endsWith('.csv')) {
+      LIBRO = null;
+      const { head, rows } = parseCSV(await file.text());
+      pintaMapeo(head, rows, nombre);
+    } else {
+      if (typeof XLSX === 'undefined') throw new Error('No se pudo cargar el lector de Excel. Usa la versión .csv o revisa tu conexión.');
+      LIBRO = XLSX.read(new Uint8Array(await file.arrayBuffer()), { type: 'array', cellDates: false });
+      $('selHoja').innerHTML = '';
+      LIBRO.SheetNames.forEach(n => {
+        const o = document.createElement('option'); o.value = n; o.textContent = n; $('selHoja').appendChild(o);
+      });
+      $('selHoja').onchange = () => usarHoja($('selHoja').value, nombre);
+      usarHoja(LIBRO.SheetNames[0], nombre);
+    }
+  } catch (e) {
+    mostrarError(e.message || String(e));
+  }
+}
+
+function usarHoja(nombreHoja, archivo) {
+  const ws = LIBRO.Sheets[nombreHoja];
+  if (!ws) return mostrarError('La hoja "' + nombreHoja + '" está vacía.');
+  const arr = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: null, blankrows: false });
+  if (!arr.length) return mostrarError('La hoja "' + nombreHoja + '" no tiene datos.');
+  if (arr.length < 3) return mostrarError('La hoja "' + nombreHoja + '" tiene muy pocas filas (¿es la hoja de instrucciones?). Elige la hoja con los resultados.');
+  let head = arr[0].map(h => h === null || h === undefined ? '' : String(h).trim());
+  const pareceHeader = head.some(h => h !== '' && isNaN(parseFloat(String(h).replace(',', '.'))));
+  let rows = arr;
+  if (pareceHeader) { rows = arr.slice(1); } else { head = head.map((_, i) => 'Columna ' + (i + 1)); }
+  pintaMapeo(head, rows, archivo + ' · ' + nombreHoja);
+}
+
+function mostrarError(msg) {
+  const e = $('err'); e.textContent = msg; e.style.display = 'block';
+  $('res').style.display = 'none';
+}
+
+/* ───────── estadística ───────── */
+function lgamma(z) {
+  const g = [676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61502916214059,
+    12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  if (z < 0.5) return Math.log(Math.PI / Math.sin(Math.PI * z)) - lgamma(1 - z);
+  z -= 1; let x = 0.99999999999980993;
+  for (let i = 0; i < 8; i++) x += g[i] / (z + i + 1);
+  const t = z + 7.5;
+  return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
+}
+
+function chi2sf(x, k) {
+  if (!isFinite(x) || x <= 0) return 1;
+  if (!(k > 0)) return NaN;
+  const a = k / 2, z = x / 2;
+  if (z < a + 1) {
+    let sum = 1 / a, term = 1 / a;
+    for (let n = 1; n < 500; n++) {
+      term *= z / (a + n); sum += term;
+      if (Math.abs(term) < 1e-15 * Math.abs(sum)) break;
+    }
+    const P = Math.exp(-z + a * Math.log(z) - lgamma(a)) * sum;
+    return Math.max(0, Math.min(1, 1 - P));
+  }
+  let b = z + 1 - a, c = 1e30, d = 1 / b, h = d;
+  for (let i = 1; i < 500; i++) {
+    const an = -i * (i - a);
+    b += 2; d = an * d + b; if (Math.abs(d) < 1e-30) d = 1e-30;
+    c = b + an / c; if (Math.abs(c) < 1e-30) c = 1e-30;
+    d = 1 / d; const del = d * c; h *= del;
+    if (Math.abs(del - 1) < 1e-15) break;
+  }
+  return Math.max(0, Math.min(1, Math.exp(-z + a * Math.log(z) - lgamma(a)) * h));
+}
+
+/* ───────── cálculo ───────── */
+function calcula(regs) {
+  const n = regs.length;
+  const ix = { 'Gana': 0, 'Pierde': 1, 'No se dio': 2 };
+  const C = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+  for (let i = 0; i < n - 1; i++) C[ix[regs[i].estado]][ix[regs[i + 1].estado]]++;
+  const filas = C.map(r => r.reduce((a, b) => a + b, 0));
+  const P = C.map((r, i) => r.map(v => filas[i] ? v / filas[i] : 0));
+  const tot = filas.reduce((a, b) => a + b, 0);
+  const cols = [0, 1, 2].map(j => C.reduce((a, r) => a + r[j], 0));
+  let chi2 = 0;
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) {
+    const E = tot ? filas[i] * cols[j] / tot : 0;
+    if (E > 0) chi2 += (C[i][j] - E) * (C[i][j] - E) / E;
+  }
+  const nf = filas.filter(x => x > 0).length, nc = cols.filter(x => x > 0).length;
+  const gl = (nf - 1) * (nc - 1);
+  const p = gl > 0 ? chi2sf(chi2, gl) : NaN;
+  let minEsp = Infinity;
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) {
+    if (filas[i] > 0 && cols[j] > 0) minEsp = Math.min(minEsp, filas[i] * cols[j] / (tot || 1));
+  }
+  if (!isFinite(minEsp)) minEsp = 0;
+
+  let pi = [1 / 3, 1 / 3, 1 / 3];
+  for (let it = 0; it < 800; it++) {
+    const nx = [0, 1, 2].map(j => pi.reduce((a, v, i) => a + v * P[i][j], 0));
+    const s = nx.reduce((a, b) => a + b, 0) || 1;
+    const nw = nx.map(v => v / s);
+    if (nw.every((v, i) => Math.abs(v - pi[i]) < 1e-13)) { pi = nw; break; }
+    pi = nw;
+  }
+
+  const cont = { 'Gana': 0, 'Pierde': 0, 'No se dio': 0 };
+  regs.forEach(r => cont[r.estado]++);
+  const ej = cont['Gana'] + cont['Pierde'];
+  const total = regs.reduce((a, r) => a + r.r, 0);
+  const media = total / n;
+  const wr = ej ? cont['Gana'] / ej : NaN;
+
+  let acc = 0, pk = 0, ddMax = 0, enDD = false, pico = 0, mn = 0, iEp = 0;
+  const episodios = [], eq = [];
+  regs.forEach((r, k) => {
+    acc += r.r; eq.push(acc);
+    if (acc >= pk) {
+      if (enDD) episodios.push({ prof: pico - mn, ini: iEp, fin: k - 1 });
+      pk = acc; enDD = false;
+    } else {
+      if (!enDD) { enDD = true; pico = pk; mn = acc; iEp = k; }
+      mn = Math.min(mn, acc);
+    }
+    ddMax = Math.max(ddMax, pk - acc);
+  });
+  if (enDD) episodios.push({ prof: pico - mn, ini: iEp, fin: n - 1 });
+  episodios.sort((a, b) => b.prof - a.prof);
+  return { n, C, P, filas, cols, chi2, gl, p, minEsp, pi, cont, ej, total, media, wr, ddMax, episodios, eq };
+}
+
+/* ───────── render ───────── */
+const n2 = (x, d) => isFinite(x) ? x.toFixed(d === undefined ? 2 : d) : '—';
+const pc = (x, d) => isFinite(x) ? (x * 100).toFixed(d === undefined ? 1 : d) + '%' : '—';
+
+function kpi(lab, val, sub, cls) {
+  return '<div class="kpi"><div class="lab">' + lab + '</div><div class="val ' + (cls || '') + '">' + val +
+    '</div>' + (sub ? '<div class="sub">' + sub + '</div>' : '') + '</div>';
+}
+
+function dibujaSVG(eq) {
+  const W = 720, H = 210, pl = 46, pr = 12, pt = 14, pb = 24;
+  const n = eq.length, lo = Math.min(0, ...eq), hi = Math.max(0, ...eq), sp = (hi - lo) || 1;
+  const X = i => pl + (n > 1 ? i / (n - 1) : 0) * (W - pl - pr);
+  const Y = v => pt + (hi - v) / sp * (H - pt - pb);
+  let d = '';
+  eq.forEach((v, i) => { d += (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1) + ' '; });
+  let grid = '';
+  for (let g = 0; g <= 4; g++) {
+    const val = lo + sp * g / 4, y = Y(val);
+    grid += '<line x1="' + pl + '" y1="' + y.toFixed(1) + '" x2="' + (W - pr) + '" y2="' + y.toFixed(1) +
+      '" stroke="' + (Math.abs(val) < 1e-9 ? '#3a4170' : 'rgba(37,43,82,.55)') + '" stroke-dasharray="' + (Math.abs(val) < 1e-9 ? '4 4' : '0') + '"/>' +
+      '<text x="' + (pl - 8) + '" y="' + (y + 4).toFixed(1) + '" fill="#5b6288" font-size="10" text-anchor="end" font-family="JetBrains Mono, monospace">' + n2(val, 1) + '</text>';
+  }
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;display:block">' + grid +
+    '<path d="' + d + '" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round"/>' +
+    '<text x="' + (W - pr) + '" y="' + (H - 6) + '" fill="#5b6288" font-size="10" text-anchor="end" font-family="JetBrains Mono, monospace">' + n + ' operaciones</text></svg>';
+}
+
+function render(regs, R) {
+  const f = v => (UNIDAD === 'usd' ? (v < 0 ? '−$' : '$') + Math.abs(v).toFixed(0) : n2(v, 2) + 'R');
+  const ganador = ESTADOS[R.pi.indexOf(Math.max(...R.pi))];
+  $('kpis').innerHTML = [
+    kpi('Operaciones', R.n, 'filas válidas leídas'),
+    kpi('Ganadores', R.cont['Gana'], pc(R.cont['Gana'] / R.n) + ' de la serie', 'pos'),
+    kpi('Perdedores', R.cont['Pierde'], pc(R.cont['Pierde'] / R.n) + ' de la serie', 'neg'),
+    kpi('No se dio', R.cont['No se dio'], pc(R.cont['No se dio'] / R.n) + ' (incluye BE)', ''),
+    kpi('Win rate', pc(R.wr), 'sobre ' + R.ej + ' ejecutadas', R.wr >= 0.5 ? 'pos' : 'neg'),
+    kpi('Expectancy', f(R.media), 'por operación · total ' + f(R.total), R.media >= 0 ? 'pos' : 'neg'),
+    kpi('Drawdown máximo', f(-R.ddMax), R.episodios.length + ' episodios', 'neg'),
+    kpi('Test χ²', isFinite(R.p) ? 'p = ' + n2(R.p, 3) : '—', 'gl = ' + R.gl + ' · independencia', 'acc'),
+    kpi('A la larga', ganador, 'estado más frecuente', 'acc')
+  ].join('');
+
+  let mx = '<thead><tr><th>Hoy ↓ / mañana →</th>' + ESTADOS.map(e => '<th>' + e + '</th>').join('') + '<th>Total</th></tr></thead><tbody>';
+  for (let i = 0; i < 3; i++) {
+    mx += '<tr><td>' + ESTADOS[i] + '</td>';
+    for (let j = 0; j < 3; j++) {
+      mx += '<td>' + (R.filas[i] ? pc(R.P[i][j], 1) : '—') + '<br><small>' + R.C[i][j] + '</small></td>';
+    }
+    mx += '<td>' + R.filas[i] + '</td></tr>';
+  }
+  $('mx').innerHTML = mx + '</tbody>';
+
+  const plano = isFinite(R.p) && R.p > 0.05;
+  $('mxNote').innerHTML = isFinite(R.p)
+    ? (plano
+      ? '<b>La matriz es plana.</b> Con p = ' + n2(R.p, 3) + ' no se puede rechazar la independencia: el resultado de una operación no informa el de la siguiente. Un sistema sin memoria no se puede anticipar por rachas.'
+      : '<b>Hay dependencia.</b> Con p = ' + n2(R.p, 3) + ' la matriz se aparta de la independencia: el estado actual sí informa el siguiente. Revisa qué celdas cargan la señal antes de asumir que es explotable — con muestras cortas también aparece por azar.')
+    : 'No hay suficientes estados distintos para calcular el test.';
+
+  $('bars').innerHTML = ESTADOS.map((e, i) => '<div class="bar-row"><span class="name">' + e + '</span>' +
+    '<div class="track"><div class="fill" style="width:' + (R.pi[i] * 100).toFixed(1) + '%;background:' + COL[e] + '"></div></div>' +
+    '<span class="num">' + pc(R.pi[i]) + '</span></div>').join('');
+
+  let tm = '<thead><tr><th>Estado</th><th>π</th><th>Retorno medio</th></tr></thead><tbody>';
+  ESTADOS.forEach((e, i) => {
+    const t = R.pi[i] > 1e-9 ? 1 / R.pi[i] : Infinity;
+    tm += '<tr><td>' + e + '</td><td>' + pc(R.pi[i]) + '</td><td>' + (isFinite(t) ? n2(t, 1) + ' operaciones' : '—') + '</td></tr>';
+  });
+  $('tm').innerHTML = tm + '</tbody>';
+
+  $('chiNote').innerHTML = '<b>Potencia del test.</b> La celda con menor frecuencia esperada tiene ' + n2(R.minEsp, 1) +
+    ' observaciones. ' + (R.minEsp < 5
+      ? 'Por debajo de 5 el χ² pierde potencia: un p-valor alto puede ser falta de datos, no ausencia de memoria.'
+      : 'Con 5 o más por celda el test es razonable.') +
+    (UNIDAD === 'usd' && $('unR').value ? ' El drawdown está en dólares; para verlo en múltiplos, divide por ' + $('unR').value + '.' : '');
+
+  $('eq').innerHTML = dibujaSVG(R.eq);
+  let ddt = '<thead><tr><th>Episodio</th><th>Profundidad</th><th>Desde</th><th>Hasta</th></tr></thead><tbody>';
+  if (!R.episodios.length) ddt += '<tr><td colspan="4">Sin drawdown: la serie nunca bajó de su máximo.</td></tr>';
+  R.episodios.slice(0, 8).forEach((ep, k) => {
+    const a = regs[ep.ini] && regs[ep.ini].fecha ? regs[ep.ini].fecha : 'op ' + (ep.ini + 1);
+    const b = regs[ep.fin] && regs[ep.fin].fecha ? regs[ep.fin].fecha : 'op ' + (ep.fin + 1);
+    ddt += '<tr><td>' + (k + 1) + '</td><td>' + f(-ep.prof) + '</td><td>' + a + '</td><td>' + b + '</td></tr>';
+  });
+  $('ddt').innerHTML = ddt + '</tbody>';
+  $('res').style.display = 'block';
+  $('res').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ───────── flujo ───────── */
+function procesar() {
+  $('err').style.display = 'none';
+  if (!CRUDO) return mostrarError('Primero carga un archivo.');
+  const iR = $('selR').value === '' ? -1 : +$('selR').value;
+  if (iR < 0) return mostrarError('Elige cuál columna tiene el resultado (R).');
+  const iF = $('selFecha').value === '' ? -1 : +$('selFecha').value;
+  const regs = []; let saltadas = 0, vacias = 0;
+  for (const row of CRUDO.rows) {
+    if (!row || row.every(c => c === null || c === undefined || String(c).trim() === '')) { vacias++; continue; }
+    const r = num(row[iR]);
+    if (!isFinite(r)) { saltadas++; continue; }
+    regs.push({ fecha: iF >= 0 ? fechaDe(row[iF]) : '', r: r, estado: clasifica(r) });
+  }
+  if (regs.length < 8) return mostrarError('Se leyeron ' + regs.length + ' operaciones válidas. Necesito al menos 8 para estimar una matriz de transición.');
+  const R = calcula(regs);
+  render(regs, R);
+  if (saltadas || vacias) {
+    const e = $('err');
+    e.style.display = 'block'; e.style.color = 'var(--muted)';
+    e.style.borderColor = 'var(--border)'; e.style.background = 'rgba(6,7,15,.4)';
+    e.textContent = 'Aviso: se descartaron ' + saltadas + ' filas sin número válido en R' + (vacias ? ' y ' + vacias + ' filas vacías' : '') + '.';
+  }
+}
+
+/* ───────── eventos ───────── */
+$('drop').addEventListener('click', () => $('file').click());
+$('drop').addEventListener('dragover', e => { e.preventDefault(); $('drop').classList.add('over'); });
+$('drop').addEventListener('dragleave', () => $('drop').classList.remove('over'));
+$('drop').addEventListener('drop', e => {
+  e.preventDefault(); $('drop').classList.remove('over');
+  if (e.dataTransfer.files && e.dataTransfer.files[0]) cargar(e.dataTransfer.files[0]);
+});
+$('file').addEventListener('change', e => { if (e.target.files[0]) cargar(e.target.files[0]); });
+$('unitRow').addEventListener('click', e => {
+  const b = e.target.closest('.pill'); if (!b) return;
+  [...$('unitRow').children].forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  UNIDAD = b.dataset.unit;
+  $('boxUsd').style.display = UNIDAD === 'usd' ? 'grid' : 'none';
+  if ($('res').style.display === 'block') procesar();
+});
+$('run').addEventListener('click', procesar);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && $('res').style.display !== 'block') procesar();
+});
+window.__marcov = { calcula, num, fechaDe, parseCSV, chi2sf, clasifica, cargar, get libro() { return LIBRO; }, get crudo() { return CRUDO; } };
+
+</script>
+</body>
+</html>
